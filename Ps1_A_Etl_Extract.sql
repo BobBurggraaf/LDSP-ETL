@@ -1,9 +1,12 @@
 /******************************************************************************
    NAME: Ps1_A_Etl_Extract.sql 
-   PURPOSE: Extract tables from source database (MSSQL12316\S06) and populate tables in stage database (MSSQL12336\S01)
+   DATE: 2/21/2018
+   DESCRIPTION: This is a DDL that creates a table with all of the variables needed
+				to run the extract function and bring over the data from OneAccord. 
+				Source Database: MSSQL12316\S06
+				Destination Database: MSSQL12336\S01
  
 ******************************************************************************/
-
 
 IF OBJECT_ID('OneAccord_Warehouse.Oa_Extract.Extract_Tables','U') IS NOT NULL
 DROP TABLE OneAccord_Warehouse.Oa_Extract.Extract_Tables;
@@ -79,7 +82,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 	)
 	VALUES
 -- --------------------------
--- ACCOUNT (Ext_Account)
+-- AccountBase (Ext_Account)
 -- --------------------------
 	('dbo.AccountBase' -- Source_Table
 		, 'Oa_Extract.Ext_Account' -- Destination_Table
@@ -189,7 +192,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 	)
 	,
 -- --------------------------
--- ACTIVITY (Ext_Activity)
+-- ActivityPartyBase (Ext_Activity)
 -- --------------------------
 	('dbo.ActivityPartyBase' -- Source_Table
 		, 'Oa_Extract.Ext_Activity' -- Destination_Table
@@ -248,7 +251,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 	)
 	,
 -- --------------------------
--- ACTIVITY_POINTER (Ext_Activity_Pointer)
+-- ActivityPointerBase (Ext_Activity_Pointer)
 -- --------------------------
 	('dbo.ActivityPointerBase' -- Source_Table
 		, 'Oa_Extract.Ext_Activity_Pointer' -- Destination_Table
@@ -347,242 +350,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 	)
 	,
 -- --------------------------
--- ADDRESS (Ext_Address)
--- --------------------------
-	('dbo.New_AddressBase' -- Source_Table
-		, 'Oa_Extract.Ext_Address' -- Destination_Table
-		, 'Plus_RelatedContact  UNIQUEIDENTIFIER
-			, New_Primary BIT
-			, New_Street1 NVARCHAR(100)
-			, New_Street2 NVARCHAR(100)
-			, New_Street3 NVARCHAR(100)
-			, New_Zip4 NVARCHAR(15)
-			, Plus_AddressDisplay NVARCHAR(300)
-			, Plus_Longitude FLOAT
-			, Plus_Latitude FLOAT
-			, StateCode INT
-			, New_Confidential BIT
-			, New_CityLookUp UNIQUEIDENTIFIER
-			, New_CountyId UNIQUEIDENTIFIER
-			, New_StatesProvinces UNIQUEIDENTIFIER
-			, New_CountryRegions UNIQUEIDENTIFIER
-			, New_PostalCodes UNIQUEIDENTIFIER
-			, Plus_OneAccordQuality INT
-			, New_AddressType INT
-			, New_AddressId UNIQUEIDENTIFIER
-			, New_ConfirmedDate DATETIME
-			, Plus_ForeignPostalCode NVARCHAR(100)
-			, Lds_PostalCode NVARCHAR(100)
-			, Lds_StateProvince NVARCHAR(100)
-			, Lds_County NVARCHAR(100)
-			, Lds_City NVARCHAR(100)
-			' -- Create_Fields
-		, 'Plus_RelatedContact
-			, New_Primary
-			, New_Street1
-			, New_Street2
-			, New_Street3
-			, New_Zip4
-			, Plus_AddressDisplay
-			, Plus_Longitude
-			, Plus_Latitude
-			, StateCode
-			, New_Confidential
-			, New_CityLookUp
-			, New_CountyId
-			, New_StatesProvinces
-			, New_CountryRegions
-			, New_PostalCodes
-			, Plus_OneAccordQuality
-			, New_AddressType
-			, New_AddressId
-			, New_ConfirmedDate
-			, Plus_ForeignPostalCode
-			, Lds_PostalCode
-			, Lds_StateProvince
-			, Lds_County
-			, Lds_City
-			' -- Insert_Fields
-		, 'COALESCE(Plus_RelatedContact,Plus_RelatedAccount) AS Plus_RelatedContact
-			, New_Primary
-			, New_Street1
-			, New_Street2
-			, New_Street3
-			, New_Zip4
-			, CONVERT(NVARCHAR(300),Plus_AddressDisplay) AS Plus_AddressDisplay
-			, Plus_Longitude
-			, Plus_Latitude
-			, StateCode
-			, New_Confidential
-			, New_CityLookUp
-			, New_CountyId
-			, New_StatesProvinces
-			, New_CountryRegions
-			, New_PostalCodes
-			, Plus_OneAccordQuality
-			, New_AddressType
-			, New_AddressId
-			, New_ConfirmedDate
-			, Plus_ForeignPostalCode
-			, Lds_PostalCode
-			, Lds_StateProvince
-			, Lds_County
-			, Lds_City
-			' -- Select_Statement
-		, 'New_AddressBase
-			' -- From_Statement
-		, ' ' -- Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
-		, ' ' -- Code_Block_7
-		, ' ' -- Code_Block_8
-		, ' ' -- Code_Block_9
-		, ' ' -- Code_Block_10
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
-		, 1
-		, GETDATE()
-		, NULL
-	)
-	,
--- --------------------------
--- ADDRESSFORMAT (Ext_Address_Format)
--- --------------------------
-	('dbo.Plus_AddressFormatBase' -- Source_Table
-		, 'Oa_Extract.Ext_Address_Format' -- Destination_Table
-		, 'Plus_AddressFormatId UNIQUEIDENTIFIER
-			, New_UseStateAbreviation BIT
-			' -- Create_Fields
-		, 'Plus_AddressFormatId
-			, New_UseStateAbreviation
-			' -- Insert_Fields
-		, 'Plus_AddressFormatId
-			, New_UseStateAbreviation
-			' -- Select_Statement
-		, 'Plus_AddressFormatBase
-			' -- From_Statement
-		, ' ' -- Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
-		, ' ' -- Code_Block_7
-		, ' ' -- Code_Block_8
-		, ' ' -- Code_Block_9
-		, ' ' -- Code_Block_10
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
-		, 1
-		, GETDATE()
-		, NULL
-	)
-	,
--- --------------------------
--- Alumni (Ext_Alumni)
--- --------------------------
-	('dbo.Plus_AlumniBase' -- Source_Table
-		, 'Oa_Extract.Ext_Alumni' -- Destination_Table
-		, 'Plus_AlumniId UNIQUEIDENTIFIER
-			, Plus_Name NVARCHAR(100)
-			, Plus_ActualGraduationDate DATETIME
-			, Plus_AlumniStatus INT
-			, Plus_DgId INT
-			, Plus_HoursCredits NVARCHAR(100)
-			, Plus_PreferredGraduationDate DATETIME
-			, Plus_Constituent UNIQUEIDENTIFIER
-			, Plus_College UNIQUEIDENTIFIER
-			, Plus_Degree UNIQUEIDENTIFIER
-			, Plus_University UNIQUEIDENTIFIER
-			, Plus_Source UNIQUEIDENTIFIER
-			, Plus_Program UNIQUEIDENTIFIER
-			, Plus_Emphasis UNIQUEIDENTIFIER
-			' -- Create_Fields
-		, 'Plus_AlumniId 
-			, Plus_Name
-			, Plus_ActualGraduationDate
-			, Plus_AlumniStatus
-			, Plus_DgId
-			, Plus_HoursCredits
-			, Plus_PreferredGraduationDate
-			, Plus_Constituent
-			, Plus_College
-			, Plus_Degree
-			, Plus_University
-			, Plus_Source
-			, Plus_Program
-			, Plus_Emphasis
-			' -- Insert_Fields
-		, 'Plus_AlumniId 
-			, Plus_Name
-			, CASE WHEN DATENAME(dy,A.Plus_ActualGraduationDate) BETWEEN B.Mdt_Begin_Date_Number AND B.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.Plus_ActualGraduationDate)
-					ELSE DATEADD(hh,-7,A.Plus_ActualGraduationDate) END AS Plus_ActualGraduationDate
-			, Plus_AlumniStatus
-			, Plus_DgId
-			, Plus_HoursCredits
-			, CASE WHEN DATENAME(dy,A.Plus_PreferredGraduationDate) BETWEEN C.Mdt_Begin_Date_Number AND C.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.Plus_PreferredGraduationDate)
-					ELSE DATEADD(hh,-7,A.Plus_PreferredGraduationDate) END AS Plus_PreferredGraduationDate
-			, Plus_Constituent
-			, Plus_College
-			, Plus_Degree
-			, Plus_University
-			, Plus_Source
-			, Plus_Program
-			, Plus_Emphasis
-			' -- Select_Statement
-		, 'Plus_AlumniBase A
-				LEFT JOIN _MDT_Conversion_Dim B ON YEAR(A.Plus_ActualGraduationDate) = B.Date_Year
-				LEFT JOIN _MDT_Conversion_Dim C ON YEAR(A.Plus_PreferredGraduationDate) = C.Date_Year
-			' -- From_Statement
-		, ' ' -- Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
-		, ' ' -- Code_Block_7
-		, ' ' -- Code_Block_8
-		, ' ' -- Code_Block_9
-		, ' ' -- Code_Block_10
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
-		, 1
-		, GETDATE()
-		, NULL
-	)
-	,
--- --------------------------
--- APPOINTMENT BASE (Ext_Appointment)
+-- AppointmentBase (Ext_Appointment)
 -- --------------------------
 	('dbo.AppointmentBase' -- Source_Table
 		, 'Oa_Extract.Ext_Appointment' -- Destination_Table
@@ -624,102 +392,29 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 	)
 	,
 -- --------------------------
--- ASSOCIATION (Ext_Association)
+-- CampaignActivityBase (Ext_Campaign_Activity)
 -- --------------------------
-	('dbo.New_AssociationBase' -- Source_Table
-		, 'Oa_Extract.Ext_Association' -- Destination_Table
-		, 'New_AssociationId UNIQUEIDENTIFIER
-			, New_ShortName NVARCHAR(100)
-			, New_Acronym NVARCHAR(100)
-			, New_Region NVARCHAR(100)
-			, New_ChapterLevel NVARCHAR(100)
-			, StateCode INT
-			, New_Type INT
-			, New_Sponsor INT
-			, New_Name NVARCHAR(100)
+	('dbo.CampaignActivityBase' -- Source_Table
+		, 'Oa_Extract.Ext_Campaign_Activity' -- Destination_Table
+		, 'ActivityId UNIQUEIDENTIFIER
+			, Plus_InstitutionalHierarchy UNIQUEIDENTIFIER
+			, Plus_AppealCode NVARCHAR(20)
+			, Plus_CommunicationType INT
+			, Plus_Format INT
 			' -- Create_Fields
-		, 'New_AssociationId
-			, New_ShortName
-			, New_Acronym
-			, New_Region
-			, New_ChapterLevel
-			, StateCode
-			, New_Type
-			, New_Sponsor
-			, New_Name
+		, 'ActivityId
+			, Plus_InstitutionalHierarchy
+			, Plus_AppealCode
+			, Plus_CommunicationType
+			, Plus_Format
 			' -- Insert_Fields
-		, 'New_AssociationId
-			, New_ShortName
-			, New_Acronym
-			, New_Region
-			, New_ChapterLevel
-			, StateCode
-			, New_Type
-			, New_Sponsor
-			, New_Name
+		, 'ActivityId
+			, Plus_InstitutionalHierarchy
+			, Plus_AppealCode
+			, Plus_CommunicationType
+			, Plus_Format
 			' -- Select_Statement
-		, 'New_AssociationBase
-			' -- From_Statement
-		, ' ' -- Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
-		, ' ' -- Code_Block_7
-		, ' ' -- Code_Block_8
-		, ' ' -- Code_Block_9
-		, ' ' -- Code_Block_10
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
-		, 1
-		, GETDATE()
-		, NULL
-	)
-	,	
--- --------------------------
--- ASSOCIATION MEMBERSHIP (Ext_Association_Membership)
--- --------------------------
-	('dbo.New_AssociationMembershipBase' -- Source_Table
-		, 'Oa_Extract.Ext_Association_Membership' -- Destination_Table
-		, 'New_AssociationMembershipId UNIQUEIDENTIFIER
-			, New_ConstituentId  UNIQUEIDENTIFIER
-			, New_Association UNIQUEIDENTIFIER
-			, New_StartDate DATETIME
-			, New_EndDate DATETIME
-			, StatusCode INT
-			, New_RelatedOrganization UNIQUEIDENTIFIER
-			' -- Create_Fields
-		, 'New_AssociationMembershipId
-			, New_ConstituentId
-			, New_Association
-			, New_StartDate
-			, New_EndDate
-			, StatusCode
-			, New_RelatedOrganization
-			' -- Insert_Fields
-		, 'New_AssociationMembershipId
-			, New_ConstituentId
-			, New_Association
-			, CASE WHEN DATENAME(dy,A.New_StartDate) BETWEEN B.Mdt_Begin_Date_Number AND B.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.New_StartDate)
-					ELSE DATEADD(hh,-7,A.New_StartDate) END AS New_StartDate
-			, CASE WHEN DATENAME(dy,A.New_EndDate) BETWEEN C.Mdt_Begin_Date_Number AND C.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.New_EndDate)
-					ELSE DATEADD(hh,-7,A.New_EndDate) END AS New_EndDate
-			, StatusCode
-			, New_RelatedOrganization
-			' -- Select_Statement
-		, 'New_AssociationMembershipBase A
-				LEFT JOIN _MDT_Conversion_Dim B ON YEAR(A.New_StartDate) = B.Date_Year
-				LEFT JOIN _MDT_Conversion_Dim C ON YEAR(A.New_EndDate) = C.Date_Year
+		, 'CampaignActivityBase
 			' -- From_Statement
 		, ' ' -- Where_Statement
 		, ' ' -- Code_Block_1
@@ -748,79 +443,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 	)
 	,
 -- --------------------------
--- AWARD (Ext_Recognition_Association)
--- --------------------------
-	('dbo.New_RecognitionAssociationBase' -- Source_Table
-		, 'Oa_Extract.Ext_Recognition_Association' -- Destination_Table
-		, 'New_RecognitionAssociationId UNIQUEIDENTIFIER
-			, New_Constituent UNIQUEIDENTIFIER
-			, New_EndDate DATETIME
-			, New_StartDate DATETIME
-			, Plus_ScholarshipOfferedAmount MONEY
-			, Plus_ScholarshipAwardTerm NVARCHAR(15)
-			, Plus_ScholarshipGrantingOffice NVARCHAR(25)
-			, Plus_ScholarshipAwardDate DATETIME
-			, Plus_ScholarshipCode NVARCHAR(100)
-			, New_Recognition UNIQUEIDENTIFIER
-			' -- Create_Fields
-		, 'New_RecognitionAssociationId
-			, New_Constituent
-			, New_EndDate
-			, New_StartDate
-			, Plus_ScholarshipOfferedAmount
-			, Plus_ScholarshipAwardTerm
-			, Plus_ScholarshipGrantingOffice
-			, Plus_ScholarshipAwardDate
-			, Plus_ScholarshipCode
-			, New_Recognition
-			' -- Insert_Fields
-		, 'New_RecognitionAssociationId
-			, New_Constituent
-			, CASE WHEN DATENAME(dy,A.New_EndDate) BETWEEN B.Mdt_Begin_Date_Number AND B.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.New_EndDate)
-					ELSE DATEADD(hh,-7,A.New_EndDate) END AS New_EndDate
-			, CASE WHEN DATENAME(dy,A.New_StartDate) BETWEEN C.Mdt_Begin_Date_Number AND C.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.New_StartDate)
-					ELSE DATEADD(hh,-7,A.New_StartDate) END AS New_StartDate
-			, Plus_ScholarshipOfferedAmount
-			, Plus_ScholarshipAwardTerm
-			, Plus_ScholarshipGrantingOffice
-			, CASE WHEN DATENAME(dy,A.Plus_ScholarshipAwardDate) BETWEEN D.Mdt_Begin_Date_Number AND D.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.Plus_ScholarshipAwardDate)
-					ELSE DATEADD(hh,-7,A.Plus_ScholarshipAwardDate) END AS Plus_ScholarshipAwardDate
-			, Plus_ScholarshipCode
-			, New_Recognition
-			' -- Select_Statement
-		, 'New_RecognitionAssociationBase A
-				LEFT JOIN _MDT_Conversion_Dim B ON YEAR(A.New_EndDate) = B.Date_Year
-				LEFT JOIN _MDT_Conversion_Dim C ON YEAR(A.New_StartDate) = C.Date_Year
-				LEFT JOIN _MDT_Conversion_Dim D ON YEAR(A.Plus_ScholarshipAwardDate) = D.Date_Year
-			' -- From_Statement
-		, ' ' -- Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
-		, ' ' -- Code_Block_7
-		, ' ' -- Code_Block_8
-		, ' ' -- Code_Block_9
-		, ' ' -- Code_Block_10
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
-		, 1
-		, GETDATE()
-		, NULL
-	)
-	,
--- --------------------------
--- Campaign (Ext_Campaign)
+-- CampaignBase (Ext_Campaign)
 -- --------------------------
 	('dbo.CampaignBase' -- Source_Table
 		, 'Oa_Extract.Ext_Campaign' -- Destination_Table
@@ -908,31 +531,22 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, GETDATE()
 		, NULL
 	)
-	,
+	,	
 -- --------------------------
--- Campaign_Activity (Ext_Campaign_Activity)
+-- CampaignResponseBase (Ext_Campaign_Response)
 -- --------------------------
-	('dbo.CampaignActivityBase' -- Source_Table
-		, 'Oa_Extract.Ext_Campaign_Activity' -- Destination_Table
+	('dbo.CampaignResponseBase' -- Source_Table
+		, 'Oa_Extract.Ext_Campaign_Response' -- Destination_Table
 		, 'ActivityId UNIQUEIDENTIFIER
-			, Plus_InstitutionalHierarchy UNIQUEIDENTIFIER
-			, Plus_AppealCode NVARCHAR(20)
-			, Plus_CommunicationType INT
-			, Plus_Format INT
+			, Plus_CampaignAppeal UNIQUEIDENTIFIER
 			' -- Create_Fields
 		, 'ActivityId
-			, Plus_InstitutionalHierarchy
-			, Plus_AppealCode
-			, Plus_CommunicationType
-			, Plus_Format
+			, Plus_CampaignAppeal
 			' -- Insert_Fields
 		, 'ActivityId
-			, Plus_InstitutionalHierarchy
-			, Plus_AppealCode
-			, Plus_CommunicationType
-			, Plus_Format
+			, Plus_CampaignAppeal
 			' -- Select_Statement
-		, 'CampaignActivityBase
+		, 'CampaignResponseBase
 			' -- From_Statement
 		, ' ' -- Where_Statement
 		, ' ' -- Code_Block_1
@@ -959,96 +573,9 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, GETDATE()
 		, NULL
 	)
-	,
+	,	
 -- --------------------------
--- College (Ext_College)
--- --------------------------
-	('dbo.New_CollegeBase' -- Source_Table
-		, 'Oa_Extract.Ext_College' -- Destination_Table
-		, 'New_CollegeId UNIQUEIDENTIFIER
-			, New_Name NVARCHAR(100)
-			, New_CollegeCode NVARCHAR(10)
-			' -- Create_Fields
-		, 'New_CollegeId
-			, New_Name
-			, New_CollegeCode
-			' -- Insert_Fields
-		, 'New_CollegeId
-			, New_Name
-			, New_CollegeCode
-			' -- Select_Statement
-		, 'New_CollegeBase
-			' -- From_Statement
-		, ' ' -- Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
-		, ' ' -- Code_Block_7
-		, ' ' -- Code_Block_8
-		, ' ' -- Code_Block_9
-		, ' ' -- Code_Block_10
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
-		, 1
-		, GETDATE()
-		, NULL
-	)
-	,
--- --------------------------
--- CITY (Ext_City)
--- --------------------------
-	('dbo.New_CityBase' -- Source_Table
-		, 'Oa_Extract.Ext_City' -- Destination_Table
-		, 'New_CityId UNIQUEIDENTIFIER
-			, New_Name NVARCHAR(100)
-			' -- Create_Fields
-		, 'New_CityId
-			, New_Name
-			' -- Insert_Fields
-		, 'New_CityId
-			, New_Name
-			' -- Select_Statement
-		, 'New_CityBase
-			' -- From_Statement
-		, ' ' -- Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
-		, ' ' -- Code_Block_7
-		, ' ' -- Code_Block_8
-		, ' ' -- Code_Block_9
-		, ' ' -- Code_Block_10
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
-		, 1
-		, GETDATE()
-		, NULL
-	)
-	,
--- --------------------------
--- Connection (Ext_Connection)
+-- ConnectionBase (Ext_Connection)
 -- --------------------------
 	('dbo.ConnectionBase' -- Source_Table
 		, 'Oa_Extract.Ext_Connection' -- Destination_Table
@@ -1114,7 +641,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 	)
 	,
 -- --------------------------
--- Connection_Role (Ext_Connection_Role)
+-- ConnectionRoleBase (Ext_Connection_Role)
 -- --------------------------
 	('dbo.ConnectionRoleBase' -- Source_Table
 		, 'Oa_Extract.Ext_Connection_Role' -- Destination_Table
@@ -1160,7 +687,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 	)
 	,
 -- --------------------------
--- CONTACT (Ext_Contact)
+-- ContactBase (Ext_Contact)
 -- --------------------------
 	('dbo.ContactBase' -- Source_Table
 		, 'Oa_Extract.Ext_Contact' -- Destination_Table
@@ -1374,7 +901,419 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 	)
 	,
 -- --------------------------
--- COUNTRY (Ext_Country)
+-- Entity (Ext_Entity)
+-- --------------------------
+	('dbo.Entity' -- Source_Table
+		, 'Oa_Extract.Ext_Entity' -- Destination_Table
+		, 'ObjectTypeCode INT
+			, PhysicalName NVARCHAR(64)
+			, EntityId UNIQUEIDENTIFIER
+			' -- Create_Fields
+		, 'ObjectTypeCode
+			, PhysicalName
+			, EntityId
+			' -- Insert_Fields
+		, 'ObjectTypeCode
+			, PhysicalName
+			, EntityId
+			' -- Select_Statement
+		, 'Entity
+			' -- From_Statement
+		, ' ' -- Where_Statement
+		, ' ' -- Code_Block_1
+		, ' ' -- Code_Block_2
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- New_AddressBase (Ext_Address)
+-- --------------------------
+	('dbo.New_AddressBase' -- Source_Table
+		, 'Oa_Extract.Ext_Address' -- Destination_Table
+		, 'Plus_RelatedContact  UNIQUEIDENTIFIER
+			, New_Primary BIT
+			, New_Street1 NVARCHAR(100)
+			, New_Street2 NVARCHAR(100)
+			, New_Street3 NVARCHAR(100)
+			, New_Zip4 NVARCHAR(15)
+			, Plus_AddressDisplay NVARCHAR(300)
+			, Plus_Longitude FLOAT
+			, Plus_Latitude FLOAT
+			, StateCode INT
+			, New_Confidential BIT
+			, New_CityLookUp UNIQUEIDENTIFIER
+			, New_CountyId UNIQUEIDENTIFIER
+			, New_StatesProvinces UNIQUEIDENTIFIER
+			, New_CountryRegions UNIQUEIDENTIFIER
+			, New_PostalCodes UNIQUEIDENTIFIER
+			, Plus_OneAccordQuality INT
+			, New_AddressType INT
+			, New_AddressId UNIQUEIDENTIFIER
+			, New_ConfirmedDate DATETIME
+			, Plus_ForeignPostalCode NVARCHAR(100)
+			, Lds_PostalCode NVARCHAR(100)
+			, Lds_StateProvince NVARCHAR(100)
+			, Lds_County NVARCHAR(100)
+			, Lds_City NVARCHAR(100)
+			' -- Create_Fields
+		, 'Plus_RelatedContact
+			, New_Primary
+			, New_Street1
+			, New_Street2
+			, New_Street3
+			, New_Zip4
+			, Plus_AddressDisplay
+			, Plus_Longitude
+			, Plus_Latitude
+			, StateCode
+			, New_Confidential
+			, New_CityLookUp
+			, New_CountyId
+			, New_StatesProvinces
+			, New_CountryRegions
+			, New_PostalCodes
+			, Plus_OneAccordQuality
+			, New_AddressType
+			, New_AddressId
+			, New_ConfirmedDate
+			, Plus_ForeignPostalCode
+			, Lds_PostalCode
+			, Lds_StateProvince
+			, Lds_County
+			, Lds_City
+			' -- Insert_Fields
+		, 'COALESCE(Plus_RelatedContact,Plus_RelatedAccount) AS Plus_RelatedContact
+			, New_Primary
+			, New_Street1
+			, New_Street2
+			, New_Street3
+			, New_Zip4
+			, CONVERT(NVARCHAR(300),Plus_AddressDisplay) AS Plus_AddressDisplay
+			, Plus_Longitude
+			, Plus_Latitude
+			, StateCode
+			, New_Confidential
+			, New_CityLookUp
+			, New_CountyId
+			, New_StatesProvinces
+			, New_CountryRegions
+			, New_PostalCodes
+			, Plus_OneAccordQuality
+			, New_AddressType
+			, New_AddressId
+			, New_ConfirmedDate
+			, Plus_ForeignPostalCode
+			, Lds_PostalCode
+			, Lds_StateProvince
+			, Lds_County
+			, Lds_City
+			' -- Select_Statement
+		, 'New_AddressBase
+			' -- From_Statement
+		, ' ' -- Where_Statement
+		, ' ' -- Code_Block_1
+		, ' ' -- Code_Block_2
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, GETDATE()
+		, NULL
+	)
+	,	
+-- --------------------------
+-- New_AssociationBase (Ext_Association)
+-- --------------------------
+	('dbo.New_AssociationBase' -- Source_Table
+		, 'Oa_Extract.Ext_Association' -- Destination_Table
+		, 'New_AssociationId UNIQUEIDENTIFIER
+			, New_ShortName NVARCHAR(100)
+			, New_Acronym NVARCHAR(100)
+			, New_Region NVARCHAR(100)
+			, New_ChapterLevel NVARCHAR(100)
+			, StateCode INT
+			, New_Type INT
+			, New_Sponsor INT
+			, New_Name NVARCHAR(100)
+			' -- Create_Fields
+		, 'New_AssociationId
+			, New_ShortName
+			, New_Acronym
+			, New_Region
+			, New_ChapterLevel
+			, StateCode
+			, New_Type
+			, New_Sponsor
+			, New_Name
+			' -- Insert_Fields
+		, 'New_AssociationId
+			, New_ShortName
+			, New_Acronym
+			, New_Region
+			, New_ChapterLevel
+			, StateCode
+			, New_Type
+			, New_Sponsor
+			, New_Name
+			' -- Select_Statement
+		, 'New_AssociationBase
+			' -- From_Statement
+		, ' ' -- Where_Statement
+		, ' ' -- Code_Block_1
+		, ' ' -- Code_Block_2
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, GETDATE()
+		, NULL
+	)
+	,	
+-- --------------------------
+-- New_AssociationMembershipBase (Ext_Association_Membership)
+-- --------------------------
+	('dbo.New_AssociationMembershipBase' -- Source_Table
+		, 'Oa_Extract.Ext_Association_Membership' -- Destination_Table
+		, 'New_AssociationMembershipId UNIQUEIDENTIFIER
+			, New_ConstituentId  UNIQUEIDENTIFIER
+			, New_Association UNIQUEIDENTIFIER
+			, New_StartDate DATETIME
+			, New_EndDate DATETIME
+			, StatusCode INT
+			, New_RelatedOrganization UNIQUEIDENTIFIER
+			' -- Create_Fields
+		, 'New_AssociationMembershipId
+			, New_ConstituentId
+			, New_Association
+			, New_StartDate
+			, New_EndDate
+			, StatusCode
+			, New_RelatedOrganization
+			' -- Insert_Fields
+		, 'New_AssociationMembershipId
+			, New_ConstituentId
+			, New_Association
+			, CASE WHEN DATENAME(dy,A.New_StartDate) BETWEEN B.Mdt_Begin_Date_Number AND B.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.New_StartDate)
+					ELSE DATEADD(hh,-7,A.New_StartDate) END AS New_StartDate
+			, CASE WHEN DATENAME(dy,A.New_EndDate) BETWEEN C.Mdt_Begin_Date_Number AND C.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.New_EndDate)
+					ELSE DATEADD(hh,-7,A.New_EndDate) END AS New_EndDate
+			, StatusCode
+			, New_RelatedOrganization
+			' -- Select_Statement
+		, 'New_AssociationMembershipBase A
+				LEFT JOIN _MDT_Conversion_Dim B ON YEAR(A.New_StartDate) = B.Date_Year
+				LEFT JOIN _MDT_Conversion_Dim C ON YEAR(A.New_EndDate) = C.Date_Year
+			' -- From_Statement
+		, ' ' -- Where_Statement
+		, ' ' -- Code_Block_1
+		, ' ' -- Code_Block_2
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- New_BatchesBase (Ext_Batch)
+-- --------------------------
+	('dbo.New_BatchesBase' -- Source_Table
+		, 'Oa_Extract.Ext_Batch' -- Destination_Table
+		, 'New_BatchesId UNIQUEIDENTIFIER
+			, New_BatchNumber NVARCHAR(100)
+			, Lds_BatchType INT
+			' -- Create_Fields
+		, 'New_BatchesId
+			, New_BatchNumber
+			, Lds_BatchType
+			' -- Insert_Fields
+		, 'New_BatchesId
+			, New_BatchNumber
+			, Lds_BatchType
+			' -- Select_Statement
+		, 'New_BatchesBase
+			' -- From_Statement
+		, ' ' -- Where_Statement
+		, ' ' -- Code_Block_1
+		, ' ' -- Code_Block_2
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, GETDATE()
+		, NULL
+	)	
+	,
+-- --------------------------
+-- New_CityBase (Ext_City)
+-- --------------------------
+	('dbo.New_CityBase' -- Source_Table
+		, 'Oa_Extract.Ext_City' -- Destination_Table
+		, 'New_CityId UNIQUEIDENTIFIER
+			, New_Name NVARCHAR(100)
+			' -- Create_Fields
+		, 'New_CityId
+			, New_Name
+			' -- Insert_Fields
+		, 'New_CityId
+			, New_Name
+			' -- Select_Statement
+		, 'New_CityBase
+			' -- From_Statement
+		, ' ' -- Where_Statement
+		, ' ' -- Code_Block_1
+		, ' ' -- Code_Block_2
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, GETDATE()
+		, NULL
+	)
+	,	
+-- --------------------------
+-- New_CollegeBase (Ext_College)
+-- --------------------------
+	('dbo.New_CollegeBase' -- Source_Table
+		, 'Oa_Extract.Ext_College' -- Destination_Table
+		, 'New_CollegeId UNIQUEIDENTIFIER
+			, New_Name NVARCHAR(100)
+			, New_CollegeCode NVARCHAR(10)
+			' -- Create_Fields
+		, 'New_CollegeId
+			, New_Name
+			, New_CollegeCode
+			' -- Insert_Fields
+		, 'New_CollegeId
+			, New_Name
+			, New_CollegeCode
+			' -- Select_Statement
+		, 'New_CollegeBase
+			' -- From_Statement
+		, ' ' -- Where_Statement
+		, ' ' -- Code_Block_1
+		, ' ' -- Code_Block_2
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, GETDATE()
+		, NULL
+	)
+	,	
+-- --------------------------
+-- New_CountryBase (Ext_Country)
 -- --------------------------
 	('dbo.New_CountryBase' -- Source_Table
 		, 'Oa_Extract.Ext_Country' -- Destination_Table
@@ -1419,7 +1358,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 	)
 	,
 -- --------------------------
--- COUNTY (Ext_County)
+-- New_CountyBase (Ext_County)
 -- --------------------------
 	('dbo.New_CountyBase' -- Source_Table
 		, 'Oa_Extract.Ext_County' -- Destination_Table
@@ -1464,7 +1403,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 	)
 	,
 -- --------------------------
--- Degree (Ext_Degree)
+-- New_DegreeBase (Ext_Degree)
 -- --------------------------
 	('dbo.New_DegreeBase' -- Source_Table
 		, 'Oa_Extract.Ext_Degree' -- Destination_Table
@@ -1512,68 +1451,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 	)
 	,
 -- --------------------------
--- DONOR_SCORE_BASE (Ext_Donor_Score)
--- --------------------------
-	('dbo.Plus_DonorScoreBase' -- Source_Table
-		, 'Oa_Extract.Ext_Donor_Score' -- Destination_Table
-		, '	Plus_DonorScoreId UNIQUEIDENTIFIER
-			, Plus_Constituent UNIQUEIDENTIFIER
-			, Plus_Institution UNIQUEIDENTIFIER
-			, Plus_I5LegacyDonorTypeDate DATETIME
-			, Plus_I5LegacyDonorType NVARCHAR(10)
-			, ModifiedOn DATETIME
-			, StatusCode INT
-			, StateCode INT
-			' -- Create_Fields
-		, '	Plus_DonorScoreId
-			, Plus_Constituent
-			, Plus_Institution
-			, Plus_I5LegacyDonorTypeDate
-			, Plus_I5LegacyDonorType
-			, ModifiedOn
-			, StatusCode
-			, StateCode
-			' -- Insert_Fields
-		, 'Plus_DonorScoreId
-			, Plus_Constituent
-			, Plus_Institution
-			, Plus_I5LegacyDonorTypeDate
-			, Plus_I5LegacyDonorType
-			, ModifiedOn
-			, StatusCode
-			, StateCode
-			' -- Select_Statement
-		, 'Plus_DonorScoreBase				
-			' -- From_Statement
-		, 'AND YEAR(Plus_I5LegacyDonorTypeDate) >= YEAR(GETDATE())-5 
-			' -- Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
-		, ' ' -- Code_Block_7
-		, ' ' -- Code_Block_8
-		, ' ' -- Code_Block_9
-		, ' ' -- Code_Block_10
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
-		, 1
-		, GETDATE()
-		, NULL
-	)
-	,
--- --------------------------
--- DROP_INCLUDE (Ext_Drop_Include)
+-- New_DropIncludeBase (Ext_Drop_Include)
 -- --------------------------
 	('dbo.New_DropIncludeBase' -- Source_Table
 		, 'Oa_Extract.Ext_Drop_Include' -- Destination_Table
@@ -1667,7 +1545,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 	)
 	,
 -- --------------------------
--- EMAIL (Ext_Email)
+-- New_EmailBase (Ext_Email)
 -- --------------------------
 	('dbo.New_EmailBase' -- Source_Table
 		, 'Oa_Extract.Ext_Email' -- Destination_Table
@@ -1727,7 +1605,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 	)
 	,
 -- --------------------------
--- EMPLOYMENT (Ext_Employment)
+-- New_EmploymentBase (Ext_Employment)
 -- --------------------------
 	('dbo.New_EmploymentBase' -- Source_Table
 		, 'Oa_Extract.Ext_Employment' -- Destination_Table
@@ -1833,66 +1711,9 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, GETDATE()
 		, NULL
 	)
-	,
+	,	
 -- --------------------------
--- ENVELOPENAMES_AND_SALUTATIONS (Ext_Envelope_Names_And_Salutations)
--- --------------------------
-	('dbo.Plus_EnvelopeNamesAndSalutationsBase' -- Source_Table
-		, 'Oa_Extract.Ext_Envelope_Names_And_Salutations' -- Destination_Table
-		, 'Plus_Etiquette INT
-			, Plus_EnvelopeSalutationConstituent UNIQUEIDENTIFIER
-			, Plus_SalutationEnvelopeName NVARCHAR(300)
-			, Plus_Household INT
-			, StateCode INT
-			, Plus_NameType INT
-			, Plus_EnvelopeNamesAndSalutationsId UNIQUEIDENTIFIER
-			' -- Create_Fields
-		, 'Plus_Etiquette
-			, Plus_EnvelopeSalutationConstituent
-			, Plus_SalutationEnvelopeName
-			, Plus_Household
-			, StateCode
-			, Plus_NameType
-			, Plus_EnvelopeNamesAndSalutationsId
-			' -- Insert_Fields
-		, 'Plus_Etiquette
-			, Plus_EnvelopeSalutationConstituent
-			, Plus_SalutationEnvelopeName
-			, Plus_Household
-			, StateCode
-			, Plus_NameType
-			, Plus_EnvelopeNamesAndSalutationsId
-			' -- Select_Statement
-		, 'Plus_EnvelopeNamesAndSalutationsBase
-			' -- From_Statement
-		, ' ' -- Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
-		, ' ' -- Code_Block_7
-		, ' ' -- Code_Block_8
-		, ' ' -- Code_Block_9
-		, ' ' -- Code_Block_10
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
-		, 1
-		, GETDATE()
-		, NULL
-	)	
-	,
--- --------------------------
--- FUND (Ext_Fund_Account)
+-- New_FundAccountBase (Ext_Fund_Account)
 -- --------------------------
 	('dbo.New_FundAccountBase' -- Source_Table
 		, 'Oa_Extract.Ext_Fund_Account' -- Destination_Table
@@ -2067,7 +1888,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 	)	
 	,
 -- --------------------------
--- GIFT (Ext_Gift)
+-- New_GiftBase (Ext_Gift)
 -- --------------------------
 	('dbo.New_GiftBase' -- Source_Table
 		, 'Oa_Extract.Ext_Gift' -- Destination_Table
@@ -2233,9 +2054,108 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, GETDATE()
 		, NULL
 	)
-	,
+	,	
 -- --------------------------
--- Industry (Ext_Industry)
+-- New_GiftHistoryBase (Ext_Gift_Hist)
+-- --------------------------
+	('dbo.New_GiftHistoryBase' -- Source_Table
+		, 'Oa_Extract.Ext_Gift_Hist' -- Destination_Table
+		, 'New_RelatedGift UNIQUEIDENTIFIER
+			, Plus_Constituent UNIQUEIDENTIFIER
+			, Plus_Organization UNIQUEIDENTIFIER
+			, Plus_FundAccount UNIQUEIDENTIFIER
+			, OwnerId UNIQUEIDENTIFIER
+			, Plus_AccountingDate DATETIME
+			, StatusCode INT
+			, New_Amount MONEY
+			, New_ReceiptDate DATETIME
+			, New_TenderType INT
+			, Plus_Kind INT
+			, Plus_Transmitted BIT
+			, Plus_Description NVARCHAR(4000)
+			, Plus_ReceiptText NVARCHAR(4000)
+			, New_Name NVARCHAR(100)
+			, Plus_GiftAdjustmentNote NVARCHAR(4000)
+			, New_GiftHistoryId UNIQUEIDENTIFIER
+			, Plus_GiftNumber NVARCHAR(50)
+			, Plus_PostDate DATETIME
+			' -- Create_Fields
+		, 'New_RelatedGift
+			, Plus_Constituent
+			, Plus_Organization
+			, Plus_FundAccount
+			, OwnerId
+			, Plus_AccountingDate
+			, StatusCode
+			, New_Amount
+			, New_ReceiptDate
+			, New_TenderType
+			, Plus_Kind
+			, Plus_Transmitted
+			, Plus_Description
+			, Plus_ReceiptText
+			, New_Name
+			, Plus_GiftAdjustmentNote
+			, New_GiftHistoryId
+			, Plus_GiftNumber
+			, Plus_PostDate
+			' -- Insert_Fields
+		, 'New_RelatedGift
+			, Plus_Constituent
+			, Plus_Organization
+			, Plus_FundAccount
+			, OwnerId
+			, CASE WHEN DATENAME(dy,A.Plus_AccountingDate) BETWEEN B.Mdt_Begin_Date_Number AND B.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.Plus_AccountingDate)
+					ELSE DATEADD(hh,-7,A.Plus_AccountingDate) END AS Plus_AccountingDate
+			, StatusCode
+			, New_Amount
+			, CASE WHEN DATENAME(dy,A.New_ReceiptDate) BETWEEN C.Mdt_Begin_Date_Number AND C.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.New_ReceiptDate)
+					ELSE DATEADD(hh,-7,A.New_ReceiptDate) END AS New_ReceiptDate
+			, New_TenderType
+			, Plus_Kind
+			, Plus_Transmitted
+			, CONVERT(NVARCHAR(4000),Plus_Description) AS Plus_Description
+			, CONVERT(NVARCHAR(4000),Plus_ReceiptText) AS Plus_ReceiptText
+			, New_Name
+			, CONVERT(NVARCHAR(4000),Plus_GiftAdjustmentNote) AS Plus_GiftAdjustmentNote
+			, New_GiftHistoryId
+			, Plus_GiftNumber
+			, CASE WHEN DATENAME(dy,A.Plus_PostDate) BETWEEN D.Mdt_Begin_Date_Number AND D.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.Plus_PostDate)
+					ELSE DATEADD(hh,-7,A.Plus_PostDate) END AS Plus_PostDate
+			' -- Select_Statement
+		, 'New_GiftHistoryBase A
+				LEFT JOIN _MDT_Conversion_Dim B ON YEAR(A.Plus_AccountingDate) = B.Date_Year
+				LEFT JOIN _MDT_Conversion_Dim C ON YEAR(A.New_ReceiptDate) = C.Date_Year
+				LEFT JOIN _MDT_Conversion_Dim D ON YEAR(A.Plus_PostDate) = D.Date_Year
+			' -- From_Statement
+		, ' ' -- Where_Statement
+		, ' ' -- Code_Block_1
+		, ' ' -- Code_Block_2
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, GETDATE()
+		, NULL
+	)
+	,	
+-- --------------------------
+-- New_IndustryBase (Ext_Industry)
 -- --------------------------
 	('dbo.New_IndustryBase' -- Source_Table
 		, 'Oa_Extract.Ext_Industry' -- Destination_Table
@@ -2277,7 +2197,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 	)
 	,
 -- --------------------------
--- INSTITUTION (Ext_Institution)
+-- New_InstitutionBase (Ext_Institution)
 -- --------------------------
 	('dbo.New_InstitutionBase' -- Source_Table
 		, 'Oa_Extract.Ext_Institution' -- Destination_Table
@@ -2350,51 +2270,9 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, GETDATE()
 		, NULL
 	)	
-	,
+	,	
 -- --------------------------
--- Interest (Ext_Interest)
--- --------------------------
-	('dbo.Plus_InterestBase' -- Source_Table
-		, 'Oa_Extract.Ext_Interest' -- Destination_Table
-		, 'Plus_InterestId UNIQUEIDENTIFIER
-			, Plus_Name NVARCHAR(100)
-			' -- Create_Fields
-		, 'Plus_InterestId
-			, Plus_Name
-			' -- Insert_Fields
-		, 'Plus_InterestId
-			, Plus_Name
-			' -- Select_Statement
-		, 'Plus_InterestBase
-			' -- From_Statement
-		, ' ' -- Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
-		, ' ' -- Code_Block_7
-		, ' ' -- Code_Block_8
-		, ' ' -- Code_Block_9
-		, ' ' -- Code_Block_10
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
-		, 1
-		, GETDATE()
-		, NULL
-	)	
-	,
--- --------------------------
--- International_ExperienceBase (Ext_International_Experience)
+-- New_InternationalExperienceBase (Ext_International_Experience)
 -- --------------------------
 	('dbo.New_InternationalExperienceBase' -- Source_Table
 		, 'Oa_Extract.Ext_International_Experience' -- Destination_Table
@@ -2470,7 +2348,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 	)	
 	,
 -- --------------------------
--- Job_Code (Ext_Job_Code)
+-- New_JobCodeBase (Ext_Job_Code)
 -- --------------------------
 	('dbo.New_JobCodeBase' -- Source_Table
 		, 'Oa_Extract.Ext_Job_Code' -- Destination_Table
@@ -2512,7 +2390,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 	)
 	,	
 -- --------------------------
--- LANGUAGE (Ext_Language)
+-- New_LanguageSpecialAffiliationBase (Ext_Language)
 -- --------------------------
 	('dbo.New_LanguageSpecialAffiliationBase' -- Source_Table
 		, 'Oa_Extract.Ext_Language' -- Destination_Table
@@ -2590,7 +2468,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 	)
 	,
 -- --------------------------
--- Major (Ext_Major)
+-- New_MajorBase (Ext_Major)
 -- --------------------------
 	('dbo.New_MajorBase' -- Source_Table
 		, 'Oa_Extract.Ext_Major' -- Destination_Table
@@ -2642,141 +2520,9 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, GETDATE()
 		, NULL
 	)
-	,
+	,	
 -- --------------------------
--- OPPORTUNITY (Ext_Opportunity)
--- --------------------------
-	('dbo.OpportunityBase' -- Source_Table
-		, 'Oa_Extract.Ext_Opportunity' -- Destination_Table
-		, 'OpportunityId UNIQUEIDENTIFIER
-			, Plus_TotalAskAmount MONEY
-			, Plus_TotalCommittedAmount MONEY
-			, Plus_TotalGiven MONEY
-			, Name NVARCHAR(600)
-			, StepName NVARCHAR(400)
-			, StateCode INT
-			, StatusCode INT
-			, CustomerId UNIQUEIDENTIFIER
-			, CustomerIdType INT
-			, Plus_ProposalStatus INT
-			, Plus_ProposalDate DATE
-			, Plus_TargetedCommitment DATE
-			, Plus_CommittedDate DATE
-			, Plus_FundAccount UNIQUEIDENTIFIER
-			, Plus_CultivationProcessStage1Date DATE
-			, Plus_CultivationProcessStage2Date DATE
-			, Plus_CultivationProcessStage3Date DATE
-			, Plus_CultivationProcessStage4Date DATE
-			, Plus_GiftNoticeCreatedOn DATE
-			, Plus_ProposalStatusChangeDate DATE
-			, Plus_NewAccount BIT
-			, Plus_CoordinatingLiaisonId UNIQUEIDENTIFIER
-			, OwnerId UNIQUEIDENTIFIER
-			, Lds_PrimaryInitiative BIT
-			, Plus_ParentInitiative UNIQUEIDENTIFIER
-			' -- Create_Fields
-		, 'OpportunityId
-			, Plus_TotalAskAmount
-			, Plus_TotalCommittedAmount
-			, Plus_TotalGiven
-			, Name
-			, StepName
-			, StateCode
-			, StatusCode
-			, CustomerId
-			, CustomerIdType
-			, Plus_ProposalStatus
-			, Plus_ProposalDate
-			, Plus_TargetedCommitment
-			, Plus_CommittedDate
-			, Plus_FundAccount
-			, Plus_CultivationProcessStage1Date
-			, Plus_CultivationProcessStage2Date
-			, Plus_CultivationProcessStage3Date
-			, Plus_CultivationProcessStage4Date
-			, Plus_GiftNoticeCreatedOn
-			, Plus_ProposalStatusChangeDate
-			, Plus_NewAccount
-			, Plus_CoordinatingLiaisonId
-			, OwnerId
-			, Lds_PrimaryInitiative
-			, Plus_ParentInitiative
-			' -- Insert_Fields
-		, 'OpportunityId
-			, Plus_TotalAskAmount
-			, Plus_TotalCommittedAmount
-			, Plus_TotalGiven
-			, Name
-			, StepName
-			, StateCode
-			, StatusCode
-			, CustomerId
-			, CustomerIdType
-			, Plus_ProposalStatus
-			, CASE WHEN DATENAME(dy,A.Plus_ProposalDate) BETWEEN B.Mdt_Begin_Date_Number AND B.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.Plus_ProposalDate)
-					ELSE DATEADD(hh,-7,A.Plus_ProposalDate) END AS Plus_ProposalDate
-			, CASE WHEN DATENAME(dy,A.Plus_TargetedCommitment) BETWEEN C.Mdt_Begin_Date_Number AND C.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.Plus_TargetedCommitment)
-					ELSE DATEADD(hh,-7,A.Plus_TargetedCommitment) END AS Plus_TargetedCommitment
-			, CASE WHEN DATENAME(dy,A.Plus_CommittedDate) BETWEEN D.Mdt_Begin_Date_Number AND D.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.Plus_CommittedDate)
-					ELSE DATEADD(hh,-7,A.Plus_CommittedDate) END AS Plus_CommittedDate
-			, Plus_FundAccount
-			, CASE WHEN DATENAME(dy,A.Plus_CultivationProcessStage1Date) BETWEEN E.Mdt_Begin_Date_Number AND E.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.Plus_CultivationProcessStage1Date)
-					ELSE DATEADD(hh,-7,A.Plus_CultivationProcessStage1Date) END AS Plus_CultivationProcessStage1Date
-			, CASE WHEN DATENAME(dy,A.Plus_CultivationProcessStage2Date) BETWEEN F.Mdt_Begin_Date_Number AND F.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.Plus_CultivationProcessStage2Date)
-					ELSE DATEADD(hh,-7,A.Plus_CultivationProcessStage2Date) END AS Plus_CultivationProcessStage2Date
-			, CASE WHEN DATENAME(dy,A.Plus_CultivationProcessStage3Date) BETWEEN G.Mdt_Begin_Date_Number AND G.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.Plus_CultivationProcessStage3Date)
-					ELSE DATEADD(hh,-7,A.Plus_CultivationProcessStage3Date) END AS Plus_CultivationProcessStage3Date
-			, CASE WHEN DATENAME(dy,A.Plus_CultivationProcessStage4Date) BETWEEN H.Mdt_Begin_Date_Number AND H.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.Plus_CultivationProcessStage4Date)
-					ELSE DATEADD(hh,-7,A.Plus_CultivationProcessStage4Date) END AS Plus_CultivationProcessStage4Date
-			, CASE WHEN DATENAME(dy,A.Plus_GiftNoticeCreatedOn) BETWEEN I.Mdt_Begin_Date_Number AND I.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.Plus_GiftNoticeCreatedOn)
-					ELSE DATEADD(hh,-7,A.Plus_GiftNoticeCreatedOn) END AS Plus_GiftNoticeCreatedOn
-			, CASE WHEN DATENAME(dy,A.Plus_ProposalStatusChangeDate) BETWEEN J.Mdt_Begin_Date_Number AND J.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.Plus_ProposalStatusChangeDate)
-					ELSE DATEADD(hh,-7,A.Plus_ProposalStatusChangeDate) END AS Plus_ProposalStatusChangeDate
-			, Plus_NewAccount
-			, Plus_CoordinatingLiaisonId
-			, OwnerId
-			, Lds_PrimaryInitiative
-			, Plus_ParentInitiative
-			' -- Select_Statement
-		, 'OpportunityBase A
-				LEFT JOIN _MDT_Conversion_Dim B ON YEAR(A.Plus_ProposalDate) = B.Date_Year
-				LEFT JOIN _MDT_Conversion_Dim C ON YEAR(A.Plus_TargetedCommitment) = C.Date_Year
-				LEFT JOIN _MDT_Conversion_Dim D ON YEAR(A.Plus_CommittedDate) = D.Date_Year
-				LEFT JOIN _MDT_Conversion_Dim E ON YEAR(A.Plus_CultivationProcessStage1Date) = E.Date_Year
-				LEFT JOIN _MDT_Conversion_Dim F ON YEAR(A.Plus_CultivationProcessStage2Date) = F.Date_Year
-				LEFT JOIN _MDT_Conversion_Dim G ON YEAR(A.Plus_CultivationProcessStage3Date) = G.Date_Year
-				LEFT JOIN _MDT_Conversion_Dim H ON YEAR(A.Plus_CultivationProcessStage4Date) = H.Date_Year
-				LEFT JOIN _MDT_Conversion_Dim I ON YEAR(A.Plus_GiftNoticeCreatedOn) = I.Date_Year
-				LEFT JOIN _MDT_Conversion_Dim J ON YEAR(A.Plus_ProposalStatusChangeDate) = J.Date_Year				
-			' -- From_Statement
-		, ' ' -- Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
-		, ' ' -- Code_Block_7
-		, ' ' -- Code_Block_8
-		, ' ' -- Code_Block_9
-		, ' ' -- Code_Block_10
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
-		, 1
-		, GETDATE()
-		, NULL
-	)
-	,
--- --------------------------
--- OTHER_IDENTIFIER (Ext_Other_Identifiers)
+-- New_OtherIdentifiersBase (Ext_Other_Identifiers)
 -- --------------------------
 	('dbo.New_OtherIdentifiersBase' -- Source_Table
 		, 'Oa_Extract.Ext_Other_Identifiers' -- Destination_Table
@@ -2841,7 +2587,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 	)
 	,
 -- --------------------------
--- PHONE (Ext_Phone)
+-- New_PhoneBase (Ext_Phone)
 -- --------------------------
 	('dbo.New_PhoneBase' -- Source_Table
 		, 'Oa_Extract.Ext_Phone' -- Destination_Table
@@ -2927,7 +2673,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 	)
 	,
 -- --------------------------
--- PLEDGE (Ext_Pledge)
+-- New_PledgeBase (Ext_Pledge)
 -- --------------------------
 	('dbo.New_PledgeBase' -- Source_Table
 		, 'Oa_Extract.Ext_Pledge' -- Destination_Table
@@ -3171,7 +2917,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 	)
 	,	
 -- --------------------------
--- POSTALCODE (Ext_Postal)
+-- New_PostalCodeBase (Ext_Postal)
 -- --------------------------
 	('dbo.New_PostalCodeBase' -- Source_Table
 		, 'Oa_Extract.Ext_Postal' -- Destination_Table
@@ -3213,7 +2959,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 	)
 	,
 -- --------------------------
--- PROFESSIONALSUFFIX (Ext_Professional_Suffix)
+-- New_ProfessionalSuffixBase (Ext_Professional_Suffix)
 -- --------------------------
 	('dbo.New_ProfessionalSuffixBase' -- Source_Table
 		, 'Oa_Extract.Ext_Professional_Suffix' -- Destination_Table
@@ -3253,54 +2999,52 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, GETDATE()
 		, NULL
 	)
-	,
+	,	
 -- --------------------------
--- PSA (Ext_Psa)
+-- New_RecognitionAssociationBase (Ext_Recognition_Association)
 -- --------------------------
-	('dbo.Plus_LegacyPsaCodeBase' -- Source_Table
-		, 'Oa_Extract.Ext_Psa' -- Destination_Table
-		, 'ContactId UNIQUEIDENTIFIER
-			, Psa_Key UNIQUEIDENTIFIER
-			, Psa_Code NVARCHAR(50)
-			, Psa_Eff_From DATETIME
-			, Psa_Eff_Thru DATETIME
-			, Psa_Act_Src NVARCHAR(100)
-			, Psa_Entered_Dt DATETIME
-			, Psa_Change_Dt DATETIME
-			, Psa_Type NVARCHAR(100)
-			, Psa_Text_Line NVARCHAR(500)
+	('dbo.New_RecognitionAssociationBase' -- Source_Table
+		, 'Oa_Extract.Ext_Recognition_Association' -- Destination_Table
+		, 'New_RecognitionAssociationId UNIQUEIDENTIFIER
+			, New_Constituent UNIQUEIDENTIFIER
+			, New_EndDate DATETIME
+			, New_StartDate DATETIME
+			, Plus_ScholarshipOfferedAmount MONEY
+			, Plus_ScholarshipAwardTerm NVARCHAR(15)
+			, Plus_ScholarshipGrantingOffice NVARCHAR(25)
+			, Plus_ScholarshipAwardDate DATETIME
+			, Plus_ScholarshipCode NVARCHAR(100)
+			, New_Recognition UNIQUEIDENTIFIER
 			' -- Create_Fields
-		, 'ContactId
-			, Psa_Key
-			, Psa_Code
-			, Psa_Eff_From
-			, Psa_Eff_Thru
-			, Psa_Act_Src
-			, Psa_Entered_Dt
-			, Psa_Change_Dt
-			, Psa_Type
-			, Psa_Text_Line
+		, 'New_RecognitionAssociationId
+			, New_Constituent
+			, New_EndDate
+			, New_StartDate
+			, Plus_ScholarshipOfferedAmount
+			, Plus_ScholarshipAwardTerm
+			, Plus_ScholarshipGrantingOffice
+			, Plus_ScholarshipAwardDate
+			, Plus_ScholarshipCode
+			, New_Recognition
 			' -- Insert_Fields
-		, 'DISTINCT Plus_Constituent AS ContactId 
-			, Plus_LegacyPsaCodeId AS Psa_Key
-			, CONVERT(NVARCHAR(50),Plus_PsaCode) AS Psa_Code
-			, CASE WHEN DATENAME(dy,A.Plus_EffectiveFrom) BETWEEN B.Mdt_Begin_Date_Number AND B.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.Plus_EffectiveFrom)
-					ELSE DATEADD(hh,-7,A.Plus_EffectiveFrom) END AS Psa_Eff_From
-			, CASE WHEN DATENAME(dy,A.Plus_EffectiveTo) BETWEEN C.Mdt_Begin_Date_Number AND C.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.Plus_EffectiveTo)
-					ELSE DATEADD(hh,-7,A.Plus_EffectiveTo) END AS Psa_Eff_Thru
-			, Plus_Source AS Psa_Act_Src
-			, CASE WHEN DATENAME(dy,A.CreatedOn) BETWEEN D.Mdt_Begin_Date_Number AND D.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.CreatedOn)
-					ELSE DATEADD(hh,-7,A.CreatedOn) END AS Psa_Entered_Dt
-			, CASE WHEN DATENAME(dy,A.ModifiedOn) BETWEEN E.Mdt_Begin_Date_Number AND E.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.ModifiedOn)
-					ELSE DATEADD(hh,-7,A.ModifiedOn) END AS Psa_Change_Dt
-			, Plus_Category AS Psa_Type
-			, CONVERT(NVARCHAR(500),Plus_CodeDescription) AS Psa_Text_Line
+		, 'New_RecognitionAssociationId
+			, New_Constituent
+			, CASE WHEN DATENAME(dy,A.New_EndDate) BETWEEN B.Mdt_Begin_Date_Number AND B.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.New_EndDate)
+					ELSE DATEADD(hh,-7,A.New_EndDate) END AS New_EndDate
+			, CASE WHEN DATENAME(dy,A.New_StartDate) BETWEEN C.Mdt_Begin_Date_Number AND C.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.New_StartDate)
+					ELSE DATEADD(hh,-7,A.New_StartDate) END AS New_StartDate
+			, Plus_ScholarshipOfferedAmount
+			, Plus_ScholarshipAwardTerm
+			, Plus_ScholarshipGrantingOffice
+			, CASE WHEN DATENAME(dy,A.Plus_ScholarshipAwardDate) BETWEEN D.Mdt_Begin_Date_Number AND D.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.Plus_ScholarshipAwardDate)
+					ELSE DATEADD(hh,-7,A.Plus_ScholarshipAwardDate) END AS Plus_ScholarshipAwardDate
+			, Plus_ScholarshipCode
+			, New_Recognition
 			' -- Select_Statement
-		, 'Plus_LegacyPsaCodeBase A
-				LEFT JOIN _MDT_Conversion_Dim B ON YEAR(A.Plus_EffectiveFrom) = B.Date_Year
-				LEFT JOIN _MDT_Conversion_Dim C ON YEAR(A.Plus_EffectiveTo) = C.Date_Year
-				LEFT JOIN _MDT_Conversion_Dim D ON YEAR(A.CreatedOn) = D.Date_Year
-				LEFT JOIN _MDT_Conversion_Dim E ON YEAR(A.ModifiedOn) = E.Date_Year
+		, 'New_RecognitionAssociationBase A
+				LEFT JOIN _MDT_Conversion_Dim B ON YEAR(A.New_EndDate) = B.Date_Year
+				LEFT JOIN _MDT_Conversion_Dim C ON YEAR(A.New_StartDate) = C.Date_Year
+				LEFT JOIN _MDT_Conversion_Dim D ON YEAR(A.Plus_ScholarshipAwardDate) = D.Date_Year
 			' -- From_Statement
 		, ' ' -- Where_Statement
 		, ' ' -- Code_Block_1
@@ -3329,7 +3073,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 	)
 	,
 -- --------------------------
--- RECOGNITION (Ext_Recognition)
+-- New_RecognitionBase (Ext_Recognition)
 -- --------------------------
 	('dbo.New_RecognitionBase' -- Source_Table
 		, 'Oa_Extract.Ext_Recognition' -- Destination_Table
@@ -3405,7 +3149,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 	)
 	,
 -- --------------------------
--- RECOGNITION CREDIT (Ext_Recognition_Credit)
+-- New_RecognitionCreditBase (Ext_Recognition_Credit)
 -- --------------------------
 	('dbo.New_RecognitionCreditBase' -- Source_Table
 		, 'Oa_Extract.Ext_Recognition_Credit' -- Destination_Table
@@ -3476,7 +3220,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 	)	
 	,
 -- --------------------------
--- Source (Ext_Source)
+-- New_SourceBase (Ext_Source)
 -- --------------------------
 	('dbo.New_SourceBase' -- Source_Table
 		, 'Oa_Extract.Ext_Source' -- Destination_Table
@@ -3521,7 +3265,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 	)
 	,	
 -- --------------------------
--- STATE (Ext_State)
+-- New_StateBase (Ext_State)
 -- --------------------------
 	('dbo.New_StateBase' -- Source_Table
 		, 'Oa_Extract.Ext_State' -- Destination_Table
@@ -3566,7 +3310,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 	)
 	,
 -- --------------------------
--- Student (Ext_Student)
+-- New_StudentAttendanceBase (Ext_Student)
 -- --------------------------
 	('dbo.New_StudentAttendanceBase' -- Source_Table
 		, 'Oa_Extract.Ext_Student' -- Destination_Table
@@ -3640,7 +3384,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 	)
 	,	
 -- --------------------------
--- TITLE (Ext_Title)
+-- New_TitleBase (Ext_Title)
 -- --------------------------
 	('dbo.New_TitleBase' -- Source_Table
 		, 'Oa_Extract.Ext_Title' -- Destination_Table
@@ -3682,7 +3426,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 	)
 	,
 -- --------------------------
--- University (Ext_University)
+-- New_UniversityBase (Ext_University)
 -- --------------------------
 	('dbo.New_UniversityBase' -- Source_Table
 		, 'Oa_Extract.Ext_University' -- Destination_Table
@@ -3728,43 +3472,354 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, GETDATE()
 		, NULL
 	)
-	,	
+	,
 -- --------------------------
--- USER (Ext_System_User)
+-- OpportunityBase (Ext_Opportunity)
 -- --------------------------
-	('dbo.SystemUserBase' -- Source_Table
-		, 'Oa_Extract.Ext_System_User' -- Destination_Table
-		, 'SystemUserId UNIQUEIDENTIFIER
-			, FullName NVARCHAR(200)
-			, FirstName NVARCHAR(64)
-			, LastName NVARCHAR(64)
-			, PersonalEmailAddress NVARCHAR(100)
-			, Title NVARCHAR(128)
-			, InternalEmailAddress NVARCHAR(100)
-			, MobilePhone NVARCHAR(64)
-			, DomainName NVARCHAR(1024)
+	('dbo.OpportunityBase' -- Source_Table
+		, 'Oa_Extract.Ext_Opportunity' -- Destination_Table
+		, 'OpportunityId UNIQUEIDENTIFIER
+			, Plus_TotalAskAmount MONEY
+			, Plus_TotalCommittedAmount MONEY
+			, Plus_TotalGiven MONEY
+			, Name NVARCHAR(600)
+			, StepName NVARCHAR(400)
+			, StateCode INT
+			, StatusCode INT
+			, CustomerId UNIQUEIDENTIFIER
+			, CustomerIdType INT
+			, Plus_ProposalStatus INT
+			, Plus_ProposalDate DATE
+			, Plus_TargetedCommitment DATE
+			, Plus_CommittedDate DATE
+			, Plus_FundAccount UNIQUEIDENTIFIER
+			, Plus_CultivationProcessStage1Date DATE
+			, Plus_CultivationProcessStage2Date DATE
+			, Plus_CultivationProcessStage3Date DATE
+			, Plus_CultivationProcessStage4Date DATE
+			, Plus_GiftNoticeCreatedOn DATE
+			, Plus_ProposalStatusChangeDate DATE
+			, Plus_NewAccount BIT
+			, Plus_CoordinatingLiaisonId UNIQUEIDENTIFIER
+			, OwnerId UNIQUEIDENTIFIER
+			, Lds_PrimaryInitiative BIT
+			, Plus_ParentInitiative UNIQUEIDENTIFIER
 			' -- Create_Fields
-		, 'SystemUserId
-			, FullName
-			, FirstName
-			, LastName
-			, PersonalEmailAddress
-			, Title
-			, InternalEmailAddress
-			, MobilePhone
-			, DomainName
+		, 'OpportunityId
+			, Plus_TotalAskAmount
+			, Plus_TotalCommittedAmount
+			, Plus_TotalGiven
+			, Name
+			, StepName
+			, StateCode
+			, StatusCode
+			, CustomerId
+			, CustomerIdType
+			, Plus_ProposalStatus
+			, Plus_ProposalDate
+			, Plus_TargetedCommitment
+			, Plus_CommittedDate
+			, Plus_FundAccount
+			, Plus_CultivationProcessStage1Date
+			, Plus_CultivationProcessStage2Date
+			, Plus_CultivationProcessStage3Date
+			, Plus_CultivationProcessStage4Date
+			, Plus_GiftNoticeCreatedOn
+			, Plus_ProposalStatusChangeDate
+			, Plus_NewAccount
+			, Plus_CoordinatingLiaisonId
+			, OwnerId
+			, Lds_PrimaryInitiative
+			, Plus_ParentInitiative
 			' -- Insert_Fields
-		, 'SystemUserId
-			, FullName
-			, FirstName
-			, LastName
-			, PersonalEmailAddress
-			, Title
-			, InternalEmailAddress
-			, MobilePhone
-			, DomainName
+		, 'OpportunityId
+			, Plus_TotalAskAmount
+			, Plus_TotalCommittedAmount
+			, Plus_TotalGiven
+			, Name
+			, StepName
+			, StateCode
+			, StatusCode
+			, CustomerId
+			, CustomerIdType
+			, Plus_ProposalStatus
+			, CASE WHEN DATENAME(dy,A.Plus_ProposalDate) BETWEEN B.Mdt_Begin_Date_Number AND B.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.Plus_ProposalDate)
+					ELSE DATEADD(hh,-7,A.Plus_ProposalDate) END AS Plus_ProposalDate
+			, CASE WHEN DATENAME(dy,A.Plus_TargetedCommitment) BETWEEN C.Mdt_Begin_Date_Number AND C.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.Plus_TargetedCommitment)
+					ELSE DATEADD(hh,-7,A.Plus_TargetedCommitment) END AS Plus_TargetedCommitment
+			, CASE WHEN DATENAME(dy,A.Plus_CommittedDate) BETWEEN D.Mdt_Begin_Date_Number AND D.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.Plus_CommittedDate)
+					ELSE DATEADD(hh,-7,A.Plus_CommittedDate) END AS Plus_CommittedDate
+			, Plus_FundAccount
+			, CASE WHEN DATENAME(dy,A.Plus_CultivationProcessStage1Date) BETWEEN E.Mdt_Begin_Date_Number AND E.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.Plus_CultivationProcessStage1Date)
+					ELSE DATEADD(hh,-7,A.Plus_CultivationProcessStage1Date) END AS Plus_CultivationProcessStage1Date
+			, CASE WHEN DATENAME(dy,A.Plus_CultivationProcessStage2Date) BETWEEN F.Mdt_Begin_Date_Number AND F.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.Plus_CultivationProcessStage2Date)
+					ELSE DATEADD(hh,-7,A.Plus_CultivationProcessStage2Date) END AS Plus_CultivationProcessStage2Date
+			, CASE WHEN DATENAME(dy,A.Plus_CultivationProcessStage3Date) BETWEEN G.Mdt_Begin_Date_Number AND G.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.Plus_CultivationProcessStage3Date)
+					ELSE DATEADD(hh,-7,A.Plus_CultivationProcessStage3Date) END AS Plus_CultivationProcessStage3Date
+			, CASE WHEN DATENAME(dy,A.Plus_CultivationProcessStage4Date) BETWEEN H.Mdt_Begin_Date_Number AND H.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.Plus_CultivationProcessStage4Date)
+					ELSE DATEADD(hh,-7,A.Plus_CultivationProcessStage4Date) END AS Plus_CultivationProcessStage4Date
+			, CASE WHEN DATENAME(dy,A.Plus_GiftNoticeCreatedOn) BETWEEN I.Mdt_Begin_Date_Number AND I.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.Plus_GiftNoticeCreatedOn)
+					ELSE DATEADD(hh,-7,A.Plus_GiftNoticeCreatedOn) END AS Plus_GiftNoticeCreatedOn
+			, CASE WHEN DATENAME(dy,A.Plus_ProposalStatusChangeDate) BETWEEN J.Mdt_Begin_Date_Number AND J.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.Plus_ProposalStatusChangeDate)
+					ELSE DATEADD(hh,-7,A.Plus_ProposalStatusChangeDate) END AS Plus_ProposalStatusChangeDate
+			, Plus_NewAccount
+			, Plus_CoordinatingLiaisonId
+			, OwnerId
+			, Lds_PrimaryInitiative
+			, Plus_ParentInitiative
 			' -- Select_Statement
-		, 'SystemUserBase
+		, 'OpportunityBase A
+				LEFT JOIN _MDT_Conversion_Dim B ON YEAR(A.Plus_ProposalDate) = B.Date_Year
+				LEFT JOIN _MDT_Conversion_Dim C ON YEAR(A.Plus_TargetedCommitment) = C.Date_Year
+				LEFT JOIN _MDT_Conversion_Dim D ON YEAR(A.Plus_CommittedDate) = D.Date_Year
+				LEFT JOIN _MDT_Conversion_Dim E ON YEAR(A.Plus_CultivationProcessStage1Date) = E.Date_Year
+				LEFT JOIN _MDT_Conversion_Dim F ON YEAR(A.Plus_CultivationProcessStage2Date) = F.Date_Year
+				LEFT JOIN _MDT_Conversion_Dim G ON YEAR(A.Plus_CultivationProcessStage3Date) = G.Date_Year
+				LEFT JOIN _MDT_Conversion_Dim H ON YEAR(A.Plus_CultivationProcessStage4Date) = H.Date_Year
+				LEFT JOIN _MDT_Conversion_Dim I ON YEAR(A.Plus_GiftNoticeCreatedOn) = I.Date_Year
+				LEFT JOIN _MDT_Conversion_Dim J ON YEAR(A.Plus_ProposalStatusChangeDate) = J.Date_Year				
+			' -- From_Statement
+		, ' ' -- Where_Statement
+		, ' ' -- Code_Block_1
+		, ' ' -- Code_Block_2
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- Plus_AddressFormatBase (Ext_Address_Format)
+-- --------------------------
+	('dbo.Plus_AddressFormatBase' -- Source_Table
+		, 'Oa_Extract.Ext_Address_Format' -- Destination_Table
+		, 'Plus_AddressFormatId UNIQUEIDENTIFIER
+			, New_UseStateAbreviation BIT
+			' -- Create_Fields
+		, 'Plus_AddressFormatId
+			, New_UseStateAbreviation
+			' -- Insert_Fields
+		, 'Plus_AddressFormatId
+			, New_UseStateAbreviation
+			' -- Select_Statement
+		, 'Plus_AddressFormatBase
+			' -- From_Statement
+		, ' ' -- Where_Statement
+		, ' ' -- Code_Block_1
+		, ' ' -- Code_Block_2
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- Plus_AlumniBase (Ext_Alumni)
+-- --------------------------
+	('dbo.Plus_AlumniBase' -- Source_Table
+		, 'Oa_Extract.Ext_Alumni' -- Destination_Table
+		, 'Plus_AlumniId UNIQUEIDENTIFIER
+			, Plus_Name NVARCHAR(100)
+			, Plus_ActualGraduationDate DATETIME
+			, Plus_AlumniStatus INT
+			, Plus_DgId INT
+			, Plus_HoursCredits NVARCHAR(100)
+			, Plus_PreferredGraduationDate DATETIME
+			, Plus_Constituent UNIQUEIDENTIFIER
+			, Plus_College UNIQUEIDENTIFIER
+			, Plus_Degree UNIQUEIDENTIFIER
+			, Plus_University UNIQUEIDENTIFIER
+			, Plus_Source UNIQUEIDENTIFIER
+			, Plus_Program UNIQUEIDENTIFIER
+			, Plus_Emphasis UNIQUEIDENTIFIER
+			' -- Create_Fields
+		, 'Plus_AlumniId 
+			, Plus_Name
+			, Plus_ActualGraduationDate
+			, Plus_AlumniStatus
+			, Plus_DgId
+			, Plus_HoursCredits
+			, Plus_PreferredGraduationDate
+			, Plus_Constituent
+			, Plus_College
+			, Plus_Degree
+			, Plus_University
+			, Plus_Source
+			, Plus_Program
+			, Plus_Emphasis
+			' -- Insert_Fields
+		, 'Plus_AlumniId 
+			, Plus_Name
+			, CASE WHEN DATENAME(dy,A.Plus_ActualGraduationDate) BETWEEN B.Mdt_Begin_Date_Number AND B.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.Plus_ActualGraduationDate)
+					ELSE DATEADD(hh,-7,A.Plus_ActualGraduationDate) END AS Plus_ActualGraduationDate
+			, Plus_AlumniStatus
+			, Plus_DgId
+			, Plus_HoursCredits
+			, CASE WHEN DATENAME(dy,A.Plus_PreferredGraduationDate) BETWEEN C.Mdt_Begin_Date_Number AND C.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.Plus_PreferredGraduationDate)
+					ELSE DATEADD(hh,-7,A.Plus_PreferredGraduationDate) END AS Plus_PreferredGraduationDate
+			, Plus_Constituent
+			, Plus_College
+			, Plus_Degree
+			, Plus_University
+			, Plus_Source
+			, Plus_Program
+			, Plus_Emphasis
+			' -- Select_Statement
+		, 'Plus_AlumniBase A
+				LEFT JOIN _MDT_Conversion_Dim B ON YEAR(A.Plus_ActualGraduationDate) = B.Date_Year
+				LEFT JOIN _MDT_Conversion_Dim C ON YEAR(A.Plus_PreferredGraduationDate) = C.Date_Year
+			' -- From_Statement
+		, ' ' -- Where_Statement
+		, ' ' -- Code_Block_1
+		, ' ' -- Code_Block_2
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- Plus_DonorScoreBase (Ext_Donor_Score)
+-- --------------------------
+	('dbo.Plus_DonorScoreBase' -- Source_Table
+		, 'Oa_Extract.Ext_Donor_Score' -- Destination_Table
+		, '	Plus_DonorScoreId UNIQUEIDENTIFIER
+			, Plus_Constituent UNIQUEIDENTIFIER
+			, Plus_Institution UNIQUEIDENTIFIER
+			, Plus_I5LegacyDonorTypeDate DATETIME
+			, Plus_I5LegacyDonorType NVARCHAR(10)
+			, ModifiedOn DATETIME
+			, StatusCode INT
+			, StateCode INT
+			' -- Create_Fields
+		, '	Plus_DonorScoreId
+			, Plus_Constituent
+			, Plus_Institution
+			, Plus_I5LegacyDonorTypeDate
+			, Plus_I5LegacyDonorType
+			, ModifiedOn
+			, StatusCode
+			, StateCode
+			' -- Insert_Fields
+		, 'Plus_DonorScoreId
+			, Plus_Constituent
+			, Plus_Institution
+			, Plus_I5LegacyDonorTypeDate
+			, Plus_I5LegacyDonorType
+			, ModifiedOn
+			, StatusCode
+			, StateCode
+			' -- Select_Statement
+		, 'Plus_DonorScoreBase				
+			' -- From_Statement
+		, 'AND YEAR(Plus_I5LegacyDonorTypeDate) >= YEAR(GETDATE())-5 
+			' -- Where_Statement
+		, ' ' -- Code_Block_1
+		, ' ' -- Code_Block_2
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- Plus_EnvelopeNamesAndSalutationsBase (Ext_Envelope_Names_And_Salutations)
+-- --------------------------
+	('dbo.Plus_EnvelopeNamesAndSalutationsBase' -- Source_Table
+		, 'Oa_Extract.Ext_Envelope_Names_And_Salutations' -- Destination_Table
+		, 'Plus_Etiquette INT
+			, Plus_EnvelopeSalutationConstituent UNIQUEIDENTIFIER
+			, Plus_SalutationEnvelopeName NVARCHAR(300)
+			, Plus_Household INT
+			, StateCode INT
+			, Plus_NameType INT
+			, Plus_EnvelopeNamesAndSalutationsId UNIQUEIDENTIFIER
+			' -- Create_Fields
+		, 'Plus_Etiquette
+			, Plus_EnvelopeSalutationConstituent
+			, Plus_SalutationEnvelopeName
+			, Plus_Household
+			, StateCode
+			, Plus_NameType
+			, Plus_EnvelopeNamesAndSalutationsId
+			' -- Insert_Fields
+		, 'Plus_Etiquette
+			, Plus_EnvelopeSalutationConstituent
+			, Plus_SalutationEnvelopeName
+			, Plus_Household
+			, StateCode
+			, Plus_NameType
+			, Plus_EnvelopeNamesAndSalutationsId
+			' -- Select_Statement
+		, 'Plus_EnvelopeNamesAndSalutationsBase
 			' -- From_Statement
 		, ' ' -- Where_Statement
 		, ' ' -- Code_Block_1
@@ -3791,40 +3846,22 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, GETDATE()
 		, NULL
 	)	
-	,	
+	,
 -- --------------------------
--- STRING_MAP (Ext_String_Map)
+-- Plus_InterestBase (Ext_Interest)
 -- --------------------------
-	('dbo.StringMapBase' -- Source_Table
-		, 'Oa_Extract.Ext_String_Map' -- Destination_Table
-		, 'ObjectTypeCode INT
-			, AttributeName NVARCHAR(100)
-			, AttributeValue INT
-			, LangId INT
-			, OrganizationId UNIQUEIDENTIFIER
-			, Value NVARCHAR(4000)
-			, DisplayOrder INT
-			, StringMapId UNIQUEIDENTIFIER
+	('dbo.Plus_InterestBase' -- Source_Table
+		, 'Oa_Extract.Ext_Interest' -- Destination_Table
+		, 'Plus_InterestId UNIQUEIDENTIFIER
+			, Plus_Name NVARCHAR(100)
 			' -- Create_Fields
-		, 'ObjectTypeCode
-			, AttributeName
-			, AttributeValue
-			, LangId
-			, OrganizationId
-			, Value
-			, DisplayOrder
-			, StringMapId
+		, 'Plus_InterestId
+			, Plus_Name
 			' -- Insert_Fields
-		, 'ObjectTypeCode
-			, AttributeName
-			, AttributeValue
-			, LangId
-			, OrganizationId
-			, Value
-			, DisplayOrder
-			, StringMapId
+		, 'Plus_InterestId
+			, Plus_Name
 			' -- Select_Statement
-		, 'dbo.StringMapBase
+		, 'Plus_InterestBase
 			' -- From_Statement
 		, ' ' -- Where_Statement
 		, ' ' -- Code_Block_1
@@ -3850,52 +3887,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, 1
 		, GETDATE()
 		, NULL
-	)
-	,	
--- --------------------------
--- Entity (Ext_Entity)
--- --------------------------
-	('dbo.Entity' -- Source_Table
-		, 'Oa_Extract.Ext_Entity' -- Destination_Table
-		, 'ObjectTypeCode INT
-			, PhysicalName NVARCHAR(64)
-			, EntityId UNIQUEIDENTIFIER
-			' -- Create_Fields
-		, 'ObjectTypeCode
-			, PhysicalName
-			, EntityId
-			' -- Insert_Fields
-		, 'ObjectTypeCode
-			, PhysicalName
-			, EntityId
-			' -- Select_Statement
-		, 'Entity
-			' -- From_Statement
-		, ' ' -- Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
-		, ' ' -- Code_Block_7
-		, ' ' -- Code_Block_8
-		, ' ' -- Code_Block_9
-		, ' ' -- Code_Block_10
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
-		, 1
-		, GETDATE()
-		, NULL
-	)
+	)	
 	,
 -- --------------------------
 -- Plus_LegacyM11Base (Ext_Plus_LegacyM11Base)
@@ -3946,122 +3938,52 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 	)
 	,
 -- --------------------------
--- Batch (Ext_Batch)
+-- Plus_LegacyPsaCodeBase (Ext_Psa)
 -- --------------------------
-	('dbo.New_BatchesBase' -- Source_Table
-		, 'Oa_Extract.Ext_Batch' -- Destination_Table
-		, 'New_BatchesId UNIQUEIDENTIFIER
-			, New_BatchNumber NVARCHAR(100)
-			, Lds_BatchType INT
+	('dbo.Plus_LegacyPsaCodeBase' -- Source_Table
+		, 'Oa_Extract.Ext_Psa' -- Destination_Table
+		, 'ContactId UNIQUEIDENTIFIER
+			, Psa_Key UNIQUEIDENTIFIER
+			, Psa_Code NVARCHAR(50)
+			, Psa_Eff_From DATETIME
+			, Psa_Eff_Thru DATETIME
+			, Psa_Act_Src NVARCHAR(100)
+			, Psa_Entered_Dt DATETIME
+			, Psa_Change_Dt DATETIME
+			, Psa_Type NVARCHAR(100)
+			, Psa_Text_Line NVARCHAR(500)
 			' -- Create_Fields
-		, 'New_BatchesId
-			, New_BatchNumber
-			, Lds_BatchType
+		, 'ContactId
+			, Psa_Key
+			, Psa_Code
+			, Psa_Eff_From
+			, Psa_Eff_Thru
+			, Psa_Act_Src
+			, Psa_Entered_Dt
+			, Psa_Change_Dt
+			, Psa_Type
+			, Psa_Text_Line
 			' -- Insert_Fields
-		, 'New_BatchesId
-			, New_BatchNumber
-			, Lds_BatchType
+		, 'DISTINCT Plus_Constituent AS ContactId 
+			, Plus_LegacyPsaCodeId AS Psa_Key
+			, CONVERT(NVARCHAR(50),Plus_PsaCode) AS Psa_Code
+			, CASE WHEN DATENAME(dy,A.Plus_EffectiveFrom) BETWEEN B.Mdt_Begin_Date_Number AND B.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.Plus_EffectiveFrom)
+					ELSE DATEADD(hh,-7,A.Plus_EffectiveFrom) END AS Psa_Eff_From
+			, CASE WHEN DATENAME(dy,A.Plus_EffectiveTo) BETWEEN C.Mdt_Begin_Date_Number AND C.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.Plus_EffectiveTo)
+					ELSE DATEADD(hh,-7,A.Plus_EffectiveTo) END AS Psa_Eff_Thru
+			, Plus_Source AS Psa_Act_Src
+			, CASE WHEN DATENAME(dy,A.CreatedOn) BETWEEN D.Mdt_Begin_Date_Number AND D.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.CreatedOn)
+					ELSE DATEADD(hh,-7,A.CreatedOn) END AS Psa_Entered_Dt
+			, CASE WHEN DATENAME(dy,A.ModifiedOn) BETWEEN E.Mdt_Begin_Date_Number AND E.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.ModifiedOn)
+					ELSE DATEADD(hh,-7,A.ModifiedOn) END AS Psa_Change_Dt
+			, Plus_Category AS Psa_Type
+			, CONVERT(NVARCHAR(500),Plus_CodeDescription) AS Psa_Text_Line
 			' -- Select_Statement
-		, 'New_BatchesBase
-			' -- From_Statement
-		, ' ' -- Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
-		, ' ' -- Code_Block_7
-		, ' ' -- Code_Block_8
-		, ' ' -- Code_Block_9
-		, ' ' -- Code_Block_10
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
-		, 1
-		, GETDATE()
-		, NULL
-	)	
-	,
--- --------------------------
--- Gift_Hist (Ext_Gift_Hist)
--- --------------------------
-	('dbo.New_GiftHistoryBase' -- Source_Table
-		, 'Oa_Extract.Ext_Gift_Hist' -- Destination_Table
-		, 'New_RelatedGift UNIQUEIDENTIFIER
-			, Plus_Constituent UNIQUEIDENTIFIER
-			, Plus_Organization UNIQUEIDENTIFIER
-			, Plus_FundAccount UNIQUEIDENTIFIER
-			, OwnerId UNIQUEIDENTIFIER
-			, Plus_AccountingDate DATETIME
-			, StatusCode INT
-			, New_Amount MONEY
-			, New_ReceiptDate DATETIME
-			, New_TenderType INT
-			, Plus_Kind INT
-			, Plus_Transmitted BIT
-			, Plus_Description NVARCHAR(4000)
-			, Plus_ReceiptText NVARCHAR(4000)
-			, New_Name NVARCHAR(100)
-			, Plus_GiftAdjustmentNote NVARCHAR(4000)
-			, New_GiftHistoryId UNIQUEIDENTIFIER
-			, Plus_GiftNumber NVARCHAR(50)
-			, Plus_PostDate DATETIME
-			' -- Create_Fields
-		, 'New_RelatedGift
-			, Plus_Constituent
-			, Plus_Organization
-			, Plus_FundAccount
-			, OwnerId
-			, Plus_AccountingDate
-			, StatusCode
-			, New_Amount
-			, New_ReceiptDate
-			, New_TenderType
-			, Plus_Kind
-			, Plus_Transmitted
-			, Plus_Description
-			, Plus_ReceiptText
-			, New_Name
-			, Plus_GiftAdjustmentNote
-			, New_GiftHistoryId
-			, Plus_GiftNumber
-			, Plus_PostDate
-			' -- Insert_Fields
-		, 'New_RelatedGift
-			, Plus_Constituent
-			, Plus_Organization
-			, Plus_FundAccount
-			, OwnerId
-			, CASE WHEN DATENAME(dy,A.Plus_AccountingDate) BETWEEN B.Mdt_Begin_Date_Number AND B.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.Plus_AccountingDate)
-					ELSE DATEADD(hh,-7,A.Plus_AccountingDate) END AS Plus_AccountingDate
-			, StatusCode
-			, New_Amount
-			, CASE WHEN DATENAME(dy,A.New_ReceiptDate) BETWEEN C.Mdt_Begin_Date_Number AND C.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.New_ReceiptDate)
-					ELSE DATEADD(hh,-7,A.New_ReceiptDate) END AS New_ReceiptDate
-			, New_TenderType
-			, Plus_Kind
-			, Plus_Transmitted
-			, CONVERT(NVARCHAR(4000),Plus_Description) AS Plus_Description
-			, CONVERT(NVARCHAR(4000),Plus_ReceiptText) AS Plus_ReceiptText
-			, New_Name
-			, CONVERT(NVARCHAR(4000),Plus_GiftAdjustmentNote) AS Plus_GiftAdjustmentNote
-			, New_GiftHistoryId
-			, Plus_GiftNumber
-			, CASE WHEN DATENAME(dy,A.Plus_PostDate) BETWEEN D.Mdt_Begin_Date_Number AND D.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.Plus_PostDate)
-					ELSE DATEADD(hh,-7,A.Plus_PostDate) END AS Plus_PostDate
-			' -- Select_Statement
-		, 'New_GiftHistoryBase A
-				LEFT JOIN _MDT_Conversion_Dim B ON YEAR(A.Plus_AccountingDate) = B.Date_Year
-				LEFT JOIN _MDT_Conversion_Dim C ON YEAR(A.New_ReceiptDate) = C.Date_Year
-				LEFT JOIN _MDT_Conversion_Dim D ON YEAR(A.Plus_PostDate) = D.Date_Year
+		, 'Plus_LegacyPsaCodeBase A
+				LEFT JOIN _MDT_Conversion_Dim B ON YEAR(A.Plus_EffectiveFrom) = B.Date_Year
+				LEFT JOIN _MDT_Conversion_Dim C ON YEAR(A.Plus_EffectiveTo) = C.Date_Year
+				LEFT JOIN _MDT_Conversion_Dim D ON YEAR(A.CreatedOn) = D.Date_Year
+				LEFT JOIN _MDT_Conversion_Dim E ON YEAR(A.ModifiedOn) = E.Date_Year
 			' -- From_Statement
 		, ' ' -- Where_Statement
 		, ' ' -- Code_Block_1
@@ -4090,7 +4012,52 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 	)
 	,
 -- --------------------------
--- Plus_RecurringGiftRules (Ext_Recurring_Gift_Rules)
+-- Plus_PayrollGroupBase (Ext_Payroll_Group)
+-- --------------------------
+	('dbo.Plus_PayrollGroupBase' -- Source_Table
+		, 'Oa_Extract.Ext_Payroll_Group' -- Destination_Table
+		, 'Plus_PayrollGroupId UNIQUEIDENTIFIER
+			, Plus_Name NVARCHAR(100)
+			, Plus_Code NVARCHAR(100)
+			' -- Create_Fields
+		, 'Plus_PayrollGroupId
+			, Plus_Name
+			, Plus_Code
+			' -- Insert_Fields
+		, 'Plus_PayrollGroupId
+			, Plus_Name
+			, Plus_Code
+			' -- Select_Statement
+		, 'Plus_PayrollGroupBase
+			' -- From_Statement
+		, ' ' -- Where_Statement
+		, ' ' -- Code_Block_1
+		, ' ' -- Code_Block_2
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, GETDATE()
+		, NULL
+	)	
+	,	
+-- --------------------------
+-- Plus_RecurringGiftRulesBase (Ext_Recurring_Gift_Rules)
 -- --------------------------
 	('dbo.Plus_RecurringGiftRulesBase' -- Source_Table
 		, 'Oa_Extract.Ext_Recurring_Gift_Rules' -- Destination_Table
@@ -4175,22 +4142,40 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, GETDATE()
 		, NULL
 	)
-	,
+	,	
 -- --------------------------
--- CampaignResponseBase (Ext_Campaign_Response)
+-- StringMapBase (Ext_String_Map)
 -- --------------------------
-	('dbo.CampaignResponseBase' -- Source_Table
-		, 'Oa_Extract.Ext_Campaign_Response' -- Destination_Table
-		, 'ActivityId UNIQUEIDENTIFIER
-			, Plus_CampaignAppeal UNIQUEIDENTIFIER
+	('dbo.StringMapBase' -- Source_Table
+		, 'Oa_Extract.Ext_String_Map' -- Destination_Table
+		, 'ObjectTypeCode INT
+			, AttributeName NVARCHAR(100)
+			, AttributeValue INT
+			, LangId INT
+			, OrganizationId UNIQUEIDENTIFIER
+			, Value NVARCHAR(4000)
+			, DisplayOrder INT
+			, StringMapId UNIQUEIDENTIFIER
 			' -- Create_Fields
-		, 'ActivityId
-			, Plus_CampaignAppeal
+		, 'ObjectTypeCode
+			, AttributeName
+			, AttributeValue
+			, LangId
+			, OrganizationId
+			, Value
+			, DisplayOrder
+			, StringMapId
 			' -- Insert_Fields
-		, 'ActivityId
-			, Plus_CampaignAppeal
+		, 'ObjectTypeCode
+			, AttributeName
+			, AttributeValue
+			, LangId
+			, OrganizationId
+			, Value
+			, DisplayOrder
+			, StringMapId
 			' -- Select_Statement
-		, 'CampaignResponseBase
+		, 'dbo.StringMapBase
 			' -- From_Statement
 		, ' ' -- Where_Statement
 		, ' ' -- Code_Block_1
@@ -4217,25 +4202,43 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, GETDATE()
 		, NULL
 	)
-	,
+	,	
 -- --------------------------
--- Plus_PayrollGroupBase (Ext_Payroll_Group)
+-- SystemUserBase (Ext_System_User)
 -- --------------------------
-	('dbo.Plus_PayrollGroupBase' -- Source_Table
-		, 'Oa_Extract.Ext_Payroll_Group' -- Destination_Table
-		, 'Plus_PayrollGroupId UNIQUEIDENTIFIER
-			, Plus_Name NVARCHAR(100)
-			, Plus_Code NVARCHAR(100)
+	('dbo.SystemUserBase' -- Source_Table
+		, 'Oa_Extract.Ext_System_User' -- Destination_Table
+		, 'SystemUserId UNIQUEIDENTIFIER
+			, FullName NVARCHAR(200)
+			, FirstName NVARCHAR(64)
+			, LastName NVARCHAR(64)
+			, PersonalEmailAddress NVARCHAR(100)
+			, Title NVARCHAR(128)
+			, InternalEmailAddress NVARCHAR(100)
+			, MobilePhone NVARCHAR(64)
+			, DomainName NVARCHAR(1024)
 			' -- Create_Fields
-		, 'Plus_PayrollGroupId
-			, Plus_Name
-			, Plus_Code
+		, 'SystemUserId
+			, FullName
+			, FirstName
+			, LastName
+			, PersonalEmailAddress
+			, Title
+			, InternalEmailAddress
+			, MobilePhone
+			, DomainName
 			' -- Insert_Fields
-		, 'Plus_PayrollGroupId
-			, Plus_Name
-			, Plus_Code
+		, 'SystemUserId
+			, FullName
+			, FirstName
+			, LastName
+			, PersonalEmailAddress
+			, Title
+			, InternalEmailAddress
+			, MobilePhone
+			, DomainName
 			' -- Select_Statement
-		, 'Plus_PayrollGroupBase
+		, 'SystemUserBase
 			' -- From_Statement
 		, ' ' -- Where_Statement
 		, ' ' -- Code_Block_1
@@ -4262,7 +4265,15 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, GETDATE()
 		, NULL
 	)	
-	;
+	;	
+	
+
+
+
+
+
+
+
 
 
 
