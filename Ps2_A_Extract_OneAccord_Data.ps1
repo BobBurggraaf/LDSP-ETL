@@ -151,47 +151,31 @@ FUNCTION Copy-OneAccord_Data
                                           "                                                                                   
                 $Dest_Table_Name = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Table_Name_Qry).Destination_Table
 		
-		[STRING]$Dest_Create_Fields_Qry = "SELECT Create_Fields
+		[STRING]$Dest_Create_Fields_Qry = "SELECT Dest_Create_Fields
                                             	FROM Oa_Extract.Extract_Tables
 												WHERE 1 = 1
 													AND Source_Table = '$Source_Table_And_Schema'
                                           "                                                                                    
-                $Dest_Create_Fields = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Create_Fields_Qry).Create_Fields
+                $Dest_Create_Fields = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Create_Fields_Qry).Dest_Create_Fields
 		
-		[STRING]$Dest_Insert_Fields_Qry = "SELECT Insert_Fields
+		[STRING]$Dest_Insert_Fields_Qry = "SELECT Dest_Insert_Fields
                                             	FROM Oa_Extract.Extract_Tables
 												WHERE 1 = 1
 													AND Source_Table = '$Source_Table_And_Schema'
                                           "                                                                                    
-                $Dest_Insert_Fields = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Insert_Fields_Qry).Insert_Fields
-		
-		[STRING]$Dest_Select_Statement_Qry = "SELECT Select_Statement
+                $Dest_Insert_Fields = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Insert_Fields_Qry).Dest_Insert_Fields
+	
+		[STRING]$Dest_Where_Statement_Qry = "SELECT Dest_Where_Statement
                                             	FROM Oa_Extract.Extract_Tables
 												WHERE 1 = 1
 													AND Source_Table = '$Source_Table_And_Schema'
                                           "                                                                                    
-                $Dest_Select_Statement = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Select_Statement_Qry).Select_Statement
-		
-		[STRING]$Dest_From_Statement_Qry = "SELECT From_Statement
-                                            	FROM Oa_Extract.Extract_Tables
-												WHERE 1 = 1
-													AND Source_Table = '$Source_Table_And_Schema'
-                                          "                                                                                    
-                $Dest_From_Statement = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_From_Statement_Qry).From_Statement
-		
-		[STRING]$Dest_Where_Statement_Qry = "SELECT Where_Statement
-                                            	FROM Oa_Extract.Extract_Tables
-												WHERE 1 = 1
-													AND Source_Table = '$Source_Table_And_Schema'
-                                          "                                                                                    
-                $Dest_Where_Statement = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Where_Statement_Qry).Where_Statement
+                $Dest_Where_Statement = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Where_Statement_Qry).Dest_Where_Statement
 
 		Write-Host
 		Write-Host "~ Dest_Table_Name: $Dest_Table_Name"
 		Write-Host "~ Dest_Create_Fields: $Dest_Create_Fields"
 		Write-Host "~ Dest_Insert_Fields: $Dest_Insert_Fields"
-		Write-Host "~ Dest_Select_Statement: $Dest_Select_Statement"
-		Write-Host "~ Dest_From_Statement: $Dest_From_Statement"
 		Write-Host "~ Dest_Where_Statement: $Dest_Where_Statement"
 		Write-Host		
 				
