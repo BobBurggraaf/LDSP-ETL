@@ -47,6 +47,8 @@ CREATE TABLE OneAccord_Warehouse.Oa_Extract.Extract_Tables
 	, Code_Block_19 NVARCHAR(4000)
 	, Code_Block_20 NVARCHAR(MAX)
 	, Active BIT
+	, Extract_Stage NVARCHAR(50)
+	, Extract_Stage_DateTime DATETIME
 	, Insert_Date DATETIME
 	, Update_Date DATETIME
 	);
@@ -85,6 +87,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 	, Code_Block_19
 	, Code_Block_20
 	, Active
+	, Extract_Stage
+	, Extract_Stage_DateTime
 	, Insert_Date
 	, Update_Date
 	)
@@ -247,6 +251,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, ' ' -- Code_Block_19
 		, ' ' -- Code_Block_20
 		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -324,6 +330,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, ' ' -- Code_Block_19
 		, ' ' -- Code_Block_20
 		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -461,6 +469,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, ' ' -- Code_Block_19
 		, ' ' -- Code_Block_20
 		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -511,6 +521,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, ' ' -- Code_Block_19
 		, ' ' -- Code_Block_20
 		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -576,6 +588,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, ' ' -- Code_Block_19
 		, ' ' -- Code_Block_20
 		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -701,6 +715,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, ' ' -- Code_Block_19
 		, ' ' -- Code_Block_20
 		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -751,6 +767,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, ' ' -- Code_Block_19
 		, ' ' -- Code_Block_20
 		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -841,6 +859,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, ' ' -- Code_Block_19
 		, ' ' -- Code_Block_20
 		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -897,6 +917,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, ' ' -- Code_Block_19
 		, ' ' -- Code_Block_20
 		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -1231,6 +1253,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, ' ' -- Code_Block_19
 		, ' ' -- Code_Block_20
 		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -1286,6 +1310,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, ' ' -- Code_Block_19
 		, ' ' -- Code_Block_20
 		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -1453,6 +1479,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, ' ' -- Code_Block_19
 		, ' ' -- Code_Block_20
 		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -1538,6 +1566,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, ' ' -- Code_Block_19
 		, ' ' -- Code_Block_20
 		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -1617,6 +1647,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, ' ' -- Code_Block_19
 		, ' ' -- Code_Block_20
 		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -1672,6 +1704,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, ' ' -- Code_Block_19
 		, ' ' -- Code_Block_20
 		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)	
@@ -1722,6 +1756,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, ' ' -- Code_Block_19
 		, ' ' -- Code_Block_20
 		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -1777,6 +1813,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, ' ' -- Code_Block_19
 		, ' ' -- Code_Block_20
 		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -1832,6 +1870,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, ' ' -- Code_Block_19
 		, ' ' -- Code_Block_20
 		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -1887,6 +1927,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, ' ' -- Code_Block_19
 		, ' ' -- Code_Block_20
 		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -1947,6 +1989,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, ' ' -- Code_Block_19
 		, ' ' -- Code_Block_20
 		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -2081,6 +2125,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, ' ' -- Code_Block_19
 		, ' ' -- Code_Block_20
 		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -2163,6 +2209,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, ' ' -- Code_Block_19
 		, ' ' -- Code_Block_20
 		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -2324,6 +2372,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, ' ' -- Code_Block_19
 		, ' ' -- Code_Block_20
 		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -2593,6 +2643,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, ' ' -- Code_Block_19
 		, ' ' -- Code_Block_20
 		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)	
@@ -2847,6 +2899,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, ' ' -- Code_Block_19
 		, ' ' -- Code_Block_20
 		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -2988,6 +3042,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, ' ' -- Code_Block_19
 		, ' ' -- Code_Block_20
 		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -3038,6 +3094,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, ' ' -- Code_Block_19
 		, ' ' -- Code_Block_20
 		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -3143,6 +3201,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, ' ' -- Code_Block_19
 		, ' ' -- Code_Block_20
 		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)	
@@ -3247,6 +3307,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, ' ' -- Code_Block_19
 		, ' ' -- Code_Block_20
 		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)	
@@ -3297,6 +3359,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, ' ' -- Code_Block_19
 		, ' ' -- Code_Block_20
 		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -3407,6 +3471,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, ' ' -- Code_Block_19
 		, ' ' -- Code_Block_20
 		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -3477,6 +3543,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, ' ' -- Code_Block_19
 		, ' ' -- Code_Block_20
 		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -3564,6 +3632,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, ' ' -- Code_Block_19
 		, ' ' -- Code_Block_20
 		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -3688,6 +3758,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, ' ' -- Code_Block_19
 		, ' ' -- Code_Block_20
 		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -4064,6 +4136,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, ' ' -- Code_Block_19
 		, ' ' -- Code_Block_20
 		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -4114,6 +4188,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, ' ' -- Code_Block_19
 		, ' ' -- Code_Block_20
 		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -4164,6 +4240,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, ' ' -- Code_Block_19
 		, ' ' -- Code_Block_20
 		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -4260,6 +4338,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, ' ' -- Code_Block_19
 		, ' ' -- Code_Block_20
 		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -4364,6 +4444,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, ' ' -- Code_Block_19
 		, ' ' -- Code_Block_20
 		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -4461,6 +4543,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, ' ' -- Code_Block_19
 		, ' ' -- Code_Block_20
 		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
 		, GETDATE()
 		, NULL	
 	)	
@@ -4516,6 +4600,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, ' ' -- Code_Block_19
 		, ' ' -- Code_Block_20
 		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -4571,6 +4657,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, ' ' -- Code_Block_19
 		, ' ' -- Code_Block_20
 		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -4673,6 +4761,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, ' ' -- Code_Block_19
 		, ' ' -- Code_Block_20
 		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -4723,6 +4813,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, ' ' -- Code_Block_19
 		, ' ' -- Code_Block_20
 		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -4783,6 +4875,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, ' ' -- Code_Block_19
 		, ' ' -- Code_Block_20
 		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -4971,6 +5065,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, ' ' -- Code_Block_19
 		, ' ' -- Code_Block_20
 		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -5021,6 +5117,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, ' ' -- Code_Block_19
 		, ' ' -- Code_Block_20
 		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -5135,6 +5233,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, ' ' -- Code_Block_19
 		, ' ' -- Code_Block_20
 		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -5216,6 +5316,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, ' ' -- Code_Block_19
 		, ' ' -- Code_Block_20
 		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -5291,6 +5393,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, ' ' -- Code_Block_19
 		, ' ' -- Code_Block_20
 		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)	
@@ -5341,6 +5445,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, ' ' -- Code_Block_19
 		, ' ' -- Code_Block_20
 		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)	
@@ -5401,6 +5507,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, ' ' -- Code_Block_19
 		, ' ' -- Code_Block_20
 		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -5499,6 +5607,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, ' ' -- Code_Block_19
 		, ' ' -- Code_Block_20
 		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -5554,6 +5664,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, ' ' -- Code_Block_19
 		, ' ' -- Code_Block_20
 		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)	
@@ -5675,6 +5787,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, ' ' -- Code_Block_19
 		, ' ' -- Code_Block_20
 		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -5755,6 +5869,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, ' ' -- Code_Block_19
 		, ' ' -- Code_Block_20
 		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -5840,6 +5956,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, ' ' -- Code_Block_19
 		, ' ' -- Code_Block_20
 		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)	

@@ -115,6 +115,25 @@ FUNCTION Create-Alpha_Table_1
 		Insert-Alpha_Table_1 -p1 "Beginning" -p2 "1A" -p3 "Created Oa_Extract.Alpha_Table_1" -p8 $Create_Alpha_Table -p9 1
 		
 		#---------------------------------------------	 
+		# Reset Extract_Stage in the Extract_Tables table
+		#---------------------------------------------
+		
+		$Update_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+									SET Extract_Stage = NULL
+										, Extract_Stage_DateTime = NULL
+									WHERE 1 = 1
+									"
+	
+		Invoke-Sqlcmd `
+			-ServerInstance $Dest_Instance `
+			-Database $Dest_Db `
+			-Query $Update_Extract_Tables
+			
+		write-host "~ Updated the Extract_Tables table with NULL values for Extract_Stage and Extract_Stage_DateTime."
+		
+		Insert-Alpha_Table_1 -p1 "Reset Extract_Stage" -p2 "1B" -p3 "Updated Extract_Tables table" -p8 $Update_Extract_Tables -p9 1
+		
+		#---------------------------------------------	 
 		# Return to standard error handling
 		#---------------------------------------------
 		$ErrorActionPreference = $Old
