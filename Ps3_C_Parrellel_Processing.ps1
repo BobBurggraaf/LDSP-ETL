@@ -25,7 +25,7 @@ IF(!(Test-Path $New_Folder_Path))
 [STRING]$Parrellel_Processing = "Parrellel_Processing_"
 [STRING]$Log_DateTime = Get-Date -Format "yyyyMMdd_HHmmss"
 [String]$Log_File_Type = '.log'
-[STRING]$Log_File_Name = $Log_Root + $Table_Name + "_" + $Log_DateTime + $Log_File_Type
+[STRING]$Log_File_Name = $Log_Root + $Parrellel_Processing + "_" + $Log_DateTime + $Log_File_Type
 
 Start-Transcript -Path $Log_File_Name -Force -NoClobber
 
