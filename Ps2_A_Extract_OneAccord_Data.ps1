@@ -29,8 +29,7 @@
 .FUNCTIONALITY
    CmdletBinding - SupportsPaging adds the First, Skip, and IncludeTotalCount parameters to the function.
    First: Gets only the first n rows, Skip: ignores the first n rows and then gets the rest, IncludeTotalCount:
-   Reports the number of objects in the data set followed by the objects.
-   
+   Reports the number of objects in the data set followed by the objects.   
 #>
 FUNCTION Copy-OneAccord_Data
 	{
@@ -99,8 +98,8 @@ FUNCTION Copy-OneAccord_Data
 		#---------------------------------------------
 		$SQLServer = "MSSQL12316\S06"
 		$Database = "OneAccord_MSCRM"
-		$SQLUser = "LDSPCRM_DATASTG_PROD" 
-		$Password = "`$QLserveristheB3`$+" | ConvertTo-SecureString -AsPlainText -Force
+		$SQLUser = "" 
+		$Password = "" | ConvertTo-SecureString -AsPlainText -Force
 		$Password.MakeReadOnly()
 		[STRING] $Source_Table_And_Schema = $Source_Table_Name
 		
@@ -263,7 +262,7 @@ FUNCTION Copy-OneAccord_Data
 				Insert-Alpha_Table_1 -p1 $Dest_Table_Name -p2 "2B" -p3 "Drop, Create, Insert - End" -p4 $Beg_DateTime -p5 $End_DateTime -p8 $Create_Table -p9 1
 				
 				Write-Host
-				Write-Host "~ Alpha_DateTime: $DateTime"
+				Write-Host "~ Alpha_DateTime: $End_DateTime"
 				Write-Host "~ Ending of $Dest_Table_Name"
 				Write-Host "~ Alpha_Stage: $Dest_Table_Name"
 				Write-Host "~ Alpha_Step_Number: 2B"
