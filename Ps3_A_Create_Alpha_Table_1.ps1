@@ -86,7 +86,7 @@ FUNCTION Create-Alpha_Table_1
 		$Create_Alpha_Table = "CREATE TABLE Oa_Extract.Alpha_Table_1 (
 							Alpha_Key INT IDENTITY(1,1) PRIMARY KEY
 							, Alpha_DateTime DATETIME
-							, Alpha_Stage NVARCHAR(50)
+							, Alpha_Stage NVARCHAR(100)
 							, Alpha_Step_Number NVARCHAR(10)
 							, Alpha_Step_Name NVARCHAR(200)
 							, Alpha_Begin_Time DATETIME

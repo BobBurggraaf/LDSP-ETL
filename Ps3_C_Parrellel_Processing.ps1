@@ -22,7 +22,7 @@ IF(!(Test-Path $New_Folder_Path))
 	}
 		
 [STRING]$Log_Root = $New_Folder_Path + "\PS_Extract_"
-[STRING]$Parrellel_Processing = "Parrellel_Processing_"
+[STRING]$Parrellel_Processing = "Parrellel_Processing_"              #<----------------------------------------------------------
 [STRING]$Log_DateTime = Get-Date -Format "yyyyMMdd_HHmmss"
 [String]$Log_File_Type = '.log'
 [STRING]$Log_File_Name = $Log_Root + $Parrellel_Processing + "_" + $Log_DateTime + $Log_File_Type
@@ -38,8 +38,8 @@ Write-Host
 # If this is the first than create the Alpha_Table_1
 #   Else sleep for 10 seconds
 #---------------------------------------------
-Create-Alpha_Table_1
-#Start-Sleep -s 10
+Create-Alpha_Table_1                                                 #<----------------------------------------------------------
+#Start-Sleep -s 10                                                   #<----------------------------------------------------------
 
 #---------------------------------------------
 # Destination Connection String
@@ -108,6 +108,25 @@ DO
 		Write-Host "~ Processing Key: $Processing_Key"
 		
 		#---------------------------------------------
+		# Extract_Tables Update
+		#---------------------------------------------
+		$Update_DateTime = Get-Date
+	
+		$Update_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+							SET Extract_Stage = 'Processing'
+								, Extract_Stage_DateTime = '$Update_DateTime'
+							WHERE 1 = 1
+								AND Extract_Tables_Key = $Processing_Key"
+		
+		Invoke-Sqlcmd `
+			-ServerInstance $Dest_Instance `
+			-Database $Dest_Db `
+			-Query $Update_Extract_Tables
+		
+		Write-Host $Update_Extract_Tables
+		
+		
+		#---------------------------------------------
 		# Source Table
 		#---------------------------------------------
 		
@@ -136,31 +155,13 @@ DO
 		Write-Host
 		Write-Host $Dest_Table
 		Write-Host "~ Destination Table: $Dest_Table"
-	
-		#---------------------------------------------
-		# Extract_Tables Update
-		#---------------------------------------------
-		$Update_DateTime = Get-Date
-	
-		$Update_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-							SET Extract_Stage = 'Processing'
-								, Extract_Stage_DateTime = '$Update_DateTime'
-							WHERE 1 = 1
-								AND Extract_Tables_Key = $Processing_Key"
-		
-		Invoke-Sqlcmd `
-			-ServerInstance $Dest_Instance `
-			-Database $Dest_Db `
-			-Query $Update_Extract_Tables
-		
-		Write-Host $Update_Extract_Tables
 		
 		
 		#---------------------------------------------
 		# Extract Data
 		#---------------------------------------------
 		
-		Copy-OneAccord_Data -p1 $Source_Table
+		Copy-OneAccord_Data -p1 $Source_Table -p2 $Processing_Key
 		
 		
 		#---------------------------------------------
@@ -264,7 +265,7 @@ DO
 		Write-Host "~ Total Processing Time: $Total_Processing_Time"
 		
 	
-	} UNTIL ($Tables_To_Process -eq 0 -OR $Total_Processing_Time -gt '00:05:00')
+	} UNTIL ($Tables_To_Process -eq 0 -OR $Total_Processing_Time -gt '00:30:00')
 
 #---------------------------------------------	 
 # Return to standard error handling
