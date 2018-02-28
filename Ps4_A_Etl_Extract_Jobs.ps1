@@ -309,7 +309,7 @@ Start-Job -Name Job1 -ScriptBlock {		                                    #<-----
 				Stop-Transcript
 			
 			}
-
+			
 		FUNCTION Copy-OneAccord_Data
 			{
 				[CmdletBinding(
@@ -688,19 +688,26 @@ Start-Job -Name Job1 -ScriptBlock {		                                    #<-----
 					}
 				
 			}
-
-		###################################################################################################
-		#
-		#	Name: PowerShell_ETL_Parrellel_Processing
-		#	Date: 02/26/2018
-		#
-		###################################################################################################
-
+			
 		#---------------------------------------------
 		# Catch Non-Terminating Errors
 		#---------------------------------------------
 		$Old = $ErrorActionPreference
 		$ErrorActionPreference = 'Stop'
+
+
+		#---------------------------------------------
+		# Job Variables
+		#---------------------------------------------
+		[STRING]$Job_Name = "Job1"                                             #<----------------------------------------------------------
+		[INT]$Sleep_Time = 1                                                   #<----------------------------------------------------------
+
+		#---------------------------------------------
+		# If this is the first than create the Alpha_Table_1
+		#   Else sleep
+		#---------------------------------------------
+		Create-Alpha_Table_1                                                   #<----------------------------------------------------------
+		#Start-Sleep -s $Sleep_Time  
 
 		#---------------------------------------------
 		# Log file
@@ -713,7 +720,7 @@ Start-Job -Name Job1 -ScriptBlock {		                                    #<-----
 			}
 				
 		[STRING]$Log_Root = $New_Folder_Path + "\PS_Extract_"
-		[STRING]$Parrellel_Processing = "Parrellel_Processing_1_"              #<----------------------------------------------------------
+		[STRING]$Parrellel_Processing = $Job_Name
 		[STRING]$Log_DateTime = Get-Date -Format "yyyyMMdd_HHmmss"
 		[String]$Log_File_Type = '.log'
 		[STRING]$Log_File_Name = $Log_Root + $Parrellel_Processing + "_" + $Log_DateTime + $Log_File_Type
@@ -723,14 +730,7 @@ Start-Job -Name Job1 -ScriptBlock {		                                    #<-----
 		Write-Host
 		Write-Host "~ This is the beginning of the Parrellel_Processing script."
 		Write-Host
-
-
-		#---------------------------------------------
-		# If this is the first than create the Alpha_Table_1
-		#   Else sleep for <> seconds
-		#---------------------------------------------
-		Create-Alpha_Table_1                                                 #<----------------------------------------------------------
-		#Start-Sleep -s 1                                                    #<----------------------------------------------------------
+												
 
 		#---------------------------------------------
 		# Destination Connection String
@@ -800,11 +800,11 @@ Start-Job -Name Job1 -ScriptBlock {		                                    #<-----
 				
 				#---------------------------------------------
 				# Extract_Tables Update
-				#---------------------------------------------
+				#---------------------------------------------				
 				$Update_DateTime = Get-Date
 			
 				$Update_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-									SET Extract_Stage = 'Processing'
+									SET Extract_Stage = '$Job_Name'                   
 										, Extract_Stage_DateTime = '$Update_DateTime'
 									WHERE 1 = 1
 										AND Extract_Tables_Key = $Processing_Key"
@@ -816,144 +816,166 @@ Start-Job -Name Job1 -ScriptBlock {		                                    #<-----
 				
 				Write-Host $Update_Extract_Tables
 				
-				
 				#---------------------------------------------
-				# Source Table
-				#---------------------------------------------
-				
-				[STRING]$Source_Table_Qry = "SELECT Source_Table
-										FROM Oa_Extract.Extract_Tables
-										WHERE 1 = 1
-											AND Extract_Tables_Key = $Processing_Key
-														  "                                                                                   
-								$Source_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Source_Table_Qry).Source_Table
-				
-				Write-Host
-				Write-Host $Source_Table_Qry
-				Write-Host "~ Source Table: $Source_Table"
-				
-				#---------------------------------------------
-				# Destination Table
+				# Wait then recheck, if it is the same name then run, else end
 				#---------------------------------------------
 				
-				[STRING]$Dest_Table_Qry = "SELECT Destination_Table
-										FROM Oa_Extract.Extract_Tables
-										WHERE 1 = 1
-											AND Extract_Tables_Key = $Processing_Key
-														  "                                                                                   
-								$Dest_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Table_Qry).Destination_Table
+				Start-Sleep -s $Sleep_Time 
 				
-				Write-Host
-				Write-Host $Dest_Table
-				Write-Host "~ Destination Table: $Dest_Table"
-				
-				
-				#---------------------------------------------
-				# Extract Data
-				#---------------------------------------------
-				
-				Copy-OneAccord_Data -p1 $Source_Table -p2 $Processing_Key
-				
-				
-				#---------------------------------------------
-				# Check If Extract was successful
-				#---------------------------------------------
-				
-				[STRING]$Extract_Success_Qry = "SELECT SUM(Alpha_Result) AS Sum_Alpha_Result
-										FROM Oa_Extract.Alpha_Table_1
-										WHERE 1 = 1
-											AND Alpha_Stage = '$Dest_Table'
-											AND Alpha_Step_Name = 'Stats'
-														  "                                                                                   
-					$Extract_Success_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Extract_Success_Qry).Sum_Alpha_Result
-					
-					[Int]$Extract_Success = [convert]::ToInt32($Extract_Success_Var)
-				
-				Write-Host
-				Write-Host $Extract_Success_Qry
-				Write-Host "~ Extract Success: $Extract_Success"
-				
-				IF ($Extract_Success -gt 0)
-					{
-						#---------------------------------------------
-						# Extract_Tables Update
-						#---------------------------------------------
-						$Update_Complete_DateTime = Get-Date
-					
-						$Update_Complete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-											SET Extract_Stage = 'Complete'
-												, Extract_Stage_DateTime = '$Update_Complete_DateTime'
-											WHERE 1 = 1
-												AND Extract_Tables_Key = $Processing_Key"
+				[STRING]$Processing_Key_Qry2 = "SELECT Extract_Stage
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1 
+													AND Extract_Tables_Key = $Processing_Key
+											"                                                                                   
+					$Extract_Stage = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Processing_Key_Qry2).Extract_Stage
 						
-						Invoke-Sqlcmd `
-							-ServerInstance $Dest_Instance `
-							-Database $Dest_Db `
-							-Query $Update_Complete_Extract_Tables
+				Write-Host
+				Write-Host $Processing_Key_Qry2
+				Write-Host "~ Job Name: $Job_Name"
+				Write-Host "~ Extract_Stage (2): $Extract_Stage"
+				
+				IF($Job_Name -eq $Extract_Stage) 
+					{
+				
+				
+						#---------------------------------------------
+						# Source Table
+						#---------------------------------------------
+						
+						[STRING]$Source_Table_Qry = "SELECT Source_Table
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1
+													AND Extract_Tables_Key = $Processing_Key
+																  "                                                                                   
+										$Source_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Source_Table_Qry).Source_Table
 						
 						Write-Host
-						Write-Host $Update_Complete_Extract_Tables
-						Write-Host "~ Extract_Tables updated to Complete."
-					}
-					ELSE
-					{
-						#---------------------------------------------
-						# Extract_Tables Update
-						#---------------------------------------------
-						$Update_Incomplete_DateTime = Get-Date
-					
-						$Update_Incomplete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-																SET Extract_Stage = 'Incomplete'
-																	, Extract_Stage_DateTime = '$Update_Complete_DateTime'
-																WHERE 1 = 1
-																	AND Extract_Tables_Key = $Processing_Key
-															"
+						Write-Host $Source_Table_Qry
+						Write-Host "~ Source Table: $Source_Table"
 						
-						Invoke-Sqlcmd `
-							-ServerInstance $Dest_Instance `
-							-Database $Dest_Db `
-							-Query $Update_Incomplete_Extract_Tables
+						#---------------------------------------------
+						# Destination Table
+						#---------------------------------------------
+						
+						[STRING]$Dest_Table_Qry = "SELECT Destination_Table
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1
+													AND Extract_Tables_Key = $Processing_Key
+																  "                                                                                   
+										$Dest_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Table_Qry).Destination_Table
 						
 						Write-Host
-						Write-Host $Update_Incomplete_Extract_Tables
-						Write-Host "~ Extract_Tables updated to Incomplete."
+						Write-Host $Dest_Table
+						Write-Host "~ Destination Table: $Dest_Table"
 						
+						
+						#---------------------------------------------
+						# Extract Data
+						#---------------------------------------------
+						
+						Copy-OneAccord_Data -p1 $Source_Table -p2 $Processing_Key
+						
+						
+						#---------------------------------------------
+						# Check If Extract was successful
+						#---------------------------------------------
+						
+						[STRING]$Extract_Success_Qry = "SELECT COUNT(CASE WHEN Alpha_Result = 1 THEN 1 ELSE NULL END) AS Count_Alpha_Result
+												FROM Oa_Extract.Alpha_Table_1
+												WHERE 1 = 1
+													AND Alpha_Stage = '$Dest_Table'
+													AND Alpha_Step_Name = 'Stats'
+																  "                                                                                   
+							$Extract_Success_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Extract_Success_Qry).Count_Alpha_Result
+							
+							[Int]$Extract_Success = [convert]::ToInt32($Extract_Success_Var)
+						
+						Write-Host
+						Write-Host $Extract_Success_Qry
+						Write-Host "~ Extract Success: $Extract_Success"
+						
+						IF ($Extract_Success -gt 0)
+							{
+								#---------------------------------------------
+								# Extract_Tables Update
+								#---------------------------------------------
+								$Update_Complete_DateTime = Get-Date
+							
+								$Update_Complete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+													SET Extract_Stage = 'Complete'
+														, Extract_Stage_DateTime = '$Update_Complete_DateTime'
+													WHERE 1 = 1
+														AND Extract_Tables_Key = $Processing_Key"
+								
+								Invoke-Sqlcmd `
+									-ServerInstance $Dest_Instance `
+									-Database $Dest_Db `
+									-Query $Update_Complete_Extract_Tables
+								
+								Write-Host
+								Write-Host $Update_Complete_Extract_Tables
+								Write-Host "~ Extract_Tables updated to Complete."
+							}
+							ELSE
+							{
+								#---------------------------------------------
+								# Extract_Tables Update
+								#---------------------------------------------
+								$Update_Incomplete_DateTime = Get-Date
+							
+								$Update_Incomplete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+																		SET Extract_Stage = 'Incomplete'
+																			, Extract_Stage_DateTime = '$Update_Complete_DateTime'
+																		WHERE 1 = 1
+																			AND Extract_Tables_Key = $Processing_Key
+																	"
+								
+								Invoke-Sqlcmd `
+									-ServerInstance $Dest_Instance `
+									-Database $Dest_Db `
+									-Query $Update_Incomplete_Extract_Tables
+								
+								Write-Host
+								Write-Host $Update_Incomplete_Extract_Tables
+								Write-Host "~ Extract_Tables updated to Incomplete."
+								
+							}
+						
+						
+						#---------------------------------------------
+						# Tables to Process
+						#---------------------------------------------
+						
+						[STRING]$Tables_To_Process_Qry = "SELECT COUNT(Source_Table) AS Tables_To_Process
+															FROM Oa_Extract.Extract_Tables
+															WHERE 1 = 1 
+																AND (Extract_Stage IS NULL 
+																	OR Extract_Stage = 'Incomplete'
+																	)
+																AND Active = 1
+														"                                                                                   
+							$Tables_To_Process_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Tables_To_Process_Qry).Tables_To_Process
+							
+							[Int]$Tables_To_Process = [convert]::ToInt32($Tables_To_Process_Var)
+						
+						Write-Host
+						Write-Host $Tables_To_Process_Qry
+						Write-Host "~ Tables to Process: $Tables_To_Process"
+						
+						
+						#---------------------------------------------
+						# Current Process Time
+						#---------------------------------------------
+						$Current_Process_DateTime = Get-Date
+						
+						Write-Host 
+						Write-Host "~ Current Process Time: $Current_Process_DateTime"
+						
+						$Total_Processing_Time = New-TimeSpan -Start $Loop_Begin_DateTime -End $Current_Process_DateTime
+						
+						Write-Host 
+						Write-Host "~ Total Processing Time: $Total_Processing_Time"
 					}
-				
-				
-				#---------------------------------------------
-				# Tables to Process
-				#---------------------------------------------
-				
-				[STRING]$Tables_To_Process_Qry = "SELECT COUNT(Source_Table) AS Tables_To_Process
-													FROM Oa_Extract.Extract_Tables
-													WHERE 1 = 1 
-														AND (Extract_Stage IS NULL 
-															OR Extract_Stage = 'Incomplete'
-															)
-														AND Active = 1
-												"                                                                                   
-					$Tables_To_Process_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Tables_To_Process_Qry).Tables_To_Process
-					
-					[Int]$Tables_To_Process = [convert]::ToInt32($Tables_To_Process_Var)
-				
-				Write-Host
-				Write-Host $Tables_To_Process_Qry
-				Write-Host "~ Tables to Process: $Tables_To_Process"
-				
-				
-				#---------------------------------------------
-				# Current Process Time
-				#---------------------------------------------
-				$Current_Process_DateTime = Get-Date
-				
-				Write-Host 
-				Write-Host "~ Current Process Time: $Current_Process_DateTime"
-				
-				$Total_Processing_Time = New-TimeSpan -Start $Loop_Begin_DateTime -End $Current_Process_DateTime
-				
-				Write-Host 
-				Write-Host "~ Total Processing Time: $Total_Processing_Time"
 				
 			
 			} UNTIL ($Tables_To_Process -eq 0 -OR $Total_Processing_Time -gt '00:30:00')
@@ -970,6 +992,7 @@ Start-Job -Name Job1 -ScriptBlock {		                                    #<-----
 		# Stop log
 		#---------------------------------------------
 		Stop-Transcript
+
 	}
 
 Start-Job -Name Job2 -ScriptBlock {		                                    #<----------------------------------------------------------
@@ -1273,7 +1296,7 @@ Start-Job -Name Job2 -ScriptBlock {		                                    #<-----
 				Stop-Transcript
 			
 			}
-
+			
 		FUNCTION Copy-OneAccord_Data
 			{
 				[CmdletBinding(
@@ -1652,19 +1675,26 @@ Start-Job -Name Job2 -ScriptBlock {		                                    #<-----
 					}
 				
 			}
-
-		###################################################################################################
-		#
-		#	Name: PowerShell_ETL_Parrellel_Processing
-		#	Date: 02/26/2018
-		#
-		###################################################################################################
-
+			
 		#---------------------------------------------
 		# Catch Non-Terminating Errors
 		#---------------------------------------------
 		$Old = $ErrorActionPreference
 		$ErrorActionPreference = 'Stop'
+
+
+		#---------------------------------------------
+		# Job Variables
+		#---------------------------------------------
+		[STRING]$Job_Name = "Job2"                                             #<----------------------------------------------------------
+		[INT]$Sleep_Time = 2                                                   #<----------------------------------------------------------
+
+		#---------------------------------------------
+		# If this is the first than create the Alpha_Table_1
+		#   Else sleep
+		#---------------------------------------------
+		#Create-Alpha_Table_1                                                  #<----------------------------------------------------------
+		Start-Sleep -s $Sleep_Time  
 
 		#---------------------------------------------
 		# Log file
@@ -1677,7 +1707,7 @@ Start-Job -Name Job2 -ScriptBlock {		                                    #<-----
 			}
 				
 		[STRING]$Log_Root = $New_Folder_Path + "\PS_Extract_"
-		[STRING]$Parrellel_Processing = "Parrellel_Processing_2_"              #<----------------------------------------------------------
+		[STRING]$Parrellel_Processing = $Job_Name
 		[STRING]$Log_DateTime = Get-Date -Format "yyyyMMdd_HHmmss"
 		[String]$Log_File_Type = '.log'
 		[STRING]$Log_File_Name = $Log_Root + $Parrellel_Processing + "_" + $Log_DateTime + $Log_File_Type
@@ -1687,14 +1717,7 @@ Start-Job -Name Job2 -ScriptBlock {		                                    #<-----
 		Write-Host
 		Write-Host "~ This is the beginning of the Parrellel_Processing script."
 		Write-Host
-
-
-		#---------------------------------------------
-		# If this is the first than create the Alpha_Table_1
-		#   Else sleep for <> seconds
-		#---------------------------------------------
-		#Create-Alpha_Table_1                                                 #<----------------------------------------------------------
-		Start-Sleep -s 5                                                      #<----------------------------------------------------------
+												
 
 		#---------------------------------------------
 		# Destination Connection String
@@ -1764,11 +1787,11 @@ Start-Job -Name Job2 -ScriptBlock {		                                    #<-----
 				
 				#---------------------------------------------
 				# Extract_Tables Update
-				#---------------------------------------------
+				#---------------------------------------------				
 				$Update_DateTime = Get-Date
 			
 				$Update_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-									SET Extract_Stage = 'Processing'
+									SET Extract_Stage = '$Job_Name'                   
 										, Extract_Stage_DateTime = '$Update_DateTime'
 									WHERE 1 = 1
 										AND Extract_Tables_Key = $Processing_Key"
@@ -1780,144 +1803,166 @@ Start-Job -Name Job2 -ScriptBlock {		                                    #<-----
 				
 				Write-Host $Update_Extract_Tables
 				
-				
 				#---------------------------------------------
-				# Source Table
-				#---------------------------------------------
-				
-				[STRING]$Source_Table_Qry = "SELECT Source_Table
-										FROM Oa_Extract.Extract_Tables
-										WHERE 1 = 1
-											AND Extract_Tables_Key = $Processing_Key
-														  "                                                                                   
-								$Source_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Source_Table_Qry).Source_Table
-				
-				Write-Host
-				Write-Host $Source_Table_Qry
-				Write-Host "~ Source Table: $Source_Table"
-				
-				#---------------------------------------------
-				# Destination Table
+				# Wait then recheck, if it is the same name then run, else end
 				#---------------------------------------------
 				
-				[STRING]$Dest_Table_Qry = "SELECT Destination_Table
-										FROM Oa_Extract.Extract_Tables
-										WHERE 1 = 1
-											AND Extract_Tables_Key = $Processing_Key
-														  "                                                                                   
-								$Dest_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Table_Qry).Destination_Table
+				Start-Sleep -s $Sleep_Time 
 				
-				Write-Host
-				Write-Host $Dest_Table
-				Write-Host "~ Destination Table: $Dest_Table"
-				
-				
-				#---------------------------------------------
-				# Extract Data
-				#---------------------------------------------
-				
-				Copy-OneAccord_Data -p1 $Source_Table -p2 $Processing_Key
-				
-				
-				#---------------------------------------------
-				# Check If Extract was successful
-				#---------------------------------------------
-				
-				[STRING]$Extract_Success_Qry = "SELECT SUM(Alpha_Result) AS Sum_Alpha_Result
-										FROM Oa_Extract.Alpha_Table_1
-										WHERE 1 = 1
-											AND Alpha_Stage = '$Dest_Table'
-											AND Alpha_Step_Name = 'Stats'
-														  "                                                                                   
-					$Extract_Success_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Extract_Success_Qry).Sum_Alpha_Result
-					
-					[Int]$Extract_Success = [convert]::ToInt32($Extract_Success_Var)
-				
-				Write-Host
-				Write-Host $Extract_Success_Qry
-				Write-Host "~ Extract Success: $Extract_Success"
-				
-				IF ($Extract_Success -gt 0)
-					{
-						#---------------------------------------------
-						# Extract_Tables Update
-						#---------------------------------------------
-						$Update_Complete_DateTime = Get-Date
-					
-						$Update_Complete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-											SET Extract_Stage = 'Complete'
-												, Extract_Stage_DateTime = '$Update_Complete_DateTime'
-											WHERE 1 = 1
-												AND Extract_Tables_Key = $Processing_Key"
+				[STRING]$Processing_Key_Qry2 = "SELECT Extract_Stage
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1 
+													AND Extract_Tables_Key = $Processing_Key
+											"                                                                                   
+					$Extract_Stage = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Processing_Key_Qry2).Extract_Stage
 						
-						Invoke-Sqlcmd `
-							-ServerInstance $Dest_Instance `
-							-Database $Dest_Db `
-							-Query $Update_Complete_Extract_Tables
+				Write-Host
+				Write-Host $Processing_Key_Qry2
+				Write-Host "~ Job Name: $Job_Name"
+				Write-Host "~ Extract_Stage (2): $Extract_Stage"
+				
+				IF($Job_Name -eq $Extract_Stage) 
+					{
+				
+				
+						#---------------------------------------------
+						# Source Table
+						#---------------------------------------------
+						
+						[STRING]$Source_Table_Qry = "SELECT Source_Table
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1
+													AND Extract_Tables_Key = $Processing_Key
+																  "                                                                                   
+										$Source_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Source_Table_Qry).Source_Table
 						
 						Write-Host
-						Write-Host $Update_Complete_Extract_Tables
-						Write-Host "~ Extract_Tables updated to Complete."
-					}
-					ELSE
-					{
-						#---------------------------------------------
-						# Extract_Tables Update
-						#---------------------------------------------
-						$Update_Incomplete_DateTime = Get-Date
-					
-						$Update_Incomplete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-																SET Extract_Stage = 'Incomplete'
-																	, Extract_Stage_DateTime = '$Update_Complete_DateTime'
-																WHERE 1 = 1
-																	AND Extract_Tables_Key = $Processing_Key
-															"
+						Write-Host $Source_Table_Qry
+						Write-Host "~ Source Table: $Source_Table"
 						
-						Invoke-Sqlcmd `
-							-ServerInstance $Dest_Instance `
-							-Database $Dest_Db `
-							-Query $Update_Incomplete_Extract_Tables
+						#---------------------------------------------
+						# Destination Table
+						#---------------------------------------------
+						
+						[STRING]$Dest_Table_Qry = "SELECT Destination_Table
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1
+													AND Extract_Tables_Key = $Processing_Key
+																  "                                                                                   
+										$Dest_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Table_Qry).Destination_Table
 						
 						Write-Host
-						Write-Host $Update_Incomplete_Extract_Tables
-						Write-Host "~ Extract_Tables updated to Incomplete."
+						Write-Host $Dest_Table
+						Write-Host "~ Destination Table: $Dest_Table"
 						
+						
+						#---------------------------------------------
+						# Extract Data
+						#---------------------------------------------
+						
+						Copy-OneAccord_Data -p1 $Source_Table -p2 $Processing_Key
+						
+						
+						#---------------------------------------------
+						# Check If Extract was successful
+						#---------------------------------------------
+						
+						[STRING]$Extract_Success_Qry = "SELECT COUNT(CASE WHEN Alpha_Result = 1 THEN 1 ELSE NULL END) AS Count_Alpha_Result
+												FROM Oa_Extract.Alpha_Table_1
+												WHERE 1 = 1
+													AND Alpha_Stage = '$Dest_Table'
+													AND Alpha_Step_Name = 'Stats'
+																  "                                                                                   
+							$Extract_Success_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Extract_Success_Qry).Count_Alpha_Result
+							
+							[Int]$Extract_Success = [convert]::ToInt32($Extract_Success_Var)
+						
+						Write-Host
+						Write-Host $Extract_Success_Qry
+						Write-Host "~ Extract Success: $Extract_Success"
+						
+						IF ($Extract_Success -gt 0)
+							{
+								#---------------------------------------------
+								# Extract_Tables Update
+								#---------------------------------------------
+								$Update_Complete_DateTime = Get-Date
+							
+								$Update_Complete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+													SET Extract_Stage = 'Complete'
+														, Extract_Stage_DateTime = '$Update_Complete_DateTime'
+													WHERE 1 = 1
+														AND Extract_Tables_Key = $Processing_Key"
+								
+								Invoke-Sqlcmd `
+									-ServerInstance $Dest_Instance `
+									-Database $Dest_Db `
+									-Query $Update_Complete_Extract_Tables
+								
+								Write-Host
+								Write-Host $Update_Complete_Extract_Tables
+								Write-Host "~ Extract_Tables updated to Complete."
+							}
+							ELSE
+							{
+								#---------------------------------------------
+								# Extract_Tables Update
+								#---------------------------------------------
+								$Update_Incomplete_DateTime = Get-Date
+							
+								$Update_Incomplete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+																		SET Extract_Stage = 'Incomplete'
+																			, Extract_Stage_DateTime = '$Update_Complete_DateTime'
+																		WHERE 1 = 1
+																			AND Extract_Tables_Key = $Processing_Key
+																	"
+								
+								Invoke-Sqlcmd `
+									-ServerInstance $Dest_Instance `
+									-Database $Dest_Db `
+									-Query $Update_Incomplete_Extract_Tables
+								
+								Write-Host
+								Write-Host $Update_Incomplete_Extract_Tables
+								Write-Host "~ Extract_Tables updated to Incomplete."
+								
+							}
+						
+						
+						#---------------------------------------------
+						# Tables to Process
+						#---------------------------------------------
+						
+						[STRING]$Tables_To_Process_Qry = "SELECT COUNT(Source_Table) AS Tables_To_Process
+															FROM Oa_Extract.Extract_Tables
+															WHERE 1 = 1 
+																AND (Extract_Stage IS NULL 
+																	OR Extract_Stage = 'Incomplete'
+																	)
+																AND Active = 1
+														"                                                                                   
+							$Tables_To_Process_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Tables_To_Process_Qry).Tables_To_Process
+							
+							[Int]$Tables_To_Process = [convert]::ToInt32($Tables_To_Process_Var)
+						
+						Write-Host
+						Write-Host $Tables_To_Process_Qry
+						Write-Host "~ Tables to Process: $Tables_To_Process"
+						
+						
+						#---------------------------------------------
+						# Current Process Time
+						#---------------------------------------------
+						$Current_Process_DateTime = Get-Date
+						
+						Write-Host 
+						Write-Host "~ Current Process Time: $Current_Process_DateTime"
+						
+						$Total_Processing_Time = New-TimeSpan -Start $Loop_Begin_DateTime -End $Current_Process_DateTime
+						
+						Write-Host 
+						Write-Host "~ Total Processing Time: $Total_Processing_Time"
 					}
-				
-				
-				#---------------------------------------------
-				# Tables to Process
-				#---------------------------------------------
-				
-				[STRING]$Tables_To_Process_Qry = "SELECT COUNT(Source_Table) AS Tables_To_Process
-													FROM Oa_Extract.Extract_Tables
-													WHERE 1 = 1 
-														AND (Extract_Stage IS NULL 
-															OR Extract_Stage = 'Incomplete'
-															)
-														AND Active = 1
-												"                                                                                   
-					$Tables_To_Process_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Tables_To_Process_Qry).Tables_To_Process
-					
-					[Int]$Tables_To_Process = [convert]::ToInt32($Tables_To_Process_Var)
-				
-				Write-Host
-				Write-Host $Tables_To_Process_Qry
-				Write-Host "~ Tables to Process: $Tables_To_Process"
-				
-				
-				#---------------------------------------------
-				# Current Process Time
-				#---------------------------------------------
-				$Current_Process_DateTime = Get-Date
-				
-				Write-Host 
-				Write-Host "~ Current Process Time: $Current_Process_DateTime"
-				
-				$Total_Processing_Time = New-TimeSpan -Start $Loop_Begin_DateTime -End $Current_Process_DateTime
-				
-				Write-Host 
-				Write-Host "~ Total Processing Time: $Total_Processing_Time"
 				
 			
 			} UNTIL ($Tables_To_Process -eq 0 -OR $Total_Processing_Time -gt '00:30:00')
@@ -1934,8 +1979,8 @@ Start-Job -Name Job2 -ScriptBlock {		                                    #<-----
 		# Stop log
 		#---------------------------------------------
 		Stop-Transcript
-	}	
 
+	}
 
 Start-Job -Name Job3 -ScriptBlock {		                                    #<----------------------------------------------------------
 		FUNCTION Insert-Alpha_Table_1
@@ -2238,7 +2283,7 @@ Start-Job -Name Job3 -ScriptBlock {		                                    #<-----
 				Stop-Transcript
 			
 			}
-
+			
 		FUNCTION Copy-OneAccord_Data
 			{
 				[CmdletBinding(
@@ -2617,19 +2662,26 @@ Start-Job -Name Job3 -ScriptBlock {		                                    #<-----
 					}
 				
 			}
-
-		###################################################################################################
-		#
-		#	Name: PowerShell_ETL_Parrellel_Processing
-		#	Date: 02/26/2018
-		#
-		###################################################################################################
-
+			
 		#---------------------------------------------
 		# Catch Non-Terminating Errors
 		#---------------------------------------------
 		$Old = $ErrorActionPreference
 		$ErrorActionPreference = 'Stop'
+
+
+		#---------------------------------------------
+		# Job Variables
+		#---------------------------------------------
+		[STRING]$Job_Name = "Job3"                                             #<----------------------------------------------------------
+		[INT]$Sleep_Time = 3                                                   #<----------------------------------------------------------
+
+		#---------------------------------------------
+		# If this is the first than create the Alpha_Table_1
+		#   Else sleep
+		#---------------------------------------------
+		#Create-Alpha_Table_1                                                  #<----------------------------------------------------------
+		Start-Sleep -s $Sleep_Time  
 
 		#---------------------------------------------
 		# Log file
@@ -2642,7 +2694,7 @@ Start-Job -Name Job3 -ScriptBlock {		                                    #<-----
 			}
 				
 		[STRING]$Log_Root = $New_Folder_Path + "\PS_Extract_"
-		[STRING]$Parrellel_Processing = "Parrellel_Processing_3_"              #<----------------------------------------------------------
+		[STRING]$Parrellel_Processing = $Job_Name
 		[STRING]$Log_DateTime = Get-Date -Format "yyyyMMdd_HHmmss"
 		[String]$Log_File_Type = '.log'
 		[STRING]$Log_File_Name = $Log_Root + $Parrellel_Processing + "_" + $Log_DateTime + $Log_File_Type
@@ -2652,14 +2704,7 @@ Start-Job -Name Job3 -ScriptBlock {		                                    #<-----
 		Write-Host
 		Write-Host "~ This is the beginning of the Parrellel_Processing script."
 		Write-Host
-
-
-		#---------------------------------------------
-		# If this is the first than create the Alpha_Table_1
-		#   Else sleep for <> seconds
-		#---------------------------------------------
-		#Create-Alpha_Table_1                                                 #<----------------------------------------------------------
-		Start-Sleep -s 6                                                      #<----------------------------------------------------------
+												
 
 		#---------------------------------------------
 		# Destination Connection String
@@ -2729,11 +2774,11 @@ Start-Job -Name Job3 -ScriptBlock {		                                    #<-----
 				
 				#---------------------------------------------
 				# Extract_Tables Update
-				#---------------------------------------------
+				#---------------------------------------------				
 				$Update_DateTime = Get-Date
 			
 				$Update_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-									SET Extract_Stage = 'Processing'
+									SET Extract_Stage = '$Job_Name'                   
 										, Extract_Stage_DateTime = '$Update_DateTime'
 									WHERE 1 = 1
 										AND Extract_Tables_Key = $Processing_Key"
@@ -2745,144 +2790,166 @@ Start-Job -Name Job3 -ScriptBlock {		                                    #<-----
 				
 				Write-Host $Update_Extract_Tables
 				
-				
 				#---------------------------------------------
-				# Source Table
-				#---------------------------------------------
-				
-				[STRING]$Source_Table_Qry = "SELECT Source_Table
-										FROM Oa_Extract.Extract_Tables
-										WHERE 1 = 1
-											AND Extract_Tables_Key = $Processing_Key
-														  "                                                                                   
-								$Source_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Source_Table_Qry).Source_Table
-				
-				Write-Host
-				Write-Host $Source_Table_Qry
-				Write-Host "~ Source Table: $Source_Table"
-				
-				#---------------------------------------------
-				# Destination Table
+				# Wait then recheck, if it is the same name then run, else end
 				#---------------------------------------------
 				
-				[STRING]$Dest_Table_Qry = "SELECT Destination_Table
-										FROM Oa_Extract.Extract_Tables
-										WHERE 1 = 1
-											AND Extract_Tables_Key = $Processing_Key
-														  "                                                                                   
-								$Dest_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Table_Qry).Destination_Table
+				Start-Sleep -s $Sleep_Time 
 				
-				Write-Host
-				Write-Host $Dest_Table
-				Write-Host "~ Destination Table: $Dest_Table"
-				
-				
-				#---------------------------------------------
-				# Extract Data
-				#---------------------------------------------
-				
-				Copy-OneAccord_Data -p1 $Source_Table -p2 $Processing_Key
-				
-				
-				#---------------------------------------------
-				# Check If Extract was successful
-				#---------------------------------------------
-				
-				[STRING]$Extract_Success_Qry = "SELECT SUM(Alpha_Result) AS Sum_Alpha_Result
-										FROM Oa_Extract.Alpha_Table_1
-										WHERE 1 = 1
-											AND Alpha_Stage = '$Dest_Table'
-											AND Alpha_Step_Name = 'Stats'
-														  "                                                                                   
-					$Extract_Success_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Extract_Success_Qry).Sum_Alpha_Result
-					
-					[Int]$Extract_Success = [convert]::ToInt32($Extract_Success_Var)
-				
-				Write-Host
-				Write-Host $Extract_Success_Qry
-				Write-Host "~ Extract Success: $Extract_Success"
-				
-				IF ($Extract_Success -gt 0)
-					{
-						#---------------------------------------------
-						# Extract_Tables Update
-						#---------------------------------------------
-						$Update_Complete_DateTime = Get-Date
-					
-						$Update_Complete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-											SET Extract_Stage = 'Complete'
-												, Extract_Stage_DateTime = '$Update_Complete_DateTime'
-											WHERE 1 = 1
-												AND Extract_Tables_Key = $Processing_Key"
+				[STRING]$Processing_Key_Qry2 = "SELECT Extract_Stage
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1 
+													AND Extract_Tables_Key = $Processing_Key
+											"                                                                                   
+					$Extract_Stage = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Processing_Key_Qry2).Extract_Stage
 						
-						Invoke-Sqlcmd `
-							-ServerInstance $Dest_Instance `
-							-Database $Dest_Db `
-							-Query $Update_Complete_Extract_Tables
+				Write-Host
+				Write-Host $Processing_Key_Qry2
+				Write-Host "~ Job Name: $Job_Name"
+				Write-Host "~ Extract_Stage (2): $Extract_Stage"
+				
+				IF($Job_Name -eq $Extract_Stage) 
+					{
+				
+				
+						#---------------------------------------------
+						# Source Table
+						#---------------------------------------------
+						
+						[STRING]$Source_Table_Qry = "SELECT Source_Table
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1
+													AND Extract_Tables_Key = $Processing_Key
+																  "                                                                                   
+										$Source_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Source_Table_Qry).Source_Table
 						
 						Write-Host
-						Write-Host $Update_Complete_Extract_Tables
-						Write-Host "~ Extract_Tables updated to Complete."
-					}
-					ELSE
-					{
-						#---------------------------------------------
-						# Extract_Tables Update
-						#---------------------------------------------
-						$Update_Incomplete_DateTime = Get-Date
-					
-						$Update_Incomplete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-																SET Extract_Stage = 'Incomplete'
-																	, Extract_Stage_DateTime = '$Update_Complete_DateTime'
-																WHERE 1 = 1
-																	AND Extract_Tables_Key = $Processing_Key
-															"
+						Write-Host $Source_Table_Qry
+						Write-Host "~ Source Table: $Source_Table"
 						
-						Invoke-Sqlcmd `
-							-ServerInstance $Dest_Instance `
-							-Database $Dest_Db `
-							-Query $Update_Incomplete_Extract_Tables
+						#---------------------------------------------
+						# Destination Table
+						#---------------------------------------------
+						
+						[STRING]$Dest_Table_Qry = "SELECT Destination_Table
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1
+													AND Extract_Tables_Key = $Processing_Key
+																  "                                                                                   
+										$Dest_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Table_Qry).Destination_Table
 						
 						Write-Host
-						Write-Host $Update_Incomplete_Extract_Tables
-						Write-Host "~ Extract_Tables updated to Incomplete."
+						Write-Host $Dest_Table
+						Write-Host "~ Destination Table: $Dest_Table"
 						
+						
+						#---------------------------------------------
+						# Extract Data
+						#---------------------------------------------
+						
+						Copy-OneAccord_Data -p1 $Source_Table -p2 $Processing_Key
+						
+						
+						#---------------------------------------------
+						# Check If Extract was successful
+						#---------------------------------------------
+						
+						[STRING]$Extract_Success_Qry = "SELECT COUNT(CASE WHEN Alpha_Result = 1 THEN 1 ELSE NULL END) AS Count_Alpha_Result
+												FROM Oa_Extract.Alpha_Table_1
+												WHERE 1 = 1
+													AND Alpha_Stage = '$Dest_Table'
+													AND Alpha_Step_Name = 'Stats'
+																  "                                                                                   
+							$Extract_Success_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Extract_Success_Qry).Count_Alpha_Result
+							
+							[Int]$Extract_Success = [convert]::ToInt32($Extract_Success_Var)
+						
+						Write-Host
+						Write-Host $Extract_Success_Qry
+						Write-Host "~ Extract Success: $Extract_Success"
+						
+						IF ($Extract_Success -gt 0)
+							{
+								#---------------------------------------------
+								# Extract_Tables Update
+								#---------------------------------------------
+								$Update_Complete_DateTime = Get-Date
+							
+								$Update_Complete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+													SET Extract_Stage = 'Complete'
+														, Extract_Stage_DateTime = '$Update_Complete_DateTime'
+													WHERE 1 = 1
+														AND Extract_Tables_Key = $Processing_Key"
+								
+								Invoke-Sqlcmd `
+									-ServerInstance $Dest_Instance `
+									-Database $Dest_Db `
+									-Query $Update_Complete_Extract_Tables
+								
+								Write-Host
+								Write-Host $Update_Complete_Extract_Tables
+								Write-Host "~ Extract_Tables updated to Complete."
+							}
+							ELSE
+							{
+								#---------------------------------------------
+								# Extract_Tables Update
+								#---------------------------------------------
+								$Update_Incomplete_DateTime = Get-Date
+							
+								$Update_Incomplete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+																		SET Extract_Stage = 'Incomplete'
+																			, Extract_Stage_DateTime = '$Update_Complete_DateTime'
+																		WHERE 1 = 1
+																			AND Extract_Tables_Key = $Processing_Key
+																	"
+								
+								Invoke-Sqlcmd `
+									-ServerInstance $Dest_Instance `
+									-Database $Dest_Db `
+									-Query $Update_Incomplete_Extract_Tables
+								
+								Write-Host
+								Write-Host $Update_Incomplete_Extract_Tables
+								Write-Host "~ Extract_Tables updated to Incomplete."
+								
+							}
+						
+						
+						#---------------------------------------------
+						# Tables to Process
+						#---------------------------------------------
+						
+						[STRING]$Tables_To_Process_Qry = "SELECT COUNT(Source_Table) AS Tables_To_Process
+															FROM Oa_Extract.Extract_Tables
+															WHERE 1 = 1 
+																AND (Extract_Stage IS NULL 
+																	OR Extract_Stage = 'Incomplete'
+																	)
+																AND Active = 1
+														"                                                                                   
+							$Tables_To_Process_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Tables_To_Process_Qry).Tables_To_Process
+							
+							[Int]$Tables_To_Process = [convert]::ToInt32($Tables_To_Process_Var)
+						
+						Write-Host
+						Write-Host $Tables_To_Process_Qry
+						Write-Host "~ Tables to Process: $Tables_To_Process"
+						
+						
+						#---------------------------------------------
+						# Current Process Time
+						#---------------------------------------------
+						$Current_Process_DateTime = Get-Date
+						
+						Write-Host 
+						Write-Host "~ Current Process Time: $Current_Process_DateTime"
+						
+						$Total_Processing_Time = New-TimeSpan -Start $Loop_Begin_DateTime -End $Current_Process_DateTime
+						
+						Write-Host 
+						Write-Host "~ Total Processing Time: $Total_Processing_Time"
 					}
-				
-				
-				#---------------------------------------------
-				# Tables to Process
-				#---------------------------------------------
-				
-				[STRING]$Tables_To_Process_Qry = "SELECT COUNT(Source_Table) AS Tables_To_Process
-													FROM Oa_Extract.Extract_Tables
-													WHERE 1 = 1 
-														AND (Extract_Stage IS NULL 
-															OR Extract_Stage = 'Incomplete'
-															)
-														AND Active = 1
-												"                                                                                   
-					$Tables_To_Process_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Tables_To_Process_Qry).Tables_To_Process
-					
-					[Int]$Tables_To_Process = [convert]::ToInt32($Tables_To_Process_Var)
-				
-				Write-Host
-				Write-Host $Tables_To_Process_Qry
-				Write-Host "~ Tables to Process: $Tables_To_Process"
-				
-				
-				#---------------------------------------------
-				# Current Process Time
-				#---------------------------------------------
-				$Current_Process_DateTime = Get-Date
-				
-				Write-Host 
-				Write-Host "~ Current Process Time: $Current_Process_DateTime"
-				
-				$Total_Processing_Time = New-TimeSpan -Start $Loop_Begin_DateTime -End $Current_Process_DateTime
-				
-				Write-Host 
-				Write-Host "~ Total Processing Time: $Total_Processing_Time"
 				
 			
 			} UNTIL ($Tables_To_Process -eq 0 -OR $Total_Processing_Time -gt '00:30:00')
@@ -2899,7 +2966,8 @@ Start-Job -Name Job3 -ScriptBlock {		                                    #<-----
 		# Stop log
 		#---------------------------------------------
 		Stop-Transcript
-	}	
+
+	}
 
 Start-Job -Name Job4 -ScriptBlock {		                                    #<----------------------------------------------------------
 		FUNCTION Insert-Alpha_Table_1
@@ -3202,7 +3270,7 @@ Start-Job -Name Job4 -ScriptBlock {		                                    #<-----
 				Stop-Transcript
 			
 			}
-
+			
 		FUNCTION Copy-OneAccord_Data
 			{
 				[CmdletBinding(
@@ -3581,19 +3649,26 @@ Start-Job -Name Job4 -ScriptBlock {		                                    #<-----
 					}
 				
 			}
-
-		###################################################################################################
-		#
-		#	Name: PowerShell_ETL_Parrellel_Processing
-		#	Date: 02/26/2018
-		#
-		###################################################################################################
-
+			
 		#---------------------------------------------
 		# Catch Non-Terminating Errors
 		#---------------------------------------------
 		$Old = $ErrorActionPreference
 		$ErrorActionPreference = 'Stop'
+
+
+		#---------------------------------------------
+		# Job Variables
+		#---------------------------------------------
+		[STRING]$Job_Name = "Job4"                                             #<----------------------------------------------------------
+		[INT]$Sleep_Time = 4                                                   #<----------------------------------------------------------
+
+		#---------------------------------------------
+		# If this is the first than create the Alpha_Table_1
+		#   Else sleep
+		#---------------------------------------------
+		#Create-Alpha_Table_1                                                  #<----------------------------------------------------------
+		Start-Sleep -s $Sleep_Time  
 
 		#---------------------------------------------
 		# Log file
@@ -3606,7 +3681,7 @@ Start-Job -Name Job4 -ScriptBlock {		                                    #<-----
 			}
 				
 		[STRING]$Log_Root = $New_Folder_Path + "\PS_Extract_"
-		[STRING]$Parrellel_Processing = "Parrellel_Processing_4_"              #<----------------------------------------------------------
+		[STRING]$Parrellel_Processing = $Job_Name
 		[STRING]$Log_DateTime = Get-Date -Format "yyyyMMdd_HHmmss"
 		[String]$Log_File_Type = '.log'
 		[STRING]$Log_File_Name = $Log_Root + $Parrellel_Processing + "_" + $Log_DateTime + $Log_File_Type
@@ -3616,14 +3691,7 @@ Start-Job -Name Job4 -ScriptBlock {		                                    #<-----
 		Write-Host
 		Write-Host "~ This is the beginning of the Parrellel_Processing script."
 		Write-Host
-
-
-		#---------------------------------------------
-		# If this is the first than create the Alpha_Table_1
-		#   Else sleep for <> seconds
-		#---------------------------------------------
-		#Create-Alpha_Table_1                                                 #<----------------------------------------------------------
-		Start-Sleep -s 7                                                      #<----------------------------------------------------------
+												
 
 		#---------------------------------------------
 		# Destination Connection String
@@ -3693,11 +3761,11 @@ Start-Job -Name Job4 -ScriptBlock {		                                    #<-----
 				
 				#---------------------------------------------
 				# Extract_Tables Update
-				#---------------------------------------------
+				#---------------------------------------------				
 				$Update_DateTime = Get-Date
 			
 				$Update_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-									SET Extract_Stage = 'Processing'
+									SET Extract_Stage = '$Job_Name'                   
 										, Extract_Stage_DateTime = '$Update_DateTime'
 									WHERE 1 = 1
 										AND Extract_Tables_Key = $Processing_Key"
@@ -3709,144 +3777,166 @@ Start-Job -Name Job4 -ScriptBlock {		                                    #<-----
 				
 				Write-Host $Update_Extract_Tables
 				
-				
 				#---------------------------------------------
-				# Source Table
-				#---------------------------------------------
-				
-				[STRING]$Source_Table_Qry = "SELECT Source_Table
-										FROM Oa_Extract.Extract_Tables
-										WHERE 1 = 1
-											AND Extract_Tables_Key = $Processing_Key
-														  "                                                                                   
-								$Source_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Source_Table_Qry).Source_Table
-				
-				Write-Host
-				Write-Host $Source_Table_Qry
-				Write-Host "~ Source Table: $Source_Table"
-				
-				#---------------------------------------------
-				# Destination Table
+				# Wait then recheck, if it is the same name then run, else end
 				#---------------------------------------------
 				
-				[STRING]$Dest_Table_Qry = "SELECT Destination_Table
-										FROM Oa_Extract.Extract_Tables
-										WHERE 1 = 1
-											AND Extract_Tables_Key = $Processing_Key
-														  "                                                                                   
-								$Dest_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Table_Qry).Destination_Table
+				Start-Sleep -s $Sleep_Time 
 				
-				Write-Host
-				Write-Host $Dest_Table
-				Write-Host "~ Destination Table: $Dest_Table"
-				
-				
-				#---------------------------------------------
-				# Extract Data
-				#---------------------------------------------
-				
-				Copy-OneAccord_Data -p1 $Source_Table -p2 $Processing_Key
-				
-				
-				#---------------------------------------------
-				# Check If Extract was successful
-				#---------------------------------------------
-				
-				[STRING]$Extract_Success_Qry = "SELECT SUM(Alpha_Result) AS Sum_Alpha_Result
-										FROM Oa_Extract.Alpha_Table_1
-										WHERE 1 = 1
-											AND Alpha_Stage = '$Dest_Table'
-											AND Alpha_Step_Name = 'Stats'
-														  "                                                                                   
-					$Extract_Success_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Extract_Success_Qry).Sum_Alpha_Result
-					
-					[Int]$Extract_Success = [convert]::ToInt32($Extract_Success_Var)
-				
-				Write-Host
-				Write-Host $Extract_Success_Qry
-				Write-Host "~ Extract Success: $Extract_Success"
-				
-				IF ($Extract_Success -gt 0)
-					{
-						#---------------------------------------------
-						# Extract_Tables Update
-						#---------------------------------------------
-						$Update_Complete_DateTime = Get-Date
-					
-						$Update_Complete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-											SET Extract_Stage = 'Complete'
-												, Extract_Stage_DateTime = '$Update_Complete_DateTime'
-											WHERE 1 = 1
-												AND Extract_Tables_Key = $Processing_Key"
+				[STRING]$Processing_Key_Qry2 = "SELECT Extract_Stage
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1 
+													AND Extract_Tables_Key = $Processing_Key
+											"                                                                                   
+					$Extract_Stage = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Processing_Key_Qry2).Extract_Stage
 						
-						Invoke-Sqlcmd `
-							-ServerInstance $Dest_Instance `
-							-Database $Dest_Db `
-							-Query $Update_Complete_Extract_Tables
+				Write-Host
+				Write-Host $Processing_Key_Qry2
+				Write-Host "~ Job Name: $Job_Name"
+				Write-Host "~ Extract_Stage (2): $Extract_Stage"
+				
+				IF($Job_Name -eq $Extract_Stage) 
+					{
+				
+				
+						#---------------------------------------------
+						# Source Table
+						#---------------------------------------------
+						
+						[STRING]$Source_Table_Qry = "SELECT Source_Table
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1
+													AND Extract_Tables_Key = $Processing_Key
+																  "                                                                                   
+										$Source_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Source_Table_Qry).Source_Table
 						
 						Write-Host
-						Write-Host $Update_Complete_Extract_Tables
-						Write-Host "~ Extract_Tables updated to Complete."
-					}
-					ELSE
-					{
-						#---------------------------------------------
-						# Extract_Tables Update
-						#---------------------------------------------
-						$Update_Incomplete_DateTime = Get-Date
-					
-						$Update_Incomplete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-																SET Extract_Stage = 'Incomplete'
-																	, Extract_Stage_DateTime = '$Update_Complete_DateTime'
-																WHERE 1 = 1
-																	AND Extract_Tables_Key = $Processing_Key
-															"
+						Write-Host $Source_Table_Qry
+						Write-Host "~ Source Table: $Source_Table"
 						
-						Invoke-Sqlcmd `
-							-ServerInstance $Dest_Instance `
-							-Database $Dest_Db `
-							-Query $Update_Incomplete_Extract_Tables
+						#---------------------------------------------
+						# Destination Table
+						#---------------------------------------------
+						
+						[STRING]$Dest_Table_Qry = "SELECT Destination_Table
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1
+													AND Extract_Tables_Key = $Processing_Key
+																  "                                                                                   
+										$Dest_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Table_Qry).Destination_Table
 						
 						Write-Host
-						Write-Host $Update_Incomplete_Extract_Tables
-						Write-Host "~ Extract_Tables updated to Incomplete."
+						Write-Host $Dest_Table
+						Write-Host "~ Destination Table: $Dest_Table"
 						
+						
+						#---------------------------------------------
+						# Extract Data
+						#---------------------------------------------
+						
+						Copy-OneAccord_Data -p1 $Source_Table -p2 $Processing_Key
+						
+						
+						#---------------------------------------------
+						# Check If Extract was successful
+						#---------------------------------------------
+						
+						[STRING]$Extract_Success_Qry = "SELECT COUNT(CASE WHEN Alpha_Result = 1 THEN 1 ELSE NULL END) AS Count_Alpha_Result
+												FROM Oa_Extract.Alpha_Table_1
+												WHERE 1 = 1
+													AND Alpha_Stage = '$Dest_Table'
+													AND Alpha_Step_Name = 'Stats'
+																  "                                                                                   
+							$Extract_Success_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Extract_Success_Qry).Count_Alpha_Result
+							
+							[Int]$Extract_Success = [convert]::ToInt32($Extract_Success_Var)
+						
+						Write-Host
+						Write-Host $Extract_Success_Qry
+						Write-Host "~ Extract Success: $Extract_Success"
+						
+						IF ($Extract_Success -gt 0)
+							{
+								#---------------------------------------------
+								# Extract_Tables Update
+								#---------------------------------------------
+								$Update_Complete_DateTime = Get-Date
+							
+								$Update_Complete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+													SET Extract_Stage = 'Complete'
+														, Extract_Stage_DateTime = '$Update_Complete_DateTime'
+													WHERE 1 = 1
+														AND Extract_Tables_Key = $Processing_Key"
+								
+								Invoke-Sqlcmd `
+									-ServerInstance $Dest_Instance `
+									-Database $Dest_Db `
+									-Query $Update_Complete_Extract_Tables
+								
+								Write-Host
+								Write-Host $Update_Complete_Extract_Tables
+								Write-Host "~ Extract_Tables updated to Complete."
+							}
+							ELSE
+							{
+								#---------------------------------------------
+								# Extract_Tables Update
+								#---------------------------------------------
+								$Update_Incomplete_DateTime = Get-Date
+							
+								$Update_Incomplete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+																		SET Extract_Stage = 'Incomplete'
+																			, Extract_Stage_DateTime = '$Update_Complete_DateTime'
+																		WHERE 1 = 1
+																			AND Extract_Tables_Key = $Processing_Key
+																	"
+								
+								Invoke-Sqlcmd `
+									-ServerInstance $Dest_Instance `
+									-Database $Dest_Db `
+									-Query $Update_Incomplete_Extract_Tables
+								
+								Write-Host
+								Write-Host $Update_Incomplete_Extract_Tables
+								Write-Host "~ Extract_Tables updated to Incomplete."
+								
+							}
+						
+						
+						#---------------------------------------------
+						# Tables to Process
+						#---------------------------------------------
+						
+						[STRING]$Tables_To_Process_Qry = "SELECT COUNT(Source_Table) AS Tables_To_Process
+															FROM Oa_Extract.Extract_Tables
+															WHERE 1 = 1 
+																AND (Extract_Stage IS NULL 
+																	OR Extract_Stage = 'Incomplete'
+																	)
+																AND Active = 1
+														"                                                                                   
+							$Tables_To_Process_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Tables_To_Process_Qry).Tables_To_Process
+							
+							[Int]$Tables_To_Process = [convert]::ToInt32($Tables_To_Process_Var)
+						
+						Write-Host
+						Write-Host $Tables_To_Process_Qry
+						Write-Host "~ Tables to Process: $Tables_To_Process"
+						
+						
+						#---------------------------------------------
+						# Current Process Time
+						#---------------------------------------------
+						$Current_Process_DateTime = Get-Date
+						
+						Write-Host 
+						Write-Host "~ Current Process Time: $Current_Process_DateTime"
+						
+						$Total_Processing_Time = New-TimeSpan -Start $Loop_Begin_DateTime -End $Current_Process_DateTime
+						
+						Write-Host 
+						Write-Host "~ Total Processing Time: $Total_Processing_Time"
 					}
-				
-				
-				#---------------------------------------------
-				# Tables to Process
-				#---------------------------------------------
-				
-				[STRING]$Tables_To_Process_Qry = "SELECT COUNT(Source_Table) AS Tables_To_Process
-													FROM Oa_Extract.Extract_Tables
-													WHERE 1 = 1 
-														AND (Extract_Stage IS NULL 
-															OR Extract_Stage = 'Incomplete'
-															)
-														AND Active = 1
-												"                                                                                   
-					$Tables_To_Process_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Tables_To_Process_Qry).Tables_To_Process
-					
-					[Int]$Tables_To_Process = [convert]::ToInt32($Tables_To_Process_Var)
-				
-				Write-Host
-				Write-Host $Tables_To_Process_Qry
-				Write-Host "~ Tables to Process: $Tables_To_Process"
-				
-				
-				#---------------------------------------------
-				# Current Process Time
-				#---------------------------------------------
-				$Current_Process_DateTime = Get-Date
-				
-				Write-Host 
-				Write-Host "~ Current Process Time: $Current_Process_DateTime"
-				
-				$Total_Processing_Time = New-TimeSpan -Start $Loop_Begin_DateTime -End $Current_Process_DateTime
-				
-				Write-Host 
-				Write-Host "~ Total Processing Time: $Total_Processing_Time"
 				
 			
 			} UNTIL ($Tables_To_Process -eq 0 -OR $Total_Processing_Time -gt '00:30:00')
@@ -3863,8 +3953,8 @@ Start-Job -Name Job4 -ScriptBlock {		                                    #<-----
 		# Stop log
 		#---------------------------------------------
 		Stop-Transcript
-	}	
-	
+
+	}
 
 Start-Job -Name Job5 -ScriptBlock {		                                    #<----------------------------------------------------------
 		FUNCTION Insert-Alpha_Table_1
@@ -4167,7 +4257,7 @@ Start-Job -Name Job5 -ScriptBlock {		                                    #<-----
 				Stop-Transcript
 			
 			}
-
+			
 		FUNCTION Copy-OneAccord_Data
 			{
 				[CmdletBinding(
@@ -4546,19 +4636,26 @@ Start-Job -Name Job5 -ScriptBlock {		                                    #<-----
 					}
 				
 			}
-
-		###################################################################################################
-		#
-		#	Name: PowerShell_ETL_Parrellel_Processing
-		#	Date: 02/26/2018
-		#
-		###################################################################################################
-
+			
 		#---------------------------------------------
 		# Catch Non-Terminating Errors
 		#---------------------------------------------
 		$Old = $ErrorActionPreference
 		$ErrorActionPreference = 'Stop'
+
+
+		#---------------------------------------------
+		# Job Variables
+		#---------------------------------------------
+		[STRING]$Job_Name = "Job5"                                             #<----------------------------------------------------------
+		[INT]$Sleep_Time = 5                                                   #<----------------------------------------------------------
+
+		#---------------------------------------------
+		# If this is the first than create the Alpha_Table_1
+		#   Else sleep
+		#---------------------------------------------
+		#Create-Alpha_Table_1                                                  #<----------------------------------------------------------
+		Start-Sleep -s $Sleep_Time  
 
 		#---------------------------------------------
 		# Log file
@@ -4571,7 +4668,7 @@ Start-Job -Name Job5 -ScriptBlock {		                                    #<-----
 			}
 				
 		[STRING]$Log_Root = $New_Folder_Path + "\PS_Extract_"
-		[STRING]$Parrellel_Processing = "Parrellel_Processing_5_"              #<----------------------------------------------------------
+		[STRING]$Parrellel_Processing = $Job_Name
 		[STRING]$Log_DateTime = Get-Date -Format "yyyyMMdd_HHmmss"
 		[String]$Log_File_Type = '.log'
 		[STRING]$Log_File_Name = $Log_Root + $Parrellel_Processing + "_" + $Log_DateTime + $Log_File_Type
@@ -4581,14 +4678,7 @@ Start-Job -Name Job5 -ScriptBlock {		                                    #<-----
 		Write-Host
 		Write-Host "~ This is the beginning of the Parrellel_Processing script."
 		Write-Host
-
-
-		#---------------------------------------------
-		# If this is the first than create the Alpha_Table_1
-		#   Else sleep for <> seconds
-		#---------------------------------------------
-		#Create-Alpha_Table_1                                                 #<----------------------------------------------------------
-		Start-Sleep -s 8                                                      #<----------------------------------------------------------
+												
 
 		#---------------------------------------------
 		# Destination Connection String
@@ -4658,11 +4748,11 @@ Start-Job -Name Job5 -ScriptBlock {		                                    #<-----
 				
 				#---------------------------------------------
 				# Extract_Tables Update
-				#---------------------------------------------
+				#---------------------------------------------				
 				$Update_DateTime = Get-Date
 			
 				$Update_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-									SET Extract_Stage = 'Processing'
+									SET Extract_Stage = '$Job_Name'                   
 										, Extract_Stage_DateTime = '$Update_DateTime'
 									WHERE 1 = 1
 										AND Extract_Tables_Key = $Processing_Key"
@@ -4674,144 +4764,166 @@ Start-Job -Name Job5 -ScriptBlock {		                                    #<-----
 				
 				Write-Host $Update_Extract_Tables
 				
-				
 				#---------------------------------------------
-				# Source Table
-				#---------------------------------------------
-				
-				[STRING]$Source_Table_Qry = "SELECT Source_Table
-										FROM Oa_Extract.Extract_Tables
-										WHERE 1 = 1
-											AND Extract_Tables_Key = $Processing_Key
-														  "                                                                                   
-								$Source_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Source_Table_Qry).Source_Table
-				
-				Write-Host
-				Write-Host $Source_Table_Qry
-				Write-Host "~ Source Table: $Source_Table"
-				
-				#---------------------------------------------
-				# Destination Table
+				# Wait then recheck, if it is the same name then run, else end
 				#---------------------------------------------
 				
-				[STRING]$Dest_Table_Qry = "SELECT Destination_Table
-										FROM Oa_Extract.Extract_Tables
-										WHERE 1 = 1
-											AND Extract_Tables_Key = $Processing_Key
-														  "                                                                                   
-								$Dest_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Table_Qry).Destination_Table
+				Start-Sleep -s $Sleep_Time 
 				
-				Write-Host
-				Write-Host $Dest_Table
-				Write-Host "~ Destination Table: $Dest_Table"
-				
-				
-				#---------------------------------------------
-				# Extract Data
-				#---------------------------------------------
-				
-				Copy-OneAccord_Data -p1 $Source_Table -p2 $Processing_Key
-				
-				
-				#---------------------------------------------
-				# Check If Extract was successful
-				#---------------------------------------------
-				
-				[STRING]$Extract_Success_Qry = "SELECT SUM(Alpha_Result) AS Sum_Alpha_Result
-										FROM Oa_Extract.Alpha_Table_1
-										WHERE 1 = 1
-											AND Alpha_Stage = '$Dest_Table'
-											AND Alpha_Step_Name = 'Stats'
-														  "                                                                                   
-					$Extract_Success_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Extract_Success_Qry).Sum_Alpha_Result
-					
-					[Int]$Extract_Success = [convert]::ToInt32($Extract_Success_Var)
-				
-				Write-Host
-				Write-Host $Extract_Success_Qry
-				Write-Host "~ Extract Success: $Extract_Success"
-				
-				IF ($Extract_Success -gt 0)
-					{
-						#---------------------------------------------
-						# Extract_Tables Update
-						#---------------------------------------------
-						$Update_Complete_DateTime = Get-Date
-					
-						$Update_Complete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-											SET Extract_Stage = 'Complete'
-												, Extract_Stage_DateTime = '$Update_Complete_DateTime'
-											WHERE 1 = 1
-												AND Extract_Tables_Key = $Processing_Key"
+				[STRING]$Processing_Key_Qry2 = "SELECT Extract_Stage
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1 
+													AND Extract_Tables_Key = $Processing_Key
+											"                                                                                   
+					$Extract_Stage = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Processing_Key_Qry2).Extract_Stage
 						
-						Invoke-Sqlcmd `
-							-ServerInstance $Dest_Instance `
-							-Database $Dest_Db `
-							-Query $Update_Complete_Extract_Tables
+				Write-Host
+				Write-Host $Processing_Key_Qry2
+				Write-Host "~ Job Name: $Job_Name"
+				Write-Host "~ Extract_Stage (2): $Extract_Stage"
+				
+				IF($Job_Name -eq $Extract_Stage) 
+					{
+				
+				
+						#---------------------------------------------
+						# Source Table
+						#---------------------------------------------
+						
+						[STRING]$Source_Table_Qry = "SELECT Source_Table
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1
+													AND Extract_Tables_Key = $Processing_Key
+																  "                                                                                   
+										$Source_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Source_Table_Qry).Source_Table
 						
 						Write-Host
-						Write-Host $Update_Complete_Extract_Tables
-						Write-Host "~ Extract_Tables updated to Complete."
-					}
-					ELSE
-					{
-						#---------------------------------------------
-						# Extract_Tables Update
-						#---------------------------------------------
-						$Update_Incomplete_DateTime = Get-Date
-					
-						$Update_Incomplete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-																SET Extract_Stage = 'Incomplete'
-																	, Extract_Stage_DateTime = '$Update_Complete_DateTime'
-																WHERE 1 = 1
-																	AND Extract_Tables_Key = $Processing_Key
-															"
+						Write-Host $Source_Table_Qry
+						Write-Host "~ Source Table: $Source_Table"
 						
-						Invoke-Sqlcmd `
-							-ServerInstance $Dest_Instance `
-							-Database $Dest_Db `
-							-Query $Update_Incomplete_Extract_Tables
+						#---------------------------------------------
+						# Destination Table
+						#---------------------------------------------
+						
+						[STRING]$Dest_Table_Qry = "SELECT Destination_Table
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1
+													AND Extract_Tables_Key = $Processing_Key
+																  "                                                                                   
+										$Dest_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Table_Qry).Destination_Table
 						
 						Write-Host
-						Write-Host $Update_Incomplete_Extract_Tables
-						Write-Host "~ Extract_Tables updated to Incomplete."
+						Write-Host $Dest_Table
+						Write-Host "~ Destination Table: $Dest_Table"
 						
+						
+						#---------------------------------------------
+						# Extract Data
+						#---------------------------------------------
+						
+						Copy-OneAccord_Data -p1 $Source_Table -p2 $Processing_Key
+						
+						
+						#---------------------------------------------
+						# Check If Extract was successful
+						#---------------------------------------------
+						
+						[STRING]$Extract_Success_Qry = "SELECT COUNT(CASE WHEN Alpha_Result = 1 THEN 1 ELSE NULL END) AS Count_Alpha_Result
+												FROM Oa_Extract.Alpha_Table_1
+												WHERE 1 = 1
+													AND Alpha_Stage = '$Dest_Table'
+													AND Alpha_Step_Name = 'Stats'
+																  "                                                                                   
+							$Extract_Success_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Extract_Success_Qry).Count_Alpha_Result
+							
+							[Int]$Extract_Success = [convert]::ToInt32($Extract_Success_Var)
+						
+						Write-Host
+						Write-Host $Extract_Success_Qry
+						Write-Host "~ Extract Success: $Extract_Success"
+						
+						IF ($Extract_Success -gt 0)
+							{
+								#---------------------------------------------
+								# Extract_Tables Update
+								#---------------------------------------------
+								$Update_Complete_DateTime = Get-Date
+							
+								$Update_Complete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+													SET Extract_Stage = 'Complete'
+														, Extract_Stage_DateTime = '$Update_Complete_DateTime'
+													WHERE 1 = 1
+														AND Extract_Tables_Key = $Processing_Key"
+								
+								Invoke-Sqlcmd `
+									-ServerInstance $Dest_Instance `
+									-Database $Dest_Db `
+									-Query $Update_Complete_Extract_Tables
+								
+								Write-Host
+								Write-Host $Update_Complete_Extract_Tables
+								Write-Host "~ Extract_Tables updated to Complete."
+							}
+							ELSE
+							{
+								#---------------------------------------------
+								# Extract_Tables Update
+								#---------------------------------------------
+								$Update_Incomplete_DateTime = Get-Date
+							
+								$Update_Incomplete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+																		SET Extract_Stage = 'Incomplete'
+																			, Extract_Stage_DateTime = '$Update_Complete_DateTime'
+																		WHERE 1 = 1
+																			AND Extract_Tables_Key = $Processing_Key
+																	"
+								
+								Invoke-Sqlcmd `
+									-ServerInstance $Dest_Instance `
+									-Database $Dest_Db `
+									-Query $Update_Incomplete_Extract_Tables
+								
+								Write-Host
+								Write-Host $Update_Incomplete_Extract_Tables
+								Write-Host "~ Extract_Tables updated to Incomplete."
+								
+							}
+						
+						
+						#---------------------------------------------
+						# Tables to Process
+						#---------------------------------------------
+						
+						[STRING]$Tables_To_Process_Qry = "SELECT COUNT(Source_Table) AS Tables_To_Process
+															FROM Oa_Extract.Extract_Tables
+															WHERE 1 = 1 
+																AND (Extract_Stage IS NULL 
+																	OR Extract_Stage = 'Incomplete'
+																	)
+																AND Active = 1
+														"                                                                                   
+							$Tables_To_Process_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Tables_To_Process_Qry).Tables_To_Process
+							
+							[Int]$Tables_To_Process = [convert]::ToInt32($Tables_To_Process_Var)
+						
+						Write-Host
+						Write-Host $Tables_To_Process_Qry
+						Write-Host "~ Tables to Process: $Tables_To_Process"
+						
+						
+						#---------------------------------------------
+						# Current Process Time
+						#---------------------------------------------
+						$Current_Process_DateTime = Get-Date
+						
+						Write-Host 
+						Write-Host "~ Current Process Time: $Current_Process_DateTime"
+						
+						$Total_Processing_Time = New-TimeSpan -Start $Loop_Begin_DateTime -End $Current_Process_DateTime
+						
+						Write-Host 
+						Write-Host "~ Total Processing Time: $Total_Processing_Time"
 					}
-				
-				
-				#---------------------------------------------
-				# Tables to Process
-				#---------------------------------------------
-				
-				[STRING]$Tables_To_Process_Qry = "SELECT COUNT(Source_Table) AS Tables_To_Process
-													FROM Oa_Extract.Extract_Tables
-													WHERE 1 = 1 
-														AND (Extract_Stage IS NULL 
-															OR Extract_Stage = 'Incomplete'
-															)
-														AND Active = 1
-												"                                                                                   
-					$Tables_To_Process_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Tables_To_Process_Qry).Tables_To_Process
-					
-					[Int]$Tables_To_Process = [convert]::ToInt32($Tables_To_Process_Var)
-				
-				Write-Host
-				Write-Host $Tables_To_Process_Qry
-				Write-Host "~ Tables to Process: $Tables_To_Process"
-				
-				
-				#---------------------------------------------
-				# Current Process Time
-				#---------------------------------------------
-				$Current_Process_DateTime = Get-Date
-				
-				Write-Host 
-				Write-Host "~ Current Process Time: $Current_Process_DateTime"
-				
-				$Total_Processing_Time = New-TimeSpan -Start $Loop_Begin_DateTime -End $Current_Process_DateTime
-				
-				Write-Host 
-				Write-Host "~ Total Processing Time: $Total_Processing_Time"
 				
 			
 			} UNTIL ($Tables_To_Process -eq 0 -OR $Total_Processing_Time -gt '00:30:00')
@@ -4828,8 +4940,8 @@ Start-Job -Name Job5 -ScriptBlock {		                                    #<-----
 		# Stop log
 		#---------------------------------------------
 		Stop-Transcript
-	}	
-	
+
+	}
 
 Start-Job -Name Job6 -ScriptBlock {		                                    #<----------------------------------------------------------
 		FUNCTION Insert-Alpha_Table_1
@@ -5132,7 +5244,7 @@ Start-Job -Name Job6 -ScriptBlock {		                                    #<-----
 				Stop-Transcript
 			
 			}
-
+			
 		FUNCTION Copy-OneAccord_Data
 			{
 				[CmdletBinding(
@@ -5511,19 +5623,26 @@ Start-Job -Name Job6 -ScriptBlock {		                                    #<-----
 					}
 				
 			}
-
-		###################################################################################################
-		#
-		#	Name: PowerShell_ETL_Parrellel_Processing
-		#	Date: 02/26/2018
-		#
-		###################################################################################################
-
+			
 		#---------------------------------------------
 		# Catch Non-Terminating Errors
 		#---------------------------------------------
 		$Old = $ErrorActionPreference
 		$ErrorActionPreference = 'Stop'
+
+
+		#---------------------------------------------
+		# Job Variables
+		#---------------------------------------------
+		[STRING]$Job_Name = "Job6"                                             #<----------------------------------------------------------
+		[INT]$Sleep_Time = 6                                                   #<----------------------------------------------------------
+
+		#---------------------------------------------
+		# If this is the first than create the Alpha_Table_1
+		#   Else sleep
+		#---------------------------------------------
+		#Create-Alpha_Table_1                                                  #<----------------------------------------------------------
+		Start-Sleep -s $Sleep_Time  
 
 		#---------------------------------------------
 		# Log file
@@ -5536,7 +5655,7 @@ Start-Job -Name Job6 -ScriptBlock {		                                    #<-----
 			}
 				
 		[STRING]$Log_Root = $New_Folder_Path + "\PS_Extract_"
-		[STRING]$Parrellel_Processing = "Parrellel_Processing_6_"              #<----------------------------------------------------------
+		[STRING]$Parrellel_Processing = $Job_Name
 		[STRING]$Log_DateTime = Get-Date -Format "yyyyMMdd_HHmmss"
 		[String]$Log_File_Type = '.log'
 		[STRING]$Log_File_Name = $Log_Root + $Parrellel_Processing + "_" + $Log_DateTime + $Log_File_Type
@@ -5546,14 +5665,7 @@ Start-Job -Name Job6 -ScriptBlock {		                                    #<-----
 		Write-Host
 		Write-Host "~ This is the beginning of the Parrellel_Processing script."
 		Write-Host
-
-
-		#---------------------------------------------
-		# If this is the first than create the Alpha_Table_1
-		#   Else sleep for <> seconds
-		#---------------------------------------------
-		#Create-Alpha_Table_1                                                 #<----------------------------------------------------------
-		Start-Sleep -s 9                                                      #<----------------------------------------------------------
+												
 
 		#---------------------------------------------
 		# Destination Connection String
@@ -5623,11 +5735,11 @@ Start-Job -Name Job6 -ScriptBlock {		                                    #<-----
 				
 				#---------------------------------------------
 				# Extract_Tables Update
-				#---------------------------------------------
+				#---------------------------------------------				
 				$Update_DateTime = Get-Date
 			
 				$Update_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-									SET Extract_Stage = 'Processing'
+									SET Extract_Stage = '$Job_Name'                   
 										, Extract_Stage_DateTime = '$Update_DateTime'
 									WHERE 1 = 1
 										AND Extract_Tables_Key = $Processing_Key"
@@ -5639,144 +5751,166 @@ Start-Job -Name Job6 -ScriptBlock {		                                    #<-----
 				
 				Write-Host $Update_Extract_Tables
 				
-				
 				#---------------------------------------------
-				# Source Table
-				#---------------------------------------------
-				
-				[STRING]$Source_Table_Qry = "SELECT Source_Table
-										FROM Oa_Extract.Extract_Tables
-										WHERE 1 = 1
-											AND Extract_Tables_Key = $Processing_Key
-														  "                                                                                   
-								$Source_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Source_Table_Qry).Source_Table
-				
-				Write-Host
-				Write-Host $Source_Table_Qry
-				Write-Host "~ Source Table: $Source_Table"
-				
-				#---------------------------------------------
-				# Destination Table
+				# Wait then recheck, if it is the same name then run, else end
 				#---------------------------------------------
 				
-				[STRING]$Dest_Table_Qry = "SELECT Destination_Table
-										FROM Oa_Extract.Extract_Tables
-										WHERE 1 = 1
-											AND Extract_Tables_Key = $Processing_Key
-														  "                                                                                   
-								$Dest_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Table_Qry).Destination_Table
+				Start-Sleep -s $Sleep_Time 
 				
-				Write-Host
-				Write-Host $Dest_Table
-				Write-Host "~ Destination Table: $Dest_Table"
-				
-				
-				#---------------------------------------------
-				# Extract Data
-				#---------------------------------------------
-				
-				Copy-OneAccord_Data -p1 $Source_Table -p2 $Processing_Key
-				
-				
-				#---------------------------------------------
-				# Check If Extract was successful
-				#---------------------------------------------
-				
-				[STRING]$Extract_Success_Qry = "SELECT SUM(Alpha_Result) AS Sum_Alpha_Result
-										FROM Oa_Extract.Alpha_Table_1
-										WHERE 1 = 1
-											AND Alpha_Stage = '$Dest_Table'
-											AND Alpha_Step_Name = 'Stats'
-														  "                                                                                   
-					$Extract_Success_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Extract_Success_Qry).Sum_Alpha_Result
-					
-					[Int]$Extract_Success = [convert]::ToInt32($Extract_Success_Var)
-				
-				Write-Host
-				Write-Host $Extract_Success_Qry
-				Write-Host "~ Extract Success: $Extract_Success"
-				
-				IF ($Extract_Success -gt 0)
-					{
-						#---------------------------------------------
-						# Extract_Tables Update
-						#---------------------------------------------
-						$Update_Complete_DateTime = Get-Date
-					
-						$Update_Complete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-											SET Extract_Stage = 'Complete'
-												, Extract_Stage_DateTime = '$Update_Complete_DateTime'
-											WHERE 1 = 1
-												AND Extract_Tables_Key = $Processing_Key"
+				[STRING]$Processing_Key_Qry2 = "SELECT Extract_Stage
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1 
+													AND Extract_Tables_Key = $Processing_Key
+											"                                                                                   
+					$Extract_Stage = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Processing_Key_Qry2).Extract_Stage
 						
-						Invoke-Sqlcmd `
-							-ServerInstance $Dest_Instance `
-							-Database $Dest_Db `
-							-Query $Update_Complete_Extract_Tables
+				Write-Host
+				Write-Host $Processing_Key_Qry2
+				Write-Host "~ Job Name: $Job_Name"
+				Write-Host "~ Extract_Stage (2): $Extract_Stage"
+				
+				IF($Job_Name -eq $Extract_Stage) 
+					{
+				
+				
+						#---------------------------------------------
+						# Source Table
+						#---------------------------------------------
+						
+						[STRING]$Source_Table_Qry = "SELECT Source_Table
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1
+													AND Extract_Tables_Key = $Processing_Key
+																  "                                                                                   
+										$Source_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Source_Table_Qry).Source_Table
 						
 						Write-Host
-						Write-Host $Update_Complete_Extract_Tables
-						Write-Host "~ Extract_Tables updated to Complete."
-					}
-					ELSE
-					{
-						#---------------------------------------------
-						# Extract_Tables Update
-						#---------------------------------------------
-						$Update_Incomplete_DateTime = Get-Date
-					
-						$Update_Incomplete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-																SET Extract_Stage = 'Incomplete'
-																	, Extract_Stage_DateTime = '$Update_Complete_DateTime'
-																WHERE 1 = 1
-																	AND Extract_Tables_Key = $Processing_Key
-															"
+						Write-Host $Source_Table_Qry
+						Write-Host "~ Source Table: $Source_Table"
 						
-						Invoke-Sqlcmd `
-							-ServerInstance $Dest_Instance `
-							-Database $Dest_Db `
-							-Query $Update_Incomplete_Extract_Tables
+						#---------------------------------------------
+						# Destination Table
+						#---------------------------------------------
+						
+						[STRING]$Dest_Table_Qry = "SELECT Destination_Table
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1
+													AND Extract_Tables_Key = $Processing_Key
+																  "                                                                                   
+										$Dest_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Table_Qry).Destination_Table
 						
 						Write-Host
-						Write-Host $Update_Incomplete_Extract_Tables
-						Write-Host "~ Extract_Tables updated to Incomplete."
+						Write-Host $Dest_Table
+						Write-Host "~ Destination Table: $Dest_Table"
 						
+						
+						#---------------------------------------------
+						# Extract Data
+						#---------------------------------------------
+						
+						Copy-OneAccord_Data -p1 $Source_Table -p2 $Processing_Key
+						
+						
+						#---------------------------------------------
+						# Check If Extract was successful
+						#---------------------------------------------
+						
+						[STRING]$Extract_Success_Qry = "SELECT COUNT(CASE WHEN Alpha_Result = 1 THEN 1 ELSE NULL END) AS Count_Alpha_Result
+												FROM Oa_Extract.Alpha_Table_1
+												WHERE 1 = 1
+													AND Alpha_Stage = '$Dest_Table'
+													AND Alpha_Step_Name = 'Stats'
+																  "                                                                                   
+							$Extract_Success_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Extract_Success_Qry).Count_Alpha_Result
+							
+							[Int]$Extract_Success = [convert]::ToInt32($Extract_Success_Var)
+						
+						Write-Host
+						Write-Host $Extract_Success_Qry
+						Write-Host "~ Extract Success: $Extract_Success"
+						
+						IF ($Extract_Success -gt 0)
+							{
+								#---------------------------------------------
+								# Extract_Tables Update
+								#---------------------------------------------
+								$Update_Complete_DateTime = Get-Date
+							
+								$Update_Complete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+													SET Extract_Stage = 'Complete'
+														, Extract_Stage_DateTime = '$Update_Complete_DateTime'
+													WHERE 1 = 1
+														AND Extract_Tables_Key = $Processing_Key"
+								
+								Invoke-Sqlcmd `
+									-ServerInstance $Dest_Instance `
+									-Database $Dest_Db `
+									-Query $Update_Complete_Extract_Tables
+								
+								Write-Host
+								Write-Host $Update_Complete_Extract_Tables
+								Write-Host "~ Extract_Tables updated to Complete."
+							}
+							ELSE
+							{
+								#---------------------------------------------
+								# Extract_Tables Update
+								#---------------------------------------------
+								$Update_Incomplete_DateTime = Get-Date
+							
+								$Update_Incomplete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+																		SET Extract_Stage = 'Incomplete'
+																			, Extract_Stage_DateTime = '$Update_Complete_DateTime'
+																		WHERE 1 = 1
+																			AND Extract_Tables_Key = $Processing_Key
+																	"
+								
+								Invoke-Sqlcmd `
+									-ServerInstance $Dest_Instance `
+									-Database $Dest_Db `
+									-Query $Update_Incomplete_Extract_Tables
+								
+								Write-Host
+								Write-Host $Update_Incomplete_Extract_Tables
+								Write-Host "~ Extract_Tables updated to Incomplete."
+								
+							}
+						
+						
+						#---------------------------------------------
+						# Tables to Process
+						#---------------------------------------------
+						
+						[STRING]$Tables_To_Process_Qry = "SELECT COUNT(Source_Table) AS Tables_To_Process
+															FROM Oa_Extract.Extract_Tables
+															WHERE 1 = 1 
+																AND (Extract_Stage IS NULL 
+																	OR Extract_Stage = 'Incomplete'
+																	)
+																AND Active = 1
+														"                                                                                   
+							$Tables_To_Process_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Tables_To_Process_Qry).Tables_To_Process
+							
+							[Int]$Tables_To_Process = [convert]::ToInt32($Tables_To_Process_Var)
+						
+						Write-Host
+						Write-Host $Tables_To_Process_Qry
+						Write-Host "~ Tables to Process: $Tables_To_Process"
+						
+						
+						#---------------------------------------------
+						# Current Process Time
+						#---------------------------------------------
+						$Current_Process_DateTime = Get-Date
+						
+						Write-Host 
+						Write-Host "~ Current Process Time: $Current_Process_DateTime"
+						
+						$Total_Processing_Time = New-TimeSpan -Start $Loop_Begin_DateTime -End $Current_Process_DateTime
+						
+						Write-Host 
+						Write-Host "~ Total Processing Time: $Total_Processing_Time"
 					}
-				
-				
-				#---------------------------------------------
-				# Tables to Process
-				#---------------------------------------------
-				
-				[STRING]$Tables_To_Process_Qry = "SELECT COUNT(Source_Table) AS Tables_To_Process
-													FROM Oa_Extract.Extract_Tables
-													WHERE 1 = 1 
-														AND (Extract_Stage IS NULL 
-															OR Extract_Stage = 'Incomplete'
-															)
-														AND Active = 1
-												"                                                                                   
-					$Tables_To_Process_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Tables_To_Process_Qry).Tables_To_Process
-					
-					[Int]$Tables_To_Process = [convert]::ToInt32($Tables_To_Process_Var)
-				
-				Write-Host
-				Write-Host $Tables_To_Process_Qry
-				Write-Host "~ Tables to Process: $Tables_To_Process"
-				
-				
-				#---------------------------------------------
-				# Current Process Time
-				#---------------------------------------------
-				$Current_Process_DateTime = Get-Date
-				
-				Write-Host 
-				Write-Host "~ Current Process Time: $Current_Process_DateTime"
-				
-				$Total_Processing_Time = New-TimeSpan -Start $Loop_Begin_DateTime -End $Current_Process_DateTime
-				
-				Write-Host 
-				Write-Host "~ Total Processing Time: $Total_Processing_Time"
 				
 			
 			} UNTIL ($Tables_To_Process -eq 0 -OR $Total_Processing_Time -gt '00:30:00')
@@ -5793,9 +5927,8 @@ Start-Job -Name Job6 -ScriptBlock {		                                    #<-----
 		# Stop log
 		#---------------------------------------------
 		Stop-Transcript
-	}	
-	
-	
+
+	}
 
 Start-Job -Name Job7 -ScriptBlock {		                                    #<----------------------------------------------------------
 		FUNCTION Insert-Alpha_Table_1
@@ -6098,7 +6231,7 @@ Start-Job -Name Job7 -ScriptBlock {		                                    #<-----
 				Stop-Transcript
 			
 			}
-
+			
 		FUNCTION Copy-OneAccord_Data
 			{
 				[CmdletBinding(
@@ -6477,19 +6610,26 @@ Start-Job -Name Job7 -ScriptBlock {		                                    #<-----
 					}
 				
 			}
-
-		###################################################################################################
-		#
-		#	Name: PowerShell_ETL_Parrellel_Processing
-		#	Date: 02/26/2018
-		#
-		###################################################################################################
-
+			
 		#---------------------------------------------
 		# Catch Non-Terminating Errors
 		#---------------------------------------------
 		$Old = $ErrorActionPreference
 		$ErrorActionPreference = 'Stop'
+
+
+		#---------------------------------------------
+		# Job Variables
+		#---------------------------------------------
+		[STRING]$Job_Name = "Job7"                                             #<----------------------------------------------------------
+		[INT]$Sleep_Time = 7                                                   #<----------------------------------------------------------
+
+		#---------------------------------------------
+		# If this is the first than create the Alpha_Table_1
+		#   Else sleep
+		#---------------------------------------------
+		#Create-Alpha_Table_1                                                  #<----------------------------------------------------------
+		Start-Sleep -s $Sleep_Time  
 
 		#---------------------------------------------
 		# Log file
@@ -6502,7 +6642,7 @@ Start-Job -Name Job7 -ScriptBlock {		                                    #<-----
 			}
 				
 		[STRING]$Log_Root = $New_Folder_Path + "\PS_Extract_"
-		[STRING]$Parrellel_Processing = "Parrellel_Processing_7_"              #<----------------------------------------------------------
+		[STRING]$Parrellel_Processing = $Job_Name
 		[STRING]$Log_DateTime = Get-Date -Format "yyyyMMdd_HHmmss"
 		[String]$Log_File_Type = '.log'
 		[STRING]$Log_File_Name = $Log_Root + $Parrellel_Processing + "_" + $Log_DateTime + $Log_File_Type
@@ -6512,14 +6652,7 @@ Start-Job -Name Job7 -ScriptBlock {		                                    #<-----
 		Write-Host
 		Write-Host "~ This is the beginning of the Parrellel_Processing script."
 		Write-Host
-
-
-		#---------------------------------------------
-		# If this is the first than create the Alpha_Table_1
-		#   Else sleep for <> seconds
-		#---------------------------------------------
-		#Create-Alpha_Table_1                                                 #<----------------------------------------------------------
-		Start-Sleep -s 10                                                     #<----------------------------------------------------------
+												
 
 		#---------------------------------------------
 		# Destination Connection String
@@ -6589,11 +6722,11 @@ Start-Job -Name Job7 -ScriptBlock {		                                    #<-----
 				
 				#---------------------------------------------
 				# Extract_Tables Update
-				#---------------------------------------------
+				#---------------------------------------------				
 				$Update_DateTime = Get-Date
 			
 				$Update_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-									SET Extract_Stage = 'Processing'
+									SET Extract_Stage = '$Job_Name'                   
 										, Extract_Stage_DateTime = '$Update_DateTime'
 									WHERE 1 = 1
 										AND Extract_Tables_Key = $Processing_Key"
@@ -6605,144 +6738,166 @@ Start-Job -Name Job7 -ScriptBlock {		                                    #<-----
 				
 				Write-Host $Update_Extract_Tables
 				
-				
 				#---------------------------------------------
-				# Source Table
-				#---------------------------------------------
-				
-				[STRING]$Source_Table_Qry = "SELECT Source_Table
-										FROM Oa_Extract.Extract_Tables
-										WHERE 1 = 1
-											AND Extract_Tables_Key = $Processing_Key
-														  "                                                                                   
-								$Source_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Source_Table_Qry).Source_Table
-				
-				Write-Host
-				Write-Host $Source_Table_Qry
-				Write-Host "~ Source Table: $Source_Table"
-				
-				#---------------------------------------------
-				# Destination Table
+				# Wait then recheck, if it is the same name then run, else end
 				#---------------------------------------------
 				
-				[STRING]$Dest_Table_Qry = "SELECT Destination_Table
-										FROM Oa_Extract.Extract_Tables
-										WHERE 1 = 1
-											AND Extract_Tables_Key = $Processing_Key
-														  "                                                                                   
-								$Dest_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Table_Qry).Destination_Table
+				Start-Sleep -s $Sleep_Time 
 				
-				Write-Host
-				Write-Host $Dest_Table
-				Write-Host "~ Destination Table: $Dest_Table"
-				
-				
-				#---------------------------------------------
-				# Extract Data
-				#---------------------------------------------
-				
-				Copy-OneAccord_Data -p1 $Source_Table -p2 $Processing_Key
-				
-				
-				#---------------------------------------------
-				# Check If Extract was successful
-				#---------------------------------------------
-				
-				[STRING]$Extract_Success_Qry = "SELECT SUM(Alpha_Result) AS Sum_Alpha_Result
-										FROM Oa_Extract.Alpha_Table_1
-										WHERE 1 = 1
-											AND Alpha_Stage = '$Dest_Table'
-											AND Alpha_Step_Name = 'Stats'
-														  "                                                                                   
-					$Extract_Success_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Extract_Success_Qry).Sum_Alpha_Result
-					
-					[Int]$Extract_Success = [convert]::ToInt32($Extract_Success_Var)
-				
-				Write-Host
-				Write-Host $Extract_Success_Qry
-				Write-Host "~ Extract Success: $Extract_Success"
-				
-				IF ($Extract_Success -gt 0)
-					{
-						#---------------------------------------------
-						# Extract_Tables Update
-						#---------------------------------------------
-						$Update_Complete_DateTime = Get-Date
-					
-						$Update_Complete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-											SET Extract_Stage = 'Complete'
-												, Extract_Stage_DateTime = '$Update_Complete_DateTime'
-											WHERE 1 = 1
-												AND Extract_Tables_Key = $Processing_Key"
+				[STRING]$Processing_Key_Qry2 = "SELECT Extract_Stage
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1 
+													AND Extract_Tables_Key = $Processing_Key
+											"                                                                                   
+					$Extract_Stage = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Processing_Key_Qry2).Extract_Stage
 						
-						Invoke-Sqlcmd `
-							-ServerInstance $Dest_Instance `
-							-Database $Dest_Db `
-							-Query $Update_Complete_Extract_Tables
+				Write-Host
+				Write-Host $Processing_Key_Qry2
+				Write-Host "~ Job Name: $Job_Name"
+				Write-Host "~ Extract_Stage (2): $Extract_Stage"
+				
+				IF($Job_Name -eq $Extract_Stage) 
+					{
+				
+				
+						#---------------------------------------------
+						# Source Table
+						#---------------------------------------------
+						
+						[STRING]$Source_Table_Qry = "SELECT Source_Table
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1
+													AND Extract_Tables_Key = $Processing_Key
+																  "                                                                                   
+										$Source_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Source_Table_Qry).Source_Table
 						
 						Write-Host
-						Write-Host $Update_Complete_Extract_Tables
-						Write-Host "~ Extract_Tables updated to Complete."
-					}
-					ELSE
-					{
-						#---------------------------------------------
-						# Extract_Tables Update
-						#---------------------------------------------
-						$Update_Incomplete_DateTime = Get-Date
-					
-						$Update_Incomplete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-																SET Extract_Stage = 'Incomplete'
-																	, Extract_Stage_DateTime = '$Update_Complete_DateTime'
-																WHERE 1 = 1
-																	AND Extract_Tables_Key = $Processing_Key
-															"
+						Write-Host $Source_Table_Qry
+						Write-Host "~ Source Table: $Source_Table"
 						
-						Invoke-Sqlcmd `
-							-ServerInstance $Dest_Instance `
-							-Database $Dest_Db `
-							-Query $Update_Incomplete_Extract_Tables
+						#---------------------------------------------
+						# Destination Table
+						#---------------------------------------------
+						
+						[STRING]$Dest_Table_Qry = "SELECT Destination_Table
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1
+													AND Extract_Tables_Key = $Processing_Key
+																  "                                                                                   
+										$Dest_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Table_Qry).Destination_Table
 						
 						Write-Host
-						Write-Host $Update_Incomplete_Extract_Tables
-						Write-Host "~ Extract_Tables updated to Incomplete."
+						Write-Host $Dest_Table
+						Write-Host "~ Destination Table: $Dest_Table"
 						
+						
+						#---------------------------------------------
+						# Extract Data
+						#---------------------------------------------
+						
+						Copy-OneAccord_Data -p1 $Source_Table -p2 $Processing_Key
+						
+						
+						#---------------------------------------------
+						# Check If Extract was successful
+						#---------------------------------------------
+						
+						[STRING]$Extract_Success_Qry = "SELECT COUNT(CASE WHEN Alpha_Result = 1 THEN 1 ELSE NULL END) AS Count_Alpha_Result
+												FROM Oa_Extract.Alpha_Table_1
+												WHERE 1 = 1
+													AND Alpha_Stage = '$Dest_Table'
+													AND Alpha_Step_Name = 'Stats'
+																  "                                                                                   
+							$Extract_Success_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Extract_Success_Qry).Count_Alpha_Result
+							
+							[Int]$Extract_Success = [convert]::ToInt32($Extract_Success_Var)
+						
+						Write-Host
+						Write-Host $Extract_Success_Qry
+						Write-Host "~ Extract Success: $Extract_Success"
+						
+						IF ($Extract_Success -gt 0)
+							{
+								#---------------------------------------------
+								# Extract_Tables Update
+								#---------------------------------------------
+								$Update_Complete_DateTime = Get-Date
+							
+								$Update_Complete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+													SET Extract_Stage = 'Complete'
+														, Extract_Stage_DateTime = '$Update_Complete_DateTime'
+													WHERE 1 = 1
+														AND Extract_Tables_Key = $Processing_Key"
+								
+								Invoke-Sqlcmd `
+									-ServerInstance $Dest_Instance `
+									-Database $Dest_Db `
+									-Query $Update_Complete_Extract_Tables
+								
+								Write-Host
+								Write-Host $Update_Complete_Extract_Tables
+								Write-Host "~ Extract_Tables updated to Complete."
+							}
+							ELSE
+							{
+								#---------------------------------------------
+								# Extract_Tables Update
+								#---------------------------------------------
+								$Update_Incomplete_DateTime = Get-Date
+							
+								$Update_Incomplete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+																		SET Extract_Stage = 'Incomplete'
+																			, Extract_Stage_DateTime = '$Update_Complete_DateTime'
+																		WHERE 1 = 1
+																			AND Extract_Tables_Key = $Processing_Key
+																	"
+								
+								Invoke-Sqlcmd `
+									-ServerInstance $Dest_Instance `
+									-Database $Dest_Db `
+									-Query $Update_Incomplete_Extract_Tables
+								
+								Write-Host
+								Write-Host $Update_Incomplete_Extract_Tables
+								Write-Host "~ Extract_Tables updated to Incomplete."
+								
+							}
+						
+						
+						#---------------------------------------------
+						# Tables to Process
+						#---------------------------------------------
+						
+						[STRING]$Tables_To_Process_Qry = "SELECT COUNT(Source_Table) AS Tables_To_Process
+															FROM Oa_Extract.Extract_Tables
+															WHERE 1 = 1 
+																AND (Extract_Stage IS NULL 
+																	OR Extract_Stage = 'Incomplete'
+																	)
+																AND Active = 1
+														"                                                                                   
+							$Tables_To_Process_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Tables_To_Process_Qry).Tables_To_Process
+							
+							[Int]$Tables_To_Process = [convert]::ToInt32($Tables_To_Process_Var)
+						
+						Write-Host
+						Write-Host $Tables_To_Process_Qry
+						Write-Host "~ Tables to Process: $Tables_To_Process"
+						
+						
+						#---------------------------------------------
+						# Current Process Time
+						#---------------------------------------------
+						$Current_Process_DateTime = Get-Date
+						
+						Write-Host 
+						Write-Host "~ Current Process Time: $Current_Process_DateTime"
+						
+						$Total_Processing_Time = New-TimeSpan -Start $Loop_Begin_DateTime -End $Current_Process_DateTime
+						
+						Write-Host 
+						Write-Host "~ Total Processing Time: $Total_Processing_Time"
 					}
-				
-				
-				#---------------------------------------------
-				# Tables to Process
-				#---------------------------------------------
-				
-				[STRING]$Tables_To_Process_Qry = "SELECT COUNT(Source_Table) AS Tables_To_Process
-													FROM Oa_Extract.Extract_Tables
-													WHERE 1 = 1 
-														AND (Extract_Stage IS NULL 
-															OR Extract_Stage = 'Incomplete'
-															)
-														AND Active = 1
-												"                                                                                   
-					$Tables_To_Process_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Tables_To_Process_Qry).Tables_To_Process
-					
-					[Int]$Tables_To_Process = [convert]::ToInt32($Tables_To_Process_Var)
-				
-				Write-Host
-				Write-Host $Tables_To_Process_Qry
-				Write-Host "~ Tables to Process: $Tables_To_Process"
-				
-				
-				#---------------------------------------------
-				# Current Process Time
-				#---------------------------------------------
-				$Current_Process_DateTime = Get-Date
-				
-				Write-Host 
-				Write-Host "~ Current Process Time: $Current_Process_DateTime"
-				
-				$Total_Processing_Time = New-TimeSpan -Start $Loop_Begin_DateTime -End $Current_Process_DateTime
-				
-				Write-Host 
-				Write-Host "~ Total Processing Time: $Total_Processing_Time"
 				
 			
 			} UNTIL ($Tables_To_Process -eq 0 -OR $Total_Processing_Time -gt '00:30:00')
@@ -6759,8 +6914,8 @@ Start-Job -Name Job7 -ScriptBlock {		                                    #<-----
 		# Stop log
 		#---------------------------------------------
 		Stop-Transcript
-	}	
-	
+
+	}
 
 Start-Job -Name Job8 -ScriptBlock {		                                    #<----------------------------------------------------------
 		FUNCTION Insert-Alpha_Table_1
@@ -7063,7 +7218,7 @@ Start-Job -Name Job8 -ScriptBlock {		                                    #<-----
 				Stop-Transcript
 			
 			}
-
+			
 		FUNCTION Copy-OneAccord_Data
 			{
 				[CmdletBinding(
@@ -7442,19 +7597,26 @@ Start-Job -Name Job8 -ScriptBlock {		                                    #<-----
 					}
 				
 			}
-
-		###################################################################################################
-		#
-		#	Name: PowerShell_ETL_Parrellel_Processing
-		#	Date: 02/26/2018
-		#
-		###################################################################################################
-
+			
 		#---------------------------------------------
 		# Catch Non-Terminating Errors
 		#---------------------------------------------
 		$Old = $ErrorActionPreference
 		$ErrorActionPreference = 'Stop'
+
+
+		#---------------------------------------------
+		# Job Variables
+		#---------------------------------------------
+		[STRING]$Job_Name = "Job8"                                             #<----------------------------------------------------------
+		[INT]$Sleep_Time = 8                                                   #<----------------------------------------------------------
+
+		#---------------------------------------------
+		# If this is the first than create the Alpha_Table_1
+		#   Else sleep
+		#---------------------------------------------
+		#Create-Alpha_Table_1                                                  #<----------------------------------------------------------
+		Start-Sleep -s $Sleep_Time  
 
 		#---------------------------------------------
 		# Log file
@@ -7467,7 +7629,7 @@ Start-Job -Name Job8 -ScriptBlock {		                                    #<-----
 			}
 				
 		[STRING]$Log_Root = $New_Folder_Path + "\PS_Extract_"
-		[STRING]$Parrellel_Processing = "Parrellel_Processing_8_"              #<----------------------------------------------------------
+		[STRING]$Parrellel_Processing = $Job_Name
 		[STRING]$Log_DateTime = Get-Date -Format "yyyyMMdd_HHmmss"
 		[String]$Log_File_Type = '.log'
 		[STRING]$Log_File_Name = $Log_Root + $Parrellel_Processing + "_" + $Log_DateTime + $Log_File_Type
@@ -7477,14 +7639,7 @@ Start-Job -Name Job8 -ScriptBlock {		                                    #<-----
 		Write-Host
 		Write-Host "~ This is the beginning of the Parrellel_Processing script."
 		Write-Host
-
-
-		#---------------------------------------------
-		# If this is the first than create the Alpha_Table_1
-		#   Else sleep for <> seconds
-		#---------------------------------------------
-		#Create-Alpha_Table_1                                                 #<----------------------------------------------------------
-		Start-Sleep -s 11                                                     #<----------------------------------------------------------
+												
 
 		#---------------------------------------------
 		# Destination Connection String
@@ -7554,11 +7709,11 @@ Start-Job -Name Job8 -ScriptBlock {		                                    #<-----
 				
 				#---------------------------------------------
 				# Extract_Tables Update
-				#---------------------------------------------
+				#---------------------------------------------				
 				$Update_DateTime = Get-Date
 			
 				$Update_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-									SET Extract_Stage = 'Processing'
+									SET Extract_Stage = '$Job_Name'                   
 										, Extract_Stage_DateTime = '$Update_DateTime'
 									WHERE 1 = 1
 										AND Extract_Tables_Key = $Processing_Key"
@@ -7570,144 +7725,166 @@ Start-Job -Name Job8 -ScriptBlock {		                                    #<-----
 				
 				Write-Host $Update_Extract_Tables
 				
-				
 				#---------------------------------------------
-				# Source Table
-				#---------------------------------------------
-				
-				[STRING]$Source_Table_Qry = "SELECT Source_Table
-										FROM Oa_Extract.Extract_Tables
-										WHERE 1 = 1
-											AND Extract_Tables_Key = $Processing_Key
-														  "                                                                                   
-								$Source_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Source_Table_Qry).Source_Table
-				
-				Write-Host
-				Write-Host $Source_Table_Qry
-				Write-Host "~ Source Table: $Source_Table"
-				
-				#---------------------------------------------
-				# Destination Table
+				# Wait then recheck, if it is the same name then run, else end
 				#---------------------------------------------
 				
-				[STRING]$Dest_Table_Qry = "SELECT Destination_Table
-										FROM Oa_Extract.Extract_Tables
-										WHERE 1 = 1
-											AND Extract_Tables_Key = $Processing_Key
-														  "                                                                                   
-								$Dest_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Table_Qry).Destination_Table
+				Start-Sleep -s $Sleep_Time 
 				
-				Write-Host
-				Write-Host $Dest_Table
-				Write-Host "~ Destination Table: $Dest_Table"
-				
-				
-				#---------------------------------------------
-				# Extract Data
-				#---------------------------------------------
-				
-				Copy-OneAccord_Data -p1 $Source_Table -p2 $Processing_Key
-				
-				
-				#---------------------------------------------
-				# Check If Extract was successful
-				#---------------------------------------------
-				
-				[STRING]$Extract_Success_Qry = "SELECT SUM(Alpha_Result) AS Sum_Alpha_Result
-										FROM Oa_Extract.Alpha_Table_1
-										WHERE 1 = 1
-											AND Alpha_Stage = '$Dest_Table'
-											AND Alpha_Step_Name = 'Stats'
-														  "                                                                                   
-					$Extract_Success_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Extract_Success_Qry).Sum_Alpha_Result
-					
-					[Int]$Extract_Success = [convert]::ToInt32($Extract_Success_Var)
-				
-				Write-Host
-				Write-Host $Extract_Success_Qry
-				Write-Host "~ Extract Success: $Extract_Success"
-				
-				IF ($Extract_Success -gt 0)
-					{
-						#---------------------------------------------
-						# Extract_Tables Update
-						#---------------------------------------------
-						$Update_Complete_DateTime = Get-Date
-					
-						$Update_Complete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-											SET Extract_Stage = 'Complete'
-												, Extract_Stage_DateTime = '$Update_Complete_DateTime'
-											WHERE 1 = 1
-												AND Extract_Tables_Key = $Processing_Key"
+				[STRING]$Processing_Key_Qry2 = "SELECT Extract_Stage
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1 
+													AND Extract_Tables_Key = $Processing_Key
+											"                                                                                   
+					$Extract_Stage = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Processing_Key_Qry2).Extract_Stage
 						
-						Invoke-Sqlcmd `
-							-ServerInstance $Dest_Instance `
-							-Database $Dest_Db `
-							-Query $Update_Complete_Extract_Tables
+				Write-Host
+				Write-Host $Processing_Key_Qry2
+				Write-Host "~ Job Name: $Job_Name"
+				Write-Host "~ Extract_Stage (2): $Extract_Stage"
+				
+				IF($Job_Name -eq $Extract_Stage) 
+					{
+				
+				
+						#---------------------------------------------
+						# Source Table
+						#---------------------------------------------
+						
+						[STRING]$Source_Table_Qry = "SELECT Source_Table
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1
+													AND Extract_Tables_Key = $Processing_Key
+																  "                                                                                   
+										$Source_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Source_Table_Qry).Source_Table
 						
 						Write-Host
-						Write-Host $Update_Complete_Extract_Tables
-						Write-Host "~ Extract_Tables updated to Complete."
-					}
-					ELSE
-					{
-						#---------------------------------------------
-						# Extract_Tables Update
-						#---------------------------------------------
-						$Update_Incomplete_DateTime = Get-Date
-					
-						$Update_Incomplete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-																SET Extract_Stage = 'Incomplete'
-																	, Extract_Stage_DateTime = '$Update_Complete_DateTime'
-																WHERE 1 = 1
-																	AND Extract_Tables_Key = $Processing_Key
-															"
+						Write-Host $Source_Table_Qry
+						Write-Host "~ Source Table: $Source_Table"
 						
-						Invoke-Sqlcmd `
-							-ServerInstance $Dest_Instance `
-							-Database $Dest_Db `
-							-Query $Update_Incomplete_Extract_Tables
+						#---------------------------------------------
+						# Destination Table
+						#---------------------------------------------
+						
+						[STRING]$Dest_Table_Qry = "SELECT Destination_Table
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1
+													AND Extract_Tables_Key = $Processing_Key
+																  "                                                                                   
+										$Dest_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Table_Qry).Destination_Table
 						
 						Write-Host
-						Write-Host $Update_Incomplete_Extract_Tables
-						Write-Host "~ Extract_Tables updated to Incomplete."
+						Write-Host $Dest_Table
+						Write-Host "~ Destination Table: $Dest_Table"
 						
+						
+						#---------------------------------------------
+						# Extract Data
+						#---------------------------------------------
+						
+						Copy-OneAccord_Data -p1 $Source_Table -p2 $Processing_Key
+						
+						
+						#---------------------------------------------
+						# Check If Extract was successful
+						#---------------------------------------------
+						
+						[STRING]$Extract_Success_Qry = "SELECT COUNT(CASE WHEN Alpha_Result = 1 THEN 1 ELSE NULL END) AS Count_Alpha_Result
+												FROM Oa_Extract.Alpha_Table_1
+												WHERE 1 = 1
+													AND Alpha_Stage = '$Dest_Table'
+													AND Alpha_Step_Name = 'Stats'
+																  "                                                                                   
+							$Extract_Success_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Extract_Success_Qry).Count_Alpha_Result
+							
+							[Int]$Extract_Success = [convert]::ToInt32($Extract_Success_Var)
+						
+						Write-Host
+						Write-Host $Extract_Success_Qry
+						Write-Host "~ Extract Success: $Extract_Success"
+						
+						IF ($Extract_Success -gt 0)
+							{
+								#---------------------------------------------
+								# Extract_Tables Update
+								#---------------------------------------------
+								$Update_Complete_DateTime = Get-Date
+							
+								$Update_Complete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+													SET Extract_Stage = 'Complete'
+														, Extract_Stage_DateTime = '$Update_Complete_DateTime'
+													WHERE 1 = 1
+														AND Extract_Tables_Key = $Processing_Key"
+								
+								Invoke-Sqlcmd `
+									-ServerInstance $Dest_Instance `
+									-Database $Dest_Db `
+									-Query $Update_Complete_Extract_Tables
+								
+								Write-Host
+								Write-Host $Update_Complete_Extract_Tables
+								Write-Host "~ Extract_Tables updated to Complete."
+							}
+							ELSE
+							{
+								#---------------------------------------------
+								# Extract_Tables Update
+								#---------------------------------------------
+								$Update_Incomplete_DateTime = Get-Date
+							
+								$Update_Incomplete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+																		SET Extract_Stage = 'Incomplete'
+																			, Extract_Stage_DateTime = '$Update_Complete_DateTime'
+																		WHERE 1 = 1
+																			AND Extract_Tables_Key = $Processing_Key
+																	"
+								
+								Invoke-Sqlcmd `
+									-ServerInstance $Dest_Instance `
+									-Database $Dest_Db `
+									-Query $Update_Incomplete_Extract_Tables
+								
+								Write-Host
+								Write-Host $Update_Incomplete_Extract_Tables
+								Write-Host "~ Extract_Tables updated to Incomplete."
+								
+							}
+						
+						
+						#---------------------------------------------
+						# Tables to Process
+						#---------------------------------------------
+						
+						[STRING]$Tables_To_Process_Qry = "SELECT COUNT(Source_Table) AS Tables_To_Process
+															FROM Oa_Extract.Extract_Tables
+															WHERE 1 = 1 
+																AND (Extract_Stage IS NULL 
+																	OR Extract_Stage = 'Incomplete'
+																	)
+																AND Active = 1
+														"                                                                                   
+							$Tables_To_Process_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Tables_To_Process_Qry).Tables_To_Process
+							
+							[Int]$Tables_To_Process = [convert]::ToInt32($Tables_To_Process_Var)
+						
+						Write-Host
+						Write-Host $Tables_To_Process_Qry
+						Write-Host "~ Tables to Process: $Tables_To_Process"
+						
+						
+						#---------------------------------------------
+						# Current Process Time
+						#---------------------------------------------
+						$Current_Process_DateTime = Get-Date
+						
+						Write-Host 
+						Write-Host "~ Current Process Time: $Current_Process_DateTime"
+						
+						$Total_Processing_Time = New-TimeSpan -Start $Loop_Begin_DateTime -End $Current_Process_DateTime
+						
+						Write-Host 
+						Write-Host "~ Total Processing Time: $Total_Processing_Time"
 					}
-				
-				
-				#---------------------------------------------
-				# Tables to Process
-				#---------------------------------------------
-				
-				[STRING]$Tables_To_Process_Qry = "SELECT COUNT(Source_Table) AS Tables_To_Process
-													FROM Oa_Extract.Extract_Tables
-													WHERE 1 = 1 
-														AND (Extract_Stage IS NULL 
-															OR Extract_Stage = 'Incomplete'
-															)
-														AND Active = 1
-												"                                                                                   
-					$Tables_To_Process_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Tables_To_Process_Qry).Tables_To_Process
-					
-					[Int]$Tables_To_Process = [convert]::ToInt32($Tables_To_Process_Var)
-				
-				Write-Host
-				Write-Host $Tables_To_Process_Qry
-				Write-Host "~ Tables to Process: $Tables_To_Process"
-				
-				
-				#---------------------------------------------
-				# Current Process Time
-				#---------------------------------------------
-				$Current_Process_DateTime = Get-Date
-				
-				Write-Host 
-				Write-Host "~ Current Process Time: $Current_Process_DateTime"
-				
-				$Total_Processing_Time = New-TimeSpan -Start $Loop_Begin_DateTime -End $Current_Process_DateTime
-				
-				Write-Host 
-				Write-Host "~ Total Processing Time: $Total_Processing_Time"
 				
 			
 			} UNTIL ($Tables_To_Process -eq 0 -OR $Total_Processing_Time -gt '00:30:00')
@@ -7724,8 +7901,8 @@ Start-Job -Name Job8 -ScriptBlock {		                                    #<-----
 		# Stop log
 		#---------------------------------------------
 		Stop-Transcript
-	}	
-	
+
+	}
 
 Start-Job -Name Job9 -ScriptBlock {		                                    #<----------------------------------------------------------
 		FUNCTION Insert-Alpha_Table_1
@@ -8028,7 +8205,7 @@ Start-Job -Name Job9 -ScriptBlock {		                                    #<-----
 				Stop-Transcript
 			
 			}
-
+			
 		FUNCTION Copy-OneAccord_Data
 			{
 				[CmdletBinding(
@@ -8407,19 +8584,26 @@ Start-Job -Name Job9 -ScriptBlock {		                                    #<-----
 					}
 				
 			}
-
-		###################################################################################################
-		#
-		#	Name: PowerShell_ETL_Parrellel_Processing
-		#	Date: 02/26/2018
-		#
-		###################################################################################################
-
+			
 		#---------------------------------------------
 		# Catch Non-Terminating Errors
 		#---------------------------------------------
 		$Old = $ErrorActionPreference
 		$ErrorActionPreference = 'Stop'
+
+
+		#---------------------------------------------
+		# Job Variables
+		#---------------------------------------------
+		[STRING]$Job_Name = "Job9"                                             #<----------------------------------------------------------
+		[INT]$Sleep_Time = 9                                                   #<----------------------------------------------------------
+
+		#---------------------------------------------
+		# If this is the first than create the Alpha_Table_1
+		#   Else sleep
+		#---------------------------------------------
+		#Create-Alpha_Table_1                                                  #<----------------------------------------------------------
+		Start-Sleep -s $Sleep_Time  
 
 		#---------------------------------------------
 		# Log file
@@ -8432,7 +8616,7 @@ Start-Job -Name Job9 -ScriptBlock {		                                    #<-----
 			}
 				
 		[STRING]$Log_Root = $New_Folder_Path + "\PS_Extract_"
-		[STRING]$Parrellel_Processing = "Parrellel_Processing_9_"              #<----------------------------------------------------------
+		[STRING]$Parrellel_Processing = $Job_Name
 		[STRING]$Log_DateTime = Get-Date -Format "yyyyMMdd_HHmmss"
 		[String]$Log_File_Type = '.log'
 		[STRING]$Log_File_Name = $Log_Root + $Parrellel_Processing + "_" + $Log_DateTime + $Log_File_Type
@@ -8442,14 +8626,7 @@ Start-Job -Name Job9 -ScriptBlock {		                                    #<-----
 		Write-Host
 		Write-Host "~ This is the beginning of the Parrellel_Processing script."
 		Write-Host
-
-
-		#---------------------------------------------
-		# If this is the first than create the Alpha_Table_1
-		#   Else sleep for <> seconds
-		#---------------------------------------------
-		#Create-Alpha_Table_1                                                 #<----------------------------------------------------------
-		Start-Sleep -s 12                                                     #<----------------------------------------------------------
+												
 
 		#---------------------------------------------
 		# Destination Connection String
@@ -8519,11 +8696,11 @@ Start-Job -Name Job9 -ScriptBlock {		                                    #<-----
 				
 				#---------------------------------------------
 				# Extract_Tables Update
-				#---------------------------------------------
+				#---------------------------------------------				
 				$Update_DateTime = Get-Date
 			
 				$Update_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-									SET Extract_Stage = 'Processing'
+									SET Extract_Stage = '$Job_Name'                   
 										, Extract_Stage_DateTime = '$Update_DateTime'
 									WHERE 1 = 1
 										AND Extract_Tables_Key = $Processing_Key"
@@ -8535,144 +8712,166 @@ Start-Job -Name Job9 -ScriptBlock {		                                    #<-----
 				
 				Write-Host $Update_Extract_Tables
 				
-				
 				#---------------------------------------------
-				# Source Table
-				#---------------------------------------------
-				
-				[STRING]$Source_Table_Qry = "SELECT Source_Table
-										FROM Oa_Extract.Extract_Tables
-										WHERE 1 = 1
-											AND Extract_Tables_Key = $Processing_Key
-														  "                                                                                   
-								$Source_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Source_Table_Qry).Source_Table
-				
-				Write-Host
-				Write-Host $Source_Table_Qry
-				Write-Host "~ Source Table: $Source_Table"
-				
-				#---------------------------------------------
-				# Destination Table
+				# Wait then recheck, if it is the same name then run, else end
 				#---------------------------------------------
 				
-				[STRING]$Dest_Table_Qry = "SELECT Destination_Table
-										FROM Oa_Extract.Extract_Tables
-										WHERE 1 = 1
-											AND Extract_Tables_Key = $Processing_Key
-														  "                                                                                   
-								$Dest_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Table_Qry).Destination_Table
+				Start-Sleep -s $Sleep_Time 
 				
-				Write-Host
-				Write-Host $Dest_Table
-				Write-Host "~ Destination Table: $Dest_Table"
-				
-				
-				#---------------------------------------------
-				# Extract Data
-				#---------------------------------------------
-				
-				Copy-OneAccord_Data -p1 $Source_Table -p2 $Processing_Key
-				
-				
-				#---------------------------------------------
-				# Check If Extract was successful
-				#---------------------------------------------
-				
-				[STRING]$Extract_Success_Qry = "SELECT SUM(Alpha_Result) AS Sum_Alpha_Result
-										FROM Oa_Extract.Alpha_Table_1
-										WHERE 1 = 1
-											AND Alpha_Stage = '$Dest_Table'
-											AND Alpha_Step_Name = 'Stats'
-														  "                                                                                   
-					$Extract_Success_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Extract_Success_Qry).Sum_Alpha_Result
-					
-					[Int]$Extract_Success = [convert]::ToInt32($Extract_Success_Var)
-				
-				Write-Host
-				Write-Host $Extract_Success_Qry
-				Write-Host "~ Extract Success: $Extract_Success"
-				
-				IF ($Extract_Success -gt 0)
-					{
-						#---------------------------------------------
-						# Extract_Tables Update
-						#---------------------------------------------
-						$Update_Complete_DateTime = Get-Date
-					
-						$Update_Complete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-											SET Extract_Stage = 'Complete'
-												, Extract_Stage_DateTime = '$Update_Complete_DateTime'
-											WHERE 1 = 1
-												AND Extract_Tables_Key = $Processing_Key"
+				[STRING]$Processing_Key_Qry2 = "SELECT Extract_Stage
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1 
+													AND Extract_Tables_Key = $Processing_Key
+											"                                                                                   
+					$Extract_Stage = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Processing_Key_Qry2).Extract_Stage
 						
-						Invoke-Sqlcmd `
-							-ServerInstance $Dest_Instance `
-							-Database $Dest_Db `
-							-Query $Update_Complete_Extract_Tables
+				Write-Host
+				Write-Host $Processing_Key_Qry2
+				Write-Host "~ Job Name: $Job_Name"
+				Write-Host "~ Extract_Stage (2): $Extract_Stage"
+				
+				IF($Job_Name -eq $Extract_Stage) 
+					{
+				
+				
+						#---------------------------------------------
+						# Source Table
+						#---------------------------------------------
+						
+						[STRING]$Source_Table_Qry = "SELECT Source_Table
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1
+													AND Extract_Tables_Key = $Processing_Key
+																  "                                                                                   
+										$Source_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Source_Table_Qry).Source_Table
 						
 						Write-Host
-						Write-Host $Update_Complete_Extract_Tables
-						Write-Host "~ Extract_Tables updated to Complete."
-					}
-					ELSE
-					{
-						#---------------------------------------------
-						# Extract_Tables Update
-						#---------------------------------------------
-						$Update_Incomplete_DateTime = Get-Date
-					
-						$Update_Incomplete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-																SET Extract_Stage = 'Incomplete'
-																	, Extract_Stage_DateTime = '$Update_Complete_DateTime'
-																WHERE 1 = 1
-																	AND Extract_Tables_Key = $Processing_Key
-															"
+						Write-Host $Source_Table_Qry
+						Write-Host "~ Source Table: $Source_Table"
 						
-						Invoke-Sqlcmd `
-							-ServerInstance $Dest_Instance `
-							-Database $Dest_Db `
-							-Query $Update_Incomplete_Extract_Tables
+						#---------------------------------------------
+						# Destination Table
+						#---------------------------------------------
+						
+						[STRING]$Dest_Table_Qry = "SELECT Destination_Table
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1
+													AND Extract_Tables_Key = $Processing_Key
+																  "                                                                                   
+										$Dest_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Table_Qry).Destination_Table
 						
 						Write-Host
-						Write-Host $Update_Incomplete_Extract_Tables
-						Write-Host "~ Extract_Tables updated to Incomplete."
+						Write-Host $Dest_Table
+						Write-Host "~ Destination Table: $Dest_Table"
 						
+						
+						#---------------------------------------------
+						# Extract Data
+						#---------------------------------------------
+						
+						Copy-OneAccord_Data -p1 $Source_Table -p2 $Processing_Key
+						
+						
+						#---------------------------------------------
+						# Check If Extract was successful
+						#---------------------------------------------
+						
+						[STRING]$Extract_Success_Qry = "SELECT COUNT(CASE WHEN Alpha_Result = 1 THEN 1 ELSE NULL END) AS Count_Alpha_Result
+												FROM Oa_Extract.Alpha_Table_1
+												WHERE 1 = 1
+													AND Alpha_Stage = '$Dest_Table'
+													AND Alpha_Step_Name = 'Stats'
+																  "                                                                                   
+							$Extract_Success_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Extract_Success_Qry).Count_Alpha_Result
+							
+							[Int]$Extract_Success = [convert]::ToInt32($Extract_Success_Var)
+						
+						Write-Host
+						Write-Host $Extract_Success_Qry
+						Write-Host "~ Extract Success: $Extract_Success"
+						
+						IF ($Extract_Success -gt 0)
+							{
+								#---------------------------------------------
+								# Extract_Tables Update
+								#---------------------------------------------
+								$Update_Complete_DateTime = Get-Date
+							
+								$Update_Complete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+													SET Extract_Stage = 'Complete'
+														, Extract_Stage_DateTime = '$Update_Complete_DateTime'
+													WHERE 1 = 1
+														AND Extract_Tables_Key = $Processing_Key"
+								
+								Invoke-Sqlcmd `
+									-ServerInstance $Dest_Instance `
+									-Database $Dest_Db `
+									-Query $Update_Complete_Extract_Tables
+								
+								Write-Host
+								Write-Host $Update_Complete_Extract_Tables
+								Write-Host "~ Extract_Tables updated to Complete."
+							}
+							ELSE
+							{
+								#---------------------------------------------
+								# Extract_Tables Update
+								#---------------------------------------------
+								$Update_Incomplete_DateTime = Get-Date
+							
+								$Update_Incomplete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+																		SET Extract_Stage = 'Incomplete'
+																			, Extract_Stage_DateTime = '$Update_Complete_DateTime'
+																		WHERE 1 = 1
+																			AND Extract_Tables_Key = $Processing_Key
+																	"
+								
+								Invoke-Sqlcmd `
+									-ServerInstance $Dest_Instance `
+									-Database $Dest_Db `
+									-Query $Update_Incomplete_Extract_Tables
+								
+								Write-Host
+								Write-Host $Update_Incomplete_Extract_Tables
+								Write-Host "~ Extract_Tables updated to Incomplete."
+								
+							}
+						
+						
+						#---------------------------------------------
+						# Tables to Process
+						#---------------------------------------------
+						
+						[STRING]$Tables_To_Process_Qry = "SELECT COUNT(Source_Table) AS Tables_To_Process
+															FROM Oa_Extract.Extract_Tables
+															WHERE 1 = 1 
+																AND (Extract_Stage IS NULL 
+																	OR Extract_Stage = 'Incomplete'
+																	)
+																AND Active = 1
+														"                                                                                   
+							$Tables_To_Process_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Tables_To_Process_Qry).Tables_To_Process
+							
+							[Int]$Tables_To_Process = [convert]::ToInt32($Tables_To_Process_Var)
+						
+						Write-Host
+						Write-Host $Tables_To_Process_Qry
+						Write-Host "~ Tables to Process: $Tables_To_Process"
+						
+						
+						#---------------------------------------------
+						# Current Process Time
+						#---------------------------------------------
+						$Current_Process_DateTime = Get-Date
+						
+						Write-Host 
+						Write-Host "~ Current Process Time: $Current_Process_DateTime"
+						
+						$Total_Processing_Time = New-TimeSpan -Start $Loop_Begin_DateTime -End $Current_Process_DateTime
+						
+						Write-Host 
+						Write-Host "~ Total Processing Time: $Total_Processing_Time"
 					}
-				
-				
-				#---------------------------------------------
-				# Tables to Process
-				#---------------------------------------------
-				
-				[STRING]$Tables_To_Process_Qry = "SELECT COUNT(Source_Table) AS Tables_To_Process
-													FROM Oa_Extract.Extract_Tables
-													WHERE 1 = 1 
-														AND (Extract_Stage IS NULL 
-															OR Extract_Stage = 'Incomplete'
-															)
-														AND Active = 1
-												"                                                                                   
-					$Tables_To_Process_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Tables_To_Process_Qry).Tables_To_Process
-					
-					[Int]$Tables_To_Process = [convert]::ToInt32($Tables_To_Process_Var)
-				
-				Write-Host
-				Write-Host $Tables_To_Process_Qry
-				Write-Host "~ Tables to Process: $Tables_To_Process"
-				
-				
-				#---------------------------------------------
-				# Current Process Time
-				#---------------------------------------------
-				$Current_Process_DateTime = Get-Date
-				
-				Write-Host 
-				Write-Host "~ Current Process Time: $Current_Process_DateTime"
-				
-				$Total_Processing_Time = New-TimeSpan -Start $Loop_Begin_DateTime -End $Current_Process_DateTime
-				
-				Write-Host 
-				Write-Host "~ Total Processing Time: $Total_Processing_Time"
 				
 			
 			} UNTIL ($Tables_To_Process -eq 0 -OR $Total_Processing_Time -gt '00:30:00')
@@ -8689,8 +8888,8 @@ Start-Job -Name Job9 -ScriptBlock {		                                    #<-----
 		# Stop log
 		#---------------------------------------------
 		Stop-Transcript
-	}	
-	
+
+	}
 
 Start-Job -Name Job10 -ScriptBlock {		                                    #<----------------------------------------------------------
 		FUNCTION Insert-Alpha_Table_1
@@ -8993,7 +9192,7 @@ Start-Job -Name Job10 -ScriptBlock {		                                    #<----
 				Stop-Transcript
 			
 			}
-
+			
 		FUNCTION Copy-OneAccord_Data
 			{
 				[CmdletBinding(
@@ -9372,19 +9571,26 @@ Start-Job -Name Job10 -ScriptBlock {		                                    #<----
 					}
 				
 			}
-
-		###################################################################################################
-		#
-		#	Name: PowerShell_ETL_Parrellel_Processing
-		#	Date: 02/26/2018
-		#
-		###################################################################################################
-
+			
 		#---------------------------------------------
 		# Catch Non-Terminating Errors
 		#---------------------------------------------
 		$Old = $ErrorActionPreference
 		$ErrorActionPreference = 'Stop'
+
+
+		#---------------------------------------------
+		# Job Variables
+		#---------------------------------------------
+		[STRING]$Job_Name = "Job10"                                             #<----------------------------------------------------------
+		[INT]$Sleep_Time = 10                                                   #<----------------------------------------------------------
+
+		#---------------------------------------------
+		# If this is the first than create the Alpha_Table_1
+		#   Else sleep
+		#---------------------------------------------
+		#Create-Alpha_Table_1                                                   #<----------------------------------------------------------
+		Start-Sleep -s $Sleep_Time  
 
 		#---------------------------------------------
 		# Log file
@@ -9397,7 +9603,7 @@ Start-Job -Name Job10 -ScriptBlock {		                                    #<----
 			}
 				
 		[STRING]$Log_Root = $New_Folder_Path + "\PS_Extract_"
-		[STRING]$Parrellel_Processing = "Parrellel_Processing_10_"              #<----------------------------------------------------------
+		[STRING]$Parrellel_Processing = $Job_Name
 		[STRING]$Log_DateTime = Get-Date -Format "yyyyMMdd_HHmmss"
 		[String]$Log_File_Type = '.log'
 		[STRING]$Log_File_Name = $Log_Root + $Parrellel_Processing + "_" + $Log_DateTime + $Log_File_Type
@@ -9407,14 +9613,7 @@ Start-Job -Name Job10 -ScriptBlock {		                                    #<----
 		Write-Host
 		Write-Host "~ This is the beginning of the Parrellel_Processing script."
 		Write-Host
-
-
-		#---------------------------------------------
-		# If this is the first than create the Alpha_Table_1
-		#   Else sleep for <> seconds
-		#---------------------------------------------
-		#Create-Alpha_Table_1                                                 #<----------------------------------------------------------
-		Start-Sleep -s 13                                                     #<----------------------------------------------------------
+												
 
 		#---------------------------------------------
 		# Destination Connection String
@@ -9484,11 +9683,11 @@ Start-Job -Name Job10 -ScriptBlock {		                                    #<----
 				
 				#---------------------------------------------
 				# Extract_Tables Update
-				#---------------------------------------------
+				#---------------------------------------------				
 				$Update_DateTime = Get-Date
 			
 				$Update_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-									SET Extract_Stage = 'Processing'
+									SET Extract_Stage = '$Job_Name'                   
 										, Extract_Stage_DateTime = '$Update_DateTime'
 									WHERE 1 = 1
 										AND Extract_Tables_Key = $Processing_Key"
@@ -9500,144 +9699,166 @@ Start-Job -Name Job10 -ScriptBlock {		                                    #<----
 				
 				Write-Host $Update_Extract_Tables
 				
-				
 				#---------------------------------------------
-				# Source Table
-				#---------------------------------------------
-				
-				[STRING]$Source_Table_Qry = "SELECT Source_Table
-										FROM Oa_Extract.Extract_Tables
-										WHERE 1 = 1
-											AND Extract_Tables_Key = $Processing_Key
-														  "                                                                                   
-								$Source_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Source_Table_Qry).Source_Table
-				
-				Write-Host
-				Write-Host $Source_Table_Qry
-				Write-Host "~ Source Table: $Source_Table"
-				
-				#---------------------------------------------
-				# Destination Table
+				# Wait then recheck, if it is the same name then run, else end
 				#---------------------------------------------
 				
-				[STRING]$Dest_Table_Qry = "SELECT Destination_Table
-										FROM Oa_Extract.Extract_Tables
-										WHERE 1 = 1
-											AND Extract_Tables_Key = $Processing_Key
-														  "                                                                                   
-								$Dest_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Table_Qry).Destination_Table
+				Start-Sleep -s $Sleep_Time 
 				
-				Write-Host
-				Write-Host $Dest_Table
-				Write-Host "~ Destination Table: $Dest_Table"
-				
-				
-				#---------------------------------------------
-				# Extract Data
-				#---------------------------------------------
-				
-				Copy-OneAccord_Data -p1 $Source_Table -p2 $Processing_Key
-				
-				
-				#---------------------------------------------
-				# Check If Extract was successful
-				#---------------------------------------------
-				
-				[STRING]$Extract_Success_Qry = "SELECT SUM(Alpha_Result) AS Sum_Alpha_Result
-										FROM Oa_Extract.Alpha_Table_1
-										WHERE 1 = 1
-											AND Alpha_Stage = '$Dest_Table'
-											AND Alpha_Step_Name = 'Stats'
-														  "                                                                                   
-					$Extract_Success_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Extract_Success_Qry).Sum_Alpha_Result
-					
-					[Int]$Extract_Success = [convert]::ToInt32($Extract_Success_Var)
-				
-				Write-Host
-				Write-Host $Extract_Success_Qry
-				Write-Host "~ Extract Success: $Extract_Success"
-				
-				IF ($Extract_Success -gt 0)
-					{
-						#---------------------------------------------
-						# Extract_Tables Update
-						#---------------------------------------------
-						$Update_Complete_DateTime = Get-Date
-					
-						$Update_Complete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-											SET Extract_Stage = 'Complete'
-												, Extract_Stage_DateTime = '$Update_Complete_DateTime'
-											WHERE 1 = 1
-												AND Extract_Tables_Key = $Processing_Key"
+				[STRING]$Processing_Key_Qry2 = "SELECT Extract_Stage
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1 
+													AND Extract_Tables_Key = $Processing_Key
+											"                                                                                   
+					$Extract_Stage = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Processing_Key_Qry2).Extract_Stage
 						
-						Invoke-Sqlcmd `
-							-ServerInstance $Dest_Instance `
-							-Database $Dest_Db `
-							-Query $Update_Complete_Extract_Tables
+				Write-Host
+				Write-Host $Processing_Key_Qry2
+				Write-Host "~ Job Name: $Job_Name"
+				Write-Host "~ Extract_Stage (2): $Extract_Stage"
+				
+				IF($Job_Name -eq $Extract_Stage) 
+					{
+				
+				
+						#---------------------------------------------
+						# Source Table
+						#---------------------------------------------
+						
+						[STRING]$Source_Table_Qry = "SELECT Source_Table
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1
+													AND Extract_Tables_Key = $Processing_Key
+																  "                                                                                   
+										$Source_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Source_Table_Qry).Source_Table
 						
 						Write-Host
-						Write-Host $Update_Complete_Extract_Tables
-						Write-Host "~ Extract_Tables updated to Complete."
-					}
-					ELSE
-					{
-						#---------------------------------------------
-						# Extract_Tables Update
-						#---------------------------------------------
-						$Update_Incomplete_DateTime = Get-Date
-					
-						$Update_Incomplete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-																SET Extract_Stage = 'Incomplete'
-																	, Extract_Stage_DateTime = '$Update_Complete_DateTime'
-																WHERE 1 = 1
-																	AND Extract_Tables_Key = $Processing_Key
-															"
+						Write-Host $Source_Table_Qry
+						Write-Host "~ Source Table: $Source_Table"
 						
-						Invoke-Sqlcmd `
-							-ServerInstance $Dest_Instance `
-							-Database $Dest_Db `
-							-Query $Update_Incomplete_Extract_Tables
+						#---------------------------------------------
+						# Destination Table
+						#---------------------------------------------
+						
+						[STRING]$Dest_Table_Qry = "SELECT Destination_Table
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1
+													AND Extract_Tables_Key = $Processing_Key
+																  "                                                                                   
+										$Dest_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Table_Qry).Destination_Table
 						
 						Write-Host
-						Write-Host $Update_Incomplete_Extract_Tables
-						Write-Host "~ Extract_Tables updated to Incomplete."
+						Write-Host $Dest_Table
+						Write-Host "~ Destination Table: $Dest_Table"
 						
+						
+						#---------------------------------------------
+						# Extract Data
+						#---------------------------------------------
+						
+						Copy-OneAccord_Data -p1 $Source_Table -p2 $Processing_Key
+						
+						
+						#---------------------------------------------
+						# Check If Extract was successful
+						#---------------------------------------------
+						
+						[STRING]$Extract_Success_Qry = "SELECT COUNT(CASE WHEN Alpha_Result = 1 THEN 1 ELSE NULL END) AS Count_Alpha_Result
+												FROM Oa_Extract.Alpha_Table_1
+												WHERE 1 = 1
+													AND Alpha_Stage = '$Dest_Table'
+													AND Alpha_Step_Name = 'Stats'
+																  "                                                                                   
+							$Extract_Success_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Extract_Success_Qry).Count_Alpha_Result
+							
+							[Int]$Extract_Success = [convert]::ToInt32($Extract_Success_Var)
+						
+						Write-Host
+						Write-Host $Extract_Success_Qry
+						Write-Host "~ Extract Success: $Extract_Success"
+						
+						IF ($Extract_Success -gt 0)
+							{
+								#---------------------------------------------
+								# Extract_Tables Update
+								#---------------------------------------------
+								$Update_Complete_DateTime = Get-Date
+							
+								$Update_Complete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+													SET Extract_Stage = 'Complete'
+														, Extract_Stage_DateTime = '$Update_Complete_DateTime'
+													WHERE 1 = 1
+														AND Extract_Tables_Key = $Processing_Key"
+								
+								Invoke-Sqlcmd `
+									-ServerInstance $Dest_Instance `
+									-Database $Dest_Db `
+									-Query $Update_Complete_Extract_Tables
+								
+								Write-Host
+								Write-Host $Update_Complete_Extract_Tables
+								Write-Host "~ Extract_Tables updated to Complete."
+							}
+							ELSE
+							{
+								#---------------------------------------------
+								# Extract_Tables Update
+								#---------------------------------------------
+								$Update_Incomplete_DateTime = Get-Date
+							
+								$Update_Incomplete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+																		SET Extract_Stage = 'Incomplete'
+																			, Extract_Stage_DateTime = '$Update_Complete_DateTime'
+																		WHERE 1 = 1
+																			AND Extract_Tables_Key = $Processing_Key
+																	"
+								
+								Invoke-Sqlcmd `
+									-ServerInstance $Dest_Instance `
+									-Database $Dest_Db `
+									-Query $Update_Incomplete_Extract_Tables
+								
+								Write-Host
+								Write-Host $Update_Incomplete_Extract_Tables
+								Write-Host "~ Extract_Tables updated to Incomplete."
+								
+							}
+						
+						
+						#---------------------------------------------
+						# Tables to Process
+						#---------------------------------------------
+						
+						[STRING]$Tables_To_Process_Qry = "SELECT COUNT(Source_Table) AS Tables_To_Process
+															FROM Oa_Extract.Extract_Tables
+															WHERE 1 = 1 
+																AND (Extract_Stage IS NULL 
+																	OR Extract_Stage = 'Incomplete'
+																	)
+																AND Active = 1
+														"                                                                                   
+							$Tables_To_Process_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Tables_To_Process_Qry).Tables_To_Process
+							
+							[Int]$Tables_To_Process = [convert]::ToInt32($Tables_To_Process_Var)
+						
+						Write-Host
+						Write-Host $Tables_To_Process_Qry
+						Write-Host "~ Tables to Process: $Tables_To_Process"
+						
+						
+						#---------------------------------------------
+						# Current Process Time
+						#---------------------------------------------
+						$Current_Process_DateTime = Get-Date
+						
+						Write-Host 
+						Write-Host "~ Current Process Time: $Current_Process_DateTime"
+						
+						$Total_Processing_Time = New-TimeSpan -Start $Loop_Begin_DateTime -End $Current_Process_DateTime
+						
+						Write-Host 
+						Write-Host "~ Total Processing Time: $Total_Processing_Time"
 					}
-				
-				
-				#---------------------------------------------
-				# Tables to Process
-				#---------------------------------------------
-				
-				[STRING]$Tables_To_Process_Qry = "SELECT COUNT(Source_Table) AS Tables_To_Process
-													FROM Oa_Extract.Extract_Tables
-													WHERE 1 = 1 
-														AND (Extract_Stage IS NULL 
-															OR Extract_Stage = 'Incomplete'
-															)
-														AND Active = 1
-												"                                                                                   
-					$Tables_To_Process_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Tables_To_Process_Qry).Tables_To_Process
-					
-					[Int]$Tables_To_Process = [convert]::ToInt32($Tables_To_Process_Var)
-				
-				Write-Host
-				Write-Host $Tables_To_Process_Qry
-				Write-Host "~ Tables to Process: $Tables_To_Process"
-				
-				
-				#---------------------------------------------
-				# Current Process Time
-				#---------------------------------------------
-				$Current_Process_DateTime = Get-Date
-				
-				Write-Host 
-				Write-Host "~ Current Process Time: $Current_Process_DateTime"
-				
-				$Total_Processing_Time = New-TimeSpan -Start $Loop_Begin_DateTime -End $Current_Process_DateTime
-				
-				Write-Host 
-				Write-Host "~ Total Processing Time: $Total_Processing_Time"
 				
 			
 			} UNTIL ($Tables_To_Process -eq 0 -OR $Total_Processing_Time -gt '00:30:00')
@@ -9654,9 +9875,9 @@ Start-Job -Name Job10 -ScriptBlock {		                                    #<----
 		# Stop log
 		#---------------------------------------------
 		Stop-Transcript
-	}	
-	
 
+	}
+	
 Start-Job -Name Job11 -ScriptBlock {		                                    #<----------------------------------------------------------
 		FUNCTION Insert-Alpha_Table_1
 			{
@@ -9958,7 +10179,7 @@ Start-Job -Name Job11 -ScriptBlock {		                                    #<----
 				Stop-Transcript
 			
 			}
-
+			
 		FUNCTION Copy-OneAccord_Data
 			{
 				[CmdletBinding(
@@ -10337,19 +10558,26 @@ Start-Job -Name Job11 -ScriptBlock {		                                    #<----
 					}
 				
 			}
-
-		###################################################################################################
-		#
-		#	Name: PowerShell_ETL_Parrellel_Processing
-		#	Date: 02/26/2018
-		#
-		###################################################################################################
-
+			
 		#---------------------------------------------
 		# Catch Non-Terminating Errors
 		#---------------------------------------------
 		$Old = $ErrorActionPreference
 		$ErrorActionPreference = 'Stop'
+
+
+		#---------------------------------------------
+		# Job Variables
+		#---------------------------------------------
+		[STRING]$Job_Name = "Job11"                                             #<----------------------------------------------------------
+		[INT]$Sleep_Time = 11                                                   #<----------------------------------------------------------
+
+		#---------------------------------------------
+		# If this is the first than create the Alpha_Table_1
+		#   Else sleep
+		#---------------------------------------------
+		#Create-Alpha_Table_1                                                   #<----------------------------------------------------------
+		Start-Sleep -s $Sleep_Time  
 
 		#---------------------------------------------
 		# Log file
@@ -10362,7 +10590,7 @@ Start-Job -Name Job11 -ScriptBlock {		                                    #<----
 			}
 				
 		[STRING]$Log_Root = $New_Folder_Path + "\PS_Extract_"
-		[STRING]$Parrellel_Processing = "Parrellel_Processing_11_"              #<----------------------------------------------------------
+		[STRING]$Parrellel_Processing = $Job_Name
 		[STRING]$Log_DateTime = Get-Date -Format "yyyyMMdd_HHmmss"
 		[String]$Log_File_Type = '.log'
 		[STRING]$Log_File_Name = $Log_Root + $Parrellel_Processing + "_" + $Log_DateTime + $Log_File_Type
@@ -10372,14 +10600,7 @@ Start-Job -Name Job11 -ScriptBlock {		                                    #<----
 		Write-Host
 		Write-Host "~ This is the beginning of the Parrellel_Processing script."
 		Write-Host
-
-
-		#---------------------------------------------
-		# If this is the first than create the Alpha_Table_1
-		#   Else sleep for <> seconds
-		#---------------------------------------------
-		#Create-Alpha_Table_1                                                 #<----------------------------------------------------------
-		Start-Sleep -s 14                                                     #<----------------------------------------------------------
+												
 
 		#---------------------------------------------
 		# Destination Connection String
@@ -10449,11 +10670,11 @@ Start-Job -Name Job11 -ScriptBlock {		                                    #<----
 				
 				#---------------------------------------------
 				# Extract_Tables Update
-				#---------------------------------------------
+				#---------------------------------------------				
 				$Update_DateTime = Get-Date
 			
 				$Update_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-									SET Extract_Stage = 'Processing'
+									SET Extract_Stage = '$Job_Name'                   
 										, Extract_Stage_DateTime = '$Update_DateTime'
 									WHERE 1 = 1
 										AND Extract_Tables_Key = $Processing_Key"
@@ -10465,144 +10686,166 @@ Start-Job -Name Job11 -ScriptBlock {		                                    #<----
 				
 				Write-Host $Update_Extract_Tables
 				
-				
 				#---------------------------------------------
-				# Source Table
-				#---------------------------------------------
-				
-				[STRING]$Source_Table_Qry = "SELECT Source_Table
-										FROM Oa_Extract.Extract_Tables
-										WHERE 1 = 1
-											AND Extract_Tables_Key = $Processing_Key
-														  "                                                                                   
-								$Source_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Source_Table_Qry).Source_Table
-				
-				Write-Host
-				Write-Host $Source_Table_Qry
-				Write-Host "~ Source Table: $Source_Table"
-				
-				#---------------------------------------------
-				# Destination Table
+				# Wait then recheck, if it is the same name then run, else end
 				#---------------------------------------------
 				
-				[STRING]$Dest_Table_Qry = "SELECT Destination_Table
-										FROM Oa_Extract.Extract_Tables
-										WHERE 1 = 1
-											AND Extract_Tables_Key = $Processing_Key
-														  "                                                                                   
-								$Dest_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Table_Qry).Destination_Table
+				Start-Sleep -s $Sleep_Time 
 				
-				Write-Host
-				Write-Host $Dest_Table
-				Write-Host "~ Destination Table: $Dest_Table"
-				
-				
-				#---------------------------------------------
-				# Extract Data
-				#---------------------------------------------
-				
-				Copy-OneAccord_Data -p1 $Source_Table -p2 $Processing_Key
-				
-				
-				#---------------------------------------------
-				# Check If Extract was successful
-				#---------------------------------------------
-				
-				[STRING]$Extract_Success_Qry = "SELECT SUM(Alpha_Result) AS Sum_Alpha_Result
-										FROM Oa_Extract.Alpha_Table_1
-										WHERE 1 = 1
-											AND Alpha_Stage = '$Dest_Table'
-											AND Alpha_Step_Name = 'Stats'
-														  "                                                                                   
-					$Extract_Success_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Extract_Success_Qry).Sum_Alpha_Result
-					
-					[Int]$Extract_Success = [convert]::ToInt32($Extract_Success_Var)
-				
-				Write-Host
-				Write-Host $Extract_Success_Qry
-				Write-Host "~ Extract Success: $Extract_Success"
-				
-				IF ($Extract_Success -gt 0)
-					{
-						#---------------------------------------------
-						# Extract_Tables Update
-						#---------------------------------------------
-						$Update_Complete_DateTime = Get-Date
-					
-						$Update_Complete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-											SET Extract_Stage = 'Complete'
-												, Extract_Stage_DateTime = '$Update_Complete_DateTime'
-											WHERE 1 = 1
-												AND Extract_Tables_Key = $Processing_Key"
+				[STRING]$Processing_Key_Qry2 = "SELECT Extract_Stage
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1 
+													AND Extract_Tables_Key = $Processing_Key
+											"                                                                                   
+					$Extract_Stage = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Processing_Key_Qry2).Extract_Stage
 						
-						Invoke-Sqlcmd `
-							-ServerInstance $Dest_Instance `
-							-Database $Dest_Db `
-							-Query $Update_Complete_Extract_Tables
+				Write-Host
+				Write-Host $Processing_Key_Qry2
+				Write-Host "~ Job Name: $Job_Name"
+				Write-Host "~ Extract_Stage (2): $Extract_Stage"
+				
+				IF($Job_Name -eq $Extract_Stage) 
+					{
+				
+				
+						#---------------------------------------------
+						# Source Table
+						#---------------------------------------------
+						
+						[STRING]$Source_Table_Qry = "SELECT Source_Table
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1
+													AND Extract_Tables_Key = $Processing_Key
+																  "                                                                                   
+										$Source_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Source_Table_Qry).Source_Table
 						
 						Write-Host
-						Write-Host $Update_Complete_Extract_Tables
-						Write-Host "~ Extract_Tables updated to Complete."
-					}
-					ELSE
-					{
-						#---------------------------------------------
-						# Extract_Tables Update
-						#---------------------------------------------
-						$Update_Incomplete_DateTime = Get-Date
-					
-						$Update_Incomplete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-																SET Extract_Stage = 'Incomplete'
-																	, Extract_Stage_DateTime = '$Update_Complete_DateTime'
-																WHERE 1 = 1
-																	AND Extract_Tables_Key = $Processing_Key
-															"
+						Write-Host $Source_Table_Qry
+						Write-Host "~ Source Table: $Source_Table"
 						
-						Invoke-Sqlcmd `
-							-ServerInstance $Dest_Instance `
-							-Database $Dest_Db `
-							-Query $Update_Incomplete_Extract_Tables
+						#---------------------------------------------
+						# Destination Table
+						#---------------------------------------------
+						
+						[STRING]$Dest_Table_Qry = "SELECT Destination_Table
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1
+													AND Extract_Tables_Key = $Processing_Key
+																  "                                                                                   
+										$Dest_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Table_Qry).Destination_Table
 						
 						Write-Host
-						Write-Host $Update_Incomplete_Extract_Tables
-						Write-Host "~ Extract_Tables updated to Incomplete."
+						Write-Host $Dest_Table
+						Write-Host "~ Destination Table: $Dest_Table"
 						
+						
+						#---------------------------------------------
+						# Extract Data
+						#---------------------------------------------
+						
+						Copy-OneAccord_Data -p1 $Source_Table -p2 $Processing_Key
+						
+						
+						#---------------------------------------------
+						# Check If Extract was successful
+						#---------------------------------------------
+						
+						[STRING]$Extract_Success_Qry = "SELECT COUNT(CASE WHEN Alpha_Result = 1 THEN 1 ELSE NULL END) AS Count_Alpha_Result
+												FROM Oa_Extract.Alpha_Table_1
+												WHERE 1 = 1
+													AND Alpha_Stage = '$Dest_Table'
+													AND Alpha_Step_Name = 'Stats'
+																  "                                                                                   
+							$Extract_Success_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Extract_Success_Qry).Count_Alpha_Result
+							
+							[Int]$Extract_Success = [convert]::ToInt32($Extract_Success_Var)
+						
+						Write-Host
+						Write-Host $Extract_Success_Qry
+						Write-Host "~ Extract Success: $Extract_Success"
+						
+						IF ($Extract_Success -gt 0)
+							{
+								#---------------------------------------------
+								# Extract_Tables Update
+								#---------------------------------------------
+								$Update_Complete_DateTime = Get-Date
+							
+								$Update_Complete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+													SET Extract_Stage = 'Complete'
+														, Extract_Stage_DateTime = '$Update_Complete_DateTime'
+													WHERE 1 = 1
+														AND Extract_Tables_Key = $Processing_Key"
+								
+								Invoke-Sqlcmd `
+									-ServerInstance $Dest_Instance `
+									-Database $Dest_Db `
+									-Query $Update_Complete_Extract_Tables
+								
+								Write-Host
+								Write-Host $Update_Complete_Extract_Tables
+								Write-Host "~ Extract_Tables updated to Complete."
+							}
+							ELSE
+							{
+								#---------------------------------------------
+								# Extract_Tables Update
+								#---------------------------------------------
+								$Update_Incomplete_DateTime = Get-Date
+							
+								$Update_Incomplete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+																		SET Extract_Stage = 'Incomplete'
+																			, Extract_Stage_DateTime = '$Update_Complete_DateTime'
+																		WHERE 1 = 1
+																			AND Extract_Tables_Key = $Processing_Key
+																	"
+								
+								Invoke-Sqlcmd `
+									-ServerInstance $Dest_Instance `
+									-Database $Dest_Db `
+									-Query $Update_Incomplete_Extract_Tables
+								
+								Write-Host
+								Write-Host $Update_Incomplete_Extract_Tables
+								Write-Host "~ Extract_Tables updated to Incomplete."
+								
+							}
+						
+						
+						#---------------------------------------------
+						# Tables to Process
+						#---------------------------------------------
+						
+						[STRING]$Tables_To_Process_Qry = "SELECT COUNT(Source_Table) AS Tables_To_Process
+															FROM Oa_Extract.Extract_Tables
+															WHERE 1 = 1 
+																AND (Extract_Stage IS NULL 
+																	OR Extract_Stage = 'Incomplete'
+																	)
+																AND Active = 1
+														"                                                                                   
+							$Tables_To_Process_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Tables_To_Process_Qry).Tables_To_Process
+							
+							[Int]$Tables_To_Process = [convert]::ToInt32($Tables_To_Process_Var)
+						
+						Write-Host
+						Write-Host $Tables_To_Process_Qry
+						Write-Host "~ Tables to Process: $Tables_To_Process"
+						
+						
+						#---------------------------------------------
+						# Current Process Time
+						#---------------------------------------------
+						$Current_Process_DateTime = Get-Date
+						
+						Write-Host 
+						Write-Host "~ Current Process Time: $Current_Process_DateTime"
+						
+						$Total_Processing_Time = New-TimeSpan -Start $Loop_Begin_DateTime -End $Current_Process_DateTime
+						
+						Write-Host 
+						Write-Host "~ Total Processing Time: $Total_Processing_Time"
 					}
-				
-				
-				#---------------------------------------------
-				# Tables to Process
-				#---------------------------------------------
-				
-				[STRING]$Tables_To_Process_Qry = "SELECT COUNT(Source_Table) AS Tables_To_Process
-													FROM Oa_Extract.Extract_Tables
-													WHERE 1 = 1 
-														AND (Extract_Stage IS NULL 
-															OR Extract_Stage = 'Incomplete'
-															)
-														AND Active = 1
-												"                                                                                   
-					$Tables_To_Process_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Tables_To_Process_Qry).Tables_To_Process
-					
-					[Int]$Tables_To_Process = [convert]::ToInt32($Tables_To_Process_Var)
-				
-				Write-Host
-				Write-Host $Tables_To_Process_Qry
-				Write-Host "~ Tables to Process: $Tables_To_Process"
-				
-				
-				#---------------------------------------------
-				# Current Process Time
-				#---------------------------------------------
-				$Current_Process_DateTime = Get-Date
-				
-				Write-Host 
-				Write-Host "~ Current Process Time: $Current_Process_DateTime"
-				
-				$Total_Processing_Time = New-TimeSpan -Start $Loop_Begin_DateTime -End $Current_Process_DateTime
-				
-				Write-Host 
-				Write-Host "~ Total Processing Time: $Total_Processing_Time"
 				
 			
 			} UNTIL ($Tables_To_Process -eq 0 -OR $Total_Processing_Time -gt '00:30:00')
@@ -10619,6 +10862,7 @@ Start-Job -Name Job11 -ScriptBlock {		                                    #<----
 		# Stop log
 		#---------------------------------------------
 		Stop-Transcript
+
 	}
 
 Start-Job -Name Job12 -ScriptBlock {		                                    #<----------------------------------------------------------
@@ -10922,7 +11166,7 @@ Start-Job -Name Job12 -ScriptBlock {		                                    #<----
 				Stop-Transcript
 			
 			}
-
+			
 		FUNCTION Copy-OneAccord_Data
 			{
 				[CmdletBinding(
@@ -11301,19 +11545,26 @@ Start-Job -Name Job12 -ScriptBlock {		                                    #<----
 					}
 				
 			}
-
-		###################################################################################################
-		#
-		#	Name: PowerShell_ETL_Parrellel_Processing
-		#	Date: 02/26/2018
-		#
-		###################################################################################################
-
+			
 		#---------------------------------------------
 		# Catch Non-Terminating Errors
 		#---------------------------------------------
 		$Old = $ErrorActionPreference
 		$ErrorActionPreference = 'Stop'
+
+
+		#---------------------------------------------
+		# Job Variables
+		#---------------------------------------------
+		[STRING]$Job_Name = "Job12"                                             #<----------------------------------------------------------
+		[INT]$Sleep_Time = 12                                                   #<----------------------------------------------------------
+
+		#---------------------------------------------
+		# If this is the first than create the Alpha_Table_1
+		#   Else sleep
+		#---------------------------------------------
+		#Create-Alpha_Table_1                                                  #<----------------------------------------------------------
+		Start-Sleep -s $Sleep_Time  
 
 		#---------------------------------------------
 		# Log file
@@ -11326,7 +11577,7 @@ Start-Job -Name Job12 -ScriptBlock {		                                    #<----
 			}
 				
 		[STRING]$Log_Root = $New_Folder_Path + "\PS_Extract_"
-		[STRING]$Parrellel_Processing = "Parrellel_Processing_12_"              #<----------------------------------------------------------
+		[STRING]$Parrellel_Processing = $Job_Name
 		[STRING]$Log_DateTime = Get-Date -Format "yyyyMMdd_HHmmss"
 		[String]$Log_File_Type = '.log'
 		[STRING]$Log_File_Name = $Log_Root + $Parrellel_Processing + "_" + $Log_DateTime + $Log_File_Type
@@ -11336,14 +11587,7 @@ Start-Job -Name Job12 -ScriptBlock {		                                    #<----
 		Write-Host
 		Write-Host "~ This is the beginning of the Parrellel_Processing script."
 		Write-Host
-
-
-		#---------------------------------------------
-		# If this is the first than create the Alpha_Table_1
-		#   Else sleep for <> seconds
-		#---------------------------------------------
-		#Create-Alpha_Table_1                                                  #<----------------------------------------------------------
-		Start-Sleep -s 15                                                      #<----------------------------------------------------------
+												
 
 		#---------------------------------------------
 		# Destination Connection String
@@ -11413,11 +11657,11 @@ Start-Job -Name Job12 -ScriptBlock {		                                    #<----
 				
 				#---------------------------------------------
 				# Extract_Tables Update
-				#---------------------------------------------
+				#---------------------------------------------				
 				$Update_DateTime = Get-Date
 			
 				$Update_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-									SET Extract_Stage = 'Processing'
+									SET Extract_Stage = '$Job_Name'                   
 										, Extract_Stage_DateTime = '$Update_DateTime'
 									WHERE 1 = 1
 										AND Extract_Tables_Key = $Processing_Key"
@@ -11429,144 +11673,166 @@ Start-Job -Name Job12 -ScriptBlock {		                                    #<----
 				
 				Write-Host $Update_Extract_Tables
 				
-				
 				#---------------------------------------------
-				# Source Table
-				#---------------------------------------------
-				
-				[STRING]$Source_Table_Qry = "SELECT Source_Table
-										FROM Oa_Extract.Extract_Tables
-										WHERE 1 = 1
-											AND Extract_Tables_Key = $Processing_Key
-														  "                                                                                   
-								$Source_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Source_Table_Qry).Source_Table
-				
-				Write-Host
-				Write-Host $Source_Table_Qry
-				Write-Host "~ Source Table: $Source_Table"
-				
-				#---------------------------------------------
-				# Destination Table
+				# Wait then recheck, if it is the same name then run, else end
 				#---------------------------------------------
 				
-				[STRING]$Dest_Table_Qry = "SELECT Destination_Table
-										FROM Oa_Extract.Extract_Tables
-										WHERE 1 = 1
-											AND Extract_Tables_Key = $Processing_Key
-														  "                                                                                   
-								$Dest_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Table_Qry).Destination_Table
+				Start-Sleep -s $Sleep_Time 
 				
-				Write-Host
-				Write-Host $Dest_Table
-				Write-Host "~ Destination Table: $Dest_Table"
-				
-				
-				#---------------------------------------------
-				# Extract Data
-				#---------------------------------------------
-				
-				Copy-OneAccord_Data -p1 $Source_Table -p2 $Processing_Key
-				
-				
-				#---------------------------------------------
-				# Check If Extract was successful
-				#---------------------------------------------
-				
-				[STRING]$Extract_Success_Qry = "SELECT SUM(Alpha_Result) AS Sum_Alpha_Result
-										FROM Oa_Extract.Alpha_Table_1
-										WHERE 1 = 1
-											AND Alpha_Stage = '$Dest_Table'
-											AND Alpha_Step_Name = 'Stats'
-														  "                                                                                   
-					$Extract_Success_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Extract_Success_Qry).Sum_Alpha_Result
-					
-					[Int]$Extract_Success = [convert]::ToInt32($Extract_Success_Var)
-				
-				Write-Host
-				Write-Host $Extract_Success_Qry
-				Write-Host "~ Extract Success: $Extract_Success"
-				
-				IF ($Extract_Success -gt 0)
-					{
-						#---------------------------------------------
-						# Extract_Tables Update
-						#---------------------------------------------
-						$Update_Complete_DateTime = Get-Date
-					
-						$Update_Complete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-											SET Extract_Stage = 'Complete'
-												, Extract_Stage_DateTime = '$Update_Complete_DateTime'
-											WHERE 1 = 1
-												AND Extract_Tables_Key = $Processing_Key"
+				[STRING]$Processing_Key_Qry2 = "SELECT Extract_Stage
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1 
+													AND Extract_Tables_Key = $Processing_Key
+											"                                                                                   
+					$Extract_Stage = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Processing_Key_Qry2).Extract_Stage
 						
-						Invoke-Sqlcmd `
-							-ServerInstance $Dest_Instance `
-							-Database $Dest_Db `
-							-Query $Update_Complete_Extract_Tables
+				Write-Host
+				Write-Host $Processing_Key_Qry2
+				Write-Host "~ Job Name: $Job_Name"
+				Write-Host "~ Extract_Stage (2): $Extract_Stage"
+				
+				IF($Job_Name -eq $Extract_Stage) 
+					{
+				
+				
+						#---------------------------------------------
+						# Source Table
+						#---------------------------------------------
+						
+						[STRING]$Source_Table_Qry = "SELECT Source_Table
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1
+													AND Extract_Tables_Key = $Processing_Key
+																  "                                                                                   
+										$Source_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Source_Table_Qry).Source_Table
 						
 						Write-Host
-						Write-Host $Update_Complete_Extract_Tables
-						Write-Host "~ Extract_Tables updated to Complete."
-					}
-					ELSE
-					{
-						#---------------------------------------------
-						# Extract_Tables Update
-						#---------------------------------------------
-						$Update_Incomplete_DateTime = Get-Date
-					
-						$Update_Incomplete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-																SET Extract_Stage = 'Incomplete'
-																	, Extract_Stage_DateTime = '$Update_Complete_DateTime'
-																WHERE 1 = 1
-																	AND Extract_Tables_Key = $Processing_Key
-															"
+						Write-Host $Source_Table_Qry
+						Write-Host "~ Source Table: $Source_Table"
 						
-						Invoke-Sqlcmd `
-							-ServerInstance $Dest_Instance `
-							-Database $Dest_Db `
-							-Query $Update_Incomplete_Extract_Tables
+						#---------------------------------------------
+						# Destination Table
+						#---------------------------------------------
+						
+						[STRING]$Dest_Table_Qry = "SELECT Destination_Table
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1
+													AND Extract_Tables_Key = $Processing_Key
+																  "                                                                                   
+										$Dest_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Table_Qry).Destination_Table
 						
 						Write-Host
-						Write-Host $Update_Incomplete_Extract_Tables
-						Write-Host "~ Extract_Tables updated to Incomplete."
+						Write-Host $Dest_Table
+						Write-Host "~ Destination Table: $Dest_Table"
 						
+						
+						#---------------------------------------------
+						# Extract Data
+						#---------------------------------------------
+						
+						Copy-OneAccord_Data -p1 $Source_Table -p2 $Processing_Key
+						
+						
+						#---------------------------------------------
+						# Check If Extract was successful
+						#---------------------------------------------
+						
+						[STRING]$Extract_Success_Qry = "SELECT COUNT(CASE WHEN Alpha_Result = 1 THEN 1 ELSE NULL END) AS Count_Alpha_Result
+												FROM Oa_Extract.Alpha_Table_1
+												WHERE 1 = 1
+													AND Alpha_Stage = '$Dest_Table'
+													AND Alpha_Step_Name = 'Stats'
+																  "                                                                                   
+							$Extract_Success_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Extract_Success_Qry).Count_Alpha_Result
+							
+							[Int]$Extract_Success = [convert]::ToInt32($Extract_Success_Var)
+						
+						Write-Host
+						Write-Host $Extract_Success_Qry
+						Write-Host "~ Extract Success: $Extract_Success"
+						
+						IF ($Extract_Success -gt 0)
+							{
+								#---------------------------------------------
+								# Extract_Tables Update
+								#---------------------------------------------
+								$Update_Complete_DateTime = Get-Date
+							
+								$Update_Complete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+													SET Extract_Stage = 'Complete'
+														, Extract_Stage_DateTime = '$Update_Complete_DateTime'
+													WHERE 1 = 1
+														AND Extract_Tables_Key = $Processing_Key"
+								
+								Invoke-Sqlcmd `
+									-ServerInstance $Dest_Instance `
+									-Database $Dest_Db `
+									-Query $Update_Complete_Extract_Tables
+								
+								Write-Host
+								Write-Host $Update_Complete_Extract_Tables
+								Write-Host "~ Extract_Tables updated to Complete."
+							}
+							ELSE
+							{
+								#---------------------------------------------
+								# Extract_Tables Update
+								#---------------------------------------------
+								$Update_Incomplete_DateTime = Get-Date
+							
+								$Update_Incomplete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+																		SET Extract_Stage = 'Incomplete'
+																			, Extract_Stage_DateTime = '$Update_Complete_DateTime'
+																		WHERE 1 = 1
+																			AND Extract_Tables_Key = $Processing_Key
+																	"
+								
+								Invoke-Sqlcmd `
+									-ServerInstance $Dest_Instance `
+									-Database $Dest_Db `
+									-Query $Update_Incomplete_Extract_Tables
+								
+								Write-Host
+								Write-Host $Update_Incomplete_Extract_Tables
+								Write-Host "~ Extract_Tables updated to Incomplete."
+								
+							}
+						
+						
+						#---------------------------------------------
+						# Tables to Process
+						#---------------------------------------------
+						
+						[STRING]$Tables_To_Process_Qry = "SELECT COUNT(Source_Table) AS Tables_To_Process
+															FROM Oa_Extract.Extract_Tables
+															WHERE 1 = 1 
+																AND (Extract_Stage IS NULL 
+																	OR Extract_Stage = 'Incomplete'
+																	)
+																AND Active = 1
+														"                                                                                   
+							$Tables_To_Process_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Tables_To_Process_Qry).Tables_To_Process
+							
+							[Int]$Tables_To_Process = [convert]::ToInt32($Tables_To_Process_Var)
+						
+						Write-Host
+						Write-Host $Tables_To_Process_Qry
+						Write-Host "~ Tables to Process: $Tables_To_Process"
+						
+						
+						#---------------------------------------------
+						# Current Process Time
+						#---------------------------------------------
+						$Current_Process_DateTime = Get-Date
+						
+						Write-Host 
+						Write-Host "~ Current Process Time: $Current_Process_DateTime"
+						
+						$Total_Processing_Time = New-TimeSpan -Start $Loop_Begin_DateTime -End $Current_Process_DateTime
+						
+						Write-Host 
+						Write-Host "~ Total Processing Time: $Total_Processing_Time"
 					}
-				
-				
-				#---------------------------------------------
-				# Tables to Process
-				#---------------------------------------------
-				
-				[STRING]$Tables_To_Process_Qry = "SELECT COUNT(Source_Table) AS Tables_To_Process
-													FROM Oa_Extract.Extract_Tables
-													WHERE 1 = 1 
-														AND (Extract_Stage IS NULL 
-															OR Extract_Stage = 'Incomplete'
-															)
-														AND Active = 1
-												"                                                                                   
-					$Tables_To_Process_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Tables_To_Process_Qry).Tables_To_Process
-					
-					[Int]$Tables_To_Process = [convert]::ToInt32($Tables_To_Process_Var)
-				
-				Write-Host
-				Write-Host $Tables_To_Process_Qry
-				Write-Host "~ Tables to Process: $Tables_To_Process"
-				
-				
-				#---------------------------------------------
-				# Current Process Time
-				#---------------------------------------------
-				$Current_Process_DateTime = Get-Date
-				
-				Write-Host 
-				Write-Host "~ Current Process Time: $Current_Process_DateTime"
-				
-				$Total_Processing_Time = New-TimeSpan -Start $Loop_Begin_DateTime -End $Current_Process_DateTime
-				
-				Write-Host 
-				Write-Host "~ Total Processing Time: $Total_Processing_Time"
 				
 			
 			} UNTIL ($Tables_To_Process -eq 0 -OR $Total_Processing_Time -gt '00:30:00')
@@ -11583,8 +11849,8 @@ Start-Job -Name Job12 -ScriptBlock {		                                    #<----
 		# Stop log
 		#---------------------------------------------
 		Stop-Transcript
-	}	
 
+	}
 
 Start-Job -Name Job13 -ScriptBlock {		                                    #<----------------------------------------------------------
 		FUNCTION Insert-Alpha_Table_1
@@ -11887,7 +12153,7 @@ Start-Job -Name Job13 -ScriptBlock {		                                    #<----
 				Stop-Transcript
 			
 			}
-
+			
 		FUNCTION Copy-OneAccord_Data
 			{
 				[CmdletBinding(
@@ -12266,19 +12532,26 @@ Start-Job -Name Job13 -ScriptBlock {		                                    #<----
 					}
 				
 			}
-
-		###################################################################################################
-		#
-		#	Name: PowerShell_ETL_Parrellel_Processing
-		#	Date: 02/26/2018
-		#
-		###################################################################################################
-
+			
 		#---------------------------------------------
 		# Catch Non-Terminating Errors
 		#---------------------------------------------
 		$Old = $ErrorActionPreference
 		$ErrorActionPreference = 'Stop'
+
+
+		#---------------------------------------------
+		# Job Variables
+		#---------------------------------------------
+		[STRING]$Job_Name = "Job13"                                             #<----------------------------------------------------------
+		[INT]$Sleep_Time = 13                                                   #<----------------------------------------------------------
+
+		#---------------------------------------------
+		# If this is the first than create the Alpha_Table_1
+		#   Else sleep
+		#---------------------------------------------
+		#Create-Alpha_Table_1                                                  #<----------------------------------------------------------
+		Start-Sleep -s $Sleep_Time  
 
 		#---------------------------------------------
 		# Log file
@@ -12291,7 +12564,7 @@ Start-Job -Name Job13 -ScriptBlock {		                                    #<----
 			}
 				
 		[STRING]$Log_Root = $New_Folder_Path + "\PS_Extract_"
-		[STRING]$Parrellel_Processing = "Parrellel_Processing_13_"              #<----------------------------------------------------------
+		[STRING]$Parrellel_Processing = $Job_Name
 		[STRING]$Log_DateTime = Get-Date -Format "yyyyMMdd_HHmmss"
 		[String]$Log_File_Type = '.log'
 		[STRING]$Log_File_Name = $Log_Root + $Parrellel_Processing + "_" + $Log_DateTime + $Log_File_Type
@@ -12301,14 +12574,7 @@ Start-Job -Name Job13 -ScriptBlock {		                                    #<----
 		Write-Host
 		Write-Host "~ This is the beginning of the Parrellel_Processing script."
 		Write-Host
-
-
-		#---------------------------------------------
-		# If this is the first than create the Alpha_Table_1
-		#   Else sleep for <> seconds
-		#---------------------------------------------
-		#Create-Alpha_Table_1                                                  #<----------------------------------------------------------
-		Start-Sleep -s 16                                                      #<----------------------------------------------------------
+												
 
 		#---------------------------------------------
 		# Destination Connection String
@@ -12378,11 +12644,11 @@ Start-Job -Name Job13 -ScriptBlock {		                                    #<----
 				
 				#---------------------------------------------
 				# Extract_Tables Update
-				#---------------------------------------------
+				#---------------------------------------------				
 				$Update_DateTime = Get-Date
 			
 				$Update_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-									SET Extract_Stage = 'Processing'
+									SET Extract_Stage = '$Job_Name'                   
 										, Extract_Stage_DateTime = '$Update_DateTime'
 									WHERE 1 = 1
 										AND Extract_Tables_Key = $Processing_Key"
@@ -12394,144 +12660,166 @@ Start-Job -Name Job13 -ScriptBlock {		                                    #<----
 				
 				Write-Host $Update_Extract_Tables
 				
-				
 				#---------------------------------------------
-				# Source Table
-				#---------------------------------------------
-				
-				[STRING]$Source_Table_Qry = "SELECT Source_Table
-										FROM Oa_Extract.Extract_Tables
-										WHERE 1 = 1
-											AND Extract_Tables_Key = $Processing_Key
-														  "                                                                                   
-								$Source_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Source_Table_Qry).Source_Table
-				
-				Write-Host
-				Write-Host $Source_Table_Qry
-				Write-Host "~ Source Table: $Source_Table"
-				
-				#---------------------------------------------
-				# Destination Table
+				# Wait then recheck, if it is the same name then run, else end
 				#---------------------------------------------
 				
-				[STRING]$Dest_Table_Qry = "SELECT Destination_Table
-										FROM Oa_Extract.Extract_Tables
-										WHERE 1 = 1
-											AND Extract_Tables_Key = $Processing_Key
-														  "                                                                                   
-								$Dest_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Table_Qry).Destination_Table
+				Start-Sleep -s $Sleep_Time 
 				
-				Write-Host
-				Write-Host $Dest_Table
-				Write-Host "~ Destination Table: $Dest_Table"
-				
-				
-				#---------------------------------------------
-				# Extract Data
-				#---------------------------------------------
-				
-				Copy-OneAccord_Data -p1 $Source_Table -p2 $Processing_Key
-				
-				
-				#---------------------------------------------
-				# Check If Extract was successful
-				#---------------------------------------------
-				
-				[STRING]$Extract_Success_Qry = "SELECT SUM(Alpha_Result) AS Sum_Alpha_Result
-										FROM Oa_Extract.Alpha_Table_1
-										WHERE 1 = 1
-											AND Alpha_Stage = '$Dest_Table'
-											AND Alpha_Step_Name = 'Stats'
-														  "                                                                                   
-					$Extract_Success_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Extract_Success_Qry).Sum_Alpha_Result
-					
-					[Int]$Extract_Success = [convert]::ToInt32($Extract_Success_Var)
-				
-				Write-Host
-				Write-Host $Extract_Success_Qry
-				Write-Host "~ Extract Success: $Extract_Success"
-				
-				IF ($Extract_Success -gt 0)
-					{
-						#---------------------------------------------
-						# Extract_Tables Update
-						#---------------------------------------------
-						$Update_Complete_DateTime = Get-Date
-					
-						$Update_Complete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-											SET Extract_Stage = 'Complete'
-												, Extract_Stage_DateTime = '$Update_Complete_DateTime'
-											WHERE 1 = 1
-												AND Extract_Tables_Key = $Processing_Key"
+				[STRING]$Processing_Key_Qry2 = "SELECT Extract_Stage
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1 
+													AND Extract_Tables_Key = $Processing_Key
+											"                                                                                   
+					$Extract_Stage = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Processing_Key_Qry2).Extract_Stage
 						
-						Invoke-Sqlcmd `
-							-ServerInstance $Dest_Instance `
-							-Database $Dest_Db `
-							-Query $Update_Complete_Extract_Tables
+				Write-Host
+				Write-Host $Processing_Key_Qry2
+				Write-Host "~ Job Name: $Job_Name"
+				Write-Host "~ Extract_Stage (2): $Extract_Stage"
+				
+				IF($Job_Name -eq $Extract_Stage) 
+					{
+				
+				
+						#---------------------------------------------
+						# Source Table
+						#---------------------------------------------
+						
+						[STRING]$Source_Table_Qry = "SELECT Source_Table
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1
+													AND Extract_Tables_Key = $Processing_Key
+																  "                                                                                   
+										$Source_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Source_Table_Qry).Source_Table
 						
 						Write-Host
-						Write-Host $Update_Complete_Extract_Tables
-						Write-Host "~ Extract_Tables updated to Complete."
-					}
-					ELSE
-					{
-						#---------------------------------------------
-						# Extract_Tables Update
-						#---------------------------------------------
-						$Update_Incomplete_DateTime = Get-Date
-					
-						$Update_Incomplete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-																SET Extract_Stage = 'Incomplete'
-																	, Extract_Stage_DateTime = '$Update_Complete_DateTime'
-																WHERE 1 = 1
-																	AND Extract_Tables_Key = $Processing_Key
-															"
+						Write-Host $Source_Table_Qry
+						Write-Host "~ Source Table: $Source_Table"
 						
-						Invoke-Sqlcmd `
-							-ServerInstance $Dest_Instance `
-							-Database $Dest_Db `
-							-Query $Update_Incomplete_Extract_Tables
+						#---------------------------------------------
+						# Destination Table
+						#---------------------------------------------
+						
+						[STRING]$Dest_Table_Qry = "SELECT Destination_Table
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1
+													AND Extract_Tables_Key = $Processing_Key
+																  "                                                                                   
+										$Dest_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Table_Qry).Destination_Table
 						
 						Write-Host
-						Write-Host $Update_Incomplete_Extract_Tables
-						Write-Host "~ Extract_Tables updated to Incomplete."
+						Write-Host $Dest_Table
+						Write-Host "~ Destination Table: $Dest_Table"
 						
+						
+						#---------------------------------------------
+						# Extract Data
+						#---------------------------------------------
+						
+						Copy-OneAccord_Data -p1 $Source_Table -p2 $Processing_Key
+						
+						
+						#---------------------------------------------
+						# Check If Extract was successful
+						#---------------------------------------------
+						
+						[STRING]$Extract_Success_Qry = "SELECT COUNT(CASE WHEN Alpha_Result = 1 THEN 1 ELSE NULL END) AS Count_Alpha_Result
+												FROM Oa_Extract.Alpha_Table_1
+												WHERE 1 = 1
+													AND Alpha_Stage = '$Dest_Table'
+													AND Alpha_Step_Name = 'Stats'
+																  "                                                                                   
+							$Extract_Success_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Extract_Success_Qry).Count_Alpha_Result
+							
+							[Int]$Extract_Success = [convert]::ToInt32($Extract_Success_Var)
+						
+						Write-Host
+						Write-Host $Extract_Success_Qry
+						Write-Host "~ Extract Success: $Extract_Success"
+						
+						IF ($Extract_Success -gt 0)
+							{
+								#---------------------------------------------
+								# Extract_Tables Update
+								#---------------------------------------------
+								$Update_Complete_DateTime = Get-Date
+							
+								$Update_Complete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+													SET Extract_Stage = 'Complete'
+														, Extract_Stage_DateTime = '$Update_Complete_DateTime'
+													WHERE 1 = 1
+														AND Extract_Tables_Key = $Processing_Key"
+								
+								Invoke-Sqlcmd `
+									-ServerInstance $Dest_Instance `
+									-Database $Dest_Db `
+									-Query $Update_Complete_Extract_Tables
+								
+								Write-Host
+								Write-Host $Update_Complete_Extract_Tables
+								Write-Host "~ Extract_Tables updated to Complete."
+							}
+							ELSE
+							{
+								#---------------------------------------------
+								# Extract_Tables Update
+								#---------------------------------------------
+								$Update_Incomplete_DateTime = Get-Date
+							
+								$Update_Incomplete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+																		SET Extract_Stage = 'Incomplete'
+																			, Extract_Stage_DateTime = '$Update_Complete_DateTime'
+																		WHERE 1 = 1
+																			AND Extract_Tables_Key = $Processing_Key
+																	"
+								
+								Invoke-Sqlcmd `
+									-ServerInstance $Dest_Instance `
+									-Database $Dest_Db `
+									-Query $Update_Incomplete_Extract_Tables
+								
+								Write-Host
+								Write-Host $Update_Incomplete_Extract_Tables
+								Write-Host "~ Extract_Tables updated to Incomplete."
+								
+							}
+						
+						
+						#---------------------------------------------
+						# Tables to Process
+						#---------------------------------------------
+						
+						[STRING]$Tables_To_Process_Qry = "SELECT COUNT(Source_Table) AS Tables_To_Process
+															FROM Oa_Extract.Extract_Tables
+															WHERE 1 = 1 
+																AND (Extract_Stage IS NULL 
+																	OR Extract_Stage = 'Incomplete'
+																	)
+																AND Active = 1
+														"                                                                                   
+							$Tables_To_Process_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Tables_To_Process_Qry).Tables_To_Process
+							
+							[Int]$Tables_To_Process = [convert]::ToInt32($Tables_To_Process_Var)
+						
+						Write-Host
+						Write-Host $Tables_To_Process_Qry
+						Write-Host "~ Tables to Process: $Tables_To_Process"
+						
+						
+						#---------------------------------------------
+						# Current Process Time
+						#---------------------------------------------
+						$Current_Process_DateTime = Get-Date
+						
+						Write-Host 
+						Write-Host "~ Current Process Time: $Current_Process_DateTime"
+						
+						$Total_Processing_Time = New-TimeSpan -Start $Loop_Begin_DateTime -End $Current_Process_DateTime
+						
+						Write-Host 
+						Write-Host "~ Total Processing Time: $Total_Processing_Time"
 					}
-				
-				
-				#---------------------------------------------
-				# Tables to Process
-				#---------------------------------------------
-				
-				[STRING]$Tables_To_Process_Qry = "SELECT COUNT(Source_Table) AS Tables_To_Process
-													FROM Oa_Extract.Extract_Tables
-													WHERE 1 = 1 
-														AND (Extract_Stage IS NULL 
-															OR Extract_Stage = 'Incomplete'
-															)
-														AND Active = 1
-												"                                                                                   
-					$Tables_To_Process_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Tables_To_Process_Qry).Tables_To_Process
-					
-					[Int]$Tables_To_Process = [convert]::ToInt32($Tables_To_Process_Var)
-				
-				Write-Host
-				Write-Host $Tables_To_Process_Qry
-				Write-Host "~ Tables to Process: $Tables_To_Process"
-				
-				
-				#---------------------------------------------
-				# Current Process Time
-				#---------------------------------------------
-				$Current_Process_DateTime = Get-Date
-				
-				Write-Host 
-				Write-Host "~ Current Process Time: $Current_Process_DateTime"
-				
-				$Total_Processing_Time = New-TimeSpan -Start $Loop_Begin_DateTime -End $Current_Process_DateTime
-				
-				Write-Host 
-				Write-Host "~ Total Processing Time: $Total_Processing_Time"
 				
 			
 			} UNTIL ($Tables_To_Process -eq 0 -OR $Total_Processing_Time -gt '00:30:00')
@@ -12548,7 +12836,8 @@ Start-Job -Name Job13 -ScriptBlock {		                                    #<----
 		# Stop log
 		#---------------------------------------------
 		Stop-Transcript
-	}	
+
+	}
 
 Start-Job -Name Job14 -ScriptBlock {		                                    #<----------------------------------------------------------
 		FUNCTION Insert-Alpha_Table_1
@@ -12851,7 +13140,7 @@ Start-Job -Name Job14 -ScriptBlock {		                                    #<----
 				Stop-Transcript
 			
 			}
-
+			
 		FUNCTION Copy-OneAccord_Data
 			{
 				[CmdletBinding(
@@ -13230,19 +13519,26 @@ Start-Job -Name Job14 -ScriptBlock {		                                    #<----
 					}
 				
 			}
-
-		###################################################################################################
-		#
-		#	Name: PowerShell_ETL_Parrellel_Processing
-		#	Date: 02/26/2018
-		#
-		###################################################################################################
-
+			
 		#---------------------------------------------
 		# Catch Non-Terminating Errors
 		#---------------------------------------------
 		$Old = $ErrorActionPreference
 		$ErrorActionPreference = 'Stop'
+
+
+		#---------------------------------------------
+		# Job Variables
+		#---------------------------------------------
+		[STRING]$Job_Name = "Job14"                                             #<----------------------------------------------------------
+		[INT]$Sleep_Time = 14                                                   #<----------------------------------------------------------
+
+		#---------------------------------------------
+		# If this is the first than create the Alpha_Table_1
+		#   Else sleep
+		#---------------------------------------------
+		#Create-Alpha_Table_1                                                  #<----------------------------------------------------------
+		Start-Sleep -s $Sleep_Time  
 
 		#---------------------------------------------
 		# Log file
@@ -13255,7 +13551,7 @@ Start-Job -Name Job14 -ScriptBlock {		                                    #<----
 			}
 				
 		[STRING]$Log_Root = $New_Folder_Path + "\PS_Extract_"
-		[STRING]$Parrellel_Processing = "Parrellel_Processing_14_"              #<----------------------------------------------------------
+		[STRING]$Parrellel_Processing = $Job_Name
 		[STRING]$Log_DateTime = Get-Date -Format "yyyyMMdd_HHmmss"
 		[String]$Log_File_Type = '.log'
 		[STRING]$Log_File_Name = $Log_Root + $Parrellel_Processing + "_" + $Log_DateTime + $Log_File_Type
@@ -13265,14 +13561,7 @@ Start-Job -Name Job14 -ScriptBlock {		                                    #<----
 		Write-Host
 		Write-Host "~ This is the beginning of the Parrellel_Processing script."
 		Write-Host
-
-
-		#---------------------------------------------
-		# If this is the first than create the Alpha_Table_1
-		#   Else sleep for <> seconds
-		#---------------------------------------------
-		#Create-Alpha_Table_1                                                  #<----------------------------------------------------------
-		Start-Sleep -s 17                                                      #<----------------------------------------------------------
+												
 
 		#---------------------------------------------
 		# Destination Connection String
@@ -13342,11 +13631,11 @@ Start-Job -Name Job14 -ScriptBlock {		                                    #<----
 				
 				#---------------------------------------------
 				# Extract_Tables Update
-				#---------------------------------------------
+				#---------------------------------------------				
 				$Update_DateTime = Get-Date
 			
 				$Update_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-									SET Extract_Stage = 'Processing'
+									SET Extract_Stage = '$Job_Name'                   
 										, Extract_Stage_DateTime = '$Update_DateTime'
 									WHERE 1 = 1
 										AND Extract_Tables_Key = $Processing_Key"
@@ -13358,144 +13647,166 @@ Start-Job -Name Job14 -ScriptBlock {		                                    #<----
 				
 				Write-Host $Update_Extract_Tables
 				
-				
 				#---------------------------------------------
-				# Source Table
-				#---------------------------------------------
-				
-				[STRING]$Source_Table_Qry = "SELECT Source_Table
-										FROM Oa_Extract.Extract_Tables
-										WHERE 1 = 1
-											AND Extract_Tables_Key = $Processing_Key
-														  "                                                                                   
-								$Source_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Source_Table_Qry).Source_Table
-				
-				Write-Host
-				Write-Host $Source_Table_Qry
-				Write-Host "~ Source Table: $Source_Table"
-				
-				#---------------------------------------------
-				# Destination Table
+				# Wait then recheck, if it is the same name then run, else end
 				#---------------------------------------------
 				
-				[STRING]$Dest_Table_Qry = "SELECT Destination_Table
-										FROM Oa_Extract.Extract_Tables
-										WHERE 1 = 1
-											AND Extract_Tables_Key = $Processing_Key
-														  "                                                                                   
-								$Dest_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Table_Qry).Destination_Table
+				Start-Sleep -s $Sleep_Time 
 				
-				Write-Host
-				Write-Host $Dest_Table
-				Write-Host "~ Destination Table: $Dest_Table"
-				
-				
-				#---------------------------------------------
-				# Extract Data
-				#---------------------------------------------
-				
-				Copy-OneAccord_Data -p1 $Source_Table -p2 $Processing_Key
-				
-				
-				#---------------------------------------------
-				# Check If Extract was successful
-				#---------------------------------------------
-				
-				[STRING]$Extract_Success_Qry = "SELECT SUM(Alpha_Result) AS Sum_Alpha_Result
-										FROM Oa_Extract.Alpha_Table_1
-										WHERE 1 = 1
-											AND Alpha_Stage = '$Dest_Table'
-											AND Alpha_Step_Name = 'Stats'
-														  "                                                                                   
-					$Extract_Success_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Extract_Success_Qry).Sum_Alpha_Result
-					
-					[Int]$Extract_Success = [convert]::ToInt32($Extract_Success_Var)
-				
-				Write-Host
-				Write-Host $Extract_Success_Qry
-				Write-Host "~ Extract Success: $Extract_Success"
-				
-				IF ($Extract_Success -gt 0)
-					{
-						#---------------------------------------------
-						# Extract_Tables Update
-						#---------------------------------------------
-						$Update_Complete_DateTime = Get-Date
-					
-						$Update_Complete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-											SET Extract_Stage = 'Complete'
-												, Extract_Stage_DateTime = '$Update_Complete_DateTime'
-											WHERE 1 = 1
-												AND Extract_Tables_Key = $Processing_Key"
+				[STRING]$Processing_Key_Qry2 = "SELECT Extract_Stage
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1 
+													AND Extract_Tables_Key = $Processing_Key
+											"                                                                                   
+					$Extract_Stage = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Processing_Key_Qry2).Extract_Stage
 						
-						Invoke-Sqlcmd `
-							-ServerInstance $Dest_Instance `
-							-Database $Dest_Db `
-							-Query $Update_Complete_Extract_Tables
+				Write-Host
+				Write-Host $Processing_Key_Qry2
+				Write-Host "~ Job Name: $Job_Name"
+				Write-Host "~ Extract_Stage (2): $Extract_Stage"
+				
+				IF($Job_Name -eq $Extract_Stage) 
+					{
+				
+				
+						#---------------------------------------------
+						# Source Table
+						#---------------------------------------------
+						
+						[STRING]$Source_Table_Qry = "SELECT Source_Table
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1
+													AND Extract_Tables_Key = $Processing_Key
+																  "                                                                                   
+										$Source_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Source_Table_Qry).Source_Table
 						
 						Write-Host
-						Write-Host $Update_Complete_Extract_Tables
-						Write-Host "~ Extract_Tables updated to Complete."
-					}
-					ELSE
-					{
-						#---------------------------------------------
-						# Extract_Tables Update
-						#---------------------------------------------
-						$Update_Incomplete_DateTime = Get-Date
-					
-						$Update_Incomplete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-																SET Extract_Stage = 'Incomplete'
-																	, Extract_Stage_DateTime = '$Update_Complete_DateTime'
-																WHERE 1 = 1
-																	AND Extract_Tables_Key = $Processing_Key
-															"
+						Write-Host $Source_Table_Qry
+						Write-Host "~ Source Table: $Source_Table"
 						
-						Invoke-Sqlcmd `
-							-ServerInstance $Dest_Instance `
-							-Database $Dest_Db `
-							-Query $Update_Incomplete_Extract_Tables
+						#---------------------------------------------
+						# Destination Table
+						#---------------------------------------------
+						
+						[STRING]$Dest_Table_Qry = "SELECT Destination_Table
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1
+													AND Extract_Tables_Key = $Processing_Key
+																  "                                                                                   
+										$Dest_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Table_Qry).Destination_Table
 						
 						Write-Host
-						Write-Host $Update_Incomplete_Extract_Tables
-						Write-Host "~ Extract_Tables updated to Incomplete."
+						Write-Host $Dest_Table
+						Write-Host "~ Destination Table: $Dest_Table"
 						
+						
+						#---------------------------------------------
+						# Extract Data
+						#---------------------------------------------
+						
+						Copy-OneAccord_Data -p1 $Source_Table -p2 $Processing_Key
+						
+						
+						#---------------------------------------------
+						# Check If Extract was successful
+						#---------------------------------------------
+						
+						[STRING]$Extract_Success_Qry = "SELECT COUNT(CASE WHEN Alpha_Result = 1 THEN 1 ELSE NULL END) AS Count_Alpha_Result
+												FROM Oa_Extract.Alpha_Table_1
+												WHERE 1 = 1
+													AND Alpha_Stage = '$Dest_Table'
+													AND Alpha_Step_Name = 'Stats'
+																  "                                                                                   
+							$Extract_Success_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Extract_Success_Qry).Count_Alpha_Result
+							
+							[Int]$Extract_Success = [convert]::ToInt32($Extract_Success_Var)
+						
+						Write-Host
+						Write-Host $Extract_Success_Qry
+						Write-Host "~ Extract Success: $Extract_Success"
+						
+						IF ($Extract_Success -gt 0)
+							{
+								#---------------------------------------------
+								# Extract_Tables Update
+								#---------------------------------------------
+								$Update_Complete_DateTime = Get-Date
+							
+								$Update_Complete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+													SET Extract_Stage = 'Complete'
+														, Extract_Stage_DateTime = '$Update_Complete_DateTime'
+													WHERE 1 = 1
+														AND Extract_Tables_Key = $Processing_Key"
+								
+								Invoke-Sqlcmd `
+									-ServerInstance $Dest_Instance `
+									-Database $Dest_Db `
+									-Query $Update_Complete_Extract_Tables
+								
+								Write-Host
+								Write-Host $Update_Complete_Extract_Tables
+								Write-Host "~ Extract_Tables updated to Complete."
+							}
+							ELSE
+							{
+								#---------------------------------------------
+								# Extract_Tables Update
+								#---------------------------------------------
+								$Update_Incomplete_DateTime = Get-Date
+							
+								$Update_Incomplete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+																		SET Extract_Stage = 'Incomplete'
+																			, Extract_Stage_DateTime = '$Update_Complete_DateTime'
+																		WHERE 1 = 1
+																			AND Extract_Tables_Key = $Processing_Key
+																	"
+								
+								Invoke-Sqlcmd `
+									-ServerInstance $Dest_Instance `
+									-Database $Dest_Db `
+									-Query $Update_Incomplete_Extract_Tables
+								
+								Write-Host
+								Write-Host $Update_Incomplete_Extract_Tables
+								Write-Host "~ Extract_Tables updated to Incomplete."
+								
+							}
+						
+						
+						#---------------------------------------------
+						# Tables to Process
+						#---------------------------------------------
+						
+						[STRING]$Tables_To_Process_Qry = "SELECT COUNT(Source_Table) AS Tables_To_Process
+															FROM Oa_Extract.Extract_Tables
+															WHERE 1 = 1 
+																AND (Extract_Stage IS NULL 
+																	OR Extract_Stage = 'Incomplete'
+																	)
+																AND Active = 1
+														"                                                                                   
+							$Tables_To_Process_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Tables_To_Process_Qry).Tables_To_Process
+							
+							[Int]$Tables_To_Process = [convert]::ToInt32($Tables_To_Process_Var)
+						
+						Write-Host
+						Write-Host $Tables_To_Process_Qry
+						Write-Host "~ Tables to Process: $Tables_To_Process"
+						
+						
+						#---------------------------------------------
+						# Current Process Time
+						#---------------------------------------------
+						$Current_Process_DateTime = Get-Date
+						
+						Write-Host 
+						Write-Host "~ Current Process Time: $Current_Process_DateTime"
+						
+						$Total_Processing_Time = New-TimeSpan -Start $Loop_Begin_DateTime -End $Current_Process_DateTime
+						
+						Write-Host 
+						Write-Host "~ Total Processing Time: $Total_Processing_Time"
 					}
-				
-				
-				#---------------------------------------------
-				# Tables to Process
-				#---------------------------------------------
-				
-				[STRING]$Tables_To_Process_Qry = "SELECT COUNT(Source_Table) AS Tables_To_Process
-													FROM Oa_Extract.Extract_Tables
-													WHERE 1 = 1 
-														AND (Extract_Stage IS NULL 
-															OR Extract_Stage = 'Incomplete'
-															)
-														AND Active = 1
-												"                                                                                   
-					$Tables_To_Process_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Tables_To_Process_Qry).Tables_To_Process
-					
-					[Int]$Tables_To_Process = [convert]::ToInt32($Tables_To_Process_Var)
-				
-				Write-Host
-				Write-Host $Tables_To_Process_Qry
-				Write-Host "~ Tables to Process: $Tables_To_Process"
-				
-				
-				#---------------------------------------------
-				# Current Process Time
-				#---------------------------------------------
-				$Current_Process_DateTime = Get-Date
-				
-				Write-Host 
-				Write-Host "~ Current Process Time: $Current_Process_DateTime"
-				
-				$Total_Processing_Time = New-TimeSpan -Start $Loop_Begin_DateTime -End $Current_Process_DateTime
-				
-				Write-Host 
-				Write-Host "~ Total Processing Time: $Total_Processing_Time"
 				
 			
 			} UNTIL ($Tables_To_Process -eq 0 -OR $Total_Processing_Time -gt '00:30:00')
@@ -13512,8 +13823,8 @@ Start-Job -Name Job14 -ScriptBlock {		                                    #<----
 		# Stop log
 		#---------------------------------------------
 		Stop-Transcript
-	}	
-	
+
+	}
 
 Start-Job -Name Job15 -ScriptBlock {		                                    #<----------------------------------------------------------
 		FUNCTION Insert-Alpha_Table_1
@@ -13816,7 +14127,7 @@ Start-Job -Name Job15 -ScriptBlock {		                                    #<----
 				Stop-Transcript
 			
 			}
-
+			
 		FUNCTION Copy-OneAccord_Data
 			{
 				[CmdletBinding(
@@ -14195,19 +14506,26 @@ Start-Job -Name Job15 -ScriptBlock {		                                    #<----
 					}
 				
 			}
-
-		###################################################################################################
-		#
-		#	Name: PowerShell_ETL_Parrellel_Processing
-		#	Date: 02/26/2018
-		#
-		###################################################################################################
-
+			
 		#---------------------------------------------
 		# Catch Non-Terminating Errors
 		#---------------------------------------------
 		$Old = $ErrorActionPreference
 		$ErrorActionPreference = 'Stop'
+
+
+		#---------------------------------------------
+		# Job Variables
+		#---------------------------------------------
+		[STRING]$Job_Name = "Job15"                                             #<----------------------------------------------------------
+		[INT]$Sleep_Time = 15                                                   #<----------------------------------------------------------
+
+		#---------------------------------------------
+		# If this is the first than create the Alpha_Table_1
+		#   Else sleep
+		#---------------------------------------------
+		#Create-Alpha_Table_1                                                  #<----------------------------------------------------------
+		Start-Sleep -s $Sleep_Time  
 
 		#---------------------------------------------
 		# Log file
@@ -14220,7 +14538,7 @@ Start-Job -Name Job15 -ScriptBlock {		                                    #<----
 			}
 				
 		[STRING]$Log_Root = $New_Folder_Path + "\PS_Extract_"
-		[STRING]$Parrellel_Processing = "Parrellel_Processing_15_"              #<----------------------------------------------------------
+		[STRING]$Parrellel_Processing = $Job_Name
 		[STRING]$Log_DateTime = Get-Date -Format "yyyyMMdd_HHmmss"
 		[String]$Log_File_Type = '.log'
 		[STRING]$Log_File_Name = $Log_Root + $Parrellel_Processing + "_" + $Log_DateTime + $Log_File_Type
@@ -14230,14 +14548,7 @@ Start-Job -Name Job15 -ScriptBlock {		                                    #<----
 		Write-Host
 		Write-Host "~ This is the beginning of the Parrellel_Processing script."
 		Write-Host
-
-
-		#---------------------------------------------
-		# If this is the first than create the Alpha_Table_1
-		#   Else sleep for <> seconds
-		#---------------------------------------------
-		#Create-Alpha_Table_1                                                  #<----------------------------------------------------------
-		Start-Sleep -s 18                                                      #<----------------------------------------------------------
+												
 
 		#---------------------------------------------
 		# Destination Connection String
@@ -14307,11 +14618,11 @@ Start-Job -Name Job15 -ScriptBlock {		                                    #<----
 				
 				#---------------------------------------------
 				# Extract_Tables Update
-				#---------------------------------------------
+				#---------------------------------------------				
 				$Update_DateTime = Get-Date
 			
 				$Update_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-									SET Extract_Stage = 'Processing'
+									SET Extract_Stage = '$Job_Name'                   
 										, Extract_Stage_DateTime = '$Update_DateTime'
 									WHERE 1 = 1
 										AND Extract_Tables_Key = $Processing_Key"
@@ -14323,144 +14634,166 @@ Start-Job -Name Job15 -ScriptBlock {		                                    #<----
 				
 				Write-Host $Update_Extract_Tables
 				
-				
 				#---------------------------------------------
-				# Source Table
-				#---------------------------------------------
-				
-				[STRING]$Source_Table_Qry = "SELECT Source_Table
-										FROM Oa_Extract.Extract_Tables
-										WHERE 1 = 1
-											AND Extract_Tables_Key = $Processing_Key
-														  "                                                                                   
-								$Source_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Source_Table_Qry).Source_Table
-				
-				Write-Host
-				Write-Host $Source_Table_Qry
-				Write-Host "~ Source Table: $Source_Table"
-				
-				#---------------------------------------------
-				# Destination Table
+				# Wait then recheck, if it is the same name then run, else end
 				#---------------------------------------------
 				
-				[STRING]$Dest_Table_Qry = "SELECT Destination_Table
-										FROM Oa_Extract.Extract_Tables
-										WHERE 1 = 1
-											AND Extract_Tables_Key = $Processing_Key
-														  "                                                                                   
-								$Dest_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Table_Qry).Destination_Table
+				Start-Sleep -s $Sleep_Time 
 				
-				Write-Host
-				Write-Host $Dest_Table
-				Write-Host "~ Destination Table: $Dest_Table"
-				
-				
-				#---------------------------------------------
-				# Extract Data
-				#---------------------------------------------
-				
-				Copy-OneAccord_Data -p1 $Source_Table -p2 $Processing_Key
-				
-				
-				#---------------------------------------------
-				# Check If Extract was successful
-				#---------------------------------------------
-				
-				[STRING]$Extract_Success_Qry = "SELECT SUM(Alpha_Result) AS Sum_Alpha_Result
-										FROM Oa_Extract.Alpha_Table_1
-										WHERE 1 = 1
-											AND Alpha_Stage = '$Dest_Table'
-											AND Alpha_Step_Name = 'Stats'
-														  "                                                                                   
-					$Extract_Success_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Extract_Success_Qry).Sum_Alpha_Result
-					
-					[Int]$Extract_Success = [convert]::ToInt32($Extract_Success_Var)
-				
-				Write-Host
-				Write-Host $Extract_Success_Qry
-				Write-Host "~ Extract Success: $Extract_Success"
-				
-				IF ($Extract_Success -gt 0)
-					{
-						#---------------------------------------------
-						# Extract_Tables Update
-						#---------------------------------------------
-						$Update_Complete_DateTime = Get-Date
-					
-						$Update_Complete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-											SET Extract_Stage = 'Complete'
-												, Extract_Stage_DateTime = '$Update_Complete_DateTime'
-											WHERE 1 = 1
-												AND Extract_Tables_Key = $Processing_Key"
+				[STRING]$Processing_Key_Qry2 = "SELECT Extract_Stage
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1 
+													AND Extract_Tables_Key = $Processing_Key
+											"                                                                                   
+					$Extract_Stage = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Processing_Key_Qry2).Extract_Stage
 						
-						Invoke-Sqlcmd `
-							-ServerInstance $Dest_Instance `
-							-Database $Dest_Db `
-							-Query $Update_Complete_Extract_Tables
+				Write-Host
+				Write-Host $Processing_Key_Qry2
+				Write-Host "~ Job Name: $Job_Name"
+				Write-Host "~ Extract_Stage (2): $Extract_Stage"
+				
+				IF($Job_Name -eq $Extract_Stage) 
+					{
+				
+				
+						#---------------------------------------------
+						# Source Table
+						#---------------------------------------------
+						
+						[STRING]$Source_Table_Qry = "SELECT Source_Table
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1
+													AND Extract_Tables_Key = $Processing_Key
+																  "                                                                                   
+										$Source_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Source_Table_Qry).Source_Table
 						
 						Write-Host
-						Write-Host $Update_Complete_Extract_Tables
-						Write-Host "~ Extract_Tables updated to Complete."
-					}
-					ELSE
-					{
-						#---------------------------------------------
-						# Extract_Tables Update
-						#---------------------------------------------
-						$Update_Incomplete_DateTime = Get-Date
-					
-						$Update_Incomplete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-																SET Extract_Stage = 'Incomplete'
-																	, Extract_Stage_DateTime = '$Update_Complete_DateTime'
-																WHERE 1 = 1
-																	AND Extract_Tables_Key = $Processing_Key
-															"
+						Write-Host $Source_Table_Qry
+						Write-Host "~ Source Table: $Source_Table"
 						
-						Invoke-Sqlcmd `
-							-ServerInstance $Dest_Instance `
-							-Database $Dest_Db `
-							-Query $Update_Incomplete_Extract_Tables
+						#---------------------------------------------
+						# Destination Table
+						#---------------------------------------------
+						
+						[STRING]$Dest_Table_Qry = "SELECT Destination_Table
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1
+													AND Extract_Tables_Key = $Processing_Key
+																  "                                                                                   
+										$Dest_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Table_Qry).Destination_Table
 						
 						Write-Host
-						Write-Host $Update_Incomplete_Extract_Tables
-						Write-Host "~ Extract_Tables updated to Incomplete."
+						Write-Host $Dest_Table
+						Write-Host "~ Destination Table: $Dest_Table"
 						
+						
+						#---------------------------------------------
+						# Extract Data
+						#---------------------------------------------
+						
+						Copy-OneAccord_Data -p1 $Source_Table -p2 $Processing_Key
+						
+						
+						#---------------------------------------------
+						# Check If Extract was successful
+						#---------------------------------------------
+						
+						[STRING]$Extract_Success_Qry = "SELECT COUNT(CASE WHEN Alpha_Result = 1 THEN 1 ELSE NULL END) AS Count_Alpha_Result
+												FROM Oa_Extract.Alpha_Table_1
+												WHERE 1 = 1
+													AND Alpha_Stage = '$Dest_Table'
+													AND Alpha_Step_Name = 'Stats'
+																  "                                                                                   
+							$Extract_Success_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Extract_Success_Qry).Count_Alpha_Result
+							
+							[Int]$Extract_Success = [convert]::ToInt32($Extract_Success_Var)
+						
+						Write-Host
+						Write-Host $Extract_Success_Qry
+						Write-Host "~ Extract Success: $Extract_Success"
+						
+						IF ($Extract_Success -gt 0)
+							{
+								#---------------------------------------------
+								# Extract_Tables Update
+								#---------------------------------------------
+								$Update_Complete_DateTime = Get-Date
+							
+								$Update_Complete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+													SET Extract_Stage = 'Complete'
+														, Extract_Stage_DateTime = '$Update_Complete_DateTime'
+													WHERE 1 = 1
+														AND Extract_Tables_Key = $Processing_Key"
+								
+								Invoke-Sqlcmd `
+									-ServerInstance $Dest_Instance `
+									-Database $Dest_Db `
+									-Query $Update_Complete_Extract_Tables
+								
+								Write-Host
+								Write-Host $Update_Complete_Extract_Tables
+								Write-Host "~ Extract_Tables updated to Complete."
+							}
+							ELSE
+							{
+								#---------------------------------------------
+								# Extract_Tables Update
+								#---------------------------------------------
+								$Update_Incomplete_DateTime = Get-Date
+							
+								$Update_Incomplete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+																		SET Extract_Stage = 'Incomplete'
+																			, Extract_Stage_DateTime = '$Update_Complete_DateTime'
+																		WHERE 1 = 1
+																			AND Extract_Tables_Key = $Processing_Key
+																	"
+								
+								Invoke-Sqlcmd `
+									-ServerInstance $Dest_Instance `
+									-Database $Dest_Db `
+									-Query $Update_Incomplete_Extract_Tables
+								
+								Write-Host
+								Write-Host $Update_Incomplete_Extract_Tables
+								Write-Host "~ Extract_Tables updated to Incomplete."
+								
+							}
+						
+						
+						#---------------------------------------------
+						# Tables to Process
+						#---------------------------------------------
+						
+						[STRING]$Tables_To_Process_Qry = "SELECT COUNT(Source_Table) AS Tables_To_Process
+															FROM Oa_Extract.Extract_Tables
+															WHERE 1 = 1 
+																AND (Extract_Stage IS NULL 
+																	OR Extract_Stage = 'Incomplete'
+																	)
+																AND Active = 1
+														"                                                                                   
+							$Tables_To_Process_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Tables_To_Process_Qry).Tables_To_Process
+							
+							[Int]$Tables_To_Process = [convert]::ToInt32($Tables_To_Process_Var)
+						
+						Write-Host
+						Write-Host $Tables_To_Process_Qry
+						Write-Host "~ Tables to Process: $Tables_To_Process"
+						
+						
+						#---------------------------------------------
+						# Current Process Time
+						#---------------------------------------------
+						$Current_Process_DateTime = Get-Date
+						
+						Write-Host 
+						Write-Host "~ Current Process Time: $Current_Process_DateTime"
+						
+						$Total_Processing_Time = New-TimeSpan -Start $Loop_Begin_DateTime -End $Current_Process_DateTime
+						
+						Write-Host 
+						Write-Host "~ Total Processing Time: $Total_Processing_Time"
 					}
-				
-				
-				#---------------------------------------------
-				# Tables to Process
-				#---------------------------------------------
-				
-				[STRING]$Tables_To_Process_Qry = "SELECT COUNT(Source_Table) AS Tables_To_Process
-													FROM Oa_Extract.Extract_Tables
-													WHERE 1 = 1 
-														AND (Extract_Stage IS NULL 
-															OR Extract_Stage = 'Incomplete'
-															)
-														AND Active = 1
-												"                                                                                   
-					$Tables_To_Process_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Tables_To_Process_Qry).Tables_To_Process
-					
-					[Int]$Tables_To_Process = [convert]::ToInt32($Tables_To_Process_Var)
-				
-				Write-Host
-				Write-Host $Tables_To_Process_Qry
-				Write-Host "~ Tables to Process: $Tables_To_Process"
-				
-				
-				#---------------------------------------------
-				# Current Process Time
-				#---------------------------------------------
-				$Current_Process_DateTime = Get-Date
-				
-				Write-Host 
-				Write-Host "~ Current Process Time: $Current_Process_DateTime"
-				
-				$Total_Processing_Time = New-TimeSpan -Start $Loop_Begin_DateTime -End $Current_Process_DateTime
-				
-				Write-Host 
-				Write-Host "~ Total Processing Time: $Total_Processing_Time"
 				
 			
 			} UNTIL ($Tables_To_Process -eq 0 -OR $Total_Processing_Time -gt '00:30:00')
@@ -14477,8 +14810,8 @@ Start-Job -Name Job15 -ScriptBlock {		                                    #<----
 		# Stop log
 		#---------------------------------------------
 		Stop-Transcript
-	}	
-	
+
+	}
 
 Start-Job -Name Job16 -ScriptBlock {		                                    #<----------------------------------------------------------
 		FUNCTION Insert-Alpha_Table_1
@@ -14781,7 +15114,7 @@ Start-Job -Name Job16 -ScriptBlock {		                                    #<----
 				Stop-Transcript
 			
 			}
-
+			
 		FUNCTION Copy-OneAccord_Data
 			{
 				[CmdletBinding(
@@ -15160,19 +15493,26 @@ Start-Job -Name Job16 -ScriptBlock {		                                    #<----
 					}
 				
 			}
-
-		###################################################################################################
-		#
-		#	Name: PowerShell_ETL_Parrellel_Processing
-		#	Date: 02/26/2018
-		#
-		###################################################################################################
-
+			
 		#---------------------------------------------
 		# Catch Non-Terminating Errors
 		#---------------------------------------------
 		$Old = $ErrorActionPreference
 		$ErrorActionPreference = 'Stop'
+
+
+		#---------------------------------------------
+		# Job Variables
+		#---------------------------------------------
+		[STRING]$Job_Name = "Job16"                                             #<----------------------------------------------------------
+		[INT]$Sleep_Time = 16                                                   #<----------------------------------------------------------
+
+		#---------------------------------------------
+		# If this is the first than create the Alpha_Table_1
+		#   Else sleep
+		#---------------------------------------------
+		#Create-Alpha_Table_1                                                  #<----------------------------------------------------------
+		Start-Sleep -s $Sleep_Time  
 
 		#---------------------------------------------
 		# Log file
@@ -15185,7 +15525,7 @@ Start-Job -Name Job16 -ScriptBlock {		                                    #<----
 			}
 				
 		[STRING]$Log_Root = $New_Folder_Path + "\PS_Extract_"
-		[STRING]$Parrellel_Processing = "Parrellel_Processing_16_"              #<----------------------------------------------------------
+		[STRING]$Parrellel_Processing = $Job_Name
 		[STRING]$Log_DateTime = Get-Date -Format "yyyyMMdd_HHmmss"
 		[String]$Log_File_Type = '.log'
 		[STRING]$Log_File_Name = $Log_Root + $Parrellel_Processing + "_" + $Log_DateTime + $Log_File_Type
@@ -15195,14 +15535,7 @@ Start-Job -Name Job16 -ScriptBlock {		                                    #<----
 		Write-Host
 		Write-Host "~ This is the beginning of the Parrellel_Processing script."
 		Write-Host
-
-
-		#---------------------------------------------
-		# If this is the first than create the Alpha_Table_1
-		#   Else sleep for <> seconds
-		#---------------------------------------------
-		#Create-Alpha_Table_1                                                  #<----------------------------------------------------------
-		Start-Sleep -s 19                                                      #<----------------------------------------------------------
+												
 
 		#---------------------------------------------
 		# Destination Connection String
@@ -15272,11 +15605,11 @@ Start-Job -Name Job16 -ScriptBlock {		                                    #<----
 				
 				#---------------------------------------------
 				# Extract_Tables Update
-				#---------------------------------------------
+				#---------------------------------------------				
 				$Update_DateTime = Get-Date
 			
 				$Update_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-									SET Extract_Stage = 'Processing'
+									SET Extract_Stage = '$Job_Name'                   
 										, Extract_Stage_DateTime = '$Update_DateTime'
 									WHERE 1 = 1
 										AND Extract_Tables_Key = $Processing_Key"
@@ -15288,144 +15621,166 @@ Start-Job -Name Job16 -ScriptBlock {		                                    #<----
 				
 				Write-Host $Update_Extract_Tables
 				
-				
 				#---------------------------------------------
-				# Source Table
-				#---------------------------------------------
-				
-				[STRING]$Source_Table_Qry = "SELECT Source_Table
-										FROM Oa_Extract.Extract_Tables
-										WHERE 1 = 1
-											AND Extract_Tables_Key = $Processing_Key
-														  "                                                                                   
-								$Source_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Source_Table_Qry).Source_Table
-				
-				Write-Host
-				Write-Host $Source_Table_Qry
-				Write-Host "~ Source Table: $Source_Table"
-				
-				#---------------------------------------------
-				# Destination Table
+				# Wait then recheck, if it is the same name then run, else end
 				#---------------------------------------------
 				
-				[STRING]$Dest_Table_Qry = "SELECT Destination_Table
-										FROM Oa_Extract.Extract_Tables
-										WHERE 1 = 1
-											AND Extract_Tables_Key = $Processing_Key
-														  "                                                                                   
-								$Dest_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Table_Qry).Destination_Table
+				Start-Sleep -s $Sleep_Time 
 				
-				Write-Host
-				Write-Host $Dest_Table
-				Write-Host "~ Destination Table: $Dest_Table"
-				
-				
-				#---------------------------------------------
-				# Extract Data
-				#---------------------------------------------
-				
-				Copy-OneAccord_Data -p1 $Source_Table -p2 $Processing_Key
-				
-				
-				#---------------------------------------------
-				# Check If Extract was successful
-				#---------------------------------------------
-				
-				[STRING]$Extract_Success_Qry = "SELECT SUM(Alpha_Result) AS Sum_Alpha_Result
-										FROM Oa_Extract.Alpha_Table_1
-										WHERE 1 = 1
-											AND Alpha_Stage = '$Dest_Table'
-											AND Alpha_Step_Name = 'Stats'
-														  "                                                                                   
-					$Extract_Success_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Extract_Success_Qry).Sum_Alpha_Result
-					
-					[Int]$Extract_Success = [convert]::ToInt32($Extract_Success_Var)
-				
-				Write-Host
-				Write-Host $Extract_Success_Qry
-				Write-Host "~ Extract Success: $Extract_Success"
-				
-				IF ($Extract_Success -gt 0)
-					{
-						#---------------------------------------------
-						# Extract_Tables Update
-						#---------------------------------------------
-						$Update_Complete_DateTime = Get-Date
-					
-						$Update_Complete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-											SET Extract_Stage = 'Complete'
-												, Extract_Stage_DateTime = '$Update_Complete_DateTime'
-											WHERE 1 = 1
-												AND Extract_Tables_Key = $Processing_Key"
+				[STRING]$Processing_Key_Qry2 = "SELECT Extract_Stage
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1 
+													AND Extract_Tables_Key = $Processing_Key
+											"                                                                                   
+					$Extract_Stage = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Processing_Key_Qry2).Extract_Stage
 						
-						Invoke-Sqlcmd `
-							-ServerInstance $Dest_Instance `
-							-Database $Dest_Db `
-							-Query $Update_Complete_Extract_Tables
+				Write-Host
+				Write-Host $Processing_Key_Qry2
+				Write-Host "~ Job Name: $Job_Name"
+				Write-Host "~ Extract_Stage (2): $Extract_Stage"
+				
+				IF($Job_Name -eq $Extract_Stage) 
+					{
+				
+				
+						#---------------------------------------------
+						# Source Table
+						#---------------------------------------------
+						
+						[STRING]$Source_Table_Qry = "SELECT Source_Table
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1
+													AND Extract_Tables_Key = $Processing_Key
+																  "                                                                                   
+										$Source_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Source_Table_Qry).Source_Table
 						
 						Write-Host
-						Write-Host $Update_Complete_Extract_Tables
-						Write-Host "~ Extract_Tables updated to Complete."
-					}
-					ELSE
-					{
-						#---------------------------------------------
-						# Extract_Tables Update
-						#---------------------------------------------
-						$Update_Incomplete_DateTime = Get-Date
-					
-						$Update_Incomplete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-																SET Extract_Stage = 'Incomplete'
-																	, Extract_Stage_DateTime = '$Update_Complete_DateTime'
-																WHERE 1 = 1
-																	AND Extract_Tables_Key = $Processing_Key
-															"
+						Write-Host $Source_Table_Qry
+						Write-Host "~ Source Table: $Source_Table"
 						
-						Invoke-Sqlcmd `
-							-ServerInstance $Dest_Instance `
-							-Database $Dest_Db `
-							-Query $Update_Incomplete_Extract_Tables
+						#---------------------------------------------
+						# Destination Table
+						#---------------------------------------------
+						
+						[STRING]$Dest_Table_Qry = "SELECT Destination_Table
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1
+													AND Extract_Tables_Key = $Processing_Key
+																  "                                                                                   
+										$Dest_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Table_Qry).Destination_Table
 						
 						Write-Host
-						Write-Host $Update_Incomplete_Extract_Tables
-						Write-Host "~ Extract_Tables updated to Incomplete."
+						Write-Host $Dest_Table
+						Write-Host "~ Destination Table: $Dest_Table"
 						
+						
+						#---------------------------------------------
+						# Extract Data
+						#---------------------------------------------
+						
+						Copy-OneAccord_Data -p1 $Source_Table -p2 $Processing_Key
+						
+						
+						#---------------------------------------------
+						# Check If Extract was successful
+						#---------------------------------------------
+						
+						[STRING]$Extract_Success_Qry = "SELECT COUNT(CASE WHEN Alpha_Result = 1 THEN 1 ELSE NULL END) AS Count_Alpha_Result
+												FROM Oa_Extract.Alpha_Table_1
+												WHERE 1 = 1
+													AND Alpha_Stage = '$Dest_Table'
+													AND Alpha_Step_Name = 'Stats'
+																  "                                                                                   
+							$Extract_Success_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Extract_Success_Qry).Count_Alpha_Result
+							
+							[Int]$Extract_Success = [convert]::ToInt32($Extract_Success_Var)
+						
+						Write-Host
+						Write-Host $Extract_Success_Qry
+						Write-Host "~ Extract Success: $Extract_Success"
+						
+						IF ($Extract_Success -gt 0)
+							{
+								#---------------------------------------------
+								# Extract_Tables Update
+								#---------------------------------------------
+								$Update_Complete_DateTime = Get-Date
+							
+								$Update_Complete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+													SET Extract_Stage = 'Complete'
+														, Extract_Stage_DateTime = '$Update_Complete_DateTime'
+													WHERE 1 = 1
+														AND Extract_Tables_Key = $Processing_Key"
+								
+								Invoke-Sqlcmd `
+									-ServerInstance $Dest_Instance `
+									-Database $Dest_Db `
+									-Query $Update_Complete_Extract_Tables
+								
+								Write-Host
+								Write-Host $Update_Complete_Extract_Tables
+								Write-Host "~ Extract_Tables updated to Complete."
+							}
+							ELSE
+							{
+								#---------------------------------------------
+								# Extract_Tables Update
+								#---------------------------------------------
+								$Update_Incomplete_DateTime = Get-Date
+							
+								$Update_Incomplete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+																		SET Extract_Stage = 'Incomplete'
+																			, Extract_Stage_DateTime = '$Update_Complete_DateTime'
+																		WHERE 1 = 1
+																			AND Extract_Tables_Key = $Processing_Key
+																	"
+								
+								Invoke-Sqlcmd `
+									-ServerInstance $Dest_Instance `
+									-Database $Dest_Db `
+									-Query $Update_Incomplete_Extract_Tables
+								
+								Write-Host
+								Write-Host $Update_Incomplete_Extract_Tables
+								Write-Host "~ Extract_Tables updated to Incomplete."
+								
+							}
+						
+						
+						#---------------------------------------------
+						# Tables to Process
+						#---------------------------------------------
+						
+						[STRING]$Tables_To_Process_Qry = "SELECT COUNT(Source_Table) AS Tables_To_Process
+															FROM Oa_Extract.Extract_Tables
+															WHERE 1 = 1 
+																AND (Extract_Stage IS NULL 
+																	OR Extract_Stage = 'Incomplete'
+																	)
+																AND Active = 1
+														"                                                                                   
+							$Tables_To_Process_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Tables_To_Process_Qry).Tables_To_Process
+							
+							[Int]$Tables_To_Process = [convert]::ToInt32($Tables_To_Process_Var)
+						
+						Write-Host
+						Write-Host $Tables_To_Process_Qry
+						Write-Host "~ Tables to Process: $Tables_To_Process"
+						
+						
+						#---------------------------------------------
+						# Current Process Time
+						#---------------------------------------------
+						$Current_Process_DateTime = Get-Date
+						
+						Write-Host 
+						Write-Host "~ Current Process Time: $Current_Process_DateTime"
+						
+						$Total_Processing_Time = New-TimeSpan -Start $Loop_Begin_DateTime -End $Current_Process_DateTime
+						
+						Write-Host 
+						Write-Host "~ Total Processing Time: $Total_Processing_Time"
 					}
-				
-				
-				#---------------------------------------------
-				# Tables to Process
-				#---------------------------------------------
-				
-				[STRING]$Tables_To_Process_Qry = "SELECT COUNT(Source_Table) AS Tables_To_Process
-													FROM Oa_Extract.Extract_Tables
-													WHERE 1 = 1 
-														AND (Extract_Stage IS NULL 
-															OR Extract_Stage = 'Incomplete'
-															)
-														AND Active = 1
-												"                                                                                   
-					$Tables_To_Process_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Tables_To_Process_Qry).Tables_To_Process
-					
-					[Int]$Tables_To_Process = [convert]::ToInt32($Tables_To_Process_Var)
-				
-				Write-Host
-				Write-Host $Tables_To_Process_Qry
-				Write-Host "~ Tables to Process: $Tables_To_Process"
-				
-				
-				#---------------------------------------------
-				# Current Process Time
-				#---------------------------------------------
-				$Current_Process_DateTime = Get-Date
-				
-				Write-Host 
-				Write-Host "~ Current Process Time: $Current_Process_DateTime"
-				
-				$Total_Processing_Time = New-TimeSpan -Start $Loop_Begin_DateTime -End $Current_Process_DateTime
-				
-				Write-Host 
-				Write-Host "~ Total Processing Time: $Total_Processing_Time"
 				
 			
 			} UNTIL ($Tables_To_Process -eq 0 -OR $Total_Processing_Time -gt '00:30:00')
@@ -15442,9 +15797,8 @@ Start-Job -Name Job16 -ScriptBlock {		                                    #<----
 		# Stop log
 		#---------------------------------------------
 		Stop-Transcript
-	}	
-	
-	
+
+	}
 
 Start-Job -Name Job17 -ScriptBlock {		                                    #<----------------------------------------------------------
 		FUNCTION Insert-Alpha_Table_1
@@ -15747,7 +16101,7 @@ Start-Job -Name Job17 -ScriptBlock {		                                    #<----
 				Stop-Transcript
 			
 			}
-
+			
 		FUNCTION Copy-OneAccord_Data
 			{
 				[CmdletBinding(
@@ -16126,19 +16480,26 @@ Start-Job -Name Job17 -ScriptBlock {		                                    #<----
 					}
 				
 			}
-
-		###################################################################################################
-		#
-		#	Name: PowerShell_ETL_Parrellel_Processing
-		#	Date: 02/26/2018
-		#
-		###################################################################################################
-
+			
 		#---------------------------------------------
 		# Catch Non-Terminating Errors
 		#---------------------------------------------
 		$Old = $ErrorActionPreference
 		$ErrorActionPreference = 'Stop'
+
+
+		#---------------------------------------------
+		# Job Variables
+		#---------------------------------------------
+		[STRING]$Job_Name = "Job17"                                             #<----------------------------------------------------------
+		[INT]$Sleep_Time = 17                                                   #<----------------------------------------------------------
+
+		#---------------------------------------------
+		# If this is the first than create the Alpha_Table_1
+		#   Else sleep
+		#---------------------------------------------
+		#Create-Alpha_Table_1                                                  #<----------------------------------------------------------
+		Start-Sleep -s $Sleep_Time  
 
 		#---------------------------------------------
 		# Log file
@@ -16151,7 +16512,7 @@ Start-Job -Name Job17 -ScriptBlock {		                                    #<----
 			}
 				
 		[STRING]$Log_Root = $New_Folder_Path + "\PS_Extract_"
-		[STRING]$Parrellel_Processing = "Parrellel_Processing_17_"              #<----------------------------------------------------------
+		[STRING]$Parrellel_Processing = $Job_Name
 		[STRING]$Log_DateTime = Get-Date -Format "yyyyMMdd_HHmmss"
 		[String]$Log_File_Type = '.log'
 		[STRING]$Log_File_Name = $Log_Root + $Parrellel_Processing + "_" + $Log_DateTime + $Log_File_Type
@@ -16161,14 +16522,7 @@ Start-Job -Name Job17 -ScriptBlock {		                                    #<----
 		Write-Host
 		Write-Host "~ This is the beginning of the Parrellel_Processing script."
 		Write-Host
-
-
-		#---------------------------------------------
-		# If this is the first than create the Alpha_Table_1
-		#   Else sleep for <> seconds
-		#---------------------------------------------
-		#Create-Alpha_Table_1                                                 #<----------------------------------------------------------
-		Start-Sleep -s 20                                                     #<----------------------------------------------------------
+												
 
 		#---------------------------------------------
 		# Destination Connection String
@@ -16238,11 +16592,11 @@ Start-Job -Name Job17 -ScriptBlock {		                                    #<----
 				
 				#---------------------------------------------
 				# Extract_Tables Update
-				#---------------------------------------------
+				#---------------------------------------------				
 				$Update_DateTime = Get-Date
 			
 				$Update_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-									SET Extract_Stage = 'Processing'
+									SET Extract_Stage = '$Job_Name'                   
 										, Extract_Stage_DateTime = '$Update_DateTime'
 									WHERE 1 = 1
 										AND Extract_Tables_Key = $Processing_Key"
@@ -16254,144 +16608,166 @@ Start-Job -Name Job17 -ScriptBlock {		                                    #<----
 				
 				Write-Host $Update_Extract_Tables
 				
-				
 				#---------------------------------------------
-				# Source Table
-				#---------------------------------------------
-				
-				[STRING]$Source_Table_Qry = "SELECT Source_Table
-										FROM Oa_Extract.Extract_Tables
-										WHERE 1 = 1
-											AND Extract_Tables_Key = $Processing_Key
-														  "                                                                                   
-								$Source_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Source_Table_Qry).Source_Table
-				
-				Write-Host
-				Write-Host $Source_Table_Qry
-				Write-Host "~ Source Table: $Source_Table"
-				
-				#---------------------------------------------
-				# Destination Table
+				# Wait then recheck, if it is the same name then run, else end
 				#---------------------------------------------
 				
-				[STRING]$Dest_Table_Qry = "SELECT Destination_Table
-										FROM Oa_Extract.Extract_Tables
-										WHERE 1 = 1
-											AND Extract_Tables_Key = $Processing_Key
-														  "                                                                                   
-								$Dest_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Table_Qry).Destination_Table
+				Start-Sleep -s $Sleep_Time 
 				
-				Write-Host
-				Write-Host $Dest_Table
-				Write-Host "~ Destination Table: $Dest_Table"
-				
-				
-				#---------------------------------------------
-				# Extract Data
-				#---------------------------------------------
-				
-				Copy-OneAccord_Data -p1 $Source_Table -p2 $Processing_Key
-				
-				
-				#---------------------------------------------
-				# Check If Extract was successful
-				#---------------------------------------------
-				
-				[STRING]$Extract_Success_Qry = "SELECT SUM(Alpha_Result) AS Sum_Alpha_Result
-										FROM Oa_Extract.Alpha_Table_1
-										WHERE 1 = 1
-											AND Alpha_Stage = '$Dest_Table'
-											AND Alpha_Step_Name = 'Stats'
-														  "                                                                                   
-					$Extract_Success_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Extract_Success_Qry).Sum_Alpha_Result
-					
-					[Int]$Extract_Success = [convert]::ToInt32($Extract_Success_Var)
-				
-				Write-Host
-				Write-Host $Extract_Success_Qry
-				Write-Host "~ Extract Success: $Extract_Success"
-				
-				IF ($Extract_Success -gt 0)
-					{
-						#---------------------------------------------
-						# Extract_Tables Update
-						#---------------------------------------------
-						$Update_Complete_DateTime = Get-Date
-					
-						$Update_Complete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-											SET Extract_Stage = 'Complete'
-												, Extract_Stage_DateTime = '$Update_Complete_DateTime'
-											WHERE 1 = 1
-												AND Extract_Tables_Key = $Processing_Key"
+				[STRING]$Processing_Key_Qry2 = "SELECT Extract_Stage
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1 
+													AND Extract_Tables_Key = $Processing_Key
+											"                                                                                   
+					$Extract_Stage = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Processing_Key_Qry2).Extract_Stage
 						
-						Invoke-Sqlcmd `
-							-ServerInstance $Dest_Instance `
-							-Database $Dest_Db `
-							-Query $Update_Complete_Extract_Tables
+				Write-Host
+				Write-Host $Processing_Key_Qry2
+				Write-Host "~ Job Name: $Job_Name"
+				Write-Host "~ Extract_Stage (2): $Extract_Stage"
+				
+				IF($Job_Name -eq $Extract_Stage) 
+					{
+				
+				
+						#---------------------------------------------
+						# Source Table
+						#---------------------------------------------
+						
+						[STRING]$Source_Table_Qry = "SELECT Source_Table
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1
+													AND Extract_Tables_Key = $Processing_Key
+																  "                                                                                   
+										$Source_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Source_Table_Qry).Source_Table
 						
 						Write-Host
-						Write-Host $Update_Complete_Extract_Tables
-						Write-Host "~ Extract_Tables updated to Complete."
-					}
-					ELSE
-					{
-						#---------------------------------------------
-						# Extract_Tables Update
-						#---------------------------------------------
-						$Update_Incomplete_DateTime = Get-Date
-					
-						$Update_Incomplete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-																SET Extract_Stage = 'Incomplete'
-																	, Extract_Stage_DateTime = '$Update_Complete_DateTime'
-																WHERE 1 = 1
-																	AND Extract_Tables_Key = $Processing_Key
-															"
+						Write-Host $Source_Table_Qry
+						Write-Host "~ Source Table: $Source_Table"
 						
-						Invoke-Sqlcmd `
-							-ServerInstance $Dest_Instance `
-							-Database $Dest_Db `
-							-Query $Update_Incomplete_Extract_Tables
+						#---------------------------------------------
+						# Destination Table
+						#---------------------------------------------
+						
+						[STRING]$Dest_Table_Qry = "SELECT Destination_Table
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1
+													AND Extract_Tables_Key = $Processing_Key
+																  "                                                                                   
+										$Dest_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Table_Qry).Destination_Table
 						
 						Write-Host
-						Write-Host $Update_Incomplete_Extract_Tables
-						Write-Host "~ Extract_Tables updated to Incomplete."
+						Write-Host $Dest_Table
+						Write-Host "~ Destination Table: $Dest_Table"
 						
+						
+						#---------------------------------------------
+						# Extract Data
+						#---------------------------------------------
+						
+						Copy-OneAccord_Data -p1 $Source_Table -p2 $Processing_Key
+						
+						
+						#---------------------------------------------
+						# Check If Extract was successful
+						#---------------------------------------------
+						
+						[STRING]$Extract_Success_Qry = "SELECT COUNT(CASE WHEN Alpha_Result = 1 THEN 1 ELSE NULL END) AS Count_Alpha_Result
+												FROM Oa_Extract.Alpha_Table_1
+												WHERE 1 = 1
+													AND Alpha_Stage = '$Dest_Table'
+													AND Alpha_Step_Name = 'Stats'
+																  "                                                                                   
+							$Extract_Success_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Extract_Success_Qry).Count_Alpha_Result
+							
+							[Int]$Extract_Success = [convert]::ToInt32($Extract_Success_Var)
+						
+						Write-Host
+						Write-Host $Extract_Success_Qry
+						Write-Host "~ Extract Success: $Extract_Success"
+						
+						IF ($Extract_Success -gt 0)
+							{
+								#---------------------------------------------
+								# Extract_Tables Update
+								#---------------------------------------------
+								$Update_Complete_DateTime = Get-Date
+							
+								$Update_Complete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+													SET Extract_Stage = 'Complete'
+														, Extract_Stage_DateTime = '$Update_Complete_DateTime'
+													WHERE 1 = 1
+														AND Extract_Tables_Key = $Processing_Key"
+								
+								Invoke-Sqlcmd `
+									-ServerInstance $Dest_Instance `
+									-Database $Dest_Db `
+									-Query $Update_Complete_Extract_Tables
+								
+								Write-Host
+								Write-Host $Update_Complete_Extract_Tables
+								Write-Host "~ Extract_Tables updated to Complete."
+							}
+							ELSE
+							{
+								#---------------------------------------------
+								# Extract_Tables Update
+								#---------------------------------------------
+								$Update_Incomplete_DateTime = Get-Date
+							
+								$Update_Incomplete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+																		SET Extract_Stage = 'Incomplete'
+																			, Extract_Stage_DateTime = '$Update_Complete_DateTime'
+																		WHERE 1 = 1
+																			AND Extract_Tables_Key = $Processing_Key
+																	"
+								
+								Invoke-Sqlcmd `
+									-ServerInstance $Dest_Instance `
+									-Database $Dest_Db `
+									-Query $Update_Incomplete_Extract_Tables
+								
+								Write-Host
+								Write-Host $Update_Incomplete_Extract_Tables
+								Write-Host "~ Extract_Tables updated to Incomplete."
+								
+							}
+						
+						
+						#---------------------------------------------
+						# Tables to Process
+						#---------------------------------------------
+						
+						[STRING]$Tables_To_Process_Qry = "SELECT COUNT(Source_Table) AS Tables_To_Process
+															FROM Oa_Extract.Extract_Tables
+															WHERE 1 = 1 
+																AND (Extract_Stage IS NULL 
+																	OR Extract_Stage = 'Incomplete'
+																	)
+																AND Active = 1
+														"                                                                                   
+							$Tables_To_Process_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Tables_To_Process_Qry).Tables_To_Process
+							
+							[Int]$Tables_To_Process = [convert]::ToInt32($Tables_To_Process_Var)
+						
+						Write-Host
+						Write-Host $Tables_To_Process_Qry
+						Write-Host "~ Tables to Process: $Tables_To_Process"
+						
+						
+						#---------------------------------------------
+						# Current Process Time
+						#---------------------------------------------
+						$Current_Process_DateTime = Get-Date
+						
+						Write-Host 
+						Write-Host "~ Current Process Time: $Current_Process_DateTime"
+						
+						$Total_Processing_Time = New-TimeSpan -Start $Loop_Begin_DateTime -End $Current_Process_DateTime
+						
+						Write-Host 
+						Write-Host "~ Total Processing Time: $Total_Processing_Time"
 					}
-				
-				
-				#---------------------------------------------
-				# Tables to Process
-				#---------------------------------------------
-				
-				[STRING]$Tables_To_Process_Qry = "SELECT COUNT(Source_Table) AS Tables_To_Process
-													FROM Oa_Extract.Extract_Tables
-													WHERE 1 = 1 
-														AND (Extract_Stage IS NULL 
-															OR Extract_Stage = 'Incomplete'
-															)
-														AND Active = 1
-												"                                                                                   
-					$Tables_To_Process_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Tables_To_Process_Qry).Tables_To_Process
-					
-					[Int]$Tables_To_Process = [convert]::ToInt32($Tables_To_Process_Var)
-				
-				Write-Host
-				Write-Host $Tables_To_Process_Qry
-				Write-Host "~ Tables to Process: $Tables_To_Process"
-				
-				
-				#---------------------------------------------
-				# Current Process Time
-				#---------------------------------------------
-				$Current_Process_DateTime = Get-Date
-				
-				Write-Host 
-				Write-Host "~ Current Process Time: $Current_Process_DateTime"
-				
-				$Total_Processing_Time = New-TimeSpan -Start $Loop_Begin_DateTime -End $Current_Process_DateTime
-				
-				Write-Host 
-				Write-Host "~ Total Processing Time: $Total_Processing_Time"
 				
 			
 			} UNTIL ($Tables_To_Process -eq 0 -OR $Total_Processing_Time -gt '00:30:00')
@@ -16408,8 +16784,8 @@ Start-Job -Name Job17 -ScriptBlock {		                                    #<----
 		# Stop log
 		#---------------------------------------------
 		Stop-Transcript
-	}	
-	
+
+	}
 
 Start-Job -Name Job18 -ScriptBlock {		                                    #<----------------------------------------------------------
 		FUNCTION Insert-Alpha_Table_1
@@ -16712,7 +17088,7 @@ Start-Job -Name Job18 -ScriptBlock {		                                    #<----
 				Stop-Transcript
 			
 			}
-
+			
 		FUNCTION Copy-OneAccord_Data
 			{
 				[CmdletBinding(
@@ -17091,19 +17467,26 @@ Start-Job -Name Job18 -ScriptBlock {		                                    #<----
 					}
 				
 			}
-
-		###################################################################################################
-		#
-		#	Name: PowerShell_ETL_Parrellel_Processing
-		#	Date: 02/26/2018
-		#
-		###################################################################################################
-
+			
 		#---------------------------------------------
 		# Catch Non-Terminating Errors
 		#---------------------------------------------
 		$Old = $ErrorActionPreference
 		$ErrorActionPreference = 'Stop'
+
+
+		#---------------------------------------------
+		# Job Variables
+		#---------------------------------------------
+		[STRING]$Job_Name = "Job18"                                             #<----------------------------------------------------------
+		[INT]$Sleep_Time = 18                                                   #<----------------------------------------------------------
+
+		#---------------------------------------------
+		# If this is the first than create the Alpha_Table_1
+		#   Else sleep
+		#---------------------------------------------
+		#Create-Alpha_Table_1                                                  #<----------------------------------------------------------
+		Start-Sleep -s $Sleep_Time  
 
 		#---------------------------------------------
 		# Log file
@@ -17116,7 +17499,7 @@ Start-Job -Name Job18 -ScriptBlock {		                                    #<----
 			}
 				
 		[STRING]$Log_Root = $New_Folder_Path + "\PS_Extract_"
-		[STRING]$Parrellel_Processing = "Parrellel_Processing_18_"              #<----------------------------------------------------------
+		[STRING]$Parrellel_Processing = $Job_Name
 		[STRING]$Log_DateTime = Get-Date -Format "yyyyMMdd_HHmmss"
 		[String]$Log_File_Type = '.log'
 		[STRING]$Log_File_Name = $Log_Root + $Parrellel_Processing + "_" + $Log_DateTime + $Log_File_Type
@@ -17126,14 +17509,7 @@ Start-Job -Name Job18 -ScriptBlock {		                                    #<----
 		Write-Host
 		Write-Host "~ This is the beginning of the Parrellel_Processing script."
 		Write-Host
-
-
-		#---------------------------------------------
-		# If this is the first than create the Alpha_Table_1
-		#   Else sleep for <> seconds
-		#---------------------------------------------
-		#Create-Alpha_Table_1                                                 #<----------------------------------------------------------
-		Start-Sleep -s 21                                                     #<----------------------------------------------------------
+												
 
 		#---------------------------------------------
 		# Destination Connection String
@@ -17203,11 +17579,11 @@ Start-Job -Name Job18 -ScriptBlock {		                                    #<----
 				
 				#---------------------------------------------
 				# Extract_Tables Update
-				#---------------------------------------------
+				#---------------------------------------------				
 				$Update_DateTime = Get-Date
 			
 				$Update_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-									SET Extract_Stage = 'Processing'
+									SET Extract_Stage = '$Job_Name'                   
 										, Extract_Stage_DateTime = '$Update_DateTime'
 									WHERE 1 = 1
 										AND Extract_Tables_Key = $Processing_Key"
@@ -17219,144 +17595,166 @@ Start-Job -Name Job18 -ScriptBlock {		                                    #<----
 				
 				Write-Host $Update_Extract_Tables
 				
-				
 				#---------------------------------------------
-				# Source Table
-				#---------------------------------------------
-				
-				[STRING]$Source_Table_Qry = "SELECT Source_Table
-										FROM Oa_Extract.Extract_Tables
-										WHERE 1 = 1
-											AND Extract_Tables_Key = $Processing_Key
-														  "                                                                                   
-								$Source_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Source_Table_Qry).Source_Table
-				
-				Write-Host
-				Write-Host $Source_Table_Qry
-				Write-Host "~ Source Table: $Source_Table"
-				
-				#---------------------------------------------
-				# Destination Table
+				# Wait then recheck, if it is the same name then run, else end
 				#---------------------------------------------
 				
-				[STRING]$Dest_Table_Qry = "SELECT Destination_Table
-										FROM Oa_Extract.Extract_Tables
-										WHERE 1 = 1
-											AND Extract_Tables_Key = $Processing_Key
-														  "                                                                                   
-								$Dest_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Table_Qry).Destination_Table
+				Start-Sleep -s $Sleep_Time 
 				
-				Write-Host
-				Write-Host $Dest_Table
-				Write-Host "~ Destination Table: $Dest_Table"
-				
-				
-				#---------------------------------------------
-				# Extract Data
-				#---------------------------------------------
-				
-				Copy-OneAccord_Data -p1 $Source_Table -p2 $Processing_Key
-				
-				
-				#---------------------------------------------
-				# Check If Extract was successful
-				#---------------------------------------------
-				
-				[STRING]$Extract_Success_Qry = "SELECT SUM(Alpha_Result) AS Sum_Alpha_Result
-										FROM Oa_Extract.Alpha_Table_1
-										WHERE 1 = 1
-											AND Alpha_Stage = '$Dest_Table'
-											AND Alpha_Step_Name = 'Stats'
-														  "                                                                                   
-					$Extract_Success_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Extract_Success_Qry).Sum_Alpha_Result
-					
-					[Int]$Extract_Success = [convert]::ToInt32($Extract_Success_Var)
-				
-				Write-Host
-				Write-Host $Extract_Success_Qry
-				Write-Host "~ Extract Success: $Extract_Success"
-				
-				IF ($Extract_Success -gt 0)
-					{
-						#---------------------------------------------
-						# Extract_Tables Update
-						#---------------------------------------------
-						$Update_Complete_DateTime = Get-Date
-					
-						$Update_Complete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-											SET Extract_Stage = 'Complete'
-												, Extract_Stage_DateTime = '$Update_Complete_DateTime'
-											WHERE 1 = 1
-												AND Extract_Tables_Key = $Processing_Key"
+				[STRING]$Processing_Key_Qry2 = "SELECT Extract_Stage
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1 
+													AND Extract_Tables_Key = $Processing_Key
+											"                                                                                   
+					$Extract_Stage = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Processing_Key_Qry2).Extract_Stage
 						
-						Invoke-Sqlcmd `
-							-ServerInstance $Dest_Instance `
-							-Database $Dest_Db `
-							-Query $Update_Complete_Extract_Tables
+				Write-Host
+				Write-Host $Processing_Key_Qry2
+				Write-Host "~ Job Name: $Job_Name"
+				Write-Host "~ Extract_Stage (2): $Extract_Stage"
+				
+				IF($Job_Name -eq $Extract_Stage) 
+					{
+				
+				
+						#---------------------------------------------
+						# Source Table
+						#---------------------------------------------
+						
+						[STRING]$Source_Table_Qry = "SELECT Source_Table
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1
+													AND Extract_Tables_Key = $Processing_Key
+																  "                                                                                   
+										$Source_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Source_Table_Qry).Source_Table
 						
 						Write-Host
-						Write-Host $Update_Complete_Extract_Tables
-						Write-Host "~ Extract_Tables updated to Complete."
-					}
-					ELSE
-					{
-						#---------------------------------------------
-						# Extract_Tables Update
-						#---------------------------------------------
-						$Update_Incomplete_DateTime = Get-Date
-					
-						$Update_Incomplete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-																SET Extract_Stage = 'Incomplete'
-																	, Extract_Stage_DateTime = '$Update_Complete_DateTime'
-																WHERE 1 = 1
-																	AND Extract_Tables_Key = $Processing_Key
-															"
+						Write-Host $Source_Table_Qry
+						Write-Host "~ Source Table: $Source_Table"
 						
-						Invoke-Sqlcmd `
-							-ServerInstance $Dest_Instance `
-							-Database $Dest_Db `
-							-Query $Update_Incomplete_Extract_Tables
+						#---------------------------------------------
+						# Destination Table
+						#---------------------------------------------
+						
+						[STRING]$Dest_Table_Qry = "SELECT Destination_Table
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1
+													AND Extract_Tables_Key = $Processing_Key
+																  "                                                                                   
+										$Dest_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Table_Qry).Destination_Table
 						
 						Write-Host
-						Write-Host $Update_Incomplete_Extract_Tables
-						Write-Host "~ Extract_Tables updated to Incomplete."
+						Write-Host $Dest_Table
+						Write-Host "~ Destination Table: $Dest_Table"
 						
+						
+						#---------------------------------------------
+						# Extract Data
+						#---------------------------------------------
+						
+						Copy-OneAccord_Data -p1 $Source_Table -p2 $Processing_Key
+						
+						
+						#---------------------------------------------
+						# Check If Extract was successful
+						#---------------------------------------------
+						
+						[STRING]$Extract_Success_Qry = "SELECT COUNT(CASE WHEN Alpha_Result = 1 THEN 1 ELSE NULL END) AS Count_Alpha_Result
+												FROM Oa_Extract.Alpha_Table_1
+												WHERE 1 = 1
+													AND Alpha_Stage = '$Dest_Table'
+													AND Alpha_Step_Name = 'Stats'
+																  "                                                                                   
+							$Extract_Success_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Extract_Success_Qry).Count_Alpha_Result
+							
+							[Int]$Extract_Success = [convert]::ToInt32($Extract_Success_Var)
+						
+						Write-Host
+						Write-Host $Extract_Success_Qry
+						Write-Host "~ Extract Success: $Extract_Success"
+						
+						IF ($Extract_Success -gt 0)
+							{
+								#---------------------------------------------
+								# Extract_Tables Update
+								#---------------------------------------------
+								$Update_Complete_DateTime = Get-Date
+							
+								$Update_Complete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+													SET Extract_Stage = 'Complete'
+														, Extract_Stage_DateTime = '$Update_Complete_DateTime'
+													WHERE 1 = 1
+														AND Extract_Tables_Key = $Processing_Key"
+								
+								Invoke-Sqlcmd `
+									-ServerInstance $Dest_Instance `
+									-Database $Dest_Db `
+									-Query $Update_Complete_Extract_Tables
+								
+								Write-Host
+								Write-Host $Update_Complete_Extract_Tables
+								Write-Host "~ Extract_Tables updated to Complete."
+							}
+							ELSE
+							{
+								#---------------------------------------------
+								# Extract_Tables Update
+								#---------------------------------------------
+								$Update_Incomplete_DateTime = Get-Date
+							
+								$Update_Incomplete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+																		SET Extract_Stage = 'Incomplete'
+																			, Extract_Stage_DateTime = '$Update_Complete_DateTime'
+																		WHERE 1 = 1
+																			AND Extract_Tables_Key = $Processing_Key
+																	"
+								
+								Invoke-Sqlcmd `
+									-ServerInstance $Dest_Instance `
+									-Database $Dest_Db `
+									-Query $Update_Incomplete_Extract_Tables
+								
+								Write-Host
+								Write-Host $Update_Incomplete_Extract_Tables
+								Write-Host "~ Extract_Tables updated to Incomplete."
+								
+							}
+						
+						
+						#---------------------------------------------
+						# Tables to Process
+						#---------------------------------------------
+						
+						[STRING]$Tables_To_Process_Qry = "SELECT COUNT(Source_Table) AS Tables_To_Process
+															FROM Oa_Extract.Extract_Tables
+															WHERE 1 = 1 
+																AND (Extract_Stage IS NULL 
+																	OR Extract_Stage = 'Incomplete'
+																	)
+																AND Active = 1
+														"                                                                                   
+							$Tables_To_Process_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Tables_To_Process_Qry).Tables_To_Process
+							
+							[Int]$Tables_To_Process = [convert]::ToInt32($Tables_To_Process_Var)
+						
+						Write-Host
+						Write-Host $Tables_To_Process_Qry
+						Write-Host "~ Tables to Process: $Tables_To_Process"
+						
+						
+						#---------------------------------------------
+						# Current Process Time
+						#---------------------------------------------
+						$Current_Process_DateTime = Get-Date
+						
+						Write-Host 
+						Write-Host "~ Current Process Time: $Current_Process_DateTime"
+						
+						$Total_Processing_Time = New-TimeSpan -Start $Loop_Begin_DateTime -End $Current_Process_DateTime
+						
+						Write-Host 
+						Write-Host "~ Total Processing Time: $Total_Processing_Time"
 					}
-				
-				
-				#---------------------------------------------
-				# Tables to Process
-				#---------------------------------------------
-				
-				[STRING]$Tables_To_Process_Qry = "SELECT COUNT(Source_Table) AS Tables_To_Process
-													FROM Oa_Extract.Extract_Tables
-													WHERE 1 = 1 
-														AND (Extract_Stage IS NULL 
-															OR Extract_Stage = 'Incomplete'
-															)
-														AND Active = 1
-												"                                                                                   
-					$Tables_To_Process_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Tables_To_Process_Qry).Tables_To_Process
-					
-					[Int]$Tables_To_Process = [convert]::ToInt32($Tables_To_Process_Var)
-				
-				Write-Host
-				Write-Host $Tables_To_Process_Qry
-				Write-Host "~ Tables to Process: $Tables_To_Process"
-				
-				
-				#---------------------------------------------
-				# Current Process Time
-				#---------------------------------------------
-				$Current_Process_DateTime = Get-Date
-				
-				Write-Host 
-				Write-Host "~ Current Process Time: $Current_Process_DateTime"
-				
-				$Total_Processing_Time = New-TimeSpan -Start $Loop_Begin_DateTime -End $Current_Process_DateTime
-				
-				Write-Host 
-				Write-Host "~ Total Processing Time: $Total_Processing_Time"
 				
 			
 			} UNTIL ($Tables_To_Process -eq 0 -OR $Total_Processing_Time -gt '00:30:00')
@@ -17373,8 +17771,8 @@ Start-Job -Name Job18 -ScriptBlock {		                                    #<----
 		# Stop log
 		#---------------------------------------------
 		Stop-Transcript
-	}	
-	
+
+	}
 
 Start-Job -Name Job19 -ScriptBlock {		                                    #<----------------------------------------------------------
 		FUNCTION Insert-Alpha_Table_1
@@ -17677,7 +18075,7 @@ Start-Job -Name Job19 -ScriptBlock {		                                    #<----
 				Stop-Transcript
 			
 			}
-
+			
 		FUNCTION Copy-OneAccord_Data
 			{
 				[CmdletBinding(
@@ -18056,19 +18454,26 @@ Start-Job -Name Job19 -ScriptBlock {		                                    #<----
 					}
 				
 			}
-
-		###################################################################################################
-		#
-		#	Name: PowerShell_ETL_Parrellel_Processing
-		#	Date: 02/26/2018
-		#
-		###################################################################################################
-
+			
 		#---------------------------------------------
 		# Catch Non-Terminating Errors
 		#---------------------------------------------
 		$Old = $ErrorActionPreference
 		$ErrorActionPreference = 'Stop'
+
+
+		#---------------------------------------------
+		# Job Variables
+		#---------------------------------------------
+		[STRING]$Job_Name = "Job19"                                             #<----------------------------------------------------------
+		[INT]$Sleep_Time = 19                                                   #<----------------------------------------------------------
+
+		#---------------------------------------------
+		# If this is the first than create the Alpha_Table_1
+		#   Else sleep
+		#---------------------------------------------
+		#Create-Alpha_Table_1                                                  #<----------------------------------------------------------
+		Start-Sleep -s $Sleep_Time  
 
 		#---------------------------------------------
 		# Log file
@@ -18081,7 +18486,7 @@ Start-Job -Name Job19 -ScriptBlock {		                                    #<----
 			}
 				
 		[STRING]$Log_Root = $New_Folder_Path + "\PS_Extract_"
-		[STRING]$Parrellel_Processing = "Parrellel_Processing_19_"              #<----------------------------------------------------------
+		[STRING]$Parrellel_Processing = $Job_Name
 		[STRING]$Log_DateTime = Get-Date -Format "yyyyMMdd_HHmmss"
 		[String]$Log_File_Type = '.log'
 		[STRING]$Log_File_Name = $Log_Root + $Parrellel_Processing + "_" + $Log_DateTime + $Log_File_Type
@@ -18091,14 +18496,7 @@ Start-Job -Name Job19 -ScriptBlock {		                                    #<----
 		Write-Host
 		Write-Host "~ This is the beginning of the Parrellel_Processing script."
 		Write-Host
-
-
-		#---------------------------------------------
-		# If this is the first than create the Alpha_Table_1
-		#   Else sleep for <> seconds
-		#---------------------------------------------
-		#Create-Alpha_Table_1                                                 #<----------------------------------------------------------
-		Start-Sleep -s 22                                                     #<----------------------------------------------------------
+												
 
 		#---------------------------------------------
 		# Destination Connection String
@@ -18168,11 +18566,11 @@ Start-Job -Name Job19 -ScriptBlock {		                                    #<----
 				
 				#---------------------------------------------
 				# Extract_Tables Update
-				#---------------------------------------------
+				#---------------------------------------------				
 				$Update_DateTime = Get-Date
 			
 				$Update_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-									SET Extract_Stage = 'Processing'
+									SET Extract_Stage = '$Job_Name'                   
 										, Extract_Stage_DateTime = '$Update_DateTime'
 									WHERE 1 = 1
 										AND Extract_Tables_Key = $Processing_Key"
@@ -18184,144 +18582,166 @@ Start-Job -Name Job19 -ScriptBlock {		                                    #<----
 				
 				Write-Host $Update_Extract_Tables
 				
-				
 				#---------------------------------------------
-				# Source Table
-				#---------------------------------------------
-				
-				[STRING]$Source_Table_Qry = "SELECT Source_Table
-										FROM Oa_Extract.Extract_Tables
-										WHERE 1 = 1
-											AND Extract_Tables_Key = $Processing_Key
-														  "                                                                                   
-								$Source_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Source_Table_Qry).Source_Table
-				
-				Write-Host
-				Write-Host $Source_Table_Qry
-				Write-Host "~ Source Table: $Source_Table"
-				
-				#---------------------------------------------
-				# Destination Table
+				# Wait then recheck, if it is the same name then run, else end
 				#---------------------------------------------
 				
-				[STRING]$Dest_Table_Qry = "SELECT Destination_Table
-										FROM Oa_Extract.Extract_Tables
-										WHERE 1 = 1
-											AND Extract_Tables_Key = $Processing_Key
-														  "                                                                                   
-								$Dest_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Table_Qry).Destination_Table
+				Start-Sleep -s $Sleep_Time 
 				
-				Write-Host
-				Write-Host $Dest_Table
-				Write-Host "~ Destination Table: $Dest_Table"
-				
-				
-				#---------------------------------------------
-				# Extract Data
-				#---------------------------------------------
-				
-				Copy-OneAccord_Data -p1 $Source_Table -p2 $Processing_Key
-				
-				
-				#---------------------------------------------
-				# Check If Extract was successful
-				#---------------------------------------------
-				
-				[STRING]$Extract_Success_Qry = "SELECT SUM(Alpha_Result) AS Sum_Alpha_Result
-										FROM Oa_Extract.Alpha_Table_1
-										WHERE 1 = 1
-											AND Alpha_Stage = '$Dest_Table'
-											AND Alpha_Step_Name = 'Stats'
-														  "                                                                                   
-					$Extract_Success_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Extract_Success_Qry).Sum_Alpha_Result
-					
-					[Int]$Extract_Success = [convert]::ToInt32($Extract_Success_Var)
-				
-				Write-Host
-				Write-Host $Extract_Success_Qry
-				Write-Host "~ Extract Success: $Extract_Success"
-				
-				IF ($Extract_Success -gt 0)
-					{
-						#---------------------------------------------
-						# Extract_Tables Update
-						#---------------------------------------------
-						$Update_Complete_DateTime = Get-Date
-					
-						$Update_Complete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-											SET Extract_Stage = 'Complete'
-												, Extract_Stage_DateTime = '$Update_Complete_DateTime'
-											WHERE 1 = 1
-												AND Extract_Tables_Key = $Processing_Key"
+				[STRING]$Processing_Key_Qry2 = "SELECT Extract_Stage
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1 
+													AND Extract_Tables_Key = $Processing_Key
+											"                                                                                   
+					$Extract_Stage = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Processing_Key_Qry2).Extract_Stage
 						
-						Invoke-Sqlcmd `
-							-ServerInstance $Dest_Instance `
-							-Database $Dest_Db `
-							-Query $Update_Complete_Extract_Tables
+				Write-Host
+				Write-Host $Processing_Key_Qry2
+				Write-Host "~ Job Name: $Job_Name"
+				Write-Host "~ Extract_Stage (2): $Extract_Stage"
+				
+				IF($Job_Name -eq $Extract_Stage) 
+					{
+				
+				
+						#---------------------------------------------
+						# Source Table
+						#---------------------------------------------
+						
+						[STRING]$Source_Table_Qry = "SELECT Source_Table
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1
+													AND Extract_Tables_Key = $Processing_Key
+																  "                                                                                   
+										$Source_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Source_Table_Qry).Source_Table
 						
 						Write-Host
-						Write-Host $Update_Complete_Extract_Tables
-						Write-Host "~ Extract_Tables updated to Complete."
-					}
-					ELSE
-					{
-						#---------------------------------------------
-						# Extract_Tables Update
-						#---------------------------------------------
-						$Update_Incomplete_DateTime = Get-Date
-					
-						$Update_Incomplete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-																SET Extract_Stage = 'Incomplete'
-																	, Extract_Stage_DateTime = '$Update_Complete_DateTime'
-																WHERE 1 = 1
-																	AND Extract_Tables_Key = $Processing_Key
-															"
+						Write-Host $Source_Table_Qry
+						Write-Host "~ Source Table: $Source_Table"
 						
-						Invoke-Sqlcmd `
-							-ServerInstance $Dest_Instance `
-							-Database $Dest_Db `
-							-Query $Update_Incomplete_Extract_Tables
+						#---------------------------------------------
+						# Destination Table
+						#---------------------------------------------
+						
+						[STRING]$Dest_Table_Qry = "SELECT Destination_Table
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1
+													AND Extract_Tables_Key = $Processing_Key
+																  "                                                                                   
+										$Dest_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Table_Qry).Destination_Table
 						
 						Write-Host
-						Write-Host $Update_Incomplete_Extract_Tables
-						Write-Host "~ Extract_Tables updated to Incomplete."
+						Write-Host $Dest_Table
+						Write-Host "~ Destination Table: $Dest_Table"
 						
+						
+						#---------------------------------------------
+						# Extract Data
+						#---------------------------------------------
+						
+						Copy-OneAccord_Data -p1 $Source_Table -p2 $Processing_Key
+						
+						
+						#---------------------------------------------
+						# Check If Extract was successful
+						#---------------------------------------------
+						
+						[STRING]$Extract_Success_Qry = "SELECT COUNT(CASE WHEN Alpha_Result = 1 THEN 1 ELSE NULL END) AS Count_Alpha_Result
+												FROM Oa_Extract.Alpha_Table_1
+												WHERE 1 = 1
+													AND Alpha_Stage = '$Dest_Table'
+													AND Alpha_Step_Name = 'Stats'
+																  "                                                                                   
+							$Extract_Success_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Extract_Success_Qry).Count_Alpha_Result
+							
+							[Int]$Extract_Success = [convert]::ToInt32($Extract_Success_Var)
+						
+						Write-Host
+						Write-Host $Extract_Success_Qry
+						Write-Host "~ Extract Success: $Extract_Success"
+						
+						IF ($Extract_Success -gt 0)
+							{
+								#---------------------------------------------
+								# Extract_Tables Update
+								#---------------------------------------------
+								$Update_Complete_DateTime = Get-Date
+							
+								$Update_Complete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+													SET Extract_Stage = 'Complete'
+														, Extract_Stage_DateTime = '$Update_Complete_DateTime'
+													WHERE 1 = 1
+														AND Extract_Tables_Key = $Processing_Key"
+								
+								Invoke-Sqlcmd `
+									-ServerInstance $Dest_Instance `
+									-Database $Dest_Db `
+									-Query $Update_Complete_Extract_Tables
+								
+								Write-Host
+								Write-Host $Update_Complete_Extract_Tables
+								Write-Host "~ Extract_Tables updated to Complete."
+							}
+							ELSE
+							{
+								#---------------------------------------------
+								# Extract_Tables Update
+								#---------------------------------------------
+								$Update_Incomplete_DateTime = Get-Date
+							
+								$Update_Incomplete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+																		SET Extract_Stage = 'Incomplete'
+																			, Extract_Stage_DateTime = '$Update_Complete_DateTime'
+																		WHERE 1 = 1
+																			AND Extract_Tables_Key = $Processing_Key
+																	"
+								
+								Invoke-Sqlcmd `
+									-ServerInstance $Dest_Instance `
+									-Database $Dest_Db `
+									-Query $Update_Incomplete_Extract_Tables
+								
+								Write-Host
+								Write-Host $Update_Incomplete_Extract_Tables
+								Write-Host "~ Extract_Tables updated to Incomplete."
+								
+							}
+						
+						
+						#---------------------------------------------
+						# Tables to Process
+						#---------------------------------------------
+						
+						[STRING]$Tables_To_Process_Qry = "SELECT COUNT(Source_Table) AS Tables_To_Process
+															FROM Oa_Extract.Extract_Tables
+															WHERE 1 = 1 
+																AND (Extract_Stage IS NULL 
+																	OR Extract_Stage = 'Incomplete'
+																	)
+																AND Active = 1
+														"                                                                                   
+							$Tables_To_Process_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Tables_To_Process_Qry).Tables_To_Process
+							
+							[Int]$Tables_To_Process = [convert]::ToInt32($Tables_To_Process_Var)
+						
+						Write-Host
+						Write-Host $Tables_To_Process_Qry
+						Write-Host "~ Tables to Process: $Tables_To_Process"
+						
+						
+						#---------------------------------------------
+						# Current Process Time
+						#---------------------------------------------
+						$Current_Process_DateTime = Get-Date
+						
+						Write-Host 
+						Write-Host "~ Current Process Time: $Current_Process_DateTime"
+						
+						$Total_Processing_Time = New-TimeSpan -Start $Loop_Begin_DateTime -End $Current_Process_DateTime
+						
+						Write-Host 
+						Write-Host "~ Total Processing Time: $Total_Processing_Time"
 					}
-				
-				
-				#---------------------------------------------
-				# Tables to Process
-				#---------------------------------------------
-				
-				[STRING]$Tables_To_Process_Qry = "SELECT COUNT(Source_Table) AS Tables_To_Process
-													FROM Oa_Extract.Extract_Tables
-													WHERE 1 = 1 
-														AND (Extract_Stage IS NULL 
-															OR Extract_Stage = 'Incomplete'
-															)
-														AND Active = 1
-												"                                                                                   
-					$Tables_To_Process_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Tables_To_Process_Qry).Tables_To_Process
-					
-					[Int]$Tables_To_Process = [convert]::ToInt32($Tables_To_Process_Var)
-				
-				Write-Host
-				Write-Host $Tables_To_Process_Qry
-				Write-Host "~ Tables to Process: $Tables_To_Process"
-				
-				
-				#---------------------------------------------
-				# Current Process Time
-				#---------------------------------------------
-				$Current_Process_DateTime = Get-Date
-				
-				Write-Host 
-				Write-Host "~ Current Process Time: $Current_Process_DateTime"
-				
-				$Total_Processing_Time = New-TimeSpan -Start $Loop_Begin_DateTime -End $Current_Process_DateTime
-				
-				Write-Host 
-				Write-Host "~ Total Processing Time: $Total_Processing_Time"
 				
 			
 			} UNTIL ($Tables_To_Process -eq 0 -OR $Total_Processing_Time -gt '00:30:00')
@@ -18338,8 +18758,8 @@ Start-Job -Name Job19 -ScriptBlock {		                                    #<----
 		# Stop log
 		#---------------------------------------------
 		Stop-Transcript
-	}	
-	
+
+	}
 
 Start-Job -Name Job20 -ScriptBlock {		                                    #<----------------------------------------------------------
 		FUNCTION Insert-Alpha_Table_1
@@ -18642,7 +19062,7 @@ Start-Job -Name Job20 -ScriptBlock {		                                    #<----
 				Stop-Transcript
 			
 			}
-
+			
 		FUNCTION Copy-OneAccord_Data
 			{
 				[CmdletBinding(
@@ -19021,19 +19441,26 @@ Start-Job -Name Job20 -ScriptBlock {		                                    #<----
 					}
 				
 			}
-
-		###################################################################################################
-		#
-		#	Name: PowerShell_ETL_Parrellel_Processing
-		#	Date: 02/26/2018
-		#
-		###################################################################################################
-
+			
 		#---------------------------------------------
 		# Catch Non-Terminating Errors
 		#---------------------------------------------
 		$Old = $ErrorActionPreference
 		$ErrorActionPreference = 'Stop'
+
+
+		#---------------------------------------------
+		# Job Variables
+		#---------------------------------------------
+		[STRING]$Job_Name = "Job20"                                             #<----------------------------------------------------------
+		[INT]$Sleep_Time = 20                                                   #<----------------------------------------------------------
+
+		#---------------------------------------------
+		# If this is the first than create the Alpha_Table_1
+		#   Else sleep
+		#---------------------------------------------
+		#Create-Alpha_Table_1                                                   #<----------------------------------------------------------
+		Start-Sleep -s $Sleep_Time  
 
 		#---------------------------------------------
 		# Log file
@@ -19046,7 +19473,7 @@ Start-Job -Name Job20 -ScriptBlock {		                                    #<----
 			}
 				
 		[STRING]$Log_Root = $New_Folder_Path + "\PS_Extract_"
-		[STRING]$Parrellel_Processing = "Parrellel_Processing_20_"              #<----------------------------------------------------------
+		[STRING]$Parrellel_Processing = $Job_Name
 		[STRING]$Log_DateTime = Get-Date -Format "yyyyMMdd_HHmmss"
 		[String]$Log_File_Type = '.log'
 		[STRING]$Log_File_Name = $Log_Root + $Parrellel_Processing + "_" + $Log_DateTime + $Log_File_Type
@@ -19056,14 +19483,7 @@ Start-Job -Name Job20 -ScriptBlock {		                                    #<----
 		Write-Host
 		Write-Host "~ This is the beginning of the Parrellel_Processing script."
 		Write-Host
-
-
-		#---------------------------------------------
-		# If this is the first than create the Alpha_Table_1
-		#   Else sleep for <> seconds
-		#---------------------------------------------
-		#Create-Alpha_Table_1                                                 #<----------------------------------------------------------
-		Start-Sleep -s 23                                                     #<----------------------------------------------------------
+												
 
 		#---------------------------------------------
 		# Destination Connection String
@@ -19133,11 +19553,11 @@ Start-Job -Name Job20 -ScriptBlock {		                                    #<----
 				
 				#---------------------------------------------
 				# Extract_Tables Update
-				#---------------------------------------------
+				#---------------------------------------------				
 				$Update_DateTime = Get-Date
 			
 				$Update_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-									SET Extract_Stage = 'Processing'
+									SET Extract_Stage = '$Job_Name'                   
 										, Extract_Stage_DateTime = '$Update_DateTime'
 									WHERE 1 = 1
 										AND Extract_Tables_Key = $Processing_Key"
@@ -19149,144 +19569,166 @@ Start-Job -Name Job20 -ScriptBlock {		                                    #<----
 				
 				Write-Host $Update_Extract_Tables
 				
-				
 				#---------------------------------------------
-				# Source Table
-				#---------------------------------------------
-				
-				[STRING]$Source_Table_Qry = "SELECT Source_Table
-										FROM Oa_Extract.Extract_Tables
-										WHERE 1 = 1
-											AND Extract_Tables_Key = $Processing_Key
-														  "                                                                                   
-								$Source_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Source_Table_Qry).Source_Table
-				
-				Write-Host
-				Write-Host $Source_Table_Qry
-				Write-Host "~ Source Table: $Source_Table"
-				
-				#---------------------------------------------
-				# Destination Table
+				# Wait then recheck, if it is the same name then run, else end
 				#---------------------------------------------
 				
-				[STRING]$Dest_Table_Qry = "SELECT Destination_Table
-										FROM Oa_Extract.Extract_Tables
-										WHERE 1 = 1
-											AND Extract_Tables_Key = $Processing_Key
-														  "                                                                                   
-								$Dest_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Table_Qry).Destination_Table
+				Start-Sleep -s $Sleep_Time 
 				
-				Write-Host
-				Write-Host $Dest_Table
-				Write-Host "~ Destination Table: $Dest_Table"
-				
-				
-				#---------------------------------------------
-				# Extract Data
-				#---------------------------------------------
-				
-				Copy-OneAccord_Data -p1 $Source_Table -p2 $Processing_Key
-				
-				
-				#---------------------------------------------
-				# Check If Extract was successful
-				#---------------------------------------------
-				
-				[STRING]$Extract_Success_Qry = "SELECT SUM(Alpha_Result) AS Sum_Alpha_Result
-										FROM Oa_Extract.Alpha_Table_1
-										WHERE 1 = 1
-											AND Alpha_Stage = '$Dest_Table'
-											AND Alpha_Step_Name = 'Stats'
-														  "                                                                                   
-					$Extract_Success_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Extract_Success_Qry).Sum_Alpha_Result
-					
-					[Int]$Extract_Success = [convert]::ToInt32($Extract_Success_Var)
-				
-				Write-Host
-				Write-Host $Extract_Success_Qry
-				Write-Host "~ Extract Success: $Extract_Success"
-				
-				IF ($Extract_Success -gt 0)
-					{
-						#---------------------------------------------
-						# Extract_Tables Update
-						#---------------------------------------------
-						$Update_Complete_DateTime = Get-Date
-					
-						$Update_Complete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-											SET Extract_Stage = 'Complete'
-												, Extract_Stage_DateTime = '$Update_Complete_DateTime'
-											WHERE 1 = 1
-												AND Extract_Tables_Key = $Processing_Key"
+				[STRING]$Processing_Key_Qry2 = "SELECT Extract_Stage
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1 
+													AND Extract_Tables_Key = $Processing_Key
+											"                                                                                   
+					$Extract_Stage = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Processing_Key_Qry2).Extract_Stage
 						
-						Invoke-Sqlcmd `
-							-ServerInstance $Dest_Instance `
-							-Database $Dest_Db `
-							-Query $Update_Complete_Extract_Tables
+				Write-Host
+				Write-Host $Processing_Key_Qry2
+				Write-Host "~ Job Name: $Job_Name"
+				Write-Host "~ Extract_Stage (2): $Extract_Stage"
+				
+				IF($Job_Name -eq $Extract_Stage) 
+					{
+				
+				
+						#---------------------------------------------
+						# Source Table
+						#---------------------------------------------
+						
+						[STRING]$Source_Table_Qry = "SELECT Source_Table
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1
+													AND Extract_Tables_Key = $Processing_Key
+																  "                                                                                   
+										$Source_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Source_Table_Qry).Source_Table
 						
 						Write-Host
-						Write-Host $Update_Complete_Extract_Tables
-						Write-Host "~ Extract_Tables updated to Complete."
-					}
-					ELSE
-					{
-						#---------------------------------------------
-						# Extract_Tables Update
-						#---------------------------------------------
-						$Update_Incomplete_DateTime = Get-Date
-					
-						$Update_Incomplete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-																SET Extract_Stage = 'Incomplete'
-																	, Extract_Stage_DateTime = '$Update_Complete_DateTime'
-																WHERE 1 = 1
-																	AND Extract_Tables_Key = $Processing_Key
-															"
+						Write-Host $Source_Table_Qry
+						Write-Host "~ Source Table: $Source_Table"
 						
-						Invoke-Sqlcmd `
-							-ServerInstance $Dest_Instance `
-							-Database $Dest_Db `
-							-Query $Update_Incomplete_Extract_Tables
+						#---------------------------------------------
+						# Destination Table
+						#---------------------------------------------
+						
+						[STRING]$Dest_Table_Qry = "SELECT Destination_Table
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1
+													AND Extract_Tables_Key = $Processing_Key
+																  "                                                                                   
+										$Dest_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Table_Qry).Destination_Table
 						
 						Write-Host
-						Write-Host $Update_Incomplete_Extract_Tables
-						Write-Host "~ Extract_Tables updated to Incomplete."
+						Write-Host $Dest_Table
+						Write-Host "~ Destination Table: $Dest_Table"
 						
+						
+						#---------------------------------------------
+						# Extract Data
+						#---------------------------------------------
+						
+						Copy-OneAccord_Data -p1 $Source_Table -p2 $Processing_Key
+						
+						
+						#---------------------------------------------
+						# Check If Extract was successful
+						#---------------------------------------------
+						
+						[STRING]$Extract_Success_Qry = "SELECT COUNT(CASE WHEN Alpha_Result = 1 THEN 1 ELSE NULL END) AS Count_Alpha_Result
+												FROM Oa_Extract.Alpha_Table_1
+												WHERE 1 = 1
+													AND Alpha_Stage = '$Dest_Table'
+													AND Alpha_Step_Name = 'Stats'
+																  "                                                                                   
+							$Extract_Success_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Extract_Success_Qry).Count_Alpha_Result
+							
+							[Int]$Extract_Success = [convert]::ToInt32($Extract_Success_Var)
+						
+						Write-Host
+						Write-Host $Extract_Success_Qry
+						Write-Host "~ Extract Success: $Extract_Success"
+						
+						IF ($Extract_Success -gt 0)
+							{
+								#---------------------------------------------
+								# Extract_Tables Update
+								#---------------------------------------------
+								$Update_Complete_DateTime = Get-Date
+							
+								$Update_Complete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+													SET Extract_Stage = 'Complete'
+														, Extract_Stage_DateTime = '$Update_Complete_DateTime'
+													WHERE 1 = 1
+														AND Extract_Tables_Key = $Processing_Key"
+								
+								Invoke-Sqlcmd `
+									-ServerInstance $Dest_Instance `
+									-Database $Dest_Db `
+									-Query $Update_Complete_Extract_Tables
+								
+								Write-Host
+								Write-Host $Update_Complete_Extract_Tables
+								Write-Host "~ Extract_Tables updated to Complete."
+							}
+							ELSE
+							{
+								#---------------------------------------------
+								# Extract_Tables Update
+								#---------------------------------------------
+								$Update_Incomplete_DateTime = Get-Date
+							
+								$Update_Incomplete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+																		SET Extract_Stage = 'Incomplete'
+																			, Extract_Stage_DateTime = '$Update_Complete_DateTime'
+																		WHERE 1 = 1
+																			AND Extract_Tables_Key = $Processing_Key
+																	"
+								
+								Invoke-Sqlcmd `
+									-ServerInstance $Dest_Instance `
+									-Database $Dest_Db `
+									-Query $Update_Incomplete_Extract_Tables
+								
+								Write-Host
+								Write-Host $Update_Incomplete_Extract_Tables
+								Write-Host "~ Extract_Tables updated to Incomplete."
+								
+							}
+						
+						
+						#---------------------------------------------
+						# Tables to Process
+						#---------------------------------------------
+						
+						[STRING]$Tables_To_Process_Qry = "SELECT COUNT(Source_Table) AS Tables_To_Process
+															FROM Oa_Extract.Extract_Tables
+															WHERE 1 = 1 
+																AND (Extract_Stage IS NULL 
+																	OR Extract_Stage = 'Incomplete'
+																	)
+																AND Active = 1
+														"                                                                                   
+							$Tables_To_Process_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Tables_To_Process_Qry).Tables_To_Process
+							
+							[Int]$Tables_To_Process = [convert]::ToInt32($Tables_To_Process_Var)
+						
+						Write-Host
+						Write-Host $Tables_To_Process_Qry
+						Write-Host "~ Tables to Process: $Tables_To_Process"
+						
+						
+						#---------------------------------------------
+						# Current Process Time
+						#---------------------------------------------
+						$Current_Process_DateTime = Get-Date
+						
+						Write-Host 
+						Write-Host "~ Current Process Time: $Current_Process_DateTime"
+						
+						$Total_Processing_Time = New-TimeSpan -Start $Loop_Begin_DateTime -End $Current_Process_DateTime
+						
+						Write-Host 
+						Write-Host "~ Total Processing Time: $Total_Processing_Time"
 					}
-				
-				
-				#---------------------------------------------
-				# Tables to Process
-				#---------------------------------------------
-				
-				[STRING]$Tables_To_Process_Qry = "SELECT COUNT(Source_Table) AS Tables_To_Process
-													FROM Oa_Extract.Extract_Tables
-													WHERE 1 = 1 
-														AND (Extract_Stage IS NULL 
-															OR Extract_Stage = 'Incomplete'
-															)
-														AND Active = 1
-												"                                                                                   
-					$Tables_To_Process_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Tables_To_Process_Qry).Tables_To_Process
-					
-					[Int]$Tables_To_Process = [convert]::ToInt32($Tables_To_Process_Var)
-				
-				Write-Host
-				Write-Host $Tables_To_Process_Qry
-				Write-Host "~ Tables to Process: $Tables_To_Process"
-				
-				
-				#---------------------------------------------
-				# Current Process Time
-				#---------------------------------------------
-				$Current_Process_DateTime = Get-Date
-				
-				Write-Host 
-				Write-Host "~ Current Process Time: $Current_Process_DateTime"
-				
-				$Total_Processing_Time = New-TimeSpan -Start $Loop_Begin_DateTime -End $Current_Process_DateTime
-				
-				Write-Host 
-				Write-Host "~ Total Processing Time: $Total_Processing_Time"
 				
 			
 			} UNTIL ($Tables_To_Process -eq 0 -OR $Total_Processing_Time -gt '00:30:00')
@@ -19303,9 +19745,9 @@ Start-Job -Name Job20 -ScriptBlock {		                                    #<----
 		# Stop log
 		#---------------------------------------------
 		Stop-Transcript
-	}	
-	
 
+	}
+	
 Start-Job -Name Job21 -ScriptBlock {		                                    #<----------------------------------------------------------
 		FUNCTION Insert-Alpha_Table_1
 			{
@@ -19607,7 +20049,7 @@ Start-Job -Name Job21 -ScriptBlock {		                                    #<----
 				Stop-Transcript
 			
 			}
-
+			
 		FUNCTION Copy-OneAccord_Data
 			{
 				[CmdletBinding(
@@ -19986,19 +20428,26 @@ Start-Job -Name Job21 -ScriptBlock {		                                    #<----
 					}
 				
 			}
-
-		###################################################################################################
-		#
-		#	Name: PowerShell_ETL_Parrellel_Processing
-		#	Date: 02/26/2018
-		#
-		###################################################################################################
-
+			
 		#---------------------------------------------
 		# Catch Non-Terminating Errors
 		#---------------------------------------------
 		$Old = $ErrorActionPreference
 		$ErrorActionPreference = 'Stop'
+
+
+		#---------------------------------------------
+		# Job Variables
+		#---------------------------------------------
+		[STRING]$Job_Name = "Job21"                                             #<----------------------------------------------------------
+		[INT]$Sleep_Time = 21                                                   #<----------------------------------------------------------
+
+		#---------------------------------------------
+		# If this is the first than create the Alpha_Table_1
+		#   Else sleep
+		#---------------------------------------------
+		#Create-Alpha_Table_1                                                   #<----------------------------------------------------------
+		Start-Sleep -s $Sleep_Time  
 
 		#---------------------------------------------
 		# Log file
@@ -20011,7 +20460,7 @@ Start-Job -Name Job21 -ScriptBlock {		                                    #<----
 			}
 				
 		[STRING]$Log_Root = $New_Folder_Path + "\PS_Extract_"
-		[STRING]$Parrellel_Processing = "Parrellel_Processing_21_"              #<----------------------------------------------------------
+		[STRING]$Parrellel_Processing = $Job_Name
 		[STRING]$Log_DateTime = Get-Date -Format "yyyyMMdd_HHmmss"
 		[String]$Log_File_Type = '.log'
 		[STRING]$Log_File_Name = $Log_Root + $Parrellel_Processing + "_" + $Log_DateTime + $Log_File_Type
@@ -20021,14 +20470,7 @@ Start-Job -Name Job21 -ScriptBlock {		                                    #<----
 		Write-Host
 		Write-Host "~ This is the beginning of the Parrellel_Processing script."
 		Write-Host
-
-
-		#---------------------------------------------
-		# If this is the first than create the Alpha_Table_1
-		#   Else sleep for <> seconds
-		#---------------------------------------------
-		#Create-Alpha_Table_1                                                 #<----------------------------------------------------------
-		Start-Sleep -s 24                                                     #<----------------------------------------------------------
+												
 
 		#---------------------------------------------
 		# Destination Connection String
@@ -20098,11 +20540,11 @@ Start-Job -Name Job21 -ScriptBlock {		                                    #<----
 				
 				#---------------------------------------------
 				# Extract_Tables Update
-				#---------------------------------------------
+				#---------------------------------------------				
 				$Update_DateTime = Get-Date
 			
 				$Update_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-									SET Extract_Stage = 'Processing'
+									SET Extract_Stage = '$Job_Name'                   
 										, Extract_Stage_DateTime = '$Update_DateTime'
 									WHERE 1 = 1
 										AND Extract_Tables_Key = $Processing_Key"
@@ -20114,144 +20556,166 @@ Start-Job -Name Job21 -ScriptBlock {		                                    #<----
 				
 				Write-Host $Update_Extract_Tables
 				
-				
 				#---------------------------------------------
-				# Source Table
-				#---------------------------------------------
-				
-				[STRING]$Source_Table_Qry = "SELECT Source_Table
-										FROM Oa_Extract.Extract_Tables
-										WHERE 1 = 1
-											AND Extract_Tables_Key = $Processing_Key
-														  "                                                                                   
-								$Source_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Source_Table_Qry).Source_Table
-				
-				Write-Host
-				Write-Host $Source_Table_Qry
-				Write-Host "~ Source Table: $Source_Table"
-				
-				#---------------------------------------------
-				# Destination Table
+				# Wait then recheck, if it is the same name then run, else end
 				#---------------------------------------------
 				
-				[STRING]$Dest_Table_Qry = "SELECT Destination_Table
-										FROM Oa_Extract.Extract_Tables
-										WHERE 1 = 1
-											AND Extract_Tables_Key = $Processing_Key
-														  "                                                                                   
-								$Dest_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Table_Qry).Destination_Table
+				Start-Sleep -s $Sleep_Time 
 				
-				Write-Host
-				Write-Host $Dest_Table
-				Write-Host "~ Destination Table: $Dest_Table"
-				
-				
-				#---------------------------------------------
-				# Extract Data
-				#---------------------------------------------
-				
-				Copy-OneAccord_Data -p1 $Source_Table -p2 $Processing_Key
-				
-				
-				#---------------------------------------------
-				# Check If Extract was successful
-				#---------------------------------------------
-				
-				[STRING]$Extract_Success_Qry = "SELECT SUM(Alpha_Result) AS Sum_Alpha_Result
-										FROM Oa_Extract.Alpha_Table_1
-										WHERE 1 = 1
-											AND Alpha_Stage = '$Dest_Table'
-											AND Alpha_Step_Name = 'Stats'
-														  "                                                                                   
-					$Extract_Success_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Extract_Success_Qry).Sum_Alpha_Result
-					
-					[Int]$Extract_Success = [convert]::ToInt32($Extract_Success_Var)
-				
-				Write-Host
-				Write-Host $Extract_Success_Qry
-				Write-Host "~ Extract Success: $Extract_Success"
-				
-				IF ($Extract_Success -gt 0)
-					{
-						#---------------------------------------------
-						# Extract_Tables Update
-						#---------------------------------------------
-						$Update_Complete_DateTime = Get-Date
-					
-						$Update_Complete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-											SET Extract_Stage = 'Complete'
-												, Extract_Stage_DateTime = '$Update_Complete_DateTime'
-											WHERE 1 = 1
-												AND Extract_Tables_Key = $Processing_Key"
+				[STRING]$Processing_Key_Qry2 = "SELECT Extract_Stage
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1 
+													AND Extract_Tables_Key = $Processing_Key
+											"                                                                                   
+					$Extract_Stage = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Processing_Key_Qry2).Extract_Stage
 						
-						Invoke-Sqlcmd `
-							-ServerInstance $Dest_Instance `
-							-Database $Dest_Db `
-							-Query $Update_Complete_Extract_Tables
+				Write-Host
+				Write-Host $Processing_Key_Qry2
+				Write-Host "~ Job Name: $Job_Name"
+				Write-Host "~ Extract_Stage (2): $Extract_Stage"
+				
+				IF($Job_Name -eq $Extract_Stage) 
+					{
+				
+				
+						#---------------------------------------------
+						# Source Table
+						#---------------------------------------------
+						
+						[STRING]$Source_Table_Qry = "SELECT Source_Table
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1
+													AND Extract_Tables_Key = $Processing_Key
+																  "                                                                                   
+										$Source_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Source_Table_Qry).Source_Table
 						
 						Write-Host
-						Write-Host $Update_Complete_Extract_Tables
-						Write-Host "~ Extract_Tables updated to Complete."
-					}
-					ELSE
-					{
-						#---------------------------------------------
-						# Extract_Tables Update
-						#---------------------------------------------
-						$Update_Incomplete_DateTime = Get-Date
-					
-						$Update_Incomplete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-																SET Extract_Stage = 'Incomplete'
-																	, Extract_Stage_DateTime = '$Update_Complete_DateTime'
-																WHERE 1 = 1
-																	AND Extract_Tables_Key = $Processing_Key
-															"
+						Write-Host $Source_Table_Qry
+						Write-Host "~ Source Table: $Source_Table"
 						
-						Invoke-Sqlcmd `
-							-ServerInstance $Dest_Instance `
-							-Database $Dest_Db `
-							-Query $Update_Incomplete_Extract_Tables
+						#---------------------------------------------
+						# Destination Table
+						#---------------------------------------------
+						
+						[STRING]$Dest_Table_Qry = "SELECT Destination_Table
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1
+													AND Extract_Tables_Key = $Processing_Key
+																  "                                                                                   
+										$Dest_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Table_Qry).Destination_Table
 						
 						Write-Host
-						Write-Host $Update_Incomplete_Extract_Tables
-						Write-Host "~ Extract_Tables updated to Incomplete."
+						Write-Host $Dest_Table
+						Write-Host "~ Destination Table: $Dest_Table"
 						
+						
+						#---------------------------------------------
+						# Extract Data
+						#---------------------------------------------
+						
+						Copy-OneAccord_Data -p1 $Source_Table -p2 $Processing_Key
+						
+						
+						#---------------------------------------------
+						# Check If Extract was successful
+						#---------------------------------------------
+						
+						[STRING]$Extract_Success_Qry = "SELECT COUNT(CASE WHEN Alpha_Result = 1 THEN 1 ELSE NULL END) AS Count_Alpha_Result
+												FROM Oa_Extract.Alpha_Table_1
+												WHERE 1 = 1
+													AND Alpha_Stage = '$Dest_Table'
+													AND Alpha_Step_Name = 'Stats'
+																  "                                                                                   
+							$Extract_Success_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Extract_Success_Qry).Count_Alpha_Result
+							
+							[Int]$Extract_Success = [convert]::ToInt32($Extract_Success_Var)
+						
+						Write-Host
+						Write-Host $Extract_Success_Qry
+						Write-Host "~ Extract Success: $Extract_Success"
+						
+						IF ($Extract_Success -gt 0)
+							{
+								#---------------------------------------------
+								# Extract_Tables Update
+								#---------------------------------------------
+								$Update_Complete_DateTime = Get-Date
+							
+								$Update_Complete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+													SET Extract_Stage = 'Complete'
+														, Extract_Stage_DateTime = '$Update_Complete_DateTime'
+													WHERE 1 = 1
+														AND Extract_Tables_Key = $Processing_Key"
+								
+								Invoke-Sqlcmd `
+									-ServerInstance $Dest_Instance `
+									-Database $Dest_Db `
+									-Query $Update_Complete_Extract_Tables
+								
+								Write-Host
+								Write-Host $Update_Complete_Extract_Tables
+								Write-Host "~ Extract_Tables updated to Complete."
+							}
+							ELSE
+							{
+								#---------------------------------------------
+								# Extract_Tables Update
+								#---------------------------------------------
+								$Update_Incomplete_DateTime = Get-Date
+							
+								$Update_Incomplete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+																		SET Extract_Stage = 'Incomplete'
+																			, Extract_Stage_DateTime = '$Update_Complete_DateTime'
+																		WHERE 1 = 1
+																			AND Extract_Tables_Key = $Processing_Key
+																	"
+								
+								Invoke-Sqlcmd `
+									-ServerInstance $Dest_Instance `
+									-Database $Dest_Db `
+									-Query $Update_Incomplete_Extract_Tables
+								
+								Write-Host
+								Write-Host $Update_Incomplete_Extract_Tables
+								Write-Host "~ Extract_Tables updated to Incomplete."
+								
+							}
+						
+						
+						#---------------------------------------------
+						# Tables to Process
+						#---------------------------------------------
+						
+						[STRING]$Tables_To_Process_Qry = "SELECT COUNT(Source_Table) AS Tables_To_Process
+															FROM Oa_Extract.Extract_Tables
+															WHERE 1 = 1 
+																AND (Extract_Stage IS NULL 
+																	OR Extract_Stage = 'Incomplete'
+																	)
+																AND Active = 1
+														"                                                                                   
+							$Tables_To_Process_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Tables_To_Process_Qry).Tables_To_Process
+							
+							[Int]$Tables_To_Process = [convert]::ToInt32($Tables_To_Process_Var)
+						
+						Write-Host
+						Write-Host $Tables_To_Process_Qry
+						Write-Host "~ Tables to Process: $Tables_To_Process"
+						
+						
+						#---------------------------------------------
+						# Current Process Time
+						#---------------------------------------------
+						$Current_Process_DateTime = Get-Date
+						
+						Write-Host 
+						Write-Host "~ Current Process Time: $Current_Process_DateTime"
+						
+						$Total_Processing_Time = New-TimeSpan -Start $Loop_Begin_DateTime -End $Current_Process_DateTime
+						
+						Write-Host 
+						Write-Host "~ Total Processing Time: $Total_Processing_Time"
 					}
-				
-				
-				#---------------------------------------------
-				# Tables to Process
-				#---------------------------------------------
-				
-				[STRING]$Tables_To_Process_Qry = "SELECT COUNT(Source_Table) AS Tables_To_Process
-													FROM Oa_Extract.Extract_Tables
-													WHERE 1 = 1 
-														AND (Extract_Stage IS NULL 
-															OR Extract_Stage = 'Incomplete'
-															)
-														AND Active = 1
-												"                                                                                   
-					$Tables_To_Process_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Tables_To_Process_Qry).Tables_To_Process
-					
-					[Int]$Tables_To_Process = [convert]::ToInt32($Tables_To_Process_Var)
-				
-				Write-Host
-				Write-Host $Tables_To_Process_Qry
-				Write-Host "~ Tables to Process: $Tables_To_Process"
-				
-				
-				#---------------------------------------------
-				# Current Process Time
-				#---------------------------------------------
-				$Current_Process_DateTime = Get-Date
-				
-				Write-Host 
-				Write-Host "~ Current Process Time: $Current_Process_DateTime"
-				
-				$Total_Processing_Time = New-TimeSpan -Start $Loop_Begin_DateTime -End $Current_Process_DateTime
-				
-				Write-Host 
-				Write-Host "~ Total Processing Time: $Total_Processing_Time"
 				
 			
 			} UNTIL ($Tables_To_Process -eq 0 -OR $Total_Processing_Time -gt '00:30:00')
@@ -20268,6 +20732,7 @@ Start-Job -Name Job21 -ScriptBlock {		                                    #<----
 		# Stop log
 		#---------------------------------------------
 		Stop-Transcript
+
 	}
 
 Start-Job -Name Job22 -ScriptBlock {		                                    #<----------------------------------------------------------
@@ -20571,7 +21036,7 @@ Start-Job -Name Job22 -ScriptBlock {		                                    #<----
 				Stop-Transcript
 			
 			}
-
+			
 		FUNCTION Copy-OneAccord_Data
 			{
 				[CmdletBinding(
@@ -20950,19 +21415,26 @@ Start-Job -Name Job22 -ScriptBlock {		                                    #<----
 					}
 				
 			}
-
-		###################################################################################################
-		#
-		#	Name: PowerShell_ETL_Parrellel_Processing
-		#	Date: 02/26/2018
-		#
-		###################################################################################################
-
+			
 		#---------------------------------------------
 		# Catch Non-Terminating Errors
 		#---------------------------------------------
 		$Old = $ErrorActionPreference
 		$ErrorActionPreference = 'Stop'
+
+
+		#---------------------------------------------
+		# Job Variables
+		#---------------------------------------------
+		[STRING]$Job_Name = "Job22"                                             #<----------------------------------------------------------
+		[INT]$Sleep_Time = 22                                                   #<----------------------------------------------------------
+
+		#---------------------------------------------
+		# If this is the first than create the Alpha_Table_1
+		#   Else sleep
+		#---------------------------------------------
+		#Create-Alpha_Table_1                                                  #<----------------------------------------------------------
+		Start-Sleep -s $Sleep_Time  
 
 		#---------------------------------------------
 		# Log file
@@ -20975,7 +21447,7 @@ Start-Job -Name Job22 -ScriptBlock {		                                    #<----
 			}
 				
 		[STRING]$Log_Root = $New_Folder_Path + "\PS_Extract_"
-		[STRING]$Parrellel_Processing = "Parrellel_Processing_22_"              #<----------------------------------------------------------
+		[STRING]$Parrellel_Processing = $Job_Name
 		[STRING]$Log_DateTime = Get-Date -Format "yyyyMMdd_HHmmss"
 		[String]$Log_File_Type = '.log'
 		[STRING]$Log_File_Name = $Log_Root + $Parrellel_Processing + "_" + $Log_DateTime + $Log_File_Type
@@ -20985,14 +21457,7 @@ Start-Job -Name Job22 -ScriptBlock {		                                    #<----
 		Write-Host
 		Write-Host "~ This is the beginning of the Parrellel_Processing script."
 		Write-Host
-
-
-		#---------------------------------------------
-		# If this is the first than create the Alpha_Table_1
-		#   Else sleep for <> seconds
-		#---------------------------------------------
-		#Create-Alpha_Table_1                                                  #<----------------------------------------------------------
-		Start-Sleep -s 25                                                      #<----------------------------------------------------------
+												
 
 		#---------------------------------------------
 		# Destination Connection String
@@ -21062,11 +21527,11 @@ Start-Job -Name Job22 -ScriptBlock {		                                    #<----
 				
 				#---------------------------------------------
 				# Extract_Tables Update
-				#---------------------------------------------
+				#---------------------------------------------				
 				$Update_DateTime = Get-Date
 			
 				$Update_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-									SET Extract_Stage = 'Processing'
+									SET Extract_Stage = '$Job_Name'                   
 										, Extract_Stage_DateTime = '$Update_DateTime'
 									WHERE 1 = 1
 										AND Extract_Tables_Key = $Processing_Key"
@@ -21078,144 +21543,166 @@ Start-Job -Name Job22 -ScriptBlock {		                                    #<----
 				
 				Write-Host $Update_Extract_Tables
 				
-				
 				#---------------------------------------------
-				# Source Table
-				#---------------------------------------------
-				
-				[STRING]$Source_Table_Qry = "SELECT Source_Table
-										FROM Oa_Extract.Extract_Tables
-										WHERE 1 = 1
-											AND Extract_Tables_Key = $Processing_Key
-														  "                                                                                   
-								$Source_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Source_Table_Qry).Source_Table
-				
-				Write-Host
-				Write-Host $Source_Table_Qry
-				Write-Host "~ Source Table: $Source_Table"
-				
-				#---------------------------------------------
-				# Destination Table
+				# Wait then recheck, if it is the same name then run, else end
 				#---------------------------------------------
 				
-				[STRING]$Dest_Table_Qry = "SELECT Destination_Table
-										FROM Oa_Extract.Extract_Tables
-										WHERE 1 = 1
-											AND Extract_Tables_Key = $Processing_Key
-														  "                                                                                   
-								$Dest_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Table_Qry).Destination_Table
+				Start-Sleep -s $Sleep_Time 
 				
-				Write-Host
-				Write-Host $Dest_Table
-				Write-Host "~ Destination Table: $Dest_Table"
-				
-				
-				#---------------------------------------------
-				# Extract Data
-				#---------------------------------------------
-				
-				Copy-OneAccord_Data -p1 $Source_Table -p2 $Processing_Key
-				
-				
-				#---------------------------------------------
-				# Check If Extract was successful
-				#---------------------------------------------
-				
-				[STRING]$Extract_Success_Qry = "SELECT SUM(Alpha_Result) AS Sum_Alpha_Result
-										FROM Oa_Extract.Alpha_Table_1
-										WHERE 1 = 1
-											AND Alpha_Stage = '$Dest_Table'
-											AND Alpha_Step_Name = 'Stats'
-														  "                                                                                   
-					$Extract_Success_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Extract_Success_Qry).Sum_Alpha_Result
-					
-					[Int]$Extract_Success = [convert]::ToInt32($Extract_Success_Var)
-				
-				Write-Host
-				Write-Host $Extract_Success_Qry
-				Write-Host "~ Extract Success: $Extract_Success"
-				
-				IF ($Extract_Success -gt 0)
-					{
-						#---------------------------------------------
-						# Extract_Tables Update
-						#---------------------------------------------
-						$Update_Complete_DateTime = Get-Date
-					
-						$Update_Complete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-											SET Extract_Stage = 'Complete'
-												, Extract_Stage_DateTime = '$Update_Complete_DateTime'
-											WHERE 1 = 1
-												AND Extract_Tables_Key = $Processing_Key"
+				[STRING]$Processing_Key_Qry2 = "SELECT Extract_Stage
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1 
+													AND Extract_Tables_Key = $Processing_Key
+											"                                                                                   
+					$Extract_Stage = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Processing_Key_Qry2).Extract_Stage
 						
-						Invoke-Sqlcmd `
-							-ServerInstance $Dest_Instance `
-							-Database $Dest_Db `
-							-Query $Update_Complete_Extract_Tables
+				Write-Host
+				Write-Host $Processing_Key_Qry2
+				Write-Host "~ Job Name: $Job_Name"
+				Write-Host "~ Extract_Stage (2): $Extract_Stage"
+				
+				IF($Job_Name -eq $Extract_Stage) 
+					{
+				
+				
+						#---------------------------------------------
+						# Source Table
+						#---------------------------------------------
+						
+						[STRING]$Source_Table_Qry = "SELECT Source_Table
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1
+													AND Extract_Tables_Key = $Processing_Key
+																  "                                                                                   
+										$Source_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Source_Table_Qry).Source_Table
 						
 						Write-Host
-						Write-Host $Update_Complete_Extract_Tables
-						Write-Host "~ Extract_Tables updated to Complete."
-					}
-					ELSE
-					{
-						#---------------------------------------------
-						# Extract_Tables Update
-						#---------------------------------------------
-						$Update_Incomplete_DateTime = Get-Date
-					
-						$Update_Incomplete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-																SET Extract_Stage = 'Incomplete'
-																	, Extract_Stage_DateTime = '$Update_Complete_DateTime'
-																WHERE 1 = 1
-																	AND Extract_Tables_Key = $Processing_Key
-															"
+						Write-Host $Source_Table_Qry
+						Write-Host "~ Source Table: $Source_Table"
 						
-						Invoke-Sqlcmd `
-							-ServerInstance $Dest_Instance `
-							-Database $Dest_Db `
-							-Query $Update_Incomplete_Extract_Tables
+						#---------------------------------------------
+						# Destination Table
+						#---------------------------------------------
+						
+						[STRING]$Dest_Table_Qry = "SELECT Destination_Table
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1
+													AND Extract_Tables_Key = $Processing_Key
+																  "                                                                                   
+										$Dest_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Table_Qry).Destination_Table
 						
 						Write-Host
-						Write-Host $Update_Incomplete_Extract_Tables
-						Write-Host "~ Extract_Tables updated to Incomplete."
+						Write-Host $Dest_Table
+						Write-Host "~ Destination Table: $Dest_Table"
 						
+						
+						#---------------------------------------------
+						# Extract Data
+						#---------------------------------------------
+						
+						Copy-OneAccord_Data -p1 $Source_Table -p2 $Processing_Key
+						
+						
+						#---------------------------------------------
+						# Check If Extract was successful
+						#---------------------------------------------
+						
+						[STRING]$Extract_Success_Qry = "SELECT COUNT(CASE WHEN Alpha_Result = 1 THEN 1 ELSE NULL END) AS Count_Alpha_Result
+												FROM Oa_Extract.Alpha_Table_1
+												WHERE 1 = 1
+													AND Alpha_Stage = '$Dest_Table'
+													AND Alpha_Step_Name = 'Stats'
+																  "                                                                                   
+							$Extract_Success_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Extract_Success_Qry).Count_Alpha_Result
+							
+							[Int]$Extract_Success = [convert]::ToInt32($Extract_Success_Var)
+						
+						Write-Host
+						Write-Host $Extract_Success_Qry
+						Write-Host "~ Extract Success: $Extract_Success"
+						
+						IF ($Extract_Success -gt 0)
+							{
+								#---------------------------------------------
+								# Extract_Tables Update
+								#---------------------------------------------
+								$Update_Complete_DateTime = Get-Date
+							
+								$Update_Complete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+													SET Extract_Stage = 'Complete'
+														, Extract_Stage_DateTime = '$Update_Complete_DateTime'
+													WHERE 1 = 1
+														AND Extract_Tables_Key = $Processing_Key"
+								
+								Invoke-Sqlcmd `
+									-ServerInstance $Dest_Instance `
+									-Database $Dest_Db `
+									-Query $Update_Complete_Extract_Tables
+								
+								Write-Host
+								Write-Host $Update_Complete_Extract_Tables
+								Write-Host "~ Extract_Tables updated to Complete."
+							}
+							ELSE
+							{
+								#---------------------------------------------
+								# Extract_Tables Update
+								#---------------------------------------------
+								$Update_Incomplete_DateTime = Get-Date
+							
+								$Update_Incomplete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+																		SET Extract_Stage = 'Incomplete'
+																			, Extract_Stage_DateTime = '$Update_Complete_DateTime'
+																		WHERE 1 = 1
+																			AND Extract_Tables_Key = $Processing_Key
+																	"
+								
+								Invoke-Sqlcmd `
+									-ServerInstance $Dest_Instance `
+									-Database $Dest_Db `
+									-Query $Update_Incomplete_Extract_Tables
+								
+								Write-Host
+								Write-Host $Update_Incomplete_Extract_Tables
+								Write-Host "~ Extract_Tables updated to Incomplete."
+								
+							}
+						
+						
+						#---------------------------------------------
+						# Tables to Process
+						#---------------------------------------------
+						
+						[STRING]$Tables_To_Process_Qry = "SELECT COUNT(Source_Table) AS Tables_To_Process
+															FROM Oa_Extract.Extract_Tables
+															WHERE 1 = 1 
+																AND (Extract_Stage IS NULL 
+																	OR Extract_Stage = 'Incomplete'
+																	)
+																AND Active = 1
+														"                                                                                   
+							$Tables_To_Process_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Tables_To_Process_Qry).Tables_To_Process
+							
+							[Int]$Tables_To_Process = [convert]::ToInt32($Tables_To_Process_Var)
+						
+						Write-Host
+						Write-Host $Tables_To_Process_Qry
+						Write-Host "~ Tables to Process: $Tables_To_Process"
+						
+						
+						#---------------------------------------------
+						# Current Process Time
+						#---------------------------------------------
+						$Current_Process_DateTime = Get-Date
+						
+						Write-Host 
+						Write-Host "~ Current Process Time: $Current_Process_DateTime"
+						
+						$Total_Processing_Time = New-TimeSpan -Start $Loop_Begin_DateTime -End $Current_Process_DateTime
+						
+						Write-Host 
+						Write-Host "~ Total Processing Time: $Total_Processing_Time"
 					}
-				
-				
-				#---------------------------------------------
-				# Tables to Process
-				#---------------------------------------------
-				
-				[STRING]$Tables_To_Process_Qry = "SELECT COUNT(Source_Table) AS Tables_To_Process
-													FROM Oa_Extract.Extract_Tables
-													WHERE 1 = 1 
-														AND (Extract_Stage IS NULL 
-															OR Extract_Stage = 'Incomplete'
-															)
-														AND Active = 1
-												"                                                                                   
-					$Tables_To_Process_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Tables_To_Process_Qry).Tables_To_Process
-					
-					[Int]$Tables_To_Process = [convert]::ToInt32($Tables_To_Process_Var)
-				
-				Write-Host
-				Write-Host $Tables_To_Process_Qry
-				Write-Host "~ Tables to Process: $Tables_To_Process"
-				
-				
-				#---------------------------------------------
-				# Current Process Time
-				#---------------------------------------------
-				$Current_Process_DateTime = Get-Date
-				
-				Write-Host 
-				Write-Host "~ Current Process Time: $Current_Process_DateTime"
-				
-				$Total_Processing_Time = New-TimeSpan -Start $Loop_Begin_DateTime -End $Current_Process_DateTime
-				
-				Write-Host 
-				Write-Host "~ Total Processing Time: $Total_Processing_Time"
 				
 			
 			} UNTIL ($Tables_To_Process -eq 0 -OR $Total_Processing_Time -gt '00:30:00')
@@ -21232,8 +21719,8 @@ Start-Job -Name Job22 -ScriptBlock {		                                    #<----
 		# Stop log
 		#---------------------------------------------
 		Stop-Transcript
-	}	
 
+	}
 
 Start-Job -Name Job23 -ScriptBlock {		                                    #<----------------------------------------------------------
 		FUNCTION Insert-Alpha_Table_1
@@ -21536,7 +22023,7 @@ Start-Job -Name Job23 -ScriptBlock {		                                    #<----
 				Stop-Transcript
 			
 			}
-
+			
 		FUNCTION Copy-OneAccord_Data
 			{
 				[CmdletBinding(
@@ -21915,19 +22402,26 @@ Start-Job -Name Job23 -ScriptBlock {		                                    #<----
 					}
 				
 			}
-
-		###################################################################################################
-		#
-		#	Name: PowerShell_ETL_Parrellel_Processing
-		#	Date: 02/26/2018
-		#
-		###################################################################################################
-
+			
 		#---------------------------------------------
 		# Catch Non-Terminating Errors
 		#---------------------------------------------
 		$Old = $ErrorActionPreference
 		$ErrorActionPreference = 'Stop'
+
+
+		#---------------------------------------------
+		# Job Variables
+		#---------------------------------------------
+		[STRING]$Job_Name = "Job23"                                             #<----------------------------------------------------------
+		[INT]$Sleep_Time = 23                                                   #<----------------------------------------------------------
+
+		#---------------------------------------------
+		# If this is the first than create the Alpha_Table_1
+		#   Else sleep
+		#---------------------------------------------
+		#Create-Alpha_Table_1                                                  #<----------------------------------------------------------
+		Start-Sleep -s $Sleep_Time  
 
 		#---------------------------------------------
 		# Log file
@@ -21940,7 +22434,7 @@ Start-Job -Name Job23 -ScriptBlock {		                                    #<----
 			}
 				
 		[STRING]$Log_Root = $New_Folder_Path + "\PS_Extract_"
-		[STRING]$Parrellel_Processing = "Parrellel_Processing_23_"              #<----------------------------------------------------------
+		[STRING]$Parrellel_Processing = $Job_Name
 		[STRING]$Log_DateTime = Get-Date -Format "yyyyMMdd_HHmmss"
 		[String]$Log_File_Type = '.log'
 		[STRING]$Log_File_Name = $Log_Root + $Parrellel_Processing + "_" + $Log_DateTime + $Log_File_Type
@@ -21950,14 +22444,7 @@ Start-Job -Name Job23 -ScriptBlock {		                                    #<----
 		Write-Host
 		Write-Host "~ This is the beginning of the Parrellel_Processing script."
 		Write-Host
-
-
-		#---------------------------------------------
-		# If this is the first than create the Alpha_Table_1
-		#   Else sleep for <> seconds
-		#---------------------------------------------
-		#Create-Alpha_Table_1                                                  #<----------------------------------------------------------
-		Start-Sleep -s 26                                                      #<----------------------------------------------------------
+												
 
 		#---------------------------------------------
 		# Destination Connection String
@@ -22027,11 +22514,11 @@ Start-Job -Name Job23 -ScriptBlock {		                                    #<----
 				
 				#---------------------------------------------
 				# Extract_Tables Update
-				#---------------------------------------------
+				#---------------------------------------------				
 				$Update_DateTime = Get-Date
 			
 				$Update_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-									SET Extract_Stage = 'Processing'
+									SET Extract_Stage = '$Job_Name'                   
 										, Extract_Stage_DateTime = '$Update_DateTime'
 									WHERE 1 = 1
 										AND Extract_Tables_Key = $Processing_Key"
@@ -22043,144 +22530,166 @@ Start-Job -Name Job23 -ScriptBlock {		                                    #<----
 				
 				Write-Host $Update_Extract_Tables
 				
-				
 				#---------------------------------------------
-				# Source Table
-				#---------------------------------------------
-				
-				[STRING]$Source_Table_Qry = "SELECT Source_Table
-										FROM Oa_Extract.Extract_Tables
-										WHERE 1 = 1
-											AND Extract_Tables_Key = $Processing_Key
-														  "                                                                                   
-								$Source_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Source_Table_Qry).Source_Table
-				
-				Write-Host
-				Write-Host $Source_Table_Qry
-				Write-Host "~ Source Table: $Source_Table"
-				
-				#---------------------------------------------
-				# Destination Table
+				# Wait then recheck, if it is the same name then run, else end
 				#---------------------------------------------
 				
-				[STRING]$Dest_Table_Qry = "SELECT Destination_Table
-										FROM Oa_Extract.Extract_Tables
-										WHERE 1 = 1
-											AND Extract_Tables_Key = $Processing_Key
-														  "                                                                                   
-								$Dest_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Table_Qry).Destination_Table
+				Start-Sleep -s $Sleep_Time 
 				
-				Write-Host
-				Write-Host $Dest_Table
-				Write-Host "~ Destination Table: $Dest_Table"
-				
-				
-				#---------------------------------------------
-				# Extract Data
-				#---------------------------------------------
-				
-				Copy-OneAccord_Data -p1 $Source_Table -p2 $Processing_Key
-				
-				
-				#---------------------------------------------
-				# Check If Extract was successful
-				#---------------------------------------------
-				
-				[STRING]$Extract_Success_Qry = "SELECT SUM(Alpha_Result) AS Sum_Alpha_Result
-										FROM Oa_Extract.Alpha_Table_1
-										WHERE 1 = 1
-											AND Alpha_Stage = '$Dest_Table'
-											AND Alpha_Step_Name = 'Stats'
-														  "                                                                                   
-					$Extract_Success_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Extract_Success_Qry).Sum_Alpha_Result
-					
-					[Int]$Extract_Success = [convert]::ToInt32($Extract_Success_Var)
-				
-				Write-Host
-				Write-Host $Extract_Success_Qry
-				Write-Host "~ Extract Success: $Extract_Success"
-				
-				IF ($Extract_Success -gt 0)
-					{
-						#---------------------------------------------
-						# Extract_Tables Update
-						#---------------------------------------------
-						$Update_Complete_DateTime = Get-Date
-					
-						$Update_Complete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-											SET Extract_Stage = 'Complete'
-												, Extract_Stage_DateTime = '$Update_Complete_DateTime'
-											WHERE 1 = 1
-												AND Extract_Tables_Key = $Processing_Key"
+				[STRING]$Processing_Key_Qry2 = "SELECT Extract_Stage
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1 
+													AND Extract_Tables_Key = $Processing_Key
+											"                                                                                   
+					$Extract_Stage = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Processing_Key_Qry2).Extract_Stage
 						
-						Invoke-Sqlcmd `
-							-ServerInstance $Dest_Instance `
-							-Database $Dest_Db `
-							-Query $Update_Complete_Extract_Tables
+				Write-Host
+				Write-Host $Processing_Key_Qry2
+				Write-Host "~ Job Name: $Job_Name"
+				Write-Host "~ Extract_Stage (2): $Extract_Stage"
+				
+				IF($Job_Name -eq $Extract_Stage) 
+					{
+				
+				
+						#---------------------------------------------
+						# Source Table
+						#---------------------------------------------
+						
+						[STRING]$Source_Table_Qry = "SELECT Source_Table
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1
+													AND Extract_Tables_Key = $Processing_Key
+																  "                                                                                   
+										$Source_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Source_Table_Qry).Source_Table
 						
 						Write-Host
-						Write-Host $Update_Complete_Extract_Tables
-						Write-Host "~ Extract_Tables updated to Complete."
-					}
-					ELSE
-					{
-						#---------------------------------------------
-						# Extract_Tables Update
-						#---------------------------------------------
-						$Update_Incomplete_DateTime = Get-Date
-					
-						$Update_Incomplete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-																SET Extract_Stage = 'Incomplete'
-																	, Extract_Stage_DateTime = '$Update_Complete_DateTime'
-																WHERE 1 = 1
-																	AND Extract_Tables_Key = $Processing_Key
-															"
+						Write-Host $Source_Table_Qry
+						Write-Host "~ Source Table: $Source_Table"
 						
-						Invoke-Sqlcmd `
-							-ServerInstance $Dest_Instance `
-							-Database $Dest_Db `
-							-Query $Update_Incomplete_Extract_Tables
+						#---------------------------------------------
+						# Destination Table
+						#---------------------------------------------
+						
+						[STRING]$Dest_Table_Qry = "SELECT Destination_Table
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1
+													AND Extract_Tables_Key = $Processing_Key
+																  "                                                                                   
+										$Dest_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Table_Qry).Destination_Table
 						
 						Write-Host
-						Write-Host $Update_Incomplete_Extract_Tables
-						Write-Host "~ Extract_Tables updated to Incomplete."
+						Write-Host $Dest_Table
+						Write-Host "~ Destination Table: $Dest_Table"
 						
+						
+						#---------------------------------------------
+						# Extract Data
+						#---------------------------------------------
+						
+						Copy-OneAccord_Data -p1 $Source_Table -p2 $Processing_Key
+						
+						
+						#---------------------------------------------
+						# Check If Extract was successful
+						#---------------------------------------------
+						
+						[STRING]$Extract_Success_Qry = "SELECT COUNT(CASE WHEN Alpha_Result = 1 THEN 1 ELSE NULL END) AS Count_Alpha_Result
+												FROM Oa_Extract.Alpha_Table_1
+												WHERE 1 = 1
+													AND Alpha_Stage = '$Dest_Table'
+													AND Alpha_Step_Name = 'Stats'
+																  "                                                                                   
+							$Extract_Success_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Extract_Success_Qry).Count_Alpha_Result
+							
+							[Int]$Extract_Success = [convert]::ToInt32($Extract_Success_Var)
+						
+						Write-Host
+						Write-Host $Extract_Success_Qry
+						Write-Host "~ Extract Success: $Extract_Success"
+						
+						IF ($Extract_Success -gt 0)
+							{
+								#---------------------------------------------
+								# Extract_Tables Update
+								#---------------------------------------------
+								$Update_Complete_DateTime = Get-Date
+							
+								$Update_Complete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+													SET Extract_Stage = 'Complete'
+														, Extract_Stage_DateTime = '$Update_Complete_DateTime'
+													WHERE 1 = 1
+														AND Extract_Tables_Key = $Processing_Key"
+								
+								Invoke-Sqlcmd `
+									-ServerInstance $Dest_Instance `
+									-Database $Dest_Db `
+									-Query $Update_Complete_Extract_Tables
+								
+								Write-Host
+								Write-Host $Update_Complete_Extract_Tables
+								Write-Host "~ Extract_Tables updated to Complete."
+							}
+							ELSE
+							{
+								#---------------------------------------------
+								# Extract_Tables Update
+								#---------------------------------------------
+								$Update_Incomplete_DateTime = Get-Date
+							
+								$Update_Incomplete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+																		SET Extract_Stage = 'Incomplete'
+																			, Extract_Stage_DateTime = '$Update_Complete_DateTime'
+																		WHERE 1 = 1
+																			AND Extract_Tables_Key = $Processing_Key
+																	"
+								
+								Invoke-Sqlcmd `
+									-ServerInstance $Dest_Instance `
+									-Database $Dest_Db `
+									-Query $Update_Incomplete_Extract_Tables
+								
+								Write-Host
+								Write-Host $Update_Incomplete_Extract_Tables
+								Write-Host "~ Extract_Tables updated to Incomplete."
+								
+							}
+						
+						
+						#---------------------------------------------
+						# Tables to Process
+						#---------------------------------------------
+						
+						[STRING]$Tables_To_Process_Qry = "SELECT COUNT(Source_Table) AS Tables_To_Process
+															FROM Oa_Extract.Extract_Tables
+															WHERE 1 = 1 
+																AND (Extract_Stage IS NULL 
+																	OR Extract_Stage = 'Incomplete'
+																	)
+																AND Active = 1
+														"                                                                                   
+							$Tables_To_Process_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Tables_To_Process_Qry).Tables_To_Process
+							
+							[Int]$Tables_To_Process = [convert]::ToInt32($Tables_To_Process_Var)
+						
+						Write-Host
+						Write-Host $Tables_To_Process_Qry
+						Write-Host "~ Tables to Process: $Tables_To_Process"
+						
+						
+						#---------------------------------------------
+						# Current Process Time
+						#---------------------------------------------
+						$Current_Process_DateTime = Get-Date
+						
+						Write-Host 
+						Write-Host "~ Current Process Time: $Current_Process_DateTime"
+						
+						$Total_Processing_Time = New-TimeSpan -Start $Loop_Begin_DateTime -End $Current_Process_DateTime
+						
+						Write-Host 
+						Write-Host "~ Total Processing Time: $Total_Processing_Time"
 					}
-				
-				
-				#---------------------------------------------
-				# Tables to Process
-				#---------------------------------------------
-				
-				[STRING]$Tables_To_Process_Qry = "SELECT COUNT(Source_Table) AS Tables_To_Process
-													FROM Oa_Extract.Extract_Tables
-													WHERE 1 = 1 
-														AND (Extract_Stage IS NULL 
-															OR Extract_Stage = 'Incomplete'
-															)
-														AND Active = 1
-												"                                                                                   
-					$Tables_To_Process_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Tables_To_Process_Qry).Tables_To_Process
-					
-					[Int]$Tables_To_Process = [convert]::ToInt32($Tables_To_Process_Var)
-				
-				Write-Host
-				Write-Host $Tables_To_Process_Qry
-				Write-Host "~ Tables to Process: $Tables_To_Process"
-				
-				
-				#---------------------------------------------
-				# Current Process Time
-				#---------------------------------------------
-				$Current_Process_DateTime = Get-Date
-				
-				Write-Host 
-				Write-Host "~ Current Process Time: $Current_Process_DateTime"
-				
-				$Total_Processing_Time = New-TimeSpan -Start $Loop_Begin_DateTime -End $Current_Process_DateTime
-				
-				Write-Host 
-				Write-Host "~ Total Processing Time: $Total_Processing_Time"
 				
 			
 			} UNTIL ($Tables_To_Process -eq 0 -OR $Total_Processing_Time -gt '00:30:00')
@@ -22197,7 +22706,8 @@ Start-Job -Name Job23 -ScriptBlock {		                                    #<----
 		# Stop log
 		#---------------------------------------------
 		Stop-Transcript
-	}	
+
+	}
 
 Start-Job -Name Job24 -ScriptBlock {		                                    #<----------------------------------------------------------
 		FUNCTION Insert-Alpha_Table_1
@@ -22500,7 +23010,7 @@ Start-Job -Name Job24 -ScriptBlock {		                                    #<----
 				Stop-Transcript
 			
 			}
-
+			
 		FUNCTION Copy-OneAccord_Data
 			{
 				[CmdletBinding(
@@ -22879,19 +23389,26 @@ Start-Job -Name Job24 -ScriptBlock {		                                    #<----
 					}
 				
 			}
-
-		###################################################################################################
-		#
-		#	Name: PowerShell_ETL_Parrellel_Processing
-		#	Date: 02/26/2018
-		#
-		###################################################################################################
-
+			
 		#---------------------------------------------
 		# Catch Non-Terminating Errors
 		#---------------------------------------------
 		$Old = $ErrorActionPreference
 		$ErrorActionPreference = 'Stop'
+
+
+		#---------------------------------------------
+		# Job Variables
+		#---------------------------------------------
+		[STRING]$Job_Name = "Job24"                                             #<----------------------------------------------------------
+		[INT]$Sleep_Time = 24                                                   #<----------------------------------------------------------
+
+		#---------------------------------------------
+		# If this is the first than create the Alpha_Table_1
+		#   Else sleep
+		#---------------------------------------------
+		#Create-Alpha_Table_1                                                  #<----------------------------------------------------------
+		Start-Sleep -s $Sleep_Time  
 
 		#---------------------------------------------
 		# Log file
@@ -22904,7 +23421,7 @@ Start-Job -Name Job24 -ScriptBlock {		                                    #<----
 			}
 				
 		[STRING]$Log_Root = $New_Folder_Path + "\PS_Extract_"
-		[STRING]$Parrellel_Processing = "Parrellel_Processing_24_"              #<----------------------------------------------------------
+		[STRING]$Parrellel_Processing = $Job_Name
 		[STRING]$Log_DateTime = Get-Date -Format "yyyyMMdd_HHmmss"
 		[String]$Log_File_Type = '.log'
 		[STRING]$Log_File_Name = $Log_Root + $Parrellel_Processing + "_" + $Log_DateTime + $Log_File_Type
@@ -22914,14 +23431,7 @@ Start-Job -Name Job24 -ScriptBlock {		                                    #<----
 		Write-Host
 		Write-Host "~ This is the beginning of the Parrellel_Processing script."
 		Write-Host
-
-
-		#---------------------------------------------
-		# If this is the first than create the Alpha_Table_1
-		#   Else sleep for <> seconds
-		#---------------------------------------------
-		#Create-Alpha_Table_1                                                  #<----------------------------------------------------------
-		Start-Sleep -s 27                                                      #<----------------------------------------------------------
+												
 
 		#---------------------------------------------
 		# Destination Connection String
@@ -22991,11 +23501,11 @@ Start-Job -Name Job24 -ScriptBlock {		                                    #<----
 				
 				#---------------------------------------------
 				# Extract_Tables Update
-				#---------------------------------------------
+				#---------------------------------------------				
 				$Update_DateTime = Get-Date
 			
 				$Update_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-									SET Extract_Stage = 'Processing'
+									SET Extract_Stage = '$Job_Name'                   
 										, Extract_Stage_DateTime = '$Update_DateTime'
 									WHERE 1 = 1
 										AND Extract_Tables_Key = $Processing_Key"
@@ -23007,144 +23517,166 @@ Start-Job -Name Job24 -ScriptBlock {		                                    #<----
 				
 				Write-Host $Update_Extract_Tables
 				
-				
 				#---------------------------------------------
-				# Source Table
-				#---------------------------------------------
-				
-				[STRING]$Source_Table_Qry = "SELECT Source_Table
-										FROM Oa_Extract.Extract_Tables
-										WHERE 1 = 1
-											AND Extract_Tables_Key = $Processing_Key
-														  "                                                                                   
-								$Source_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Source_Table_Qry).Source_Table
-				
-				Write-Host
-				Write-Host $Source_Table_Qry
-				Write-Host "~ Source Table: $Source_Table"
-				
-				#---------------------------------------------
-				# Destination Table
+				# Wait then recheck, if it is the same name then run, else end
 				#---------------------------------------------
 				
-				[STRING]$Dest_Table_Qry = "SELECT Destination_Table
-										FROM Oa_Extract.Extract_Tables
-										WHERE 1 = 1
-											AND Extract_Tables_Key = $Processing_Key
-														  "                                                                                   
-								$Dest_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Table_Qry).Destination_Table
+				Start-Sleep -s $Sleep_Time 
 				
-				Write-Host
-				Write-Host $Dest_Table
-				Write-Host "~ Destination Table: $Dest_Table"
-				
-				
-				#---------------------------------------------
-				# Extract Data
-				#---------------------------------------------
-				
-				Copy-OneAccord_Data -p1 $Source_Table -p2 $Processing_Key
-				
-				
-				#---------------------------------------------
-				# Check If Extract was successful
-				#---------------------------------------------
-				
-				[STRING]$Extract_Success_Qry = "SELECT SUM(Alpha_Result) AS Sum_Alpha_Result
-										FROM Oa_Extract.Alpha_Table_1
-										WHERE 1 = 1
-											AND Alpha_Stage = '$Dest_Table'
-											AND Alpha_Step_Name = 'Stats'
-														  "                                                                                   
-					$Extract_Success_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Extract_Success_Qry).Sum_Alpha_Result
-					
-					[Int]$Extract_Success = [convert]::ToInt32($Extract_Success_Var)
-				
-				Write-Host
-				Write-Host $Extract_Success_Qry
-				Write-Host "~ Extract Success: $Extract_Success"
-				
-				IF ($Extract_Success -gt 0)
-					{
-						#---------------------------------------------
-						# Extract_Tables Update
-						#---------------------------------------------
-						$Update_Complete_DateTime = Get-Date
-					
-						$Update_Complete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-											SET Extract_Stage = 'Complete'
-												, Extract_Stage_DateTime = '$Update_Complete_DateTime'
-											WHERE 1 = 1
-												AND Extract_Tables_Key = $Processing_Key"
+				[STRING]$Processing_Key_Qry2 = "SELECT Extract_Stage
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1 
+													AND Extract_Tables_Key = $Processing_Key
+											"                                                                                   
+					$Extract_Stage = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Processing_Key_Qry2).Extract_Stage
 						
-						Invoke-Sqlcmd `
-							-ServerInstance $Dest_Instance `
-							-Database $Dest_Db `
-							-Query $Update_Complete_Extract_Tables
+				Write-Host
+				Write-Host $Processing_Key_Qry2
+				Write-Host "~ Job Name: $Job_Name"
+				Write-Host "~ Extract_Stage (2): $Extract_Stage"
+				
+				IF($Job_Name -eq $Extract_Stage) 
+					{
+				
+				
+						#---------------------------------------------
+						# Source Table
+						#---------------------------------------------
+						
+						[STRING]$Source_Table_Qry = "SELECT Source_Table
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1
+													AND Extract_Tables_Key = $Processing_Key
+																  "                                                                                   
+										$Source_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Source_Table_Qry).Source_Table
 						
 						Write-Host
-						Write-Host $Update_Complete_Extract_Tables
-						Write-Host "~ Extract_Tables updated to Complete."
-					}
-					ELSE
-					{
-						#---------------------------------------------
-						# Extract_Tables Update
-						#---------------------------------------------
-						$Update_Incomplete_DateTime = Get-Date
-					
-						$Update_Incomplete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-																SET Extract_Stage = 'Incomplete'
-																	, Extract_Stage_DateTime = '$Update_Complete_DateTime'
-																WHERE 1 = 1
-																	AND Extract_Tables_Key = $Processing_Key
-															"
+						Write-Host $Source_Table_Qry
+						Write-Host "~ Source Table: $Source_Table"
 						
-						Invoke-Sqlcmd `
-							-ServerInstance $Dest_Instance `
-							-Database $Dest_Db `
-							-Query $Update_Incomplete_Extract_Tables
+						#---------------------------------------------
+						# Destination Table
+						#---------------------------------------------
+						
+						[STRING]$Dest_Table_Qry = "SELECT Destination_Table
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1
+													AND Extract_Tables_Key = $Processing_Key
+																  "                                                                                   
+										$Dest_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Table_Qry).Destination_Table
 						
 						Write-Host
-						Write-Host $Update_Incomplete_Extract_Tables
-						Write-Host "~ Extract_Tables updated to Incomplete."
+						Write-Host $Dest_Table
+						Write-Host "~ Destination Table: $Dest_Table"
 						
+						
+						#---------------------------------------------
+						# Extract Data
+						#---------------------------------------------
+						
+						Copy-OneAccord_Data -p1 $Source_Table -p2 $Processing_Key
+						
+						
+						#---------------------------------------------
+						# Check If Extract was successful
+						#---------------------------------------------
+						
+						[STRING]$Extract_Success_Qry = "SELECT COUNT(CASE WHEN Alpha_Result = 1 THEN 1 ELSE NULL END) AS Count_Alpha_Result
+												FROM Oa_Extract.Alpha_Table_1
+												WHERE 1 = 1
+													AND Alpha_Stage = '$Dest_Table'
+													AND Alpha_Step_Name = 'Stats'
+																  "                                                                                   
+							$Extract_Success_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Extract_Success_Qry).Count_Alpha_Result
+							
+							[Int]$Extract_Success = [convert]::ToInt32($Extract_Success_Var)
+						
+						Write-Host
+						Write-Host $Extract_Success_Qry
+						Write-Host "~ Extract Success: $Extract_Success"
+						
+						IF ($Extract_Success -gt 0)
+							{
+								#---------------------------------------------
+								# Extract_Tables Update
+								#---------------------------------------------
+								$Update_Complete_DateTime = Get-Date
+							
+								$Update_Complete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+													SET Extract_Stage = 'Complete'
+														, Extract_Stage_DateTime = '$Update_Complete_DateTime'
+													WHERE 1 = 1
+														AND Extract_Tables_Key = $Processing_Key"
+								
+								Invoke-Sqlcmd `
+									-ServerInstance $Dest_Instance `
+									-Database $Dest_Db `
+									-Query $Update_Complete_Extract_Tables
+								
+								Write-Host
+								Write-Host $Update_Complete_Extract_Tables
+								Write-Host "~ Extract_Tables updated to Complete."
+							}
+							ELSE
+							{
+								#---------------------------------------------
+								# Extract_Tables Update
+								#---------------------------------------------
+								$Update_Incomplete_DateTime = Get-Date
+							
+								$Update_Incomplete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+																		SET Extract_Stage = 'Incomplete'
+																			, Extract_Stage_DateTime = '$Update_Complete_DateTime'
+																		WHERE 1 = 1
+																			AND Extract_Tables_Key = $Processing_Key
+																	"
+								
+								Invoke-Sqlcmd `
+									-ServerInstance $Dest_Instance `
+									-Database $Dest_Db `
+									-Query $Update_Incomplete_Extract_Tables
+								
+								Write-Host
+								Write-Host $Update_Incomplete_Extract_Tables
+								Write-Host "~ Extract_Tables updated to Incomplete."
+								
+							}
+						
+						
+						#---------------------------------------------
+						# Tables to Process
+						#---------------------------------------------
+						
+						[STRING]$Tables_To_Process_Qry = "SELECT COUNT(Source_Table) AS Tables_To_Process
+															FROM Oa_Extract.Extract_Tables
+															WHERE 1 = 1 
+																AND (Extract_Stage IS NULL 
+																	OR Extract_Stage = 'Incomplete'
+																	)
+																AND Active = 1
+														"                                                                                   
+							$Tables_To_Process_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Tables_To_Process_Qry).Tables_To_Process
+							
+							[Int]$Tables_To_Process = [convert]::ToInt32($Tables_To_Process_Var)
+						
+						Write-Host
+						Write-Host $Tables_To_Process_Qry
+						Write-Host "~ Tables to Process: $Tables_To_Process"
+						
+						
+						#---------------------------------------------
+						# Current Process Time
+						#---------------------------------------------
+						$Current_Process_DateTime = Get-Date
+						
+						Write-Host 
+						Write-Host "~ Current Process Time: $Current_Process_DateTime"
+						
+						$Total_Processing_Time = New-TimeSpan -Start $Loop_Begin_DateTime -End $Current_Process_DateTime
+						
+						Write-Host 
+						Write-Host "~ Total Processing Time: $Total_Processing_Time"
 					}
-				
-				
-				#---------------------------------------------
-				# Tables to Process
-				#---------------------------------------------
-				
-				[STRING]$Tables_To_Process_Qry = "SELECT COUNT(Source_Table) AS Tables_To_Process
-													FROM Oa_Extract.Extract_Tables
-													WHERE 1 = 1 
-														AND (Extract_Stage IS NULL 
-															OR Extract_Stage = 'Incomplete'
-															)
-														AND Active = 1
-												"                                                                                   
-					$Tables_To_Process_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Tables_To_Process_Qry).Tables_To_Process
-					
-					[Int]$Tables_To_Process = [convert]::ToInt32($Tables_To_Process_Var)
-				
-				Write-Host
-				Write-Host $Tables_To_Process_Qry
-				Write-Host "~ Tables to Process: $Tables_To_Process"
-				
-				
-				#---------------------------------------------
-				# Current Process Time
-				#---------------------------------------------
-				$Current_Process_DateTime = Get-Date
-				
-				Write-Host 
-				Write-Host "~ Current Process Time: $Current_Process_DateTime"
-				
-				$Total_Processing_Time = New-TimeSpan -Start $Loop_Begin_DateTime -End $Current_Process_DateTime
-				
-				Write-Host 
-				Write-Host "~ Total Processing Time: $Total_Processing_Time"
 				
 			
 			} UNTIL ($Tables_To_Process -eq 0 -OR $Total_Processing_Time -gt '00:30:00')
@@ -23161,8 +23693,8 @@ Start-Job -Name Job24 -ScriptBlock {		                                    #<----
 		# Stop log
 		#---------------------------------------------
 		Stop-Transcript
-	}	
-	
+
+	}
 
 Start-Job -Name Job25 -ScriptBlock {		                                    #<----------------------------------------------------------
 		FUNCTION Insert-Alpha_Table_1
@@ -23465,7 +23997,7 @@ Start-Job -Name Job25 -ScriptBlock {		                                    #<----
 				Stop-Transcript
 			
 			}
-
+			
 		FUNCTION Copy-OneAccord_Data
 			{
 				[CmdletBinding(
@@ -23844,19 +24376,26 @@ Start-Job -Name Job25 -ScriptBlock {		                                    #<----
 					}
 				
 			}
-
-		###################################################################################################
-		#
-		#	Name: PowerShell_ETL_Parrellel_Processing
-		#	Date: 02/26/2018
-		#
-		###################################################################################################
-
+			
 		#---------------------------------------------
 		# Catch Non-Terminating Errors
 		#---------------------------------------------
 		$Old = $ErrorActionPreference
 		$ErrorActionPreference = 'Stop'
+
+
+		#---------------------------------------------
+		# Job Variables
+		#---------------------------------------------
+		[STRING]$Job_Name = "Job25"                                             #<----------------------------------------------------------
+		[INT]$Sleep_Time = 25                                                   #<----------------------------------------------------------
+
+		#---------------------------------------------
+		# If this is the first than create the Alpha_Table_1
+		#   Else sleep
+		#---------------------------------------------
+		#Create-Alpha_Table_1                                                  #<----------------------------------------------------------
+		Start-Sleep -s $Sleep_Time  
 
 		#---------------------------------------------
 		# Log file
@@ -23869,7 +24408,7 @@ Start-Job -Name Job25 -ScriptBlock {		                                    #<----
 			}
 				
 		[STRING]$Log_Root = $New_Folder_Path + "\PS_Extract_"
-		[STRING]$Parrellel_Processing = "Parrellel_Processing_25_"              #<----------------------------------------------------------
+		[STRING]$Parrellel_Processing = $Job_Name
 		[STRING]$Log_DateTime = Get-Date -Format "yyyyMMdd_HHmmss"
 		[String]$Log_File_Type = '.log'
 		[STRING]$Log_File_Name = $Log_Root + $Parrellel_Processing + "_" + $Log_DateTime + $Log_File_Type
@@ -23879,14 +24418,7 @@ Start-Job -Name Job25 -ScriptBlock {		                                    #<----
 		Write-Host
 		Write-Host "~ This is the beginning of the Parrellel_Processing script."
 		Write-Host
-
-
-		#---------------------------------------------
-		# If this is the first than create the Alpha_Table_1
-		#   Else sleep for <> seconds
-		#---------------------------------------------
-		#Create-Alpha_Table_1                                                  #<----------------------------------------------------------
-		Start-Sleep -s 28                                                      #<----------------------------------------------------------
+												
 
 		#---------------------------------------------
 		# Destination Connection String
@@ -23956,11 +24488,11 @@ Start-Job -Name Job25 -ScriptBlock {		                                    #<----
 				
 				#---------------------------------------------
 				# Extract_Tables Update
-				#---------------------------------------------
+				#---------------------------------------------				
 				$Update_DateTime = Get-Date
 			
 				$Update_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-									SET Extract_Stage = 'Processing'
+									SET Extract_Stage = '$Job_Name'                   
 										, Extract_Stage_DateTime = '$Update_DateTime'
 									WHERE 1 = 1
 										AND Extract_Tables_Key = $Processing_Key"
@@ -23972,144 +24504,166 @@ Start-Job -Name Job25 -ScriptBlock {		                                    #<----
 				
 				Write-Host $Update_Extract_Tables
 				
-				
 				#---------------------------------------------
-				# Source Table
-				#---------------------------------------------
-				
-				[STRING]$Source_Table_Qry = "SELECT Source_Table
-										FROM Oa_Extract.Extract_Tables
-										WHERE 1 = 1
-											AND Extract_Tables_Key = $Processing_Key
-														  "                                                                                   
-								$Source_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Source_Table_Qry).Source_Table
-				
-				Write-Host
-				Write-Host $Source_Table_Qry
-				Write-Host "~ Source Table: $Source_Table"
-				
-				#---------------------------------------------
-				# Destination Table
+				# Wait then recheck, if it is the same name then run, else end
 				#---------------------------------------------
 				
-				[STRING]$Dest_Table_Qry = "SELECT Destination_Table
-										FROM Oa_Extract.Extract_Tables
-										WHERE 1 = 1
-											AND Extract_Tables_Key = $Processing_Key
-														  "                                                                                   
-								$Dest_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Table_Qry).Destination_Table
+				Start-Sleep -s $Sleep_Time 
 				
-				Write-Host
-				Write-Host $Dest_Table
-				Write-Host "~ Destination Table: $Dest_Table"
-				
-				
-				#---------------------------------------------
-				# Extract Data
-				#---------------------------------------------
-				
-				Copy-OneAccord_Data -p1 $Source_Table -p2 $Processing_Key
-				
-				
-				#---------------------------------------------
-				# Check If Extract was successful
-				#---------------------------------------------
-				
-				[STRING]$Extract_Success_Qry = "SELECT SUM(Alpha_Result) AS Sum_Alpha_Result
-										FROM Oa_Extract.Alpha_Table_1
-										WHERE 1 = 1
-											AND Alpha_Stage = '$Dest_Table'
-											AND Alpha_Step_Name = 'Stats'
-														  "                                                                                   
-					$Extract_Success_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Extract_Success_Qry).Sum_Alpha_Result
-					
-					[Int]$Extract_Success = [convert]::ToInt32($Extract_Success_Var)
-				
-				Write-Host
-				Write-Host $Extract_Success_Qry
-				Write-Host "~ Extract Success: $Extract_Success"
-				
-				IF ($Extract_Success -gt 0)
-					{
-						#---------------------------------------------
-						# Extract_Tables Update
-						#---------------------------------------------
-						$Update_Complete_DateTime = Get-Date
-					
-						$Update_Complete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-											SET Extract_Stage = 'Complete'
-												, Extract_Stage_DateTime = '$Update_Complete_DateTime'
-											WHERE 1 = 1
-												AND Extract_Tables_Key = $Processing_Key"
+				[STRING]$Processing_Key_Qry2 = "SELECT Extract_Stage
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1 
+													AND Extract_Tables_Key = $Processing_Key
+											"                                                                                   
+					$Extract_Stage = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Processing_Key_Qry2).Extract_Stage
 						
-						Invoke-Sqlcmd `
-							-ServerInstance $Dest_Instance `
-							-Database $Dest_Db `
-							-Query $Update_Complete_Extract_Tables
+				Write-Host
+				Write-Host $Processing_Key_Qry2
+				Write-Host "~ Job Name: $Job_Name"
+				Write-Host "~ Extract_Stage (2): $Extract_Stage"
+				
+				IF($Job_Name -eq $Extract_Stage) 
+					{
+				
+				
+						#---------------------------------------------
+						# Source Table
+						#---------------------------------------------
+						
+						[STRING]$Source_Table_Qry = "SELECT Source_Table
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1
+													AND Extract_Tables_Key = $Processing_Key
+																  "                                                                                   
+										$Source_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Source_Table_Qry).Source_Table
 						
 						Write-Host
-						Write-Host $Update_Complete_Extract_Tables
-						Write-Host "~ Extract_Tables updated to Complete."
-					}
-					ELSE
-					{
-						#---------------------------------------------
-						# Extract_Tables Update
-						#---------------------------------------------
-						$Update_Incomplete_DateTime = Get-Date
-					
-						$Update_Incomplete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-																SET Extract_Stage = 'Incomplete'
-																	, Extract_Stage_DateTime = '$Update_Complete_DateTime'
-																WHERE 1 = 1
-																	AND Extract_Tables_Key = $Processing_Key
-															"
+						Write-Host $Source_Table_Qry
+						Write-Host "~ Source Table: $Source_Table"
 						
-						Invoke-Sqlcmd `
-							-ServerInstance $Dest_Instance `
-							-Database $Dest_Db `
-							-Query $Update_Incomplete_Extract_Tables
+						#---------------------------------------------
+						# Destination Table
+						#---------------------------------------------
+						
+						[STRING]$Dest_Table_Qry = "SELECT Destination_Table
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1
+													AND Extract_Tables_Key = $Processing_Key
+																  "                                                                                   
+										$Dest_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Table_Qry).Destination_Table
 						
 						Write-Host
-						Write-Host $Update_Incomplete_Extract_Tables
-						Write-Host "~ Extract_Tables updated to Incomplete."
+						Write-Host $Dest_Table
+						Write-Host "~ Destination Table: $Dest_Table"
 						
+						
+						#---------------------------------------------
+						# Extract Data
+						#---------------------------------------------
+						
+						Copy-OneAccord_Data -p1 $Source_Table -p2 $Processing_Key
+						
+						
+						#---------------------------------------------
+						# Check If Extract was successful
+						#---------------------------------------------
+						
+						[STRING]$Extract_Success_Qry = "SELECT COUNT(CASE WHEN Alpha_Result = 1 THEN 1 ELSE NULL END) AS Count_Alpha_Result
+												FROM Oa_Extract.Alpha_Table_1
+												WHERE 1 = 1
+													AND Alpha_Stage = '$Dest_Table'
+													AND Alpha_Step_Name = 'Stats'
+																  "                                                                                   
+							$Extract_Success_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Extract_Success_Qry).Count_Alpha_Result
+							
+							[Int]$Extract_Success = [convert]::ToInt32($Extract_Success_Var)
+						
+						Write-Host
+						Write-Host $Extract_Success_Qry
+						Write-Host "~ Extract Success: $Extract_Success"
+						
+						IF ($Extract_Success -gt 0)
+							{
+								#---------------------------------------------
+								# Extract_Tables Update
+								#---------------------------------------------
+								$Update_Complete_DateTime = Get-Date
+							
+								$Update_Complete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+													SET Extract_Stage = 'Complete'
+														, Extract_Stage_DateTime = '$Update_Complete_DateTime'
+													WHERE 1 = 1
+														AND Extract_Tables_Key = $Processing_Key"
+								
+								Invoke-Sqlcmd `
+									-ServerInstance $Dest_Instance `
+									-Database $Dest_Db `
+									-Query $Update_Complete_Extract_Tables
+								
+								Write-Host
+								Write-Host $Update_Complete_Extract_Tables
+								Write-Host "~ Extract_Tables updated to Complete."
+							}
+							ELSE
+							{
+								#---------------------------------------------
+								# Extract_Tables Update
+								#---------------------------------------------
+								$Update_Incomplete_DateTime = Get-Date
+							
+								$Update_Incomplete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+																		SET Extract_Stage = 'Incomplete'
+																			, Extract_Stage_DateTime = '$Update_Complete_DateTime'
+																		WHERE 1 = 1
+																			AND Extract_Tables_Key = $Processing_Key
+																	"
+								
+								Invoke-Sqlcmd `
+									-ServerInstance $Dest_Instance `
+									-Database $Dest_Db `
+									-Query $Update_Incomplete_Extract_Tables
+								
+								Write-Host
+								Write-Host $Update_Incomplete_Extract_Tables
+								Write-Host "~ Extract_Tables updated to Incomplete."
+								
+							}
+						
+						
+						#---------------------------------------------
+						# Tables to Process
+						#---------------------------------------------
+						
+						[STRING]$Tables_To_Process_Qry = "SELECT COUNT(Source_Table) AS Tables_To_Process
+															FROM Oa_Extract.Extract_Tables
+															WHERE 1 = 1 
+																AND (Extract_Stage IS NULL 
+																	OR Extract_Stage = 'Incomplete'
+																	)
+																AND Active = 1
+														"                                                                                   
+							$Tables_To_Process_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Tables_To_Process_Qry).Tables_To_Process
+							
+							[Int]$Tables_To_Process = [convert]::ToInt32($Tables_To_Process_Var)
+						
+						Write-Host
+						Write-Host $Tables_To_Process_Qry
+						Write-Host "~ Tables to Process: $Tables_To_Process"
+						
+						
+						#---------------------------------------------
+						# Current Process Time
+						#---------------------------------------------
+						$Current_Process_DateTime = Get-Date
+						
+						Write-Host 
+						Write-Host "~ Current Process Time: $Current_Process_DateTime"
+						
+						$Total_Processing_Time = New-TimeSpan -Start $Loop_Begin_DateTime -End $Current_Process_DateTime
+						
+						Write-Host 
+						Write-Host "~ Total Processing Time: $Total_Processing_Time"
 					}
-				
-				
-				#---------------------------------------------
-				# Tables to Process
-				#---------------------------------------------
-				
-				[STRING]$Tables_To_Process_Qry = "SELECT COUNT(Source_Table) AS Tables_To_Process
-													FROM Oa_Extract.Extract_Tables
-													WHERE 1 = 1 
-														AND (Extract_Stage IS NULL 
-															OR Extract_Stage = 'Incomplete'
-															)
-														AND Active = 1
-												"                                                                                   
-					$Tables_To_Process_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Tables_To_Process_Qry).Tables_To_Process
-					
-					[Int]$Tables_To_Process = [convert]::ToInt32($Tables_To_Process_Var)
-				
-				Write-Host
-				Write-Host $Tables_To_Process_Qry
-				Write-Host "~ Tables to Process: $Tables_To_Process"
-				
-				
-				#---------------------------------------------
-				# Current Process Time
-				#---------------------------------------------
-				$Current_Process_DateTime = Get-Date
-				
-				Write-Host 
-				Write-Host "~ Current Process Time: $Current_Process_DateTime"
-				
-				$Total_Processing_Time = New-TimeSpan -Start $Loop_Begin_DateTime -End $Current_Process_DateTime
-				
-				Write-Host 
-				Write-Host "~ Total Processing Time: $Total_Processing_Time"
 				
 			
 			} UNTIL ($Tables_To_Process -eq 0 -OR $Total_Processing_Time -gt '00:30:00')
@@ -24126,8 +24680,8 @@ Start-Job -Name Job25 -ScriptBlock {		                                    #<----
 		# Stop log
 		#---------------------------------------------
 		Stop-Transcript
-	}	
-	
+
+	}
 
 Start-Job -Name Job26 -ScriptBlock {		                                    #<----------------------------------------------------------
 		FUNCTION Insert-Alpha_Table_1
@@ -24430,7 +24984,7 @@ Start-Job -Name Job26 -ScriptBlock {		                                    #<----
 				Stop-Transcript
 			
 			}
-
+			
 		FUNCTION Copy-OneAccord_Data
 			{
 				[CmdletBinding(
@@ -24809,19 +25363,26 @@ Start-Job -Name Job26 -ScriptBlock {		                                    #<----
 					}
 				
 			}
-
-		###################################################################################################
-		#
-		#	Name: PowerShell_ETL_Parrellel_Processing
-		#	Date: 02/26/2018
-		#
-		###################################################################################################
-
+			
 		#---------------------------------------------
 		# Catch Non-Terminating Errors
 		#---------------------------------------------
 		$Old = $ErrorActionPreference
 		$ErrorActionPreference = 'Stop'
+
+
+		#---------------------------------------------
+		# Job Variables
+		#---------------------------------------------
+		[STRING]$Job_Name = "Job26"                                             #<----------------------------------------------------------
+		[INT]$Sleep_Time = 26                                                   #<----------------------------------------------------------
+
+		#---------------------------------------------
+		# If this is the first than create the Alpha_Table_1
+		#   Else sleep
+		#---------------------------------------------
+		#Create-Alpha_Table_1                                                  #<----------------------------------------------------------
+		Start-Sleep -s $Sleep_Time  
 
 		#---------------------------------------------
 		# Log file
@@ -24834,7 +25395,7 @@ Start-Job -Name Job26 -ScriptBlock {		                                    #<----
 			}
 				
 		[STRING]$Log_Root = $New_Folder_Path + "\PS_Extract_"
-		[STRING]$Parrellel_Processing = "Parrellel_Processing_26_"              #<----------------------------------------------------------
+		[STRING]$Parrellel_Processing = $Job_Name
 		[STRING]$Log_DateTime = Get-Date -Format "yyyyMMdd_HHmmss"
 		[String]$Log_File_Type = '.log'
 		[STRING]$Log_File_Name = $Log_Root + $Parrellel_Processing + "_" + $Log_DateTime + $Log_File_Type
@@ -24844,14 +25405,7 @@ Start-Job -Name Job26 -ScriptBlock {		                                    #<----
 		Write-Host
 		Write-Host "~ This is the beginning of the Parrellel_Processing script."
 		Write-Host
-
-
-		#---------------------------------------------
-		# If this is the first than create the Alpha_Table_1
-		#   Else sleep for <> seconds
-		#---------------------------------------------
-		#Create-Alpha_Table_1                                                  #<----------------------------------------------------------
-		Start-Sleep -s 29                                                      #<----------------------------------------------------------
+												
 
 		#---------------------------------------------
 		# Destination Connection String
@@ -24921,11 +25475,11 @@ Start-Job -Name Job26 -ScriptBlock {		                                    #<----
 				
 				#---------------------------------------------
 				# Extract_Tables Update
-				#---------------------------------------------
+				#---------------------------------------------				
 				$Update_DateTime = Get-Date
 			
 				$Update_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-									SET Extract_Stage = 'Processing'
+									SET Extract_Stage = '$Job_Name'                   
 										, Extract_Stage_DateTime = '$Update_DateTime'
 									WHERE 1 = 1
 										AND Extract_Tables_Key = $Processing_Key"
@@ -24937,144 +25491,166 @@ Start-Job -Name Job26 -ScriptBlock {		                                    #<----
 				
 				Write-Host $Update_Extract_Tables
 				
-				
 				#---------------------------------------------
-				# Source Table
-				#---------------------------------------------
-				
-				[STRING]$Source_Table_Qry = "SELECT Source_Table
-										FROM Oa_Extract.Extract_Tables
-										WHERE 1 = 1
-											AND Extract_Tables_Key = $Processing_Key
-														  "                                                                                   
-								$Source_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Source_Table_Qry).Source_Table
-				
-				Write-Host
-				Write-Host $Source_Table_Qry
-				Write-Host "~ Source Table: $Source_Table"
-				
-				#---------------------------------------------
-				# Destination Table
+				# Wait then recheck, if it is the same name then run, else end
 				#---------------------------------------------
 				
-				[STRING]$Dest_Table_Qry = "SELECT Destination_Table
-										FROM Oa_Extract.Extract_Tables
-										WHERE 1 = 1
-											AND Extract_Tables_Key = $Processing_Key
-														  "                                                                                   
-								$Dest_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Table_Qry).Destination_Table
+				Start-Sleep -s $Sleep_Time 
 				
-				Write-Host
-				Write-Host $Dest_Table
-				Write-Host "~ Destination Table: $Dest_Table"
-				
-				
-				#---------------------------------------------
-				# Extract Data
-				#---------------------------------------------
-				
-				Copy-OneAccord_Data -p1 $Source_Table -p2 $Processing_Key
-				
-				
-				#---------------------------------------------
-				# Check If Extract was successful
-				#---------------------------------------------
-				
-				[STRING]$Extract_Success_Qry = "SELECT SUM(Alpha_Result) AS Sum_Alpha_Result
-										FROM Oa_Extract.Alpha_Table_1
-										WHERE 1 = 1
-											AND Alpha_Stage = '$Dest_Table'
-											AND Alpha_Step_Name = 'Stats'
-														  "                                                                                   
-					$Extract_Success_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Extract_Success_Qry).Sum_Alpha_Result
-					
-					[Int]$Extract_Success = [convert]::ToInt32($Extract_Success_Var)
-				
-				Write-Host
-				Write-Host $Extract_Success_Qry
-				Write-Host "~ Extract Success: $Extract_Success"
-				
-				IF ($Extract_Success -gt 0)
-					{
-						#---------------------------------------------
-						# Extract_Tables Update
-						#---------------------------------------------
-						$Update_Complete_DateTime = Get-Date
-					
-						$Update_Complete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-											SET Extract_Stage = 'Complete'
-												, Extract_Stage_DateTime = '$Update_Complete_DateTime'
-											WHERE 1 = 1
-												AND Extract_Tables_Key = $Processing_Key"
+				[STRING]$Processing_Key_Qry2 = "SELECT Extract_Stage
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1 
+													AND Extract_Tables_Key = $Processing_Key
+											"                                                                                   
+					$Extract_Stage = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Processing_Key_Qry2).Extract_Stage
 						
-						Invoke-Sqlcmd `
-							-ServerInstance $Dest_Instance `
-							-Database $Dest_Db `
-							-Query $Update_Complete_Extract_Tables
+				Write-Host
+				Write-Host $Processing_Key_Qry2
+				Write-Host "~ Job Name: $Job_Name"
+				Write-Host "~ Extract_Stage (2): $Extract_Stage"
+				
+				IF($Job_Name -eq $Extract_Stage) 
+					{
+				
+				
+						#---------------------------------------------
+						# Source Table
+						#---------------------------------------------
+						
+						[STRING]$Source_Table_Qry = "SELECT Source_Table
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1
+													AND Extract_Tables_Key = $Processing_Key
+																  "                                                                                   
+										$Source_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Source_Table_Qry).Source_Table
 						
 						Write-Host
-						Write-Host $Update_Complete_Extract_Tables
-						Write-Host "~ Extract_Tables updated to Complete."
-					}
-					ELSE
-					{
-						#---------------------------------------------
-						# Extract_Tables Update
-						#---------------------------------------------
-						$Update_Incomplete_DateTime = Get-Date
-					
-						$Update_Incomplete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-																SET Extract_Stage = 'Incomplete'
-																	, Extract_Stage_DateTime = '$Update_Complete_DateTime'
-																WHERE 1 = 1
-																	AND Extract_Tables_Key = $Processing_Key
-															"
+						Write-Host $Source_Table_Qry
+						Write-Host "~ Source Table: $Source_Table"
 						
-						Invoke-Sqlcmd `
-							-ServerInstance $Dest_Instance `
-							-Database $Dest_Db `
-							-Query $Update_Incomplete_Extract_Tables
+						#---------------------------------------------
+						# Destination Table
+						#---------------------------------------------
+						
+						[STRING]$Dest_Table_Qry = "SELECT Destination_Table
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1
+													AND Extract_Tables_Key = $Processing_Key
+																  "                                                                                   
+										$Dest_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Table_Qry).Destination_Table
 						
 						Write-Host
-						Write-Host $Update_Incomplete_Extract_Tables
-						Write-Host "~ Extract_Tables updated to Incomplete."
+						Write-Host $Dest_Table
+						Write-Host "~ Destination Table: $Dest_Table"
 						
+						
+						#---------------------------------------------
+						# Extract Data
+						#---------------------------------------------
+						
+						Copy-OneAccord_Data -p1 $Source_Table -p2 $Processing_Key
+						
+						
+						#---------------------------------------------
+						# Check If Extract was successful
+						#---------------------------------------------
+						
+						[STRING]$Extract_Success_Qry = "SELECT COUNT(CASE WHEN Alpha_Result = 1 THEN 1 ELSE NULL END) AS Count_Alpha_Result
+												FROM Oa_Extract.Alpha_Table_1
+												WHERE 1 = 1
+													AND Alpha_Stage = '$Dest_Table'
+													AND Alpha_Step_Name = 'Stats'
+																  "                                                                                   
+							$Extract_Success_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Extract_Success_Qry).Count_Alpha_Result
+							
+							[Int]$Extract_Success = [convert]::ToInt32($Extract_Success_Var)
+						
+						Write-Host
+						Write-Host $Extract_Success_Qry
+						Write-Host "~ Extract Success: $Extract_Success"
+						
+						IF ($Extract_Success -gt 0)
+							{
+								#---------------------------------------------
+								# Extract_Tables Update
+								#---------------------------------------------
+								$Update_Complete_DateTime = Get-Date
+							
+								$Update_Complete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+													SET Extract_Stage = 'Complete'
+														, Extract_Stage_DateTime = '$Update_Complete_DateTime'
+													WHERE 1 = 1
+														AND Extract_Tables_Key = $Processing_Key"
+								
+								Invoke-Sqlcmd `
+									-ServerInstance $Dest_Instance `
+									-Database $Dest_Db `
+									-Query $Update_Complete_Extract_Tables
+								
+								Write-Host
+								Write-Host $Update_Complete_Extract_Tables
+								Write-Host "~ Extract_Tables updated to Complete."
+							}
+							ELSE
+							{
+								#---------------------------------------------
+								# Extract_Tables Update
+								#---------------------------------------------
+								$Update_Incomplete_DateTime = Get-Date
+							
+								$Update_Incomplete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+																		SET Extract_Stage = 'Incomplete'
+																			, Extract_Stage_DateTime = '$Update_Complete_DateTime'
+																		WHERE 1 = 1
+																			AND Extract_Tables_Key = $Processing_Key
+																	"
+								
+								Invoke-Sqlcmd `
+									-ServerInstance $Dest_Instance `
+									-Database $Dest_Db `
+									-Query $Update_Incomplete_Extract_Tables
+								
+								Write-Host
+								Write-Host $Update_Incomplete_Extract_Tables
+								Write-Host "~ Extract_Tables updated to Incomplete."
+								
+							}
+						
+						
+						#---------------------------------------------
+						# Tables to Process
+						#---------------------------------------------
+						
+						[STRING]$Tables_To_Process_Qry = "SELECT COUNT(Source_Table) AS Tables_To_Process
+															FROM Oa_Extract.Extract_Tables
+															WHERE 1 = 1 
+																AND (Extract_Stage IS NULL 
+																	OR Extract_Stage = 'Incomplete'
+																	)
+																AND Active = 1
+														"                                                                                   
+							$Tables_To_Process_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Tables_To_Process_Qry).Tables_To_Process
+							
+							[Int]$Tables_To_Process = [convert]::ToInt32($Tables_To_Process_Var)
+						
+						Write-Host
+						Write-Host $Tables_To_Process_Qry
+						Write-Host "~ Tables to Process: $Tables_To_Process"
+						
+						
+						#---------------------------------------------
+						# Current Process Time
+						#---------------------------------------------
+						$Current_Process_DateTime = Get-Date
+						
+						Write-Host 
+						Write-Host "~ Current Process Time: $Current_Process_DateTime"
+						
+						$Total_Processing_Time = New-TimeSpan -Start $Loop_Begin_DateTime -End $Current_Process_DateTime
+						
+						Write-Host 
+						Write-Host "~ Total Processing Time: $Total_Processing_Time"
 					}
-				
-				
-				#---------------------------------------------
-				# Tables to Process
-				#---------------------------------------------
-				
-				[STRING]$Tables_To_Process_Qry = "SELECT COUNT(Source_Table) AS Tables_To_Process
-													FROM Oa_Extract.Extract_Tables
-													WHERE 1 = 1 
-														AND (Extract_Stage IS NULL 
-															OR Extract_Stage = 'Incomplete'
-															)
-														AND Active = 1
-												"                                                                                   
-					$Tables_To_Process_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Tables_To_Process_Qry).Tables_To_Process
-					
-					[Int]$Tables_To_Process = [convert]::ToInt32($Tables_To_Process_Var)
-				
-				Write-Host
-				Write-Host $Tables_To_Process_Qry
-				Write-Host "~ Tables to Process: $Tables_To_Process"
-				
-				
-				#---------------------------------------------
-				# Current Process Time
-				#---------------------------------------------
-				$Current_Process_DateTime = Get-Date
-				
-				Write-Host 
-				Write-Host "~ Current Process Time: $Current_Process_DateTime"
-				
-				$Total_Processing_Time = New-TimeSpan -Start $Loop_Begin_DateTime -End $Current_Process_DateTime
-				
-				Write-Host 
-				Write-Host "~ Total Processing Time: $Total_Processing_Time"
 				
 			
 			} UNTIL ($Tables_To_Process -eq 0 -OR $Total_Processing_Time -gt '00:30:00')
@@ -25091,9 +25667,8 @@ Start-Job -Name Job26 -ScriptBlock {		                                    #<----
 		# Stop log
 		#---------------------------------------------
 		Stop-Transcript
-	}	
-	
-	
+
+	}
 
 Start-Job -Name Job27 -ScriptBlock {		                                    #<----------------------------------------------------------
 		FUNCTION Insert-Alpha_Table_1
@@ -25396,7 +25971,7 @@ Start-Job -Name Job27 -ScriptBlock {		                                    #<----
 				Stop-Transcript
 			
 			}
-
+			
 		FUNCTION Copy-OneAccord_Data
 			{
 				[CmdletBinding(
@@ -25775,19 +26350,26 @@ Start-Job -Name Job27 -ScriptBlock {		                                    #<----
 					}
 				
 			}
-
-		###################################################################################################
-		#
-		#	Name: PowerShell_ETL_Parrellel_Processing
-		#	Date: 02/26/2018
-		#
-		###################################################################################################
-
+			
 		#---------------------------------------------
 		# Catch Non-Terminating Errors
 		#---------------------------------------------
 		$Old = $ErrorActionPreference
 		$ErrorActionPreference = 'Stop'
+
+
+		#---------------------------------------------
+		# Job Variables
+		#---------------------------------------------
+		[STRING]$Job_Name = "Job27"                                             #<----------------------------------------------------------
+		[INT]$Sleep_Time = 27                                                   #<----------------------------------------------------------
+
+		#---------------------------------------------
+		# If this is the first than create the Alpha_Table_1
+		#   Else sleep
+		#---------------------------------------------
+		#Create-Alpha_Table_1                                                  #<----------------------------------------------------------
+		Start-Sleep -s $Sleep_Time  
 
 		#---------------------------------------------
 		# Log file
@@ -25800,7 +26382,7 @@ Start-Job -Name Job27 -ScriptBlock {		                                    #<----
 			}
 				
 		[STRING]$Log_Root = $New_Folder_Path + "\PS_Extract_"
-		[STRING]$Parrellel_Processing = "Parrellel_Processing_27_"              #<----------------------------------------------------------
+		[STRING]$Parrellel_Processing = $Job_Name
 		[STRING]$Log_DateTime = Get-Date -Format "yyyyMMdd_HHmmss"
 		[String]$Log_File_Type = '.log'
 		[STRING]$Log_File_Name = $Log_Root + $Parrellel_Processing + "_" + $Log_DateTime + $Log_File_Type
@@ -25810,14 +26392,7 @@ Start-Job -Name Job27 -ScriptBlock {		                                    #<----
 		Write-Host
 		Write-Host "~ This is the beginning of the Parrellel_Processing script."
 		Write-Host
-
-
-		#---------------------------------------------
-		# If this is the first than create the Alpha_Table_1
-		#   Else sleep for <> seconds
-		#---------------------------------------------
-		#Create-Alpha_Table_1                                                 #<----------------------------------------------------------
-		Start-Sleep -s 30                                                     #<----------------------------------------------------------
+												
 
 		#---------------------------------------------
 		# Destination Connection String
@@ -25887,11 +26462,11 @@ Start-Job -Name Job27 -ScriptBlock {		                                    #<----
 				
 				#---------------------------------------------
 				# Extract_Tables Update
-				#---------------------------------------------
+				#---------------------------------------------				
 				$Update_DateTime = Get-Date
 			
 				$Update_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-									SET Extract_Stage = 'Processing'
+									SET Extract_Stage = '$Job_Name'                   
 										, Extract_Stage_DateTime = '$Update_DateTime'
 									WHERE 1 = 1
 										AND Extract_Tables_Key = $Processing_Key"
@@ -25903,144 +26478,166 @@ Start-Job -Name Job27 -ScriptBlock {		                                    #<----
 				
 				Write-Host $Update_Extract_Tables
 				
-				
 				#---------------------------------------------
-				# Source Table
-				#---------------------------------------------
-				
-				[STRING]$Source_Table_Qry = "SELECT Source_Table
-										FROM Oa_Extract.Extract_Tables
-										WHERE 1 = 1
-											AND Extract_Tables_Key = $Processing_Key
-														  "                                                                                   
-								$Source_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Source_Table_Qry).Source_Table
-				
-				Write-Host
-				Write-Host $Source_Table_Qry
-				Write-Host "~ Source Table: $Source_Table"
-				
-				#---------------------------------------------
-				# Destination Table
+				# Wait then recheck, if it is the same name then run, else end
 				#---------------------------------------------
 				
-				[STRING]$Dest_Table_Qry = "SELECT Destination_Table
-										FROM Oa_Extract.Extract_Tables
-										WHERE 1 = 1
-											AND Extract_Tables_Key = $Processing_Key
-														  "                                                                                   
-								$Dest_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Table_Qry).Destination_Table
+				Start-Sleep -s $Sleep_Time 
 				
-				Write-Host
-				Write-Host $Dest_Table
-				Write-Host "~ Destination Table: $Dest_Table"
-				
-				
-				#---------------------------------------------
-				# Extract Data
-				#---------------------------------------------
-				
-				Copy-OneAccord_Data -p1 $Source_Table -p2 $Processing_Key
-				
-				
-				#---------------------------------------------
-				# Check If Extract was successful
-				#---------------------------------------------
-				
-				[STRING]$Extract_Success_Qry = "SELECT SUM(Alpha_Result) AS Sum_Alpha_Result
-										FROM Oa_Extract.Alpha_Table_1
-										WHERE 1 = 1
-											AND Alpha_Stage = '$Dest_Table'
-											AND Alpha_Step_Name = 'Stats'
-														  "                                                                                   
-					$Extract_Success_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Extract_Success_Qry).Sum_Alpha_Result
-					
-					[Int]$Extract_Success = [convert]::ToInt32($Extract_Success_Var)
-				
-				Write-Host
-				Write-Host $Extract_Success_Qry
-				Write-Host "~ Extract Success: $Extract_Success"
-				
-				IF ($Extract_Success -gt 0)
-					{
-						#---------------------------------------------
-						# Extract_Tables Update
-						#---------------------------------------------
-						$Update_Complete_DateTime = Get-Date
-					
-						$Update_Complete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-											SET Extract_Stage = 'Complete'
-												, Extract_Stage_DateTime = '$Update_Complete_DateTime'
-											WHERE 1 = 1
-												AND Extract_Tables_Key = $Processing_Key"
+				[STRING]$Processing_Key_Qry2 = "SELECT Extract_Stage
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1 
+													AND Extract_Tables_Key = $Processing_Key
+											"                                                                                   
+					$Extract_Stage = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Processing_Key_Qry2).Extract_Stage
 						
-						Invoke-Sqlcmd `
-							-ServerInstance $Dest_Instance `
-							-Database $Dest_Db `
-							-Query $Update_Complete_Extract_Tables
+				Write-Host
+				Write-Host $Processing_Key_Qry2
+				Write-Host "~ Job Name: $Job_Name"
+				Write-Host "~ Extract_Stage (2): $Extract_Stage"
+				
+				IF($Job_Name -eq $Extract_Stage) 
+					{
+				
+				
+						#---------------------------------------------
+						# Source Table
+						#---------------------------------------------
+						
+						[STRING]$Source_Table_Qry = "SELECT Source_Table
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1
+													AND Extract_Tables_Key = $Processing_Key
+																  "                                                                                   
+										$Source_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Source_Table_Qry).Source_Table
 						
 						Write-Host
-						Write-Host $Update_Complete_Extract_Tables
-						Write-Host "~ Extract_Tables updated to Complete."
-					}
-					ELSE
-					{
-						#---------------------------------------------
-						# Extract_Tables Update
-						#---------------------------------------------
-						$Update_Incomplete_DateTime = Get-Date
-					
-						$Update_Incomplete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-																SET Extract_Stage = 'Incomplete'
-																	, Extract_Stage_DateTime = '$Update_Complete_DateTime'
-																WHERE 1 = 1
-																	AND Extract_Tables_Key = $Processing_Key
-															"
+						Write-Host $Source_Table_Qry
+						Write-Host "~ Source Table: $Source_Table"
 						
-						Invoke-Sqlcmd `
-							-ServerInstance $Dest_Instance `
-							-Database $Dest_Db `
-							-Query $Update_Incomplete_Extract_Tables
+						#---------------------------------------------
+						# Destination Table
+						#---------------------------------------------
+						
+						[STRING]$Dest_Table_Qry = "SELECT Destination_Table
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1
+													AND Extract_Tables_Key = $Processing_Key
+																  "                                                                                   
+										$Dest_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Table_Qry).Destination_Table
 						
 						Write-Host
-						Write-Host $Update_Incomplete_Extract_Tables
-						Write-Host "~ Extract_Tables updated to Incomplete."
+						Write-Host $Dest_Table
+						Write-Host "~ Destination Table: $Dest_Table"
 						
+						
+						#---------------------------------------------
+						# Extract Data
+						#---------------------------------------------
+						
+						Copy-OneAccord_Data -p1 $Source_Table -p2 $Processing_Key
+						
+						
+						#---------------------------------------------
+						# Check If Extract was successful
+						#---------------------------------------------
+						
+						[STRING]$Extract_Success_Qry = "SELECT COUNT(CASE WHEN Alpha_Result = 1 THEN 1 ELSE NULL END) AS Count_Alpha_Result
+												FROM Oa_Extract.Alpha_Table_1
+												WHERE 1 = 1
+													AND Alpha_Stage = '$Dest_Table'
+													AND Alpha_Step_Name = 'Stats'
+																  "                                                                                   
+							$Extract_Success_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Extract_Success_Qry).Count_Alpha_Result
+							
+							[Int]$Extract_Success = [convert]::ToInt32($Extract_Success_Var)
+						
+						Write-Host
+						Write-Host $Extract_Success_Qry
+						Write-Host "~ Extract Success: $Extract_Success"
+						
+						IF ($Extract_Success -gt 0)
+							{
+								#---------------------------------------------
+								# Extract_Tables Update
+								#---------------------------------------------
+								$Update_Complete_DateTime = Get-Date
+							
+								$Update_Complete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+													SET Extract_Stage = 'Complete'
+														, Extract_Stage_DateTime = '$Update_Complete_DateTime'
+													WHERE 1 = 1
+														AND Extract_Tables_Key = $Processing_Key"
+								
+								Invoke-Sqlcmd `
+									-ServerInstance $Dest_Instance `
+									-Database $Dest_Db `
+									-Query $Update_Complete_Extract_Tables
+								
+								Write-Host
+								Write-Host $Update_Complete_Extract_Tables
+								Write-Host "~ Extract_Tables updated to Complete."
+							}
+							ELSE
+							{
+								#---------------------------------------------
+								# Extract_Tables Update
+								#---------------------------------------------
+								$Update_Incomplete_DateTime = Get-Date
+							
+								$Update_Incomplete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+																		SET Extract_Stage = 'Incomplete'
+																			, Extract_Stage_DateTime = '$Update_Complete_DateTime'
+																		WHERE 1 = 1
+																			AND Extract_Tables_Key = $Processing_Key
+																	"
+								
+								Invoke-Sqlcmd `
+									-ServerInstance $Dest_Instance `
+									-Database $Dest_Db `
+									-Query $Update_Incomplete_Extract_Tables
+								
+								Write-Host
+								Write-Host $Update_Incomplete_Extract_Tables
+								Write-Host "~ Extract_Tables updated to Incomplete."
+								
+							}
+						
+						
+						#---------------------------------------------
+						# Tables to Process
+						#---------------------------------------------
+						
+						[STRING]$Tables_To_Process_Qry = "SELECT COUNT(Source_Table) AS Tables_To_Process
+															FROM Oa_Extract.Extract_Tables
+															WHERE 1 = 1 
+																AND (Extract_Stage IS NULL 
+																	OR Extract_Stage = 'Incomplete'
+																	)
+																AND Active = 1
+														"                                                                                   
+							$Tables_To_Process_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Tables_To_Process_Qry).Tables_To_Process
+							
+							[Int]$Tables_To_Process = [convert]::ToInt32($Tables_To_Process_Var)
+						
+						Write-Host
+						Write-Host $Tables_To_Process_Qry
+						Write-Host "~ Tables to Process: $Tables_To_Process"
+						
+						
+						#---------------------------------------------
+						# Current Process Time
+						#---------------------------------------------
+						$Current_Process_DateTime = Get-Date
+						
+						Write-Host 
+						Write-Host "~ Current Process Time: $Current_Process_DateTime"
+						
+						$Total_Processing_Time = New-TimeSpan -Start $Loop_Begin_DateTime -End $Current_Process_DateTime
+						
+						Write-Host 
+						Write-Host "~ Total Processing Time: $Total_Processing_Time"
 					}
-				
-				
-				#---------------------------------------------
-				# Tables to Process
-				#---------------------------------------------
-				
-				[STRING]$Tables_To_Process_Qry = "SELECT COUNT(Source_Table) AS Tables_To_Process
-													FROM Oa_Extract.Extract_Tables
-													WHERE 1 = 1 
-														AND (Extract_Stage IS NULL 
-															OR Extract_Stage = 'Incomplete'
-															)
-														AND Active = 1
-												"                                                                                   
-					$Tables_To_Process_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Tables_To_Process_Qry).Tables_To_Process
-					
-					[Int]$Tables_To_Process = [convert]::ToInt32($Tables_To_Process_Var)
-				
-				Write-Host
-				Write-Host $Tables_To_Process_Qry
-				Write-Host "~ Tables to Process: $Tables_To_Process"
-				
-				
-				#---------------------------------------------
-				# Current Process Time
-				#---------------------------------------------
-				$Current_Process_DateTime = Get-Date
-				
-				Write-Host 
-				Write-Host "~ Current Process Time: $Current_Process_DateTime"
-				
-				$Total_Processing_Time = New-TimeSpan -Start $Loop_Begin_DateTime -End $Current_Process_DateTime
-				
-				Write-Host 
-				Write-Host "~ Total Processing Time: $Total_Processing_Time"
 				
 			
 			} UNTIL ($Tables_To_Process -eq 0 -OR $Total_Processing_Time -gt '00:30:00')
@@ -26057,8 +26654,8 @@ Start-Job -Name Job27 -ScriptBlock {		                                    #<----
 		# Stop log
 		#---------------------------------------------
 		Stop-Transcript
-	}	
-	
+
+	}
 
 Start-Job -Name Job28 -ScriptBlock {		                                    #<----------------------------------------------------------
 		FUNCTION Insert-Alpha_Table_1
@@ -26361,7 +26958,7 @@ Start-Job -Name Job28 -ScriptBlock {		                                    #<----
 				Stop-Transcript
 			
 			}
-
+			
 		FUNCTION Copy-OneAccord_Data
 			{
 				[CmdletBinding(
@@ -26740,19 +27337,26 @@ Start-Job -Name Job28 -ScriptBlock {		                                    #<----
 					}
 				
 			}
-
-		###################################################################################################
-		#
-		#	Name: PowerShell_ETL_Parrellel_Processing
-		#	Date: 02/26/2018
-		#
-		###################################################################################################
-
+			
 		#---------------------------------------------
 		# Catch Non-Terminating Errors
 		#---------------------------------------------
 		$Old = $ErrorActionPreference
 		$ErrorActionPreference = 'Stop'
+
+
+		#---------------------------------------------
+		# Job Variables
+		#---------------------------------------------
+		[STRING]$Job_Name = "Job28"                                             #<----------------------------------------------------------
+		[INT]$Sleep_Time = 28                                                   #<----------------------------------------------------------
+
+		#---------------------------------------------
+		# If this is the first than create the Alpha_Table_1
+		#   Else sleep
+		#---------------------------------------------
+		#Create-Alpha_Table_1                                                  #<----------------------------------------------------------
+		Start-Sleep -s $Sleep_Time  
 
 		#---------------------------------------------
 		# Log file
@@ -26765,7 +27369,7 @@ Start-Job -Name Job28 -ScriptBlock {		                                    #<----
 			}
 				
 		[STRING]$Log_Root = $New_Folder_Path + "\PS_Extract_"
-		[STRING]$Parrellel_Processing = "Parrellel_Processing_28_"              #<----------------------------------------------------------
+		[STRING]$Parrellel_Processing = $Job_Name
 		[STRING]$Log_DateTime = Get-Date -Format "yyyyMMdd_HHmmss"
 		[String]$Log_File_Type = '.log'
 		[STRING]$Log_File_Name = $Log_Root + $Parrellel_Processing + "_" + $Log_DateTime + $Log_File_Type
@@ -26775,14 +27379,7 @@ Start-Job -Name Job28 -ScriptBlock {		                                    #<----
 		Write-Host
 		Write-Host "~ This is the beginning of the Parrellel_Processing script."
 		Write-Host
-
-
-		#---------------------------------------------
-		# If this is the first than create the Alpha_Table_1
-		#   Else sleep for <> seconds
-		#---------------------------------------------
-		#Create-Alpha_Table_1                                                 #<----------------------------------------------------------
-		Start-Sleep -s 31                                                     #<----------------------------------------------------------
+												
 
 		#---------------------------------------------
 		# Destination Connection String
@@ -26852,11 +27449,11 @@ Start-Job -Name Job28 -ScriptBlock {		                                    #<----
 				
 				#---------------------------------------------
 				# Extract_Tables Update
-				#---------------------------------------------
+				#---------------------------------------------				
 				$Update_DateTime = Get-Date
 			
 				$Update_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-									SET Extract_Stage = 'Processing'
+									SET Extract_Stage = '$Job_Name'                   
 										, Extract_Stage_DateTime = '$Update_DateTime'
 									WHERE 1 = 1
 										AND Extract_Tables_Key = $Processing_Key"
@@ -26868,144 +27465,166 @@ Start-Job -Name Job28 -ScriptBlock {		                                    #<----
 				
 				Write-Host $Update_Extract_Tables
 				
-				
 				#---------------------------------------------
-				# Source Table
-				#---------------------------------------------
-				
-				[STRING]$Source_Table_Qry = "SELECT Source_Table
-										FROM Oa_Extract.Extract_Tables
-										WHERE 1 = 1
-											AND Extract_Tables_Key = $Processing_Key
-														  "                                                                                   
-								$Source_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Source_Table_Qry).Source_Table
-				
-				Write-Host
-				Write-Host $Source_Table_Qry
-				Write-Host "~ Source Table: $Source_Table"
-				
-				#---------------------------------------------
-				# Destination Table
+				# Wait then recheck, if it is the same name then run, else end
 				#---------------------------------------------
 				
-				[STRING]$Dest_Table_Qry = "SELECT Destination_Table
-										FROM Oa_Extract.Extract_Tables
-										WHERE 1 = 1
-											AND Extract_Tables_Key = $Processing_Key
-														  "                                                                                   
-								$Dest_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Table_Qry).Destination_Table
+				Start-Sleep -s $Sleep_Time 
 				
-				Write-Host
-				Write-Host $Dest_Table
-				Write-Host "~ Destination Table: $Dest_Table"
-				
-				
-				#---------------------------------------------
-				# Extract Data
-				#---------------------------------------------
-				
-				Copy-OneAccord_Data -p1 $Source_Table -p2 $Processing_Key
-				
-				
-				#---------------------------------------------
-				# Check If Extract was successful
-				#---------------------------------------------
-				
-				[STRING]$Extract_Success_Qry = "SELECT SUM(Alpha_Result) AS Sum_Alpha_Result
-										FROM Oa_Extract.Alpha_Table_1
-										WHERE 1 = 1
-											AND Alpha_Stage = '$Dest_Table'
-											AND Alpha_Step_Name = 'Stats'
-														  "                                                                                   
-					$Extract_Success_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Extract_Success_Qry).Sum_Alpha_Result
-					
-					[Int]$Extract_Success = [convert]::ToInt32($Extract_Success_Var)
-				
-				Write-Host
-				Write-Host $Extract_Success_Qry
-				Write-Host "~ Extract Success: $Extract_Success"
-				
-				IF ($Extract_Success -gt 0)
-					{
-						#---------------------------------------------
-						# Extract_Tables Update
-						#---------------------------------------------
-						$Update_Complete_DateTime = Get-Date
-					
-						$Update_Complete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-											SET Extract_Stage = 'Complete'
-												, Extract_Stage_DateTime = '$Update_Complete_DateTime'
-											WHERE 1 = 1
-												AND Extract_Tables_Key = $Processing_Key"
+				[STRING]$Processing_Key_Qry2 = "SELECT Extract_Stage
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1 
+													AND Extract_Tables_Key = $Processing_Key
+											"                                                                                   
+					$Extract_Stage = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Processing_Key_Qry2).Extract_Stage
 						
-						Invoke-Sqlcmd `
-							-ServerInstance $Dest_Instance `
-							-Database $Dest_Db `
-							-Query $Update_Complete_Extract_Tables
+				Write-Host
+				Write-Host $Processing_Key_Qry2
+				Write-Host "~ Job Name: $Job_Name"
+				Write-Host "~ Extract_Stage (2): $Extract_Stage"
+				
+				IF($Job_Name -eq $Extract_Stage) 
+					{
+				
+				
+						#---------------------------------------------
+						# Source Table
+						#---------------------------------------------
+						
+						[STRING]$Source_Table_Qry = "SELECT Source_Table
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1
+													AND Extract_Tables_Key = $Processing_Key
+																  "                                                                                   
+										$Source_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Source_Table_Qry).Source_Table
 						
 						Write-Host
-						Write-Host $Update_Complete_Extract_Tables
-						Write-Host "~ Extract_Tables updated to Complete."
-					}
-					ELSE
-					{
-						#---------------------------------------------
-						# Extract_Tables Update
-						#---------------------------------------------
-						$Update_Incomplete_DateTime = Get-Date
-					
-						$Update_Incomplete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-																SET Extract_Stage = 'Incomplete'
-																	, Extract_Stage_DateTime = '$Update_Complete_DateTime'
-																WHERE 1 = 1
-																	AND Extract_Tables_Key = $Processing_Key
-															"
+						Write-Host $Source_Table_Qry
+						Write-Host "~ Source Table: $Source_Table"
 						
-						Invoke-Sqlcmd `
-							-ServerInstance $Dest_Instance `
-							-Database $Dest_Db `
-							-Query $Update_Incomplete_Extract_Tables
+						#---------------------------------------------
+						# Destination Table
+						#---------------------------------------------
+						
+						[STRING]$Dest_Table_Qry = "SELECT Destination_Table
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1
+													AND Extract_Tables_Key = $Processing_Key
+																  "                                                                                   
+										$Dest_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Table_Qry).Destination_Table
 						
 						Write-Host
-						Write-Host $Update_Incomplete_Extract_Tables
-						Write-Host "~ Extract_Tables updated to Incomplete."
+						Write-Host $Dest_Table
+						Write-Host "~ Destination Table: $Dest_Table"
 						
+						
+						#---------------------------------------------
+						# Extract Data
+						#---------------------------------------------
+						
+						Copy-OneAccord_Data -p1 $Source_Table -p2 $Processing_Key
+						
+						
+						#---------------------------------------------
+						# Check If Extract was successful
+						#---------------------------------------------
+						
+						[STRING]$Extract_Success_Qry = "SELECT COUNT(CASE WHEN Alpha_Result = 1 THEN 1 ELSE NULL END) AS Count_Alpha_Result
+												FROM Oa_Extract.Alpha_Table_1
+												WHERE 1 = 1
+													AND Alpha_Stage = '$Dest_Table'
+													AND Alpha_Step_Name = 'Stats'
+																  "                                                                                   
+							$Extract_Success_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Extract_Success_Qry).Count_Alpha_Result
+							
+							[Int]$Extract_Success = [convert]::ToInt32($Extract_Success_Var)
+						
+						Write-Host
+						Write-Host $Extract_Success_Qry
+						Write-Host "~ Extract Success: $Extract_Success"
+						
+						IF ($Extract_Success -gt 0)
+							{
+								#---------------------------------------------
+								# Extract_Tables Update
+								#---------------------------------------------
+								$Update_Complete_DateTime = Get-Date
+							
+								$Update_Complete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+													SET Extract_Stage = 'Complete'
+														, Extract_Stage_DateTime = '$Update_Complete_DateTime'
+													WHERE 1 = 1
+														AND Extract_Tables_Key = $Processing_Key"
+								
+								Invoke-Sqlcmd `
+									-ServerInstance $Dest_Instance `
+									-Database $Dest_Db `
+									-Query $Update_Complete_Extract_Tables
+								
+								Write-Host
+								Write-Host $Update_Complete_Extract_Tables
+								Write-Host "~ Extract_Tables updated to Complete."
+							}
+							ELSE
+							{
+								#---------------------------------------------
+								# Extract_Tables Update
+								#---------------------------------------------
+								$Update_Incomplete_DateTime = Get-Date
+							
+								$Update_Incomplete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+																		SET Extract_Stage = 'Incomplete'
+																			, Extract_Stage_DateTime = '$Update_Complete_DateTime'
+																		WHERE 1 = 1
+																			AND Extract_Tables_Key = $Processing_Key
+																	"
+								
+								Invoke-Sqlcmd `
+									-ServerInstance $Dest_Instance `
+									-Database $Dest_Db `
+									-Query $Update_Incomplete_Extract_Tables
+								
+								Write-Host
+								Write-Host $Update_Incomplete_Extract_Tables
+								Write-Host "~ Extract_Tables updated to Incomplete."
+								
+							}
+						
+						
+						#---------------------------------------------
+						# Tables to Process
+						#---------------------------------------------
+						
+						[STRING]$Tables_To_Process_Qry = "SELECT COUNT(Source_Table) AS Tables_To_Process
+															FROM Oa_Extract.Extract_Tables
+															WHERE 1 = 1 
+																AND (Extract_Stage IS NULL 
+																	OR Extract_Stage = 'Incomplete'
+																	)
+																AND Active = 1
+														"                                                                                   
+							$Tables_To_Process_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Tables_To_Process_Qry).Tables_To_Process
+							
+							[Int]$Tables_To_Process = [convert]::ToInt32($Tables_To_Process_Var)
+						
+						Write-Host
+						Write-Host $Tables_To_Process_Qry
+						Write-Host "~ Tables to Process: $Tables_To_Process"
+						
+						
+						#---------------------------------------------
+						# Current Process Time
+						#---------------------------------------------
+						$Current_Process_DateTime = Get-Date
+						
+						Write-Host 
+						Write-Host "~ Current Process Time: $Current_Process_DateTime"
+						
+						$Total_Processing_Time = New-TimeSpan -Start $Loop_Begin_DateTime -End $Current_Process_DateTime
+						
+						Write-Host 
+						Write-Host "~ Total Processing Time: $Total_Processing_Time"
 					}
-				
-				
-				#---------------------------------------------
-				# Tables to Process
-				#---------------------------------------------
-				
-				[STRING]$Tables_To_Process_Qry = "SELECT COUNT(Source_Table) AS Tables_To_Process
-													FROM Oa_Extract.Extract_Tables
-													WHERE 1 = 1 
-														AND (Extract_Stage IS NULL 
-															OR Extract_Stage = 'Incomplete'
-															)
-														AND Active = 1
-												"                                                                                   
-					$Tables_To_Process_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Tables_To_Process_Qry).Tables_To_Process
-					
-					[Int]$Tables_To_Process = [convert]::ToInt32($Tables_To_Process_Var)
-				
-				Write-Host
-				Write-Host $Tables_To_Process_Qry
-				Write-Host "~ Tables to Process: $Tables_To_Process"
-				
-				
-				#---------------------------------------------
-				# Current Process Time
-				#---------------------------------------------
-				$Current_Process_DateTime = Get-Date
-				
-				Write-Host 
-				Write-Host "~ Current Process Time: $Current_Process_DateTime"
-				
-				$Total_Processing_Time = New-TimeSpan -Start $Loop_Begin_DateTime -End $Current_Process_DateTime
-				
-				Write-Host 
-				Write-Host "~ Total Processing Time: $Total_Processing_Time"
 				
 			
 			} UNTIL ($Tables_To_Process -eq 0 -OR $Total_Processing_Time -gt '00:30:00')
@@ -27022,8 +27641,8 @@ Start-Job -Name Job28 -ScriptBlock {		                                    #<----
 		# Stop log
 		#---------------------------------------------
 		Stop-Transcript
-	}	
-	
+
+	}
 
 Start-Job -Name Job29 -ScriptBlock {		                                    #<----------------------------------------------------------
 		FUNCTION Insert-Alpha_Table_1
@@ -27326,7 +27945,7 @@ Start-Job -Name Job29 -ScriptBlock {		                                    #<----
 				Stop-Transcript
 			
 			}
-
+			
 		FUNCTION Copy-OneAccord_Data
 			{
 				[CmdletBinding(
@@ -27705,19 +28324,26 @@ Start-Job -Name Job29 -ScriptBlock {		                                    #<----
 					}
 				
 			}
-
-		###################################################################################################
-		#
-		#	Name: PowerShell_ETL_Parrellel_Processing
-		#	Date: 02/26/2018
-		#
-		###################################################################################################
-
+			
 		#---------------------------------------------
 		# Catch Non-Terminating Errors
 		#---------------------------------------------
 		$Old = $ErrorActionPreference
 		$ErrorActionPreference = 'Stop'
+
+
+		#---------------------------------------------
+		# Job Variables
+		#---------------------------------------------
+		[STRING]$Job_Name = "Job29"                                             #<----------------------------------------------------------
+		[INT]$Sleep_Time = 29                                                   #<----------------------------------------------------------
+
+		#---------------------------------------------
+		# If this is the first than create the Alpha_Table_1
+		#   Else sleep
+		#---------------------------------------------
+		#Create-Alpha_Table_1                                                  #<----------------------------------------------------------
+		Start-Sleep -s $Sleep_Time  
 
 		#---------------------------------------------
 		# Log file
@@ -27730,7 +28356,7 @@ Start-Job -Name Job29 -ScriptBlock {		                                    #<----
 			}
 				
 		[STRING]$Log_Root = $New_Folder_Path + "\PS_Extract_"
-		[STRING]$Parrellel_Processing = "Parrellel_Processing_29_"              #<----------------------------------------------------------
+		[STRING]$Parrellel_Processing = $Job_Name
 		[STRING]$Log_DateTime = Get-Date -Format "yyyyMMdd_HHmmss"
 		[String]$Log_File_Type = '.log'
 		[STRING]$Log_File_Name = $Log_Root + $Parrellel_Processing + "_" + $Log_DateTime + $Log_File_Type
@@ -27740,14 +28366,7 @@ Start-Job -Name Job29 -ScriptBlock {		                                    #<----
 		Write-Host
 		Write-Host "~ This is the beginning of the Parrellel_Processing script."
 		Write-Host
-
-
-		#---------------------------------------------
-		# If this is the first than create the Alpha_Table_1
-		#   Else sleep for <> seconds
-		#---------------------------------------------
-		#Create-Alpha_Table_1                                                 #<----------------------------------------------------------
-		Start-Sleep -s 32                                                     #<----------------------------------------------------------
+												
 
 		#---------------------------------------------
 		# Destination Connection String
@@ -27817,11 +28436,11 @@ Start-Job -Name Job29 -ScriptBlock {		                                    #<----
 				
 				#---------------------------------------------
 				# Extract_Tables Update
-				#---------------------------------------------
+				#---------------------------------------------				
 				$Update_DateTime = Get-Date
 			
 				$Update_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-									SET Extract_Stage = 'Processing'
+									SET Extract_Stage = '$Job_Name'                   
 										, Extract_Stage_DateTime = '$Update_DateTime'
 									WHERE 1 = 1
 										AND Extract_Tables_Key = $Processing_Key"
@@ -27833,144 +28452,166 @@ Start-Job -Name Job29 -ScriptBlock {		                                    #<----
 				
 				Write-Host $Update_Extract_Tables
 				
-				
 				#---------------------------------------------
-				# Source Table
-				#---------------------------------------------
-				
-				[STRING]$Source_Table_Qry = "SELECT Source_Table
-										FROM Oa_Extract.Extract_Tables
-										WHERE 1 = 1
-											AND Extract_Tables_Key = $Processing_Key
-														  "                                                                                   
-								$Source_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Source_Table_Qry).Source_Table
-				
-				Write-Host
-				Write-Host $Source_Table_Qry
-				Write-Host "~ Source Table: $Source_Table"
-				
-				#---------------------------------------------
-				# Destination Table
+				# Wait then recheck, if it is the same name then run, else end
 				#---------------------------------------------
 				
-				[STRING]$Dest_Table_Qry = "SELECT Destination_Table
-										FROM Oa_Extract.Extract_Tables
-										WHERE 1 = 1
-											AND Extract_Tables_Key = $Processing_Key
-														  "                                                                                   
-								$Dest_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Table_Qry).Destination_Table
+				Start-Sleep -s $Sleep_Time 
 				
-				Write-Host
-				Write-Host $Dest_Table
-				Write-Host "~ Destination Table: $Dest_Table"
-				
-				
-				#---------------------------------------------
-				# Extract Data
-				#---------------------------------------------
-				
-				Copy-OneAccord_Data -p1 $Source_Table -p2 $Processing_Key
-				
-				
-				#---------------------------------------------
-				# Check If Extract was successful
-				#---------------------------------------------
-				
-				[STRING]$Extract_Success_Qry = "SELECT SUM(Alpha_Result) AS Sum_Alpha_Result
-										FROM Oa_Extract.Alpha_Table_1
-										WHERE 1 = 1
-											AND Alpha_Stage = '$Dest_Table'
-											AND Alpha_Step_Name = 'Stats'
-														  "                                                                                   
-					$Extract_Success_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Extract_Success_Qry).Sum_Alpha_Result
-					
-					[Int]$Extract_Success = [convert]::ToInt32($Extract_Success_Var)
-				
-				Write-Host
-				Write-Host $Extract_Success_Qry
-				Write-Host "~ Extract Success: $Extract_Success"
-				
-				IF ($Extract_Success -gt 0)
-					{
-						#---------------------------------------------
-						# Extract_Tables Update
-						#---------------------------------------------
-						$Update_Complete_DateTime = Get-Date
-					
-						$Update_Complete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-											SET Extract_Stage = 'Complete'
-												, Extract_Stage_DateTime = '$Update_Complete_DateTime'
-											WHERE 1 = 1
-												AND Extract_Tables_Key = $Processing_Key"
+				[STRING]$Processing_Key_Qry2 = "SELECT Extract_Stage
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1 
+													AND Extract_Tables_Key = $Processing_Key
+											"                                                                                   
+					$Extract_Stage = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Processing_Key_Qry2).Extract_Stage
 						
-						Invoke-Sqlcmd `
-							-ServerInstance $Dest_Instance `
-							-Database $Dest_Db `
-							-Query $Update_Complete_Extract_Tables
+				Write-Host
+				Write-Host $Processing_Key_Qry2
+				Write-Host "~ Job Name: $Job_Name"
+				Write-Host "~ Extract_Stage (2): $Extract_Stage"
+				
+				IF($Job_Name -eq $Extract_Stage) 
+					{
+				
+				
+						#---------------------------------------------
+						# Source Table
+						#---------------------------------------------
+						
+						[STRING]$Source_Table_Qry = "SELECT Source_Table
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1
+													AND Extract_Tables_Key = $Processing_Key
+																  "                                                                                   
+										$Source_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Source_Table_Qry).Source_Table
 						
 						Write-Host
-						Write-Host $Update_Complete_Extract_Tables
-						Write-Host "~ Extract_Tables updated to Complete."
-					}
-					ELSE
-					{
-						#---------------------------------------------
-						# Extract_Tables Update
-						#---------------------------------------------
-						$Update_Incomplete_DateTime = Get-Date
-					
-						$Update_Incomplete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-																SET Extract_Stage = 'Incomplete'
-																	, Extract_Stage_DateTime = '$Update_Complete_DateTime'
-																WHERE 1 = 1
-																	AND Extract_Tables_Key = $Processing_Key
-															"
+						Write-Host $Source_Table_Qry
+						Write-Host "~ Source Table: $Source_Table"
 						
-						Invoke-Sqlcmd `
-							-ServerInstance $Dest_Instance `
-							-Database $Dest_Db `
-							-Query $Update_Incomplete_Extract_Tables
+						#---------------------------------------------
+						# Destination Table
+						#---------------------------------------------
+						
+						[STRING]$Dest_Table_Qry = "SELECT Destination_Table
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1
+													AND Extract_Tables_Key = $Processing_Key
+																  "                                                                                   
+										$Dest_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Table_Qry).Destination_Table
 						
 						Write-Host
-						Write-Host $Update_Incomplete_Extract_Tables
-						Write-Host "~ Extract_Tables updated to Incomplete."
+						Write-Host $Dest_Table
+						Write-Host "~ Destination Table: $Dest_Table"
 						
+						
+						#---------------------------------------------
+						# Extract Data
+						#---------------------------------------------
+						
+						Copy-OneAccord_Data -p1 $Source_Table -p2 $Processing_Key
+						
+						
+						#---------------------------------------------
+						# Check If Extract was successful
+						#---------------------------------------------
+						
+						[STRING]$Extract_Success_Qry = "SELECT COUNT(CASE WHEN Alpha_Result = 1 THEN 1 ELSE NULL END) AS Count_Alpha_Result
+												FROM Oa_Extract.Alpha_Table_1
+												WHERE 1 = 1
+													AND Alpha_Stage = '$Dest_Table'
+													AND Alpha_Step_Name = 'Stats'
+																  "                                                                                   
+							$Extract_Success_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Extract_Success_Qry).Count_Alpha_Result
+							
+							[Int]$Extract_Success = [convert]::ToInt32($Extract_Success_Var)
+						
+						Write-Host
+						Write-Host $Extract_Success_Qry
+						Write-Host "~ Extract Success: $Extract_Success"
+						
+						IF ($Extract_Success -gt 0)
+							{
+								#---------------------------------------------
+								# Extract_Tables Update
+								#---------------------------------------------
+								$Update_Complete_DateTime = Get-Date
+							
+								$Update_Complete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+													SET Extract_Stage = 'Complete'
+														, Extract_Stage_DateTime = '$Update_Complete_DateTime'
+													WHERE 1 = 1
+														AND Extract_Tables_Key = $Processing_Key"
+								
+								Invoke-Sqlcmd `
+									-ServerInstance $Dest_Instance `
+									-Database $Dest_Db `
+									-Query $Update_Complete_Extract_Tables
+								
+								Write-Host
+								Write-Host $Update_Complete_Extract_Tables
+								Write-Host "~ Extract_Tables updated to Complete."
+							}
+							ELSE
+							{
+								#---------------------------------------------
+								# Extract_Tables Update
+								#---------------------------------------------
+								$Update_Incomplete_DateTime = Get-Date
+							
+								$Update_Incomplete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+																		SET Extract_Stage = 'Incomplete'
+																			, Extract_Stage_DateTime = '$Update_Complete_DateTime'
+																		WHERE 1 = 1
+																			AND Extract_Tables_Key = $Processing_Key
+																	"
+								
+								Invoke-Sqlcmd `
+									-ServerInstance $Dest_Instance `
+									-Database $Dest_Db `
+									-Query $Update_Incomplete_Extract_Tables
+								
+								Write-Host
+								Write-Host $Update_Incomplete_Extract_Tables
+								Write-Host "~ Extract_Tables updated to Incomplete."
+								
+							}
+						
+						
+						#---------------------------------------------
+						# Tables to Process
+						#---------------------------------------------
+						
+						[STRING]$Tables_To_Process_Qry = "SELECT COUNT(Source_Table) AS Tables_To_Process
+															FROM Oa_Extract.Extract_Tables
+															WHERE 1 = 1 
+																AND (Extract_Stage IS NULL 
+																	OR Extract_Stage = 'Incomplete'
+																	)
+																AND Active = 1
+														"                                                                                   
+							$Tables_To_Process_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Tables_To_Process_Qry).Tables_To_Process
+							
+							[Int]$Tables_To_Process = [convert]::ToInt32($Tables_To_Process_Var)
+						
+						Write-Host
+						Write-Host $Tables_To_Process_Qry
+						Write-Host "~ Tables to Process: $Tables_To_Process"
+						
+						
+						#---------------------------------------------
+						# Current Process Time
+						#---------------------------------------------
+						$Current_Process_DateTime = Get-Date
+						
+						Write-Host 
+						Write-Host "~ Current Process Time: $Current_Process_DateTime"
+						
+						$Total_Processing_Time = New-TimeSpan -Start $Loop_Begin_DateTime -End $Current_Process_DateTime
+						
+						Write-Host 
+						Write-Host "~ Total Processing Time: $Total_Processing_Time"
 					}
-				
-				
-				#---------------------------------------------
-				# Tables to Process
-				#---------------------------------------------
-				
-				[STRING]$Tables_To_Process_Qry = "SELECT COUNT(Source_Table) AS Tables_To_Process
-													FROM Oa_Extract.Extract_Tables
-													WHERE 1 = 1 
-														AND (Extract_Stage IS NULL 
-															OR Extract_Stage = 'Incomplete'
-															)
-														AND Active = 1
-												"                                                                                   
-					$Tables_To_Process_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Tables_To_Process_Qry).Tables_To_Process
-					
-					[Int]$Tables_To_Process = [convert]::ToInt32($Tables_To_Process_Var)
-				
-				Write-Host
-				Write-Host $Tables_To_Process_Qry
-				Write-Host "~ Tables to Process: $Tables_To_Process"
-				
-				
-				#---------------------------------------------
-				# Current Process Time
-				#---------------------------------------------
-				$Current_Process_DateTime = Get-Date
-				
-				Write-Host 
-				Write-Host "~ Current Process Time: $Current_Process_DateTime"
-				
-				$Total_Processing_Time = New-TimeSpan -Start $Loop_Begin_DateTime -End $Current_Process_DateTime
-				
-				Write-Host 
-				Write-Host "~ Total Processing Time: $Total_Processing_Time"
 				
 			
 			} UNTIL ($Tables_To_Process -eq 0 -OR $Total_Processing_Time -gt '00:30:00')
@@ -27987,8 +28628,8 @@ Start-Job -Name Job29 -ScriptBlock {		                                    #<----
 		# Stop log
 		#---------------------------------------------
 		Stop-Transcript
-	}	
-	
+
+	}
 
 Start-Job -Name Job30 -ScriptBlock {		                                    #<----------------------------------------------------------
 		FUNCTION Insert-Alpha_Table_1
@@ -28291,7 +28932,7 @@ Start-Job -Name Job30 -ScriptBlock {		                                    #<----
 				Stop-Transcript
 			
 			}
-
+			
 		FUNCTION Copy-OneAccord_Data
 			{
 				[CmdletBinding(
@@ -28670,19 +29311,26 @@ Start-Job -Name Job30 -ScriptBlock {		                                    #<----
 					}
 				
 			}
-
-		###################################################################################################
-		#
-		#	Name: PowerShell_ETL_Parrellel_Processing
-		#	Date: 02/26/2018
-		#
-		###################################################################################################
-
+			
 		#---------------------------------------------
 		# Catch Non-Terminating Errors
 		#---------------------------------------------
 		$Old = $ErrorActionPreference
 		$ErrorActionPreference = 'Stop'
+
+
+		#---------------------------------------------
+		# Job Variables
+		#---------------------------------------------
+		[STRING]$Job_Name = "Job30"                                             #<----------------------------------------------------------
+		[INT]$Sleep_Time = 30                                                   #<----------------------------------------------------------
+
+		#---------------------------------------------
+		# If this is the first than create the Alpha_Table_1
+		#   Else sleep
+		#---------------------------------------------
+		#Create-Alpha_Table_1                                                   #<----------------------------------------------------------
+		Start-Sleep -s $Sleep_Time  
 
 		#---------------------------------------------
 		# Log file
@@ -28695,7 +29343,7 @@ Start-Job -Name Job30 -ScriptBlock {		                                    #<----
 			}
 				
 		[STRING]$Log_Root = $New_Folder_Path + "\PS_Extract_"
-		[STRING]$Parrellel_Processing = "Parrellel_Processing_30_"              #<----------------------------------------------------------
+		[STRING]$Parrellel_Processing = $Job_Name
 		[STRING]$Log_DateTime = Get-Date -Format "yyyyMMdd_HHmmss"
 		[String]$Log_File_Type = '.log'
 		[STRING]$Log_File_Name = $Log_Root + $Parrellel_Processing + "_" + $Log_DateTime + $Log_File_Type
@@ -28705,14 +29353,7 @@ Start-Job -Name Job30 -ScriptBlock {		                                    #<----
 		Write-Host
 		Write-Host "~ This is the beginning of the Parrellel_Processing script."
 		Write-Host
-
-
-		#---------------------------------------------
-		# If this is the first than create the Alpha_Table_1
-		#   Else sleep for <> seconds
-		#---------------------------------------------
-		#Create-Alpha_Table_1                                                 #<----------------------------------------------------------
-		Start-Sleep -s 33                                                     #<----------------------------------------------------------
+												
 
 		#---------------------------------------------
 		# Destination Connection String
@@ -28782,11 +29423,11 @@ Start-Job -Name Job30 -ScriptBlock {		                                    #<----
 				
 				#---------------------------------------------
 				# Extract_Tables Update
-				#---------------------------------------------
+				#---------------------------------------------				
 				$Update_DateTime = Get-Date
 			
 				$Update_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-									SET Extract_Stage = 'Processing'
+									SET Extract_Stage = '$Job_Name'                   
 										, Extract_Stage_DateTime = '$Update_DateTime'
 									WHERE 1 = 1
 										AND Extract_Tables_Key = $Processing_Key"
@@ -28798,144 +29439,166 @@ Start-Job -Name Job30 -ScriptBlock {		                                    #<----
 				
 				Write-Host $Update_Extract_Tables
 				
-				
 				#---------------------------------------------
-				# Source Table
-				#---------------------------------------------
-				
-				[STRING]$Source_Table_Qry = "SELECT Source_Table
-										FROM Oa_Extract.Extract_Tables
-										WHERE 1 = 1
-											AND Extract_Tables_Key = $Processing_Key
-														  "                                                                                   
-								$Source_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Source_Table_Qry).Source_Table
-				
-				Write-Host
-				Write-Host $Source_Table_Qry
-				Write-Host "~ Source Table: $Source_Table"
-				
-				#---------------------------------------------
-				# Destination Table
+				# Wait then recheck, if it is the same name then run, else end
 				#---------------------------------------------
 				
-				[STRING]$Dest_Table_Qry = "SELECT Destination_Table
-										FROM Oa_Extract.Extract_Tables
-										WHERE 1 = 1
-											AND Extract_Tables_Key = $Processing_Key
-														  "                                                                                   
-								$Dest_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Table_Qry).Destination_Table
+				Start-Sleep -s $Sleep_Time 
 				
-				Write-Host
-				Write-Host $Dest_Table
-				Write-Host "~ Destination Table: $Dest_Table"
-				
-				
-				#---------------------------------------------
-				# Extract Data
-				#---------------------------------------------
-				
-				Copy-OneAccord_Data -p1 $Source_Table -p2 $Processing_Key
-				
-				
-				#---------------------------------------------
-				# Check If Extract was successful
-				#---------------------------------------------
-				
-				[STRING]$Extract_Success_Qry = "SELECT SUM(Alpha_Result) AS Sum_Alpha_Result
-										FROM Oa_Extract.Alpha_Table_1
-										WHERE 1 = 1
-											AND Alpha_Stage = '$Dest_Table'
-											AND Alpha_Step_Name = 'Stats'
-														  "                                                                                   
-					$Extract_Success_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Extract_Success_Qry).Sum_Alpha_Result
-					
-					[Int]$Extract_Success = [convert]::ToInt32($Extract_Success_Var)
-				
-				Write-Host
-				Write-Host $Extract_Success_Qry
-				Write-Host "~ Extract Success: $Extract_Success"
-				
-				IF ($Extract_Success -gt 0)
-					{
-						#---------------------------------------------
-						# Extract_Tables Update
-						#---------------------------------------------
-						$Update_Complete_DateTime = Get-Date
-					
-						$Update_Complete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-											SET Extract_Stage = 'Complete'
-												, Extract_Stage_DateTime = '$Update_Complete_DateTime'
-											WHERE 1 = 1
-												AND Extract_Tables_Key = $Processing_Key"
+				[STRING]$Processing_Key_Qry2 = "SELECT Extract_Stage
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1 
+													AND Extract_Tables_Key = $Processing_Key
+											"                                                                                   
+					$Extract_Stage = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Processing_Key_Qry2).Extract_Stage
 						
-						Invoke-Sqlcmd `
-							-ServerInstance $Dest_Instance `
-							-Database $Dest_Db `
-							-Query $Update_Complete_Extract_Tables
+				Write-Host
+				Write-Host $Processing_Key_Qry2
+				Write-Host "~ Job Name: $Job_Name"
+				Write-Host "~ Extract_Stage (2): $Extract_Stage"
+				
+				IF($Job_Name -eq $Extract_Stage) 
+					{
+				
+				
+						#---------------------------------------------
+						# Source Table
+						#---------------------------------------------
+						
+						[STRING]$Source_Table_Qry = "SELECT Source_Table
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1
+													AND Extract_Tables_Key = $Processing_Key
+																  "                                                                                   
+										$Source_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Source_Table_Qry).Source_Table
 						
 						Write-Host
-						Write-Host $Update_Complete_Extract_Tables
-						Write-Host "~ Extract_Tables updated to Complete."
-					}
-					ELSE
-					{
-						#---------------------------------------------
-						# Extract_Tables Update
-						#---------------------------------------------
-						$Update_Incomplete_DateTime = Get-Date
-					
-						$Update_Incomplete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
-																SET Extract_Stage = 'Incomplete'
-																	, Extract_Stage_DateTime = '$Update_Complete_DateTime'
-																WHERE 1 = 1
-																	AND Extract_Tables_Key = $Processing_Key
-															"
+						Write-Host $Source_Table_Qry
+						Write-Host "~ Source Table: $Source_Table"
 						
-						Invoke-Sqlcmd `
-							-ServerInstance $Dest_Instance `
-							-Database $Dest_Db `
-							-Query $Update_Incomplete_Extract_Tables
+						#---------------------------------------------
+						# Destination Table
+						#---------------------------------------------
+						
+						[STRING]$Dest_Table_Qry = "SELECT Destination_Table
+												FROM Oa_Extract.Extract_Tables
+												WHERE 1 = 1
+													AND Extract_Tables_Key = $Processing_Key
+																  "                                                                                   
+										$Dest_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Dest_Table_Qry).Destination_Table
 						
 						Write-Host
-						Write-Host $Update_Incomplete_Extract_Tables
-						Write-Host "~ Extract_Tables updated to Incomplete."
+						Write-Host $Dest_Table
+						Write-Host "~ Destination Table: $Dest_Table"
 						
+						
+						#---------------------------------------------
+						# Extract Data
+						#---------------------------------------------
+						
+						Copy-OneAccord_Data -p1 $Source_Table -p2 $Processing_Key
+						
+						
+						#---------------------------------------------
+						# Check If Extract was successful
+						#---------------------------------------------
+						
+						[STRING]$Extract_Success_Qry = "SELECT COUNT(CASE WHEN Alpha_Result = 1 THEN 1 ELSE NULL END) AS Count_Alpha_Result
+												FROM Oa_Extract.Alpha_Table_1
+												WHERE 1 = 1
+													AND Alpha_Stage = '$Dest_Table'
+													AND Alpha_Step_Name = 'Stats'
+																  "                                                                                   
+							$Extract_Success_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Extract_Success_Qry).Count_Alpha_Result
+							
+							[Int]$Extract_Success = [convert]::ToInt32($Extract_Success_Var)
+						
+						Write-Host
+						Write-Host $Extract_Success_Qry
+						Write-Host "~ Extract Success: $Extract_Success"
+						
+						IF ($Extract_Success -gt 0)
+							{
+								#---------------------------------------------
+								# Extract_Tables Update
+								#---------------------------------------------
+								$Update_Complete_DateTime = Get-Date
+							
+								$Update_Complete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+													SET Extract_Stage = 'Complete'
+														, Extract_Stage_DateTime = '$Update_Complete_DateTime'
+													WHERE 1 = 1
+														AND Extract_Tables_Key = $Processing_Key"
+								
+								Invoke-Sqlcmd `
+									-ServerInstance $Dest_Instance `
+									-Database $Dest_Db `
+									-Query $Update_Complete_Extract_Tables
+								
+								Write-Host
+								Write-Host $Update_Complete_Extract_Tables
+								Write-Host "~ Extract_Tables updated to Complete."
+							}
+							ELSE
+							{
+								#---------------------------------------------
+								# Extract_Tables Update
+								#---------------------------------------------
+								$Update_Incomplete_DateTime = Get-Date
+							
+								$Update_Incomplete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+																		SET Extract_Stage = 'Incomplete'
+																			, Extract_Stage_DateTime = '$Update_Complete_DateTime'
+																		WHERE 1 = 1
+																			AND Extract_Tables_Key = $Processing_Key
+																	"
+								
+								Invoke-Sqlcmd `
+									-ServerInstance $Dest_Instance `
+									-Database $Dest_Db `
+									-Query $Update_Incomplete_Extract_Tables
+								
+								Write-Host
+								Write-Host $Update_Incomplete_Extract_Tables
+								Write-Host "~ Extract_Tables updated to Incomplete."
+								
+							}
+						
+						
+						#---------------------------------------------
+						# Tables to Process
+						#---------------------------------------------
+						
+						[STRING]$Tables_To_Process_Qry = "SELECT COUNT(Source_Table) AS Tables_To_Process
+															FROM Oa_Extract.Extract_Tables
+															WHERE 1 = 1 
+																AND (Extract_Stage IS NULL 
+																	OR Extract_Stage = 'Incomplete'
+																	)
+																AND Active = 1
+														"                                                                                   
+							$Tables_To_Process_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Tables_To_Process_Qry).Tables_To_Process
+							
+							[Int]$Tables_To_Process = [convert]::ToInt32($Tables_To_Process_Var)
+						
+						Write-Host
+						Write-Host $Tables_To_Process_Qry
+						Write-Host "~ Tables to Process: $Tables_To_Process"
+						
+						
+						#---------------------------------------------
+						# Current Process Time
+						#---------------------------------------------
+						$Current_Process_DateTime = Get-Date
+						
+						Write-Host 
+						Write-Host "~ Current Process Time: $Current_Process_DateTime"
+						
+						$Total_Processing_Time = New-TimeSpan -Start $Loop_Begin_DateTime -End $Current_Process_DateTime
+						
+						Write-Host 
+						Write-Host "~ Total Processing Time: $Total_Processing_Time"
 					}
-				
-				
-				#---------------------------------------------
-				# Tables to Process
-				#---------------------------------------------
-				
-				[STRING]$Tables_To_Process_Qry = "SELECT COUNT(Source_Table) AS Tables_To_Process
-													FROM Oa_Extract.Extract_Tables
-													WHERE 1 = 1 
-														AND (Extract_Stage IS NULL 
-															OR Extract_Stage = 'Incomplete'
-															)
-														AND Active = 1
-												"                                                                                   
-					$Tables_To_Process_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Tables_To_Process_Qry).Tables_To_Process
-					
-					[Int]$Tables_To_Process = [convert]::ToInt32($Tables_To_Process_Var)
-				
-				Write-Host
-				Write-Host $Tables_To_Process_Qry
-				Write-Host "~ Tables to Process: $Tables_To_Process"
-				
-				
-				#---------------------------------------------
-				# Current Process Time
-				#---------------------------------------------
-				$Current_Process_DateTime = Get-Date
-				
-				Write-Host 
-				Write-Host "~ Current Process Time: $Current_Process_DateTime"
-				
-				$Total_Processing_Time = New-TimeSpan -Start $Loop_Begin_DateTime -End $Current_Process_DateTime
-				
-				Write-Host 
-				Write-Host "~ Total Processing Time: $Total_Processing_Time"
 				
 			
 			} UNTIL ($Tables_To_Process -eq 0 -OR $Total_Processing_Time -gt '00:30:00')
@@ -28952,28 +29615,60 @@ Start-Job -Name Job30 -ScriptBlock {		                                    #<----
 		# Stop log
 		#---------------------------------------------
 		Stop-Transcript
-	}	
-	
-	
-	
-	
-	
 
+	}
+	
+	
+	
+	
 	
 		
 	
-
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 
 	
 	
 
-	
-	
 
 	
+
+
 	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
