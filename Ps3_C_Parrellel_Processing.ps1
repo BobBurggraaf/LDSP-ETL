@@ -98,7 +98,7 @@ DO
 		# Processing Key
 		#---------------------------------------------
 	
-		[STRING]$Processing_Key_Qry = "SELECT MIN(Extract_Tables_Key) AS Next_Table
+		[STRING]$Processing_Key_Qry = "SELECT COALESCE(MIN(Extract_Tables_Key),0) AS Next_Table
 										FROM Oa_Extract.Extract_Tables
 										WHERE 1 = 1 
 											AND (Extract_Stage IS NULL 

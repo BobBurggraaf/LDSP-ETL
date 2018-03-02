@@ -782,7 +782,7 @@ Start-Job -Name Job1 -ScriptBlock {		                                    #<-----
 				# Processing Key
 				#---------------------------------------------
 			
-				[STRING]$Processing_Key_Qry = "SELECT MIN(Extract_Tables_Key) AS Next_Table
+				[STRING]$Processing_Key_Qry = "SELECT COALESCE(MIN(Extract_Tables_Key),0) AS Next_Table
 												FROM Oa_Extract.Extract_Tables
 												WHERE 1 = 1 
 													AND (Extract_Stage IS NULL 
@@ -1769,7 +1769,7 @@ Start-Job -Name Job2 -ScriptBlock {		                                    #<-----
 				# Processing Key
 				#---------------------------------------------
 			
-				[STRING]$Processing_Key_Qry = "SELECT MIN(Extract_Tables_Key) AS Next_Table
+				[STRING]$Processing_Key_Qry = "SELECT COALESCE(MIN(Extract_Tables_Key),0) AS Next_Table
 												FROM Oa_Extract.Extract_Tables
 												WHERE 1 = 1 
 													AND (Extract_Stage IS NULL 
@@ -2756,7 +2756,7 @@ Start-Job -Name Job3 -ScriptBlock {		                                    #<-----
 				# Processing Key
 				#---------------------------------------------
 			
-				[STRING]$Processing_Key_Qry = "SELECT MIN(Extract_Tables_Key) AS Next_Table
+				[STRING]$Processing_Key_Qry = "SELECT COALESCE(MIN(Extract_Tables_Key),0) AS Next_Table
 												FROM Oa_Extract.Extract_Tables
 												WHERE 1 = 1 
 													AND (Extract_Stage IS NULL 
@@ -3743,7 +3743,7 @@ Start-Job -Name Job4 -ScriptBlock {		                                    #<-----
 				# Processing Key
 				#---------------------------------------------
 			
-				[STRING]$Processing_Key_Qry = "SELECT MIN(Extract_Tables_Key) AS Next_Table
+				[STRING]$Processing_Key_Qry = "SELECT COALESCE(MIN(Extract_Tables_Key),0) AS Next_Table
 												FROM Oa_Extract.Extract_Tables
 												WHERE 1 = 1 
 													AND (Extract_Stage IS NULL 
@@ -4730,7 +4730,7 @@ Start-Job -Name Job5 -ScriptBlock {		                                    #<-----
 				# Processing Key
 				#---------------------------------------------
 			
-				[STRING]$Processing_Key_Qry = "SELECT MIN(Extract_Tables_Key) AS Next_Table
+				[STRING]$Processing_Key_Qry = "SELECT COALESCE(MIN(Extract_Tables_Key),0) AS Next_Table
 												FROM Oa_Extract.Extract_Tables
 												WHERE 1 = 1 
 													AND (Extract_Stage IS NULL 
@@ -5717,7 +5717,7 @@ Start-Job -Name Job6 -ScriptBlock {		                                    #<-----
 				# Processing Key
 				#---------------------------------------------
 			
-				[STRING]$Processing_Key_Qry = "SELECT MIN(Extract_Tables_Key) AS Next_Table
+				[STRING]$Processing_Key_Qry = "SELECT COALESCE(MIN(Extract_Tables_Key),0) AS Next_Table
 												FROM Oa_Extract.Extract_Tables
 												WHERE 1 = 1 
 													AND (Extract_Stage IS NULL 
@@ -6704,7 +6704,7 @@ Start-Job -Name Job7 -ScriptBlock {		                                    #<-----
 				# Processing Key
 				#---------------------------------------------
 			
-				[STRING]$Processing_Key_Qry = "SELECT MIN(Extract_Tables_Key) AS Next_Table
+				[STRING]$Processing_Key_Qry = "SELECT COALESCE(MIN(Extract_Tables_Key),0) AS Next_Table
 												FROM Oa_Extract.Extract_Tables
 												WHERE 1 = 1 
 													AND (Extract_Stage IS NULL 
@@ -7691,7 +7691,7 @@ Start-Job -Name Job8 -ScriptBlock {		                                    #<-----
 				# Processing Key
 				#---------------------------------------------
 			
-				[STRING]$Processing_Key_Qry = "SELECT MIN(Extract_Tables_Key) AS Next_Table
+				[STRING]$Processing_Key_Qry = "SELECT COALESCE(MIN(Extract_Tables_Key),0) AS Next_Table
 												FROM Oa_Extract.Extract_Tables
 												WHERE 1 = 1 
 													AND (Extract_Stage IS NULL 
@@ -8678,7 +8678,7 @@ Start-Job -Name Job9 -ScriptBlock {		                                    #<-----
 				# Processing Key
 				#---------------------------------------------
 			
-				[STRING]$Processing_Key_Qry = "SELECT MIN(Extract_Tables_Key) AS Next_Table
+				[STRING]$Processing_Key_Qry = "SELECT COALESCE(MIN(Extract_Tables_Key),0) AS Next_Table
 												FROM Oa_Extract.Extract_Tables
 												WHERE 1 = 1 
 													AND (Extract_Stage IS NULL 
@@ -9665,7 +9665,7 @@ Start-Job -Name Job10 -ScriptBlock {		                                    #<----
 				# Processing Key
 				#---------------------------------------------
 			
-				[STRING]$Processing_Key_Qry = "SELECT MIN(Extract_Tables_Key) AS Next_Table
+				[STRING]$Processing_Key_Qry = "SELECT COALESCE(MIN(Extract_Tables_Key),0) AS Next_Table
 												FROM Oa_Extract.Extract_Tables
 												WHERE 1 = 1 
 													AND (Extract_Stage IS NULL 
@@ -10652,7 +10652,7 @@ Start-Job -Name Job11 -ScriptBlock {		                                    #<----
 				# Processing Key
 				#---------------------------------------------
 			
-				[STRING]$Processing_Key_Qry = "SELECT MIN(Extract_Tables_Key) AS Next_Table
+				[STRING]$Processing_Key_Qry = "SELECT COALESCE(MIN(Extract_Tables_Key),0) AS Next_Table
 												FROM Oa_Extract.Extract_Tables
 												WHERE 1 = 1 
 													AND (Extract_Stage IS NULL 
@@ -11639,7 +11639,7 @@ Start-Job -Name Job12 -ScriptBlock {		                                    #<----
 				# Processing Key
 				#---------------------------------------------
 			
-				[STRING]$Processing_Key_Qry = "SELECT MIN(Extract_Tables_Key) AS Next_Table
+				[STRING]$Processing_Key_Qry = "SELECT COALESCE(MIN(Extract_Tables_Key),0) AS Next_Table
 												FROM Oa_Extract.Extract_Tables
 												WHERE 1 = 1 
 													AND (Extract_Stage IS NULL 
@@ -12626,7 +12626,7 @@ Start-Job -Name Job13 -ScriptBlock {		                                    #<----
 				# Processing Key
 				#---------------------------------------------
 			
-				[STRING]$Processing_Key_Qry = "SELECT MIN(Extract_Tables_Key) AS Next_Table
+				[STRING]$Processing_Key_Qry = "SELECT COALESCE(MIN(Extract_Tables_Key),0) AS Next_Table
 												FROM Oa_Extract.Extract_Tables
 												WHERE 1 = 1 
 													AND (Extract_Stage IS NULL 
@@ -13613,7 +13613,7 @@ Start-Job -Name Job14 -ScriptBlock {		                                    #<----
 				# Processing Key
 				#---------------------------------------------
 			
-				[STRING]$Processing_Key_Qry = "SELECT MIN(Extract_Tables_Key) AS Next_Table
+				[STRING]$Processing_Key_Qry = "SELECT COALESCE(MIN(Extract_Tables_Key),0) AS Next_Table
 												FROM Oa_Extract.Extract_Tables
 												WHERE 1 = 1 
 													AND (Extract_Stage IS NULL 
@@ -14600,7 +14600,7 @@ Start-Job -Name Job15 -ScriptBlock {		                                    #<----
 				# Processing Key
 				#---------------------------------------------
 			
-				[STRING]$Processing_Key_Qry = "SELECT MIN(Extract_Tables_Key) AS Next_Table
+				[STRING]$Processing_Key_Qry = "SELECT COALESCE(MIN(Extract_Tables_Key),0) AS Next_Table
 												FROM Oa_Extract.Extract_Tables
 												WHERE 1 = 1 
 													AND (Extract_Stage IS NULL 
@@ -15587,7 +15587,7 @@ Start-Job -Name Job16 -ScriptBlock {		                                    #<----
 				# Processing Key
 				#---------------------------------------------
 			
-				[STRING]$Processing_Key_Qry = "SELECT MIN(Extract_Tables_Key) AS Next_Table
+				[STRING]$Processing_Key_Qry = "SELECT COALESCE(MIN(Extract_Tables_Key),0) AS Next_Table
 												FROM Oa_Extract.Extract_Tables
 												WHERE 1 = 1 
 													AND (Extract_Stage IS NULL 
@@ -16574,7 +16574,7 @@ Start-Job -Name Job17 -ScriptBlock {		                                    #<----
 				# Processing Key
 				#---------------------------------------------
 			
-				[STRING]$Processing_Key_Qry = "SELECT MIN(Extract_Tables_Key) AS Next_Table
+				[STRING]$Processing_Key_Qry = "SELECT COALESCE(MIN(Extract_Tables_Key),0) AS Next_Table
 												FROM Oa_Extract.Extract_Tables
 												WHERE 1 = 1 
 													AND (Extract_Stage IS NULL 
@@ -17561,7 +17561,7 @@ Start-Job -Name Job18 -ScriptBlock {		                                    #<----
 				# Processing Key
 				#---------------------------------------------
 			
-				[STRING]$Processing_Key_Qry = "SELECT MIN(Extract_Tables_Key) AS Next_Table
+				[STRING]$Processing_Key_Qry = "SELECT COALESCE(MIN(Extract_Tables_Key),0) AS Next_Table
 												FROM Oa_Extract.Extract_Tables
 												WHERE 1 = 1 
 													AND (Extract_Stage IS NULL 
@@ -18548,7 +18548,7 @@ Start-Job -Name Job19 -ScriptBlock {		                                    #<----
 				# Processing Key
 				#---------------------------------------------
 			
-				[STRING]$Processing_Key_Qry = "SELECT MIN(Extract_Tables_Key) AS Next_Table
+				[STRING]$Processing_Key_Qry = "SELECT COALESCE(MIN(Extract_Tables_Key),0) AS Next_Table
 												FROM Oa_Extract.Extract_Tables
 												WHERE 1 = 1 
 													AND (Extract_Stage IS NULL 
@@ -19535,7 +19535,7 @@ Start-Job -Name Job20 -ScriptBlock {		                                    #<----
 				# Processing Key
 				#---------------------------------------------
 			
-				[STRING]$Processing_Key_Qry = "SELECT MIN(Extract_Tables_Key) AS Next_Table
+				[STRING]$Processing_Key_Qry = "SELECT COALESCE(MIN(Extract_Tables_Key),0) AS Next_Table
 												FROM Oa_Extract.Extract_Tables
 												WHERE 1 = 1 
 													AND (Extract_Stage IS NULL 
@@ -20522,7 +20522,7 @@ Start-Job -Name Job21 -ScriptBlock {		                                    #<----
 				# Processing Key
 				#---------------------------------------------
 			
-				[STRING]$Processing_Key_Qry = "SELECT MIN(Extract_Tables_Key) AS Next_Table
+				[STRING]$Processing_Key_Qry = "SELECT COALESCE(MIN(Extract_Tables_Key),0) AS Next_Table
 												FROM Oa_Extract.Extract_Tables
 												WHERE 1 = 1 
 													AND (Extract_Stage IS NULL 
@@ -21509,7 +21509,7 @@ Start-Job -Name Job22 -ScriptBlock {		                                    #<----
 				# Processing Key
 				#---------------------------------------------
 			
-				[STRING]$Processing_Key_Qry = "SELECT MIN(Extract_Tables_Key) AS Next_Table
+				[STRING]$Processing_Key_Qry = "SELECT COALESCE(MIN(Extract_Tables_Key),0) AS Next_Table
 												FROM Oa_Extract.Extract_Tables
 												WHERE 1 = 1 
 													AND (Extract_Stage IS NULL 
@@ -22496,7 +22496,7 @@ Start-Job -Name Job23 -ScriptBlock {		                                    #<----
 				# Processing Key
 				#---------------------------------------------
 			
-				[STRING]$Processing_Key_Qry = "SELECT MIN(Extract_Tables_Key) AS Next_Table
+				[STRING]$Processing_Key_Qry = "SELECT COALESCE(MIN(Extract_Tables_Key),0) AS Next_Table
 												FROM Oa_Extract.Extract_Tables
 												WHERE 1 = 1 
 													AND (Extract_Stage IS NULL 
@@ -23483,7 +23483,7 @@ Start-Job -Name Job24 -ScriptBlock {		                                    #<----
 				# Processing Key
 				#---------------------------------------------
 			
-				[STRING]$Processing_Key_Qry = "SELECT MIN(Extract_Tables_Key) AS Next_Table
+				[STRING]$Processing_Key_Qry = "SELECT COALESCE(MIN(Extract_Tables_Key),0) AS Next_Table
 												FROM Oa_Extract.Extract_Tables
 												WHERE 1 = 1 
 													AND (Extract_Stage IS NULL 
@@ -24470,7 +24470,7 @@ Start-Job -Name Job25 -ScriptBlock {		                                    #<----
 				# Processing Key
 				#---------------------------------------------
 			
-				[STRING]$Processing_Key_Qry = "SELECT MIN(Extract_Tables_Key) AS Next_Table
+				[STRING]$Processing_Key_Qry = "SELECT COALESCE(MIN(Extract_Tables_Key),0) AS Next_Table
 												FROM Oa_Extract.Extract_Tables
 												WHERE 1 = 1 
 													AND (Extract_Stage IS NULL 
@@ -25457,7 +25457,7 @@ Start-Job -Name Job26 -ScriptBlock {		                                    #<----
 				# Processing Key
 				#---------------------------------------------
 			
-				[STRING]$Processing_Key_Qry = "SELECT MIN(Extract_Tables_Key) AS Next_Table
+				[STRING]$Processing_Key_Qry = "SELECT COALESCE(MIN(Extract_Tables_Key),0) AS Next_Table
 												FROM Oa_Extract.Extract_Tables
 												WHERE 1 = 1 
 													AND (Extract_Stage IS NULL 
@@ -26444,7 +26444,7 @@ Start-Job -Name Job27 -ScriptBlock {		                                    #<----
 				# Processing Key
 				#---------------------------------------------
 			
-				[STRING]$Processing_Key_Qry = "SELECT MIN(Extract_Tables_Key) AS Next_Table
+				[STRING]$Processing_Key_Qry = "SELECT COALESCE(MIN(Extract_Tables_Key),0) AS Next_Table
 												FROM Oa_Extract.Extract_Tables
 												WHERE 1 = 1 
 													AND (Extract_Stage IS NULL 
@@ -27431,7 +27431,7 @@ Start-Job -Name Job28 -ScriptBlock {		                                    #<----
 				# Processing Key
 				#---------------------------------------------
 			
-				[STRING]$Processing_Key_Qry = "SELECT MIN(Extract_Tables_Key) AS Next_Table
+				[STRING]$Processing_Key_Qry = "SELECT COALESCE(MIN(Extract_Tables_Key),0) AS Next_Table
 												FROM Oa_Extract.Extract_Tables
 												WHERE 1 = 1 
 													AND (Extract_Stage IS NULL 
@@ -28418,7 +28418,7 @@ Start-Job -Name Job29 -ScriptBlock {		                                    #<----
 				# Processing Key
 				#---------------------------------------------
 			
-				[STRING]$Processing_Key_Qry = "SELECT MIN(Extract_Tables_Key) AS Next_Table
+				[STRING]$Processing_Key_Qry = "SELECT COALESCE(MIN(Extract_Tables_Key),0) AS Next_Table
 												FROM Oa_Extract.Extract_Tables
 												WHERE 1 = 1 
 													AND (Extract_Stage IS NULL 
@@ -29405,7 +29405,7 @@ Start-Job -Name Job30 -ScriptBlock {		                                    #<----
 				# Processing Key
 				#---------------------------------------------
 			
-				[STRING]$Processing_Key_Qry = "SELECT MIN(Extract_Tables_Key) AS Next_Table
+				[STRING]$Processing_Key_Qry = "SELECT COALESCE(MIN(Extract_Tables_Key),0) AS Next_Table
 												FROM Oa_Extract.Extract_Tables
 												WHERE 1 = 1 
 													AND (Extract_Stage IS NULL 
