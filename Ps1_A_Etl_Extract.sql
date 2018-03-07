@@ -8,11 +8,11 @@
  
 ******************************************************************************/
 
-IF OBJECT_ID('OneAccord_Warehouse.Oa_Extract.Extract_Tables','U') IS NOT NULL
-DROP TABLE OneAccord_Warehouse.Oa_Extract.Extract_Tables;
+IF OBJECT_ID('LDSPhilanthropiesDW.Oa_Extract.Extract_Tables','U') IS NOT NULL
+DROP TABLE LDSPhilanthropiesDW.Oa_Extract.Extract_Tables;
 GO
 
-CREATE TABLE OneAccord_Warehouse.Oa_Extract.Extract_Tables
+CREATE TABLE LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 	(
 	Extract_Tables_Key  INT IDENTITY(1,1) PRIMARY KEY
 	, Source_Table NVARCHAR(100)
@@ -53,7 +53,7 @@ CREATE TABLE OneAccord_Warehouse.Oa_Extract.Extract_Tables
 	, Update_Date DATETIME
 	);
 	
-INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
+INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 	(
 	Source_Table
 	, Destination_Table
@@ -98,7 +98,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 -- --------------------------
 	('dbo.AccountBase' -- Source_Table
 		, 'Oa_Extract.AccountBase' -- Destination_Table
-		, 'Oa_Extract.Ext_Account' -- Ext_Table
+		, 'Ext_Account' -- Ext_Table
 		,'AccountId UNIQUEIDENTIFIER
 			, New_LdspId NVARCHAR(100)
 			, Name NVARCHAR(160)
@@ -226,8 +226,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 					ELSE DATEADD(hh,-7,A.Lds_QualifiedOn) END AS Lds_QualifiedOn
 			, Lds_QualifiedBy
 			' -- Ext_Select_Statement
-		, 'AccountBase A
-			LEFT JOIN _MDT_Conversion_Dim B ON YEAR(A.Lds_QualifiedOn) = B.Date_Year
+		, 'Oa_Extract.AccountBase A
+			LEFT JOIN dbo._MDT_Conversion_Dim B ON YEAR(A.Lds_QualifiedOn) = B.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, ' ' -- Code_Block_1
@@ -262,7 +262,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 -- --------------------------
 	('dbo.ActivityPartyBase' -- Source_Table
 		, 'Oa_Extract.ActivityPartyBase' -- Destination_Table
-		, 'Oa_Extract.Ext_Activity' -- Ext_Table
+		, 'Ext_Activity' -- Ext_Table
 		, 'ActivityPartyId UNIQUEIDENTIFIER
 			, ActivityId UNIQUEIDENTIFIER
 			, PartyId UNIQUEIDENTIFIER
@@ -305,8 +305,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 			, PartyIdName
 			, ParticipationTypeMask
 			' -- Ext_Select_Statement
-		, 'ActivityPartyBase A
-				LEFT JOIN _MDT_Conversion_Dim B ON YEAR(A.ScheduledStart) = B.Date_Year
+		, 'Oa_Extract.ActivityPartyBase A
+				LEFT JOIN dbo._MDT_Conversion_Dim B ON YEAR(A.ScheduledStart) = B.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, ' ' -- Code_Block_1
@@ -341,7 +341,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 -- --------------------------
 	('dbo.ActivityPointerBase' -- Source_Table
 		, 'Oa_Extract.ActivityPointerBase' -- Destination_Table
-		, 'Oa_Extract.Ext_Activity_Pointer' -- Ext_Table
+		, 'Ext_Activity_Pointer' -- Ext_Table
 		, 'ActivityId UNIQUEIDENTIFIER
 			, ActivityTypeCode INT
 			, RegardingObjectTypeCode INT
@@ -439,13 +439,13 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 			, CASE WHEN DATENAME(dy,A.ModifiedOn) BETWEEN G.Mdt_Begin_Date_Number AND G.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.ModifiedOn)
 					ELSE DATEADD(hh,-7,A.ModifiedOn) END AS ModifiedOn
 			' -- Ext_Select_Statement
-		, 'ActivityPointerBase A
-				LEFT JOIN _MDT_Conversion_Dim B ON YEAR(A.ScheduledStart) = B.Date_Year
-				LEFT JOIN _MDT_Conversion_Dim C ON YEAR(A.ScheduledEnd) = C.Date_Year
-				LEFT JOIN _MDT_Conversion_Dim D ON YEAR(A.ActualStart) = D.Date_Year
-				LEFT JOIN _MDT_Conversion_Dim E ON YEAR(A.ActualEnd) = E.Date_Year
-				LEFT JOIN _MDT_Conversion_Dim F ON YEAR(A.CreatedOn) = F.Date_Year
-				LEFT JOIN _MDT_Conversion_Dim G ON YEAR(A.ModifiedOn) = G.Date_Year
+		, 'Oa_Extract.ActivityPointerBase A
+				LEFT JOIN dbo._MDT_Conversion_Dim B ON YEAR(A.ScheduledStart) = B.Date_Year
+				LEFT JOIN dbo._MDT_Conversion_Dim C ON YEAR(A.ScheduledEnd) = C.Date_Year
+				LEFT JOIN dbo._MDT_Conversion_Dim D ON YEAR(A.ActualStart) = D.Date_Year
+				LEFT JOIN dbo._MDT_Conversion_Dim E ON YEAR(A.ActualEnd) = E.Date_Year
+				LEFT JOIN dbo._MDT_Conversion_Dim F ON YEAR(A.CreatedOn) = F.Date_Year
+				LEFT JOIN dbo._MDT_Conversion_Dim G ON YEAR(A.ModifiedOn) = G.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, ' ' -- Code_Block_1
@@ -480,7 +480,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 -- --------------------------
 	('dbo.AppointmentBase' -- Source_Table
 		, 'Oa_Extract.AppointmentBase' -- Destination_Table
-		, 'Oa_Extract.Ext_Appointment' -- Ext_Table
+		, 'Ext_Appointment' -- Ext_Table
 		, 'ActivityId UNIQUEIDENTIFIER
 			, Plus_FaceToFace BIT
 			' -- Dest_Create_Fields
@@ -497,7 +497,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, 'ActivityId
 			, Plus_FaceToFace
 			' -- Ext_Select_Statement
-		, 'AppointmentBase
+		, 'Oa_Extract.AppointmentBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, ' ' -- Code_Block_1
@@ -532,7 +532,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 -- --------------------------
 	('dbo.CampaignActivityBase' -- Source_Table
 		, 'Oa_Extract.CampaignActivityBase' -- Destination_Table
-		, 'Oa_Extract.Ext_Campaign_Activity' -- Ext_Table
+		, 'Ext_Campaign_Activity' -- Ext_Table
 		, 'ActivityId UNIQUEIDENTIFIER
 			, Plus_InstitutionalHierarchy UNIQUEIDENTIFIER
 			, Plus_AppealCode NVARCHAR(20)
@@ -564,7 +564,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 			, Plus_CommunicationType
 			, Plus_Format
 			' -- Ext_Select_Statement
-		, 'CampaignActivityBase
+		, 'Oa_Extract.CampaignActivityBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, ' ' -- Code_Block_1
@@ -599,7 +599,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 -- --------------------------
 	('dbo.CampaignBase' -- Source_Table
 		, 'Oa_Extract.CampaignBase' -- Destination_Table
-		, 'Oa_Extract.Ext_Campaign' -- Ext_Table
+		, 'Ext_Campaign' -- Ext_Table
 		, 'CampaignId UNIQUEIDENTIFIER
 			, Name NVARCHAR(128)
 			, TypeCode INT			
@@ -691,7 +691,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 			, CONVERT(NVARCHAR(50),Plus_TotalGiftRevenueFromCampaign) AS Plus_TotalGiftRevenueFromCampaign
 			, CONVERT(NVARCHAR(50),Plus_CampaignProfit_Base) AS Plus_CampaignProfit_Base
 			' -- Ext_Select_Statement
-		, 'CampaignBase
+		, 'Oa_Extract.CampaignBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, ' ' -- Code_Block_1
@@ -726,7 +726,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 -- --------------------------
 	('dbo.CampaignResponseBase' -- Source_Table
 		, 'Oa_Extract.CampaignResponseBase' -- Destination_Table
-		, 'Oa_Extract.Ext_Campaign_Response' -- Ext_Table
+		, 'Ext_Campaign_Response' -- Ext_Table
 		, 'ActivityId UNIQUEIDENTIFIER
 			, Plus_CampaignAppeal UNIQUEIDENTIFIER
 			' -- Dest_Create_Fields
@@ -743,7 +743,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, 'ActivityId
 			, Plus_CampaignAppeal
 			' -- Ext_Select_Statement
-		, 'CampaignResponseBase
+		, 'Oa_Extract.CampaignResponseBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, ' ' -- Code_Block_1
@@ -778,7 +778,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 -- --------------------------
 	('dbo.ConnectionBase' -- Source_Table
 		, 'Oa_Extract.ConnectionBase' -- Destination_Table
-		, 'Oa_Extract.Ext_Connection' -- Ext_Table
+		, 'Ext_Connection' -- Ext_Table
 		, 'Record1Id UNIQUEIDENTIFIER
 			, Record2Id UNIQUEIDENTIFIER
 			, Plus_AlternateName NVARCHAR(100)
@@ -835,7 +835,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 			, Record1IdObjectTypeCode
 			, Record2IdObjectTypeCode
 			' -- Ext_Select_Statement
-		, 'ConnectionBase
+		, 'Oa_Extract.ConnectionBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, ' ' -- Code_Block_1
@@ -870,7 +870,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 -- --------------------------
 	('dbo.ConnectionRoleBase' -- Source_Table
 		, 'Oa_Extract.ConnectionRoleBase' -- Destination_Table
-		, 'Oa_Extract.Ext_Connection_Role' -- Ext_Table
+		, 'Ext_Connection_Role' -- Ext_Table
 		, 'ConnectionRoleId UNIQUEIDENTIFIER
 			, Name NVARCHAR(100)
 			, OverwriteTime DATETIME
@@ -893,7 +893,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 			, Name
 			, OverwriteTime
 			' -- Ext_Select_Statement
-		, 'ConnectionRoleBase			
+		, 'Oa_Extract.ConnectionRoleBase			
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, ' ' -- Code_Block_1
@@ -928,7 +928,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 -- --------------------------
 	('dbo.ContactBase' -- Source_Table
 		, 'Oa_Extract.ContactBase' -- Destination_Table
-		, 'Oa_Extract.Ext_Contact' -- Ext_Table
+		, 'Ext_Contact' -- Ext_Table
 		, 'ContactId UNIQUEIDENTIFIER
 			, New_Ldspid NVARCHAR(100)
 			, Plus_CoordinatingLiaison UNIQUEIDENTIFIER
@@ -1227,9 +1227,9 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 					ELSE DATEADD(hh,-7,A.Lds_QualifiedOn) END AS Lds_QualifiedOn
 			, Lds_QualifiedBy
 			' -- Ext_Select_Statement
-		, 'ContactBase A
-				LEFT JOIN _MDT_Conversion_Dim B ON YEAR(A.Plus_WealthDate) = B.Date_Year
-				LEFT JOIN _MDT_Conversion_Dim C ON YEAR(A.Lds_QualifiedOn) = C.Date_Year
+		, 'Oa_Extract.ContactBase A
+				LEFT JOIN dbo._MDT_Conversion_Dim B ON YEAR(A.Plus_WealthDate) = B.Date_Year
+				LEFT JOIN dbo._MDT_Conversion_Dim C ON YEAR(A.Lds_QualifiedOn) = C.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, ' ' -- Code_Block_1
@@ -1264,7 +1264,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 -- --------------------------
 	('dbo.Entity' -- Source_Table
 		, 'Oa_Extract.Entity' -- Destination_Table
-		, 'Oa_Extract.Ext_Entity' -- Ext_Table
+		, 'Ext_Entity' -- Ext_Table
 		, 'ObjectTypeCode INT
 			, PhysicalName NVARCHAR(64)
 			, EntityId UNIQUEIDENTIFIER
@@ -1286,7 +1286,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 			, PhysicalName
 			, EntityId
 			' -- Ext_Select_Statement
-		, 'Entity
+		, 'Oa_Extract.Entity
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, ' ' -- Code_Block_1
@@ -1321,7 +1321,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 -- --------------------------
 	('dbo.New_AddressBase' -- Source_Table
 		, 'Oa_Extract.New_AddressBase' -- Destination_Table
-		, 'Oa_Extract.Ext_Address' -- Ext_Table
+		, 'Ext_Address' -- Ext_Table
 		, 'Plus_RelatedContact UNIQUEIDENTIFIER
 			, Plus_RelatedAccount UNIQUEIDENTIFIER
 			, New_Primary BIT
@@ -1455,7 +1455,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 			, Lds_County
 			, Lds_City
 			' -- Ext_Select_Statement
-		, 'New_AddressBase
+		, 'Oa_Extract.New_AddressBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, ' ' -- Code_Block_1
@@ -1490,7 +1490,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 -- --------------------------
 	('dbo.New_AssociationBase' -- Source_Table
 		, 'Oa_Extract.New_AssociationBase' -- Destination_Table
-		, 'Oa_Extract.Ext_Association' -- Ext_Table
+		, 'Ext_Association' -- Ext_Table
 		, 'New_AssociationId UNIQUEIDENTIFIER
 			, New_ShortName NVARCHAR(100)
 			, New_Acronym NVARCHAR(100)
@@ -1542,7 +1542,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 			, New_Sponsor
 			, New_Name
 			' -- Ext_Select_Statement
-		, 'New_AssociationBase
+		, 'Oa_Extract.New_AssociationBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, ' ' -- Code_Block_1
@@ -1577,7 +1577,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 -- --------------------------
 	('dbo.New_AssociationMembershipBase' -- Source_Table
 		, 'Oa_Extract.New_AssociationMembershipBase' -- Destination_Table
-		, 'Oa_Extract.Ext_Association_Membership' -- Ext_Table
+		, 'Ext_Association_Membership' -- Ext_Table
 		, 'New_AssociationMembershipId UNIQUEIDENTIFIER
 			, New_ConstituentId  UNIQUEIDENTIFIER
 			, New_Association UNIQUEIDENTIFIER
@@ -1621,9 +1621,9 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 			, StatusCode
 			, New_RelatedOrganization
 			' -- Ext_Select_Statement
-		, 'New_AssociationMembershipBase A
-				LEFT JOIN _MDT_Conversion_Dim B ON YEAR(A.New_StartDate) = B.Date_Year
-				LEFT JOIN _MDT_Conversion_Dim C ON YEAR(A.New_EndDate) = C.Date_Year
+		, 'Oa_Extract.New_AssociationMembershipBase A
+				LEFT JOIN dbo._MDT_Conversion_Dim B ON YEAR(A.New_StartDate) = B.Date_Year
+				LEFT JOIN dbo._MDT_Conversion_Dim C ON YEAR(A.New_EndDate) = C.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, ' ' -- Code_Block_1
@@ -1658,7 +1658,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 -- --------------------------
 	('dbo.New_BatchesBase' -- Source_Table
 		, 'Oa_Extract.New_BatchesBase' -- Destination_Table
-		, 'Oa_Extract.Ext_Batch' -- Ext_Table
+		, 'Ext_Batch' -- Ext_Table
 		, 'New_BatchesId UNIQUEIDENTIFIER
 			, New_BatchNumber NVARCHAR(100)
 			, Lds_BatchType INT
@@ -1680,7 +1680,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 			, New_BatchNumber
 			, Lds_BatchType
 			' -- Ext_Select_Statement
-		, 'New_BatchesBase
+		, 'Oa_Extract.New_BatchesBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, ' ' -- Code_Block_1
@@ -1715,7 +1715,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 -- --------------------------
 	('dbo.New_CityBase' -- Source_Table
 		, 'Oa_Extract.New_CityBase' -- Destination_Table
-		, 'Oa_Extract.Ext_City' -- Ext_Table
+		, 'Ext_City' -- Ext_Table
 		, 'New_CityId UNIQUEIDENTIFIER
 			, New_Name NVARCHAR(100)
 			' -- Dest_Create_Fields
@@ -1732,7 +1732,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, 'New_CityId
 			, New_Name
 			' -- Ext_Select_Statement
-		, 'New_CityBase
+		, 'Oa_Extract.New_CityBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, ' ' -- Code_Block_1
@@ -1767,7 +1767,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 -- --------------------------
 	('dbo.New_CollegeBase' -- Source_Table
 		, 'Oa_Extract.New_CollegeBase' -- Destination_Table
-		, 'Oa_Extract.Ext_College' -- Ext_Table
+		, 'Ext_College' -- Ext_Table
 		, 'New_CollegeId UNIQUEIDENTIFIER
 			, New_Name NVARCHAR(100)
 			, New_CollegeCode NVARCHAR(20)
@@ -1789,7 +1789,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 			, New_Name
 			, New_CollegeCode
 			' -- Ext_Select_Statement
-		, 'New_CollegeBase
+		, 'Oa_Extract.New_CollegeBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, ' ' -- Code_Block_1
@@ -1824,7 +1824,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 -- --------------------------
 	('dbo.New_CountryBase' -- Source_Table
 		, 'Oa_Extract.New_CountryBase' -- Destination_Table
-		, 'Oa_Extract.Ext_Country' -- Ext_Table
+		, 'Ext_Country' -- Ext_Table
 		, 'New_CountryId UNIQUEIDENTIFIER
 			, New_Name NVARCHAR(100)
 			, Plus_AdderessFormat UNIQUEIDENTIFIER
@@ -1846,7 +1846,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 			, New_Name
 			, Plus_AdderessFormat
 			' -- Ext_Select_Statement
-		, 'New_CountryBase
+		, 'Oa_Extract.New_CountryBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, ' ' -- Code_Block_1
@@ -1881,7 +1881,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 -- --------------------------
 	('dbo.New_CountyBase' -- Source_Table
 		, 'Oa_Extract.New_CountyBase' -- Destination_Table
-		, 'Oa_Extract.Ext_County' -- Ext_Table
+		, 'Ext_County' -- Ext_Table
 		, 'New_CountyId UNIQUEIDENTIFIER
 			, New_Name NVARCHAR(100)
 			, Plus_CountyCode NVARCHAR(10)
@@ -1903,7 +1903,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 			, New_Name
 			, Plus_CountyCode
 			' -- Ext_Select_Statement
-		, 'New_CountyBase
+		, 'Oa_Extract.New_CountyBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, ' ' -- Code_Block_1
@@ -1938,7 +1938,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 -- --------------------------
 	('dbo.New_DegreeBase' -- Source_Table
 		, 'Oa_Extract.New_DegreeBase' -- Destination_Table
-		, 'Oa_Extract.Ext_Degree' -- Ext_Table
+		, 'Ext_Degree' -- Ext_Table
 		, 'New_DegreeId UNIQUEIDENTIFIER
 			, New_Degree NVARCHAR(100)
 			, New_DegreeCode NVARCHAR(100)
@@ -1965,7 +1965,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 			, New_DegreeCode
 			, Plus_DegreeLevel
 			' -- Ext_Select_Statement
-		, 'New_DegreeBase
+		, 'Oa_Extract.New_DegreeBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, ' ' -- Code_Block_1
@@ -2000,7 +2000,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 -- --------------------------
 	('dbo.New_DropIncludeBase' -- Source_Table
 		, 'Oa_Extract.New_DropIncludeBase' -- Destination_Table
-		, 'Oa_Extract.Ext_Drop_Include' -- Ext_Table
+		, 'Ext_Drop_Include' -- Ext_Table
 		, 'New_DropIncludeId UNIQUEIDENTIFIER
 			, New_DropIncludesId UNIQUEIDENTIFIER
 			, New_InstitutionalHierarchy UNIQUEIDENTIFIER
@@ -2099,9 +2099,9 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 			, Plus_CampaignId
 			, New_Association
 			' -- Ext_Select_Statement
-		, 'New_DropIncludeBase A
-				LEFT JOIN _MDT_Conversion_Dim B ON YEAR(A.New_StartDate) = B.Date_Year
-				LEFT JOIN _MDT_Conversion_Dim C ON YEAR(A.New_EndDate) = C.Date_Year
+		, 'Oa_Extract.New_DropIncludeBase A
+				LEFT JOIN dbo._MDT_Conversion_Dim B ON YEAR(A.New_StartDate) = B.Date_Year
+				LEFT JOIN dbo._MDT_Conversion_Dim C ON YEAR(A.New_EndDate) = C.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, ' ' -- Code_Block_1
@@ -2136,7 +2136,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 -- --------------------------
 	('dbo.New_EmailBase' -- Source_Table
 		, 'Oa_Extract.New_EmailBase' -- Destination_Table
-		, 'Oa_Extract.Ext_Email' -- Ext_Table
+		, 'Ext_Email' -- Ext_Table
 		, 'New_EmailId UNIQUEIDENTIFIER
 			, New_ConstituentId UNIQUEIDENTIFIER
 			, New_EmailsId UNIQUEIDENTIFIER
@@ -2185,7 +2185,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 			, New_EmailType
 			, New_ConfirmationDate
 			' -- Ext_Select_Statement
-		, 'New_EmailBase
+		, 'Oa_Extract.New_EmailBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, ' ' -- Code_Block_1
@@ -2220,7 +2220,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 -- --------------------------
 	('dbo.New_EmploymentBase' -- Source_Table
 		, 'Oa_Extract.New_EmploymentBase' -- Destination_Table
-		, 'Oa_Extract.Ext_Employment' -- Ext_Table
+		, 'Ext_Employment' -- Ext_Table
 		, 'New_EmploymentsId UNIQUEIDENTIFIER
 			, New_EmploymentId UNIQUEIDENTIFIER
 			, StateCode INT
@@ -2345,10 +2345,10 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 			, Plus_RelatedPhone
 			, Lds_CampusAddress
 			' -- Ext_Select_Statement
-		, 'New_EmploymentBase A
-				LEFT JOIN _MDT_Conversion_Dim B ON YEAR(A.New_DateStarted) = B.Date_Year
-				LEFT JOIN _MDT_Conversion_Dim C ON YEAR(A.New_DateEnded) = C.Date_Year
-				LEFT JOIN _MDT_Conversion_Dim D ON YEAR(A.ModifiedOn) = D.Date_Year
+		, 'Oa_Extract.New_EmploymentBase A
+				LEFT JOIN dbo._MDT_Conversion_Dim B ON YEAR(A.New_DateStarted) = B.Date_Year
+				LEFT JOIN dbo._MDT_Conversion_Dim C ON YEAR(A.New_DateEnded) = C.Date_Year
+				LEFT JOIN dbo._MDT_Conversion_Dim D ON YEAR(A.ModifiedOn) = D.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, ' ' -- Code_Block_1
@@ -2383,7 +2383,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 -- --------------------------
 	('dbo.New_FundAccountBase' -- Source_Table
 		, 'Oa_Extract.New_FundAccountBase' -- Destination_Table
-		, 'Oa_Extract.Ext_Fund_Account' -- Ext_Table
+		, 'Ext_Fund_Account' -- Ext_Table
 		, 'New_FundAccountId UNIQUEIDENTIFIER
 			, New_Name NVARCHAR(100)
 			, New_FundName NVARCHAR(100)
@@ -2617,9 +2617,9 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 			, StatusCode
 			, New_AllowGifts
 			' -- Ext_Select_Statement
-		, 'New_FundAccountBase A
-				LEFT JOIN _MDT_Conversion_Dim B ON YEAR(A.Plus_EffectiveFrom) = B.Date_Year
-				LEFT JOIN _MDT_Conversion_Dim C ON YEAR(A.Plus_EffectiveTo) = C.Date_Year
+		, 'Oa_Extract.New_FundAccountBase A
+				LEFT JOIN dbo._MDT_Conversion_Dim B ON YEAR(A.Plus_EffectiveFrom) = B.Date_Year
+				LEFT JOIN dbo._MDT_Conversion_Dim C ON YEAR(A.Plus_EffectiveTo) = C.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, ' ' -- Code_Block_1
@@ -2654,7 +2654,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 -- --------------------------
 	('dbo.New_GiftBase' -- Source_Table
 		, 'Oa_Extract.New_GiftBase' -- Destination_Table
-		, 'Oa_Extract.Ext_Gift' -- Ext_Table
+		, 'Ext_Gift' -- Ext_Table
 		, 'New_ConstituentDonor UNIQUEIDENTIFIER
 			, New_OrganizationDonor UNIQUEIDENTIFIER
 			, New_FundAccount UNIQUEIDENTIFIER
@@ -2872,10 +2872,10 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 			, Lds_RecurringGiftRule
 			, Lds_RecurringGiftGroup
 			' -- Ext_Select_Statement
-		, 'New_GiftBase A
-				LEFT JOIN _MDT_Conversion_Dim B ON YEAR(A.New_AccountingDate) = B.Date_Year
-				LEFT JOIN _MDT_Conversion_Dim C ON YEAR(A.New_ReceiptDate) = C.Date_Year
-				LEFT JOIN _MDT_Conversion_Dim D ON YEAR(A.New_PostDate) = D.Date_Year
+		, 'Oa_Extract.New_GiftBase A
+				LEFT JOIN dbo._MDT_Conversion_Dim B ON YEAR(A.New_AccountingDate) = B.Date_Year
+				LEFT JOIN dbo._MDT_Conversion_Dim C ON YEAR(A.New_ReceiptDate) = C.Date_Year
+				LEFT JOIN dbo._MDT_Conversion_Dim D ON YEAR(A.New_PostDate) = D.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, ' ' -- Code_Block_1
@@ -2910,7 +2910,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 -- --------------------------
 	('dbo.New_GiftHistoryBase' -- Source_Table
 		, 'Oa_Extract.New_GiftHistoryBase' -- Destination_Table
-		, 'Oa_Extract.Ext_Gift_Hist' -- Ext_Table
+		, 'Ext_Gift_Hist' -- Ext_Table
 		, 'New_RelatedGift UNIQUEIDENTIFIER
 			, Plus_Constituent UNIQUEIDENTIFIER
 			, Plus_Organization UNIQUEIDENTIFIER
@@ -3015,10 +3015,10 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 			, CASE WHEN DATENAME(dy,A.Plus_PostDate) BETWEEN D.Mdt_Begin_Date_Number AND D.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.Plus_PostDate)
 					ELSE DATEADD(hh,-7,A.Plus_PostDate) END AS Plus_PostDate
 			' -- Ext_Select_Statement
-		, 'New_GiftHistoryBase A
-				LEFT JOIN _MDT_Conversion_Dim B ON YEAR(A.Plus_AccountingDate) = B.Date_Year
-				LEFT JOIN _MDT_Conversion_Dim C ON YEAR(A.New_ReceiptDate) = C.Date_Year
-				LEFT JOIN _MDT_Conversion_Dim D ON YEAR(A.Plus_PostDate) = D.Date_Year
+		, 'Oa_Extract.New_GiftHistoryBase A
+				LEFT JOIN dbo._MDT_Conversion_Dim B ON YEAR(A.Plus_AccountingDate) = B.Date_Year
+				LEFT JOIN dbo._MDT_Conversion_Dim C ON YEAR(A.New_ReceiptDate) = C.Date_Year
+				LEFT JOIN dbo._MDT_Conversion_Dim D ON YEAR(A.Plus_PostDate) = D.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, ' ' -- Code_Block_1
@@ -3053,7 +3053,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 -- --------------------------
 	('dbo.New_IndustryBase' -- Source_Table
 		, 'Oa_Extract.New_IndustryBase' -- Destination_Table
-		, 'Oa_Extract.Ext_Industry' -- Ext_Table
+		, 'Ext_Industry' -- Ext_Table
 		, 'New_IndustryId UNIQUEIDENTIFIER
 			, New_Name NVARCHAR(100)
 			' -- Dest_Create_Fields
@@ -3070,7 +3070,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, 'New_IndustryId
 			, New_Name
 			' -- Ext_Select_Statement
-		, 'New_IndustryBase
+		, 'Oa_Extract.New_IndustryBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, ' ' -- Code_Block_1
@@ -3105,7 +3105,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 -- --------------------------
 	('dbo.New_InstitutionBase' -- Source_Table
 		, 'Oa_Extract.New_InstitutionBase' -- Destination_Table
-		, 'Oa_Extract.Ext_Institution' -- Ext_Table
+		, 'Ext_Institution' -- Ext_Table
 		, 'New_Institutionid UNIQUEIDENTIFIER
 			, New_Name NVARCHAR(100)
 			, Plus_ParentInstitutionalHieararchy UNIQUEIDENTIFIER
@@ -3177,7 +3177,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 			, New_DonationUsage
 			, New_Inst
 			' -- Ext_Select_Statement
-		, 'New_InstitutionBase
+		, 'Oa_Extract.New_InstitutionBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, ' ' -- Code_Block_1
@@ -3212,7 +3212,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 -- --------------------------
 	('dbo.New_InternationalExperienceBase' -- Source_Table
 		, 'Oa_Extract.New_InternationalExperienceBase' -- Destination_Table
-		, 'Oa_Extract.Ext_International_Experience' -- Ext_Table
+		, 'Ext_International_Experience' -- Ext_Table
 		, 'New_InternationalExperienceId UNIQUEIDENTIFIER
 			, New_InternationalExperiencesAId UNIQUEIDENTIFIER
 			, New_Experience INT
@@ -3281,9 +3281,9 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 			, Plus_InstitutionalHierarchy 
 			, New_Country
 			' -- Ext_Select_Statement
-		, 'New_InternationalExperienceBase A
-				LEFT JOIN _MDT_Conversion_Dim B ON YEAR(A.New_StartDate) = B.Date_Year
-				LEFT JOIN _MDT_Conversion_Dim C ON YEAR(A.New_EndDate) = C.Date_Year
+		, 'Oa_Extract.New_InternationalExperienceBase A
+				LEFT JOIN dbo._MDT_Conversion_Dim B ON YEAR(A.New_StartDate) = B.Date_Year
+				LEFT JOIN dbo._MDT_Conversion_Dim C ON YEAR(A.New_EndDate) = C.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, ' ' -- Code_Block_1
@@ -3318,7 +3318,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 -- --------------------------
 	('dbo.New_JobCodeBase' -- Source_Table
 		, 'Oa_Extract.New_JobCodeBase' -- Destination_Table
-		, 'Oa_Extract.Ext_Job_Code' -- Ext_Table
+		, 'Ext_Job_Code' -- Ext_Table
 		, 'New_JobCodeId UNIQUEIDENTIFIER
 			, New_Name NVARCHAR(100)
 			' -- Dest_Create_Fields
@@ -3335,7 +3335,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, 'New_JobCodeId
 			, New_Name
 			' -- Ext_Select_Statement
-		, 'New_JobCodeBase
+		, 'Oa_Extract.New_JobCodeBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, ' ' -- Code_Block_1
@@ -3370,7 +3370,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 -- --------------------------
 	('dbo.New_LanguageSpecialAffiliationBase' -- Source_Table
 		, 'Oa_Extract.New_LanguageSpecialAffiliationBase' -- Destination_Table
-		, 'Oa_Extract.Ext_Language' -- Ext_Table
+		, 'Ext_Language' -- Ext_Table
 		, 'New_LanguageSpecialAffiliationId  UNIQUEIDENTIFIER
 			, New_LanguageSAId  UNIQUEIDENTIFIER
 			, New_Language INT
@@ -3447,7 +3447,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 			, CONVERT(NVARCHAR(4000),Plus_Notes) AS Plus_Notes
 			, New_Source
 			' -- Ext_Select_Statement
-		, 'New_LanguageSpecialAffiliationBase
+		, 'Oa_Extract.New_LanguageSpecialAffiliationBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, ' ' -- Code_Block_1
@@ -3482,7 +3482,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 -- --------------------------
 	('dbo.New_MajorBase' -- Source_Table
 		, 'Oa_Extract.New_MajorBase' -- Destination_Table
-		, 'Oa_Extract.Ext_Major' -- Ext_Table
+		, 'Ext_Major' -- Ext_Table
 		, 'New_College UNIQUEIDENTIFIER
 			, New_University UNIQUEIDENTIFIER
 			, New_MajorId UNIQUEIDENTIFIER
@@ -3519,7 +3519,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 			, New_MajorName
 			, New_MajorCode
 			' -- Ext_Select_Statement
-		, 'New_MajorBase
+		, 'Oa_Extract.New_MajorBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, ' ' -- Code_Block_1
@@ -3554,7 +3554,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 -- --------------------------
 	('dbo.New_OtherIdentifiersBase' -- Source_Table
 		, 'Oa_Extract.New_OtherIdentifiersBase' -- Destination_Table
-		, 'Oa_Extract.Ext_Other_Identifiers' -- Ext_Table
+		, 'Ext_Other_Identifiers' -- Ext_Table
 		, 'New_OtherIdentifiersId UNIQUEIDENTIFIER
 			, StateCode INT
 			, New_Type INT
@@ -3607,8 +3607,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 			, Plus_Id
 			, New_OtherIdentifiers
 			' -- Ext_Select_Statement
-		, 'New_OtherIdentifiersBase A
-				LEFT JOIN _MDT_Conversion_Dim B ON YEAR(A.ModifiedOn) = B.Date_Year
+		, 'Oa_Extract.New_OtherIdentifiersBase A
+				LEFT JOIN dbo._MDT_Conversion_Dim B ON YEAR(A.ModifiedOn) = B.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, ' ' -- Code_Block_1
@@ -3643,7 +3643,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 -- --------------------------
 	('dbo.New_PhoneBase' -- Source_Table
 		, 'Oa_Extract.New_PhoneBase' -- Destination_Table
-		, 'Oa_Extract.Ext_Phone' -- Ext_Table
+		, 'Ext_Phone' -- Ext_Table
 		, 'New_PhoneId UNIQUEIDENTIFIER
 			, New_NumberId UNIQUEIDENTIFIER
 			, New_PhonesId UNIQUEIDENTIFIER
@@ -3733,8 +3733,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 					ELSE DATEADD(hh,-7,A.ModifiedOn) END AS ModifiedOn
 			, New_ConfirmationDate
 			' -- Ext_Select_Statement
-		, 'New_PhoneBase A
-				LEFT JOIN _MDT_Conversion_Dim B ON YEAR(A.ModifiedOn) = B.Date_Year
+		, 'Oa_Extract.New_PhoneBase A
+				LEFT JOIN dbo._MDT_Conversion_Dim B ON YEAR(A.ModifiedOn) = B.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, ' ' -- Code_Block_1
@@ -3769,7 +3769,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 -- --------------------------
 	('dbo.New_PledgeBase' -- Source_Table
 		, 'Oa_Extract.New_PledgeBase' -- Destination_Table
-		, 'Oa_Extract.Ext_Pledge' -- Ext_Table
+		, 'Ext_Pledge' -- Ext_Table
 		, 'New_PledgeId UNIQUEIDENTIFIER
 			, New_TotalPledged MONEY
 			, New_BeginDate DATETIME
@@ -4104,15 +4104,15 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 			, StatusCode
 			, Lds_ExpectancyType
 			' -- Ext_Select_Statement
-		, 'New_PledgeBase A
-				LEFT JOIN _MDT_Conversion_Dim B ON YEAR(A.New_BeginDate) = B.Date_Year
-				LEFT JOIN _MDT_Conversion_Dim C ON YEAR(A.New_EndDate) = C.Date_Year
-				LEFT JOIN _MDT_Conversion_Dim D ON YEAR(A.Plus_InstallmentDate) = D.Date_Year
-				LEFT JOIN _MDT_Conversion_Dim E ON YEAR(A.New_SignatureDate) = E.Date_Year
-				LEFT JOIN _MDT_Conversion_Dim F ON YEAR(A.New_NotificationDate) = F.Date_Year
-				LEFT JOIN _MDT_Conversion_Dim G ON YEAR(A.Plus_FundingDate) = G.Date_Year
-				LEFT JOIN _MDT_Conversion_Dim H ON YEAR(A.Plus_EstimatedMaturityDate) = H.Date_Year
-				LEFT JOIN _MDT_Conversion_Dim I ON YEAR(A.Plus_PaymentStartDate) = I.Date_Year
+		, 'Oa_Extract.New_PledgeBase A
+				LEFT JOIN dbo._MDT_Conversion_Dim B ON YEAR(A.New_BeginDate) = B.Date_Year
+				LEFT JOIN dbo._MDT_Conversion_Dim C ON YEAR(A.New_EndDate) = C.Date_Year
+				LEFT JOIN dbo._MDT_Conversion_Dim D ON YEAR(A.Plus_InstallmentDate) = D.Date_Year
+				LEFT JOIN dbo._MDT_Conversion_Dim E ON YEAR(A.New_SignatureDate) = E.Date_Year
+				LEFT JOIN dbo._MDT_Conversion_Dim F ON YEAR(A.New_NotificationDate) = F.Date_Year
+				LEFT JOIN dbo._MDT_Conversion_Dim G ON YEAR(A.Plus_FundingDate) = G.Date_Year
+				LEFT JOIN dbo._MDT_Conversion_Dim H ON YEAR(A.Plus_EstimatedMaturityDate) = H.Date_Year
+				LEFT JOIN dbo._MDT_Conversion_Dim I ON YEAR(A.Plus_PaymentStartDate) = I.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, ' ' -- Code_Block_1
@@ -4147,7 +4147,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 -- --------------------------
 	('dbo.New_PostalCodeBase' -- Source_Table
 		, 'Oa_Extract.New_PostalCodeBase' -- Destination_Table
-		, 'Oa_Extract.Ext_Postal' -- Ext_Table
+		, 'Ext_Postal' -- Ext_Table
 		, 'New_PostalcodeId UNIQUEIDENTIFIER
 			, New_Name NVARCHAR(100)
 			' -- Dest_Create_Fields
@@ -4164,7 +4164,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, 'New_PostalcodeId
 			, New_Name
 			' -- Ext_Select_Statement
-		, 'New_PostalCodeBase
+		, 'Oa_Extract.New_PostalCodeBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, ' ' -- Code_Block_1
@@ -4199,7 +4199,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 -- --------------------------
 	('dbo.New_ProfessionalSuffixBase' -- Source_Table
 		, 'Oa_Extract.New_ProfessionalSuffixBase' -- Destination_Table
-		, 'Oa_Extract.Ext_Professional_Suffix' -- Ext_Table
+		, 'Ext_Professional_Suffix' -- Ext_Table
 		, 'New_ProfessionalSuffixId UNIQUEIDENTIFIER
 			, New_ProfessionalSuffix NVARCHAR(100)
 			' -- Dest_Create_Fields
@@ -4216,7 +4216,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, 'New_ProfessionalSuffixId
 			, New_ProfessionalSuffix
 			' -- Ext_Select_Statement
-		, 'New_ProfessionalSuffixBase
+		, 'Oa_Extract.New_ProfessionalSuffixBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, ' ' -- Code_Block_1
@@ -4251,7 +4251,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 -- --------------------------
 	('dbo.New_RecognitionAssociationBase' -- Source_Table
 		, 'Oa_Extract.New_RecognitionAssociationBase' -- Destination_Table
-		, 'Oa_Extract.Ext_Recognition_Association' -- Ext_Table
+		, 'Ext_Recognition_Association' -- Ext_Table
 		, 'New_RecognitionAssociationId UNIQUEIDENTIFIER
 			, New_Constituent UNIQUEIDENTIFIER
 			, New_EndDate DATETIME
@@ -4311,10 +4311,10 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 			, Plus_ScholarshipCode
 			, New_Recognition
 			' -- Ext_Select_Statement
-		, 'New_RecognitionAssociationBase A
-				LEFT JOIN _MDT_Conversion_Dim B ON YEAR(A.New_EndDate) = B.Date_Year
-				LEFT JOIN _MDT_Conversion_Dim C ON YEAR(A.New_StartDate) = C.Date_Year
-				LEFT JOIN _MDT_Conversion_Dim D ON YEAR(A.Plus_ScholarshipAwardDate) = D.Date_Year
+		, 'Oa_Extract.New_RecognitionAssociationBase A
+				LEFT JOIN dbo._MDT_Conversion_Dim B ON YEAR(A.New_EndDate) = B.Date_Year
+				LEFT JOIN dbo._MDT_Conversion_Dim C ON YEAR(A.New_StartDate) = C.Date_Year
+				LEFT JOIN dbo._MDT_Conversion_Dim D ON YEAR(A.Plus_ScholarshipAwardDate) = D.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, ' ' -- Code_Block_1
@@ -4349,7 +4349,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 -- --------------------------
 	('dbo.New_RecognitionBase' -- Source_Table
 		, 'Oa_Extract.New_RecognitionBase' -- Destination_Table
-		, 'Oa_Extract.Ext_Recognition' -- Ext_Table
+		, 'Ext_Recognition' -- Ext_Table
 		, 'New_RecognitionId UNIQUEIDENTIFIER
 			, StateCode INT
 			, StatusCode INT
@@ -4418,9 +4418,9 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 					ELSE DATEADD(hh,-7,A.New_StartDate) END AS New_StartDate
 			, New_Type
 			' -- Ext_Select_Statement
-		, 'New_RecognitionBase A
-				LEFT JOIN _MDT_Conversion_Dim B ON YEAR(A.New_EndDate) = B.Date_Year
-				LEFT JOIN _MDT_Conversion_Dim C ON YEAR(A.New_StartDate) = C.Date_Year
+		, 'Oa_Extract.New_RecognitionBase A
+				LEFT JOIN dbo._MDT_Conversion_Dim B ON YEAR(A.New_EndDate) = B.Date_Year
+				LEFT JOIN dbo._MDT_Conversion_Dim C ON YEAR(A.New_StartDate) = C.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, ' ' -- Code_Block_1
@@ -4455,7 +4455,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 -- --------------------------
 	('dbo.New_RecognitionCreditBase' -- Source_Table
 		, 'Oa_Extract.New_RecognitionCreditBase' -- Destination_Table
-		, 'Oa_Extract.Ext_Recognition_Credit' -- Ext_Table
+		, 'Ext_Recognition_Credit' -- Ext_Table
 		, 'New_RecognitionCreditId UNIQUEIDENTIFIER
 			, New_RelatedConstituent UNIQUEIDENTIFIER
 			, New_OrganizationId UNIQUEIDENTIFIER
@@ -4518,8 +4518,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 			, Plus_InstitutionalHieararchy
 			, StatusCode
 			' -- Ext_Select_Statement
-		, 'New_RecognitionCreditBase A
-				LEFT JOIN _MDT_Conversion_Dim B ON YEAR(A.New_ReceiptDate) = B.Date_Year
+		, 'Oa_Extract.New_RecognitionCreditBase A
+				LEFT JOIN dbo._MDT_Conversion_Dim B ON YEAR(A.New_ReceiptDate) = B.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, ' ' -- Code_Block_1
@@ -4554,7 +4554,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 -- --------------------------
 	('dbo.New_SourceBase' -- Source_Table
 		, 'Oa_Extract.New_SourceBase' -- Destination_Table
-		, 'Oa_Extract.Ext_Source' -- Ext_Table
+		, 'Ext_Source' -- Ext_Table
 		, 'New_SourceId UNIQUEIDENTIFIER
 			, New_Source NVARCHAR(100)
 			, New_LongDescription NVARCHAR(100)
@@ -4576,7 +4576,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 			, New_Source
 			, New_LongDescription
 			' -- Ext_Select_Statement
-		, 'New_SourceBase
+		, 'Oa_Extract.New_SourceBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, ' ' -- Code_Block_1
@@ -4611,7 +4611,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 -- --------------------------
 	('dbo.New_StateBase' -- Source_Table
 		, 'Oa_Extract.New_StateBase' -- Destination_Table
-		, 'Oa_Extract.Ext_State' -- Ext_Table
+		, 'Ext_State' -- Ext_Table
 		, 'New_StateId UNIQUEIDENTIFIER
 			, New_Name NVARCHAR(100)
 			, Plus_Abbreviation NVARCHAR(50)
@@ -4633,7 +4633,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 			, New_Name
 			, Plus_Abbreviation
 			' -- Ext_Select_Statement
-		, 'New_StateBase
+		, 'Oa_Extract.New_StateBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, ' ' -- Code_Block_1
@@ -4668,7 +4668,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 -- --------------------------
 	('dbo.New_StudentAttendanceBase' -- Source_Table
 		, 'Oa_Extract.New_StudentAttendanceBase' -- Destination_Table
-		, 'Oa_Extract.Ext_Student' -- Ext_Table
+		, 'Ext_Student' -- Ext_Table
 		, 'New_StudentAttendanceId UNIQUEIDENTIFIER
 			, New_Term NVARCHAR(100)
 			, New_Year NVARCHAR(100)
@@ -4736,8 +4736,8 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 			, New_Major
 			, Plus_Emphasis
 			' -- Ext_Select_Statement
-		, 'New_StudentAttendanceBase A
-				LEFT JOIN _MDT_Conversion_Dim B ON YEAR(A.New_ExpectedGraduationDate) = B.Date_Year
+		, 'Oa_Extract.New_StudentAttendanceBase A
+				LEFT JOIN dbo._MDT_Conversion_Dim B ON YEAR(A.New_ExpectedGraduationDate) = B.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, ' ' -- Code_Block_1
@@ -4772,7 +4772,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 -- --------------------------
 	('dbo.New_TitleBase' -- Source_Table
 		, 'Oa_Extract.New_TitleBase' -- Destination_Table
-		, 'Oa_Extract.Ext_Title' -- Ext_Table
+		, 'Ext_Title' -- Ext_Table
 		, 'New_TitleId UNIQUEIDENTIFIER
 			, New_Title NVARCHAR(100)
 			' -- Dest_Create_Fields
@@ -4789,7 +4789,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, 'New_TitleId
 			, New_Title
 			' -- Ext_Select_Statement
-		, 'New_TitleBase
+		, 'Oa_Extract.New_TitleBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, ' ' -- Code_Block_1
@@ -4824,7 +4824,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 -- --------------------------
 	('dbo.New_UniversityBase' -- Source_Table
 		, 'Oa_Extract.New_UniversityBase' -- Destination_Table
-		, 'Oa_Extract.Ext_University' -- Ext_Table
+		, 'Ext_University' -- Ext_Table
 		, 'New_UniversityId UNIQUEIDENTIFIER
 			, New_University NVARCHAR(100)
 			, New_UniversityCode NVARCHAR(10)
@@ -4851,7 +4851,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 			, New_UniversityCode
 			, Plus_UniversityAcronym
 			' -- Ext_Select_Statement
-		, 'New_UniversityBase
+		, 'Oa_Extract.New_UniversityBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, ' ' -- Code_Block_1
@@ -4886,7 +4886,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 -- --------------------------
 	('dbo.OpportunityBase' -- Source_Table
 		, 'Oa_Extract.OpportunityBase' -- Destination_Table
-		, 'Oa_Extract.Ext_Opportunity' -- Ext_Table
+		, 'Ext_Opportunity' -- Ext_Table
 		, 'OpportunityId UNIQUEIDENTIFIER
 			, Plus_TotalAskAmount MONEY
 			, Plus_TotalCommittedAmount MONEY
@@ -5032,16 +5032,16 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 			, Lds_PrimaryInitiative
 			, Plus_ParentInitiative
 			' -- Ext_Select_Statement
-		, 'OpportunityBase A
-				LEFT JOIN _MDT_Conversion_Dim B ON YEAR(A.Plus_ProposalDate) = B.Date_Year
-				LEFT JOIN _MDT_Conversion_Dim C ON YEAR(A.Plus_TargetedCommitment) = C.Date_Year
-				LEFT JOIN _MDT_Conversion_Dim D ON YEAR(A.Plus_CommittedDate) = D.Date_Year
-				LEFT JOIN _MDT_Conversion_Dim E ON YEAR(A.Plus_CultivationProcessStage1Date) = E.Date_Year
-				LEFT JOIN _MDT_Conversion_Dim F ON YEAR(A.Plus_CultivationProcessStage2Date) = F.Date_Year
-				LEFT JOIN _MDT_Conversion_Dim G ON YEAR(A.Plus_CultivationProcessStage3Date) = G.Date_Year
-				LEFT JOIN _MDT_Conversion_Dim H ON YEAR(A.Plus_CultivationProcessStage4Date) = H.Date_Year
-				LEFT JOIN _MDT_Conversion_Dim I ON YEAR(A.Plus_GiftNoticeCreatedOn) = I.Date_Year
-				LEFT JOIN _MDT_Conversion_Dim J ON YEAR(A.Plus_ProposalStatusChangeDate) = J.Date_Year				
+		, 'Oa_Extract.OpportunityBase A
+				LEFT JOIN dbo._MDT_Conversion_Dim B ON YEAR(A.Plus_ProposalDate) = B.Date_Year
+				LEFT JOIN dbo._MDT_Conversion_Dim C ON YEAR(A.Plus_TargetedCommitment) = C.Date_Year
+				LEFT JOIN dbo._MDT_Conversion_Dim D ON YEAR(A.Plus_CommittedDate) = D.Date_Year
+				LEFT JOIN dbo._MDT_Conversion_Dim E ON YEAR(A.Plus_CultivationProcessStage1Date) = E.Date_Year
+				LEFT JOIN dbo._MDT_Conversion_Dim F ON YEAR(A.Plus_CultivationProcessStage2Date) = F.Date_Year
+				LEFT JOIN dbo._MDT_Conversion_Dim G ON YEAR(A.Plus_CultivationProcessStage3Date) = G.Date_Year
+				LEFT JOIN dbo._MDT_Conversion_Dim H ON YEAR(A.Plus_CultivationProcessStage4Date) = H.Date_Year
+				LEFT JOIN dbo._MDT_Conversion_Dim I ON YEAR(A.Plus_GiftNoticeCreatedOn) = I.Date_Year
+				LEFT JOIN dbo._MDT_Conversion_Dim J ON YEAR(A.Plus_ProposalStatusChangeDate) = J.Date_Year				
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, ' ' -- Code_Block_1
@@ -5076,7 +5076,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 -- --------------------------
 	('dbo.Plus_AddressFormatBase' -- Source_Table
 		, 'Oa_Extract.Plus_AddressFormatBase' -- Destination_Table
-		, 'Oa_Extract.Ext_Address_Format' -- Ext_Table
+		, 'Ext_Address_Format' -- Ext_Table
 		, 'Plus_AddressFormatId UNIQUEIDENTIFIER
 			, New_UseStateAbreviation BIT
 			' -- Dest_Create_Fields
@@ -5093,7 +5093,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, 'Plus_AddressFormatId
 			, New_UseStateAbreviation
 			' -- Ext_Select_Statement
-		, 'Plus_AddressFormatBase
+		, 'Oa_Extract.Plus_AddressFormatBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, ' ' -- Code_Block_1
@@ -5128,7 +5128,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 -- --------------------------
 	('dbo.Plus_AlumniBase' -- Source_Table
 		, 'Oa_Extract.Plus_AlumniBase' -- Destination_Table
-		, 'Oa_Extract.Ext_Alumni' -- Ext_Table
+		, 'Ext_Alumni' -- Ext_Table
 		, 'Plus_AlumniId UNIQUEIDENTIFIER
 			, Plus_Name NVARCHAR(100)
 			, Plus_ActualGraduationDate DATETIME
@@ -5207,9 +5207,9 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 			, Plus_Program
 			, Plus_Emphasis
 			' -- Ext_Select_Statement
-		, 'Plus_AlumniBase A
-				LEFT JOIN _MDT_Conversion_Dim B ON YEAR(A.Plus_ActualGraduationDate) = B.Date_Year
-				LEFT JOIN _MDT_Conversion_Dim C ON YEAR(A.Plus_PreferredGraduationDate) = C.Date_Year
+		, 'Oa_Extract.Plus_AlumniBase A
+				LEFT JOIN dbo._MDT_Conversion_Dim B ON YEAR(A.Plus_ActualGraduationDate) = B.Date_Year
+				LEFT JOIN dbo._MDT_Conversion_Dim C ON YEAR(A.Plus_PreferredGraduationDate) = C.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, ' ' -- Code_Block_1
@@ -5244,7 +5244,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 -- --------------------------
 	('dbo.Plus_DonorScoreBase' -- Source_Table
 		, 'Oa_Extract.Plus_DonorScoreBase' -- Destination_Table
-		, 'Oa_Extract.Ext_Donor_Score' -- Ext_Table
+		, 'Ext_Donor_Score' -- Ext_Table
 		, '	Plus_DonorScoreId UNIQUEIDENTIFIER
 			, Plus_Constituent UNIQUEIDENTIFIER
 			, Plus_Institution UNIQUEIDENTIFIER
@@ -5292,7 +5292,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 			, StatusCode
 			, StateCode
 			' -- Ext_Select_Statement
-		, 'Plus_DonorScoreBase				
+		, 'Oa_Extract.Plus_DonorScoreBase				
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, ' ' -- Code_Block_1
@@ -5327,7 +5327,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 -- --------------------------
 	('dbo.Plus_EnvelopeNamesAndSalutationsBase' -- Source_Table
 		, 'Oa_Extract.Plus_EnvelopeNamesAndSalutationsBase' -- Destination_Table
-		, 'Oa_Extract.Ext_Envelope_Names_And_Salutations' -- Ext_Table
+		, 'Ext_Envelope_Names_And_Salutations' -- Ext_Table
 		, 'Plus_Etiquette INT
 			, Plus_EnvelopeSalutationConstituent UNIQUEIDENTIFIER
 			, Plus_SalutationEnvelopeName NVARCHAR(300)
@@ -5369,7 +5369,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 			, Plus_NameType
 			, Plus_EnvelopeNamesAndSalutationsId
 			' -- Ext_Select_Statement
-		, 'Plus_EnvelopeNamesAndSalutationsBase
+		, 'Oa_Extract.Plus_EnvelopeNamesAndSalutationsBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, ' ' -- Code_Block_1
@@ -5404,7 +5404,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 -- --------------------------
 	('dbo.Plus_InterestBase' -- Source_Table
 		, 'Oa_Extract.Plus_InterestBase' -- Destination_Table
-		, 'Oa_Extract.Ext_Interest' -- Ext_Table
+		, 'Ext_Interest' -- Ext_Table
 		, 'Plus_InterestId UNIQUEIDENTIFIER
 			, Plus_Name NVARCHAR(100)
 			' -- Dest_Create_Fields
@@ -5421,7 +5421,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 		, 'Plus_InterestId
 			, Plus_Name
 			' -- Ext_Select_Statement
-		, 'Plus_InterestBase
+		, 'Oa_Extract.Plus_InterestBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, ' ' -- Code_Block_1
@@ -5456,7 +5456,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 -- --------------------------
 	('dbo.Plus_LegacyM11Base' -- Source_Table
 		, 'Oa_Extract.Plus_LegacyM11Base' -- Destination_Table
-		, 'Oa_Extract.Ext_Plus_LegacyM11Base' -- Ext_Table
+		, 'Ext_Plus_LegacyM11Base' -- Ext_Table
 		, 'ActivityId UNIQUEIDENTIFIER
 			, Plus_Source UNIQUEIDENTIFIER
 			, Plus_M11ActivityType INT
@@ -5483,7 +5483,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 			, Plus_M11ActivityType
 			, Plus_M11MessageType
 			' -- Ext_Select_Statement
-		, 'Plus_LegacyM11Base
+		, 'Oa_Extract.Plus_LegacyM11Base
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, ' ' -- Code_Block_1
@@ -5518,7 +5518,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 -- --------------------------
 	('dbo.Plus_LegacyPsaCodeBase' -- Source_Table
 		, 'Oa_Extract.Plus_LegacyPsaCodeBase' -- Destination_Table
-		, 'Oa_Extract.Ext_Psa' -- Ext_Table
+		, 'Ext_Psa' -- Ext_Table
 		, 'Plus_Constituent UNIQUEIDENTIFIER
 			, Plus_LegacyPsaCodeId UNIQUEIDENTIFIER
 			, Plus_PsaCode NVARCHAR(100)
@@ -5579,11 +5579,11 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 			, Plus_Category AS Psa_Type
 			, CONVERT(NVARCHAR(500),Plus_CodeDescription) AS Psa_Text_Line
 			' -- Ext_Select_Statement
-		, 'Plus_LegacyPsaCodeBase A
-				LEFT JOIN _MDT_Conversion_Dim B ON YEAR(A.Plus_EffectiveFrom) = B.Date_Year
-				LEFT JOIN _MDT_Conversion_Dim C ON YEAR(A.Plus_EffectiveTo) = C.Date_Year
-				LEFT JOIN _MDT_Conversion_Dim D ON YEAR(A.CreatedOn) = D.Date_Year
-				LEFT JOIN _MDT_Conversion_Dim E ON YEAR(A.ModifiedOn) = E.Date_Year
+		, 'Oa_Extract.Plus_LegacyPsaCodeBase A
+				LEFT JOIN dbo._MDT_Conversion_Dim B ON YEAR(A.Plus_EffectiveFrom) = B.Date_Year
+				LEFT JOIN dbo._MDT_Conversion_Dim C ON YEAR(A.Plus_EffectiveTo) = C.Date_Year
+				LEFT JOIN dbo._MDT_Conversion_Dim D ON YEAR(A.CreatedOn) = D.Date_Year
+				LEFT JOIN dbo._MDT_Conversion_Dim E ON YEAR(A.ModifiedOn) = E.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, ' ' -- Code_Block_1
@@ -5618,7 +5618,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 -- --------------------------
 	('dbo.Plus_PayrollGroupBase' -- Source_Table
 		, 'Oa_Extract.Plus_PayrollGroupBase' -- Destination_Table
-		, 'Oa_Extract.Ext_Payroll_Group' -- Ext_Table
+		, 'Ext_Payroll_Group' -- Ext_Table
 		, 'Plus_PayrollGroupId UNIQUEIDENTIFIER
 			, Plus_Name NVARCHAR(100)
 			, Plus_Code NVARCHAR(100)
@@ -5640,7 +5640,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 			, Plus_Name
 			, Plus_Code
 			' -- Ext_Select_Statement
-		, 'Plus_PayrollGroupBase
+		, 'Oa_Extract.Plus_PayrollGroupBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, ' ' -- Code_Block_1
@@ -5675,7 +5675,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 -- --------------------------
 	('dbo.Plus_RecurringGiftRulesBase' -- Source_Table
 		, 'Oa_Extract.Plus_RecurringGiftRulesBase' -- Destination_Table
-		, 'Oa_Extract.Ext_Recurring_Gift_Rules' -- Ext_Table
+		, 'Ext_Recurring_Gift_Rules' -- Ext_Table
 		, 'Plus_RecurringGiftRulesId UNIQUEIDENTIFIER
 			, Plus_Constituent UNIQUEIDENTIFIER
 			, Plus_FundAccount UNIQUEIDENTIFIER
@@ -5760,10 +5760,10 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 			, CASE WHEN DATENAME(dy,A.CreatedOn) BETWEEN C.Mdt_Begin_Date_Number AND C.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.CreatedOn)
 					ELSE DATEADD(hh,-7,A.CreatedOn) END AS CreatedOn
 			' -- Ext_Select_Statement
-		, 'Plus_RecurringGiftRulesBase A
-				LEFT JOIN _MDT_Conversion_Dim B ON YEAR(A.Plus_PaymentStart) = B.Date_Year
-				LEFT JOIN _MDT_Conversion_Dim C ON YEAR(A.Plus_PaymentStop) = C.Date_Year
-				LEFT JOIN _MDT_Conversion_Dim D ON YEAR(A.CreatedOn) = D.Date_Year
+		, 'Oa_Extract.Plus_RecurringGiftRulesBase A
+				LEFT JOIN dbo._MDT_Conversion_Dim B ON YEAR(A.Plus_PaymentStart) = B.Date_Year
+				LEFT JOIN dbo._MDT_Conversion_Dim C ON YEAR(A.Plus_PaymentStop) = C.Date_Year
+				LEFT JOIN dbo._MDT_Conversion_Dim D ON YEAR(A.CreatedOn) = D.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, ' ' -- Code_Block_1
@@ -5798,7 +5798,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 -- --------------------------
 	('dbo.StringMapBase' -- Source_Table
 		, 'Oa_Extract.StringMapBase' -- Destination_Table
-		, 'Oa_Extract.Ext_String_Map' -- Ext_Table
+		, 'Ext_String_Map' -- Ext_Table
 		, 'ObjectTypeCode INT
 			, AttributeName NVARCHAR(100)
 			, AttributeValue INT
@@ -5845,7 +5845,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 			, DisplayOrder
 			, StringMapId
 			' -- Ext_Select_Statement
-		, 'dbo.StringMapBase
+		, 'Oa_Extract.StringMapBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, ' ' -- Code_Block_1
@@ -5880,7 +5880,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 -- --------------------------
 	('dbo.SystemUserBase' -- Source_Table
 		, 'Oa_Extract.SystemUserBase' -- Destination_Table
-		, 'Oa_Extract.Ext_System_User' -- Ext_Table
+		, 'Ext_System_User' -- Ext_Table
 		, 'SystemUserId UNIQUEIDENTIFIER
 			, FullName NVARCHAR(200)
 			, FirstName NVARCHAR(64)
@@ -5932,7 +5932,7 @@ INSERT INTO OneAccord_Warehouse.Oa_Extract.Extract_Tables
 			, MobilePhone
 			, DomainName
 			' -- Ext_Select_Statement
-		, 'SystemUserBase
+		, 'Oa_Extract.SystemUserBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, ' ' -- Code_Block_1
