@@ -256,7 +256,7 @@ DO
 						Write-Host "~ Extract_Tables updated to Incomplete."
 						
 					}
-				
+			}	
 				
 				#---------------------------------------------
 				# Tables to Process
@@ -291,7 +291,7 @@ DO
 				
 				Write-Host 
 				Write-Host "~ Total Processing Time: $Total_Processing_Time"
-			}
+			
 		
 	
 	} UNTIL ($Tables_To_Process -eq 0 -OR $Total_Processing_Time -gt '00:30:00')

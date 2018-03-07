@@ -940,7 +940,7 @@ Start-Job -Name Job1 -ScriptBlock {		                                    #<-----
 								Write-Host "~ Extract_Tables updated to Incomplete."
 								
 							}
-						
+					}	
 						
 						#---------------------------------------------
 						# Tables to Process
@@ -975,7 +975,7 @@ Start-Job -Name Job1 -ScriptBlock {		                                    #<-----
 						
 						Write-Host 
 						Write-Host "~ Total Processing Time: $Total_Processing_Time"
-					}
+					
 				
 			
 			} UNTIL ($Tables_To_Process -eq 0 -OR $Total_Processing_Time -gt '00:30:00')
@@ -1927,7 +1927,7 @@ Start-Job -Name Job2 -ScriptBlock {		                                    #<-----
 								Write-Host "~ Extract_Tables updated to Incomplete."
 								
 							}
-						
+					}	
 						
 						#---------------------------------------------
 						# Tables to Process
@@ -1962,7 +1962,7 @@ Start-Job -Name Job2 -ScriptBlock {		                                    #<-----
 						
 						Write-Host 
 						Write-Host "~ Total Processing Time: $Total_Processing_Time"
-					}
+					
 				
 			
 			} UNTIL ($Tables_To_Process -eq 0 -OR $Total_Processing_Time -gt '00:30:00')
@@ -2914,7 +2914,7 @@ Start-Job -Name Job3 -ScriptBlock {		                                    #<-----
 								Write-Host "~ Extract_Tables updated to Incomplete."
 								
 							}
-						
+					}	
 						
 						#---------------------------------------------
 						# Tables to Process
@@ -2949,7 +2949,7 @@ Start-Job -Name Job3 -ScriptBlock {		                                    #<-----
 						
 						Write-Host 
 						Write-Host "~ Total Processing Time: $Total_Processing_Time"
-					}
+					
 				
 			
 			} UNTIL ($Tables_To_Process -eq 0 -OR $Total_Processing_Time -gt '00:30:00')
@@ -3901,7 +3901,7 @@ Start-Job -Name Job4 -ScriptBlock {		                                    #<-----
 								Write-Host "~ Extract_Tables updated to Incomplete."
 								
 							}
-						
+					}	
 						
 						#---------------------------------------------
 						# Tables to Process
@@ -3936,7 +3936,7 @@ Start-Job -Name Job4 -ScriptBlock {		                                    #<-----
 						
 						Write-Host 
 						Write-Host "~ Total Processing Time: $Total_Processing_Time"
-					}
+					
 				
 			
 			} UNTIL ($Tables_To_Process -eq 0 -OR $Total_Processing_Time -gt '00:30:00')
@@ -4888,7 +4888,7 @@ Start-Job -Name Job5 -ScriptBlock {		                                    #<-----
 								Write-Host "~ Extract_Tables updated to Incomplete."
 								
 							}
-						
+					}	
 						
 						#---------------------------------------------
 						# Tables to Process
@@ -4923,7 +4923,7 @@ Start-Job -Name Job5 -ScriptBlock {		                                    #<-----
 						
 						Write-Host 
 						Write-Host "~ Total Processing Time: $Total_Processing_Time"
-					}
+					
 				
 			
 			} UNTIL ($Tables_To_Process -eq 0 -OR $Total_Processing_Time -gt '00:30:00')
@@ -5875,7 +5875,7 @@ Start-Job -Name Job6 -ScriptBlock {		                                    #<-----
 								Write-Host "~ Extract_Tables updated to Incomplete."
 								
 							}
-						
+					}	
 						
 						#---------------------------------------------
 						# Tables to Process
@@ -5910,7 +5910,7 @@ Start-Job -Name Job6 -ScriptBlock {		                                    #<-----
 						
 						Write-Host 
 						Write-Host "~ Total Processing Time: $Total_Processing_Time"
-					}
+					
 				
 			
 			} UNTIL ($Tables_To_Process -eq 0 -OR $Total_Processing_Time -gt '00:30:00')
@@ -6862,7 +6862,7 @@ Start-Job -Name Job7 -ScriptBlock {		                                    #<-----
 								Write-Host "~ Extract_Tables updated to Incomplete."
 								
 							}
-						
+					}	
 						
 						#---------------------------------------------
 						# Tables to Process
@@ -6897,7 +6897,7 @@ Start-Job -Name Job7 -ScriptBlock {		                                    #<-----
 						
 						Write-Host 
 						Write-Host "~ Total Processing Time: $Total_Processing_Time"
-					}
+					
 				
 			
 			} UNTIL ($Tables_To_Process -eq 0 -OR $Total_Processing_Time -gt '00:30:00')
@@ -7849,7 +7849,7 @@ Start-Job -Name Job8 -ScriptBlock {		                                    #<-----
 								Write-Host "~ Extract_Tables updated to Incomplete."
 								
 							}
-						
+					}	
 						
 						#---------------------------------------------
 						# Tables to Process
@@ -7884,7 +7884,7 @@ Start-Job -Name Job8 -ScriptBlock {		                                    #<-----
 						
 						Write-Host 
 						Write-Host "~ Total Processing Time: $Total_Processing_Time"
-					}
+					
 				
 			
 			} UNTIL ($Tables_To_Process -eq 0 -OR $Total_Processing_Time -gt '00:30:00')
@@ -8836,7 +8836,7 @@ Start-Job -Name Job9 -ScriptBlock {		                                    #<-----
 								Write-Host "~ Extract_Tables updated to Incomplete."
 								
 							}
-						
+					}	
 						
 						#---------------------------------------------
 						# Tables to Process
@@ -8871,7 +8871,7 @@ Start-Job -Name Job9 -ScriptBlock {		                                    #<-----
 						
 						Write-Host 
 						Write-Host "~ Total Processing Time: $Total_Processing_Time"
-					}
+					
 				
 			
 			} UNTIL ($Tables_To_Process -eq 0 -OR $Total_Processing_Time -gt '00:30:00')
@@ -9823,7 +9823,7 @@ Start-Job -Name Job10 -ScriptBlock {		                                    #<----
 								Write-Host "~ Extract_Tables updated to Incomplete."
 								
 							}
-						
+					}	
 						
 						#---------------------------------------------
 						# Tables to Process
@@ -9858,7 +9858,7 @@ Start-Job -Name Job10 -ScriptBlock {		                                    #<----
 						
 						Write-Host 
 						Write-Host "~ Total Processing Time: $Total_Processing_Time"
-					}
+					
 				
 			
 			} UNTIL ($Tables_To_Process -eq 0 -OR $Total_Processing_Time -gt '00:30:00')
@@ -10810,7 +10810,7 @@ Start-Job -Name Job11 -ScriptBlock {		                                    #<----
 								Write-Host "~ Extract_Tables updated to Incomplete."
 								
 							}
-						
+					}	
 						
 						#---------------------------------------------
 						# Tables to Process
@@ -10845,7 +10845,7 @@ Start-Job -Name Job11 -ScriptBlock {		                                    #<----
 						
 						Write-Host 
 						Write-Host "~ Total Processing Time: $Total_Processing_Time"
-					}
+					
 				
 			
 			} UNTIL ($Tables_To_Process -eq 0 -OR $Total_Processing_Time -gt '00:30:00')
@@ -11797,7 +11797,7 @@ Start-Job -Name Job12 -ScriptBlock {		                                    #<----
 								Write-Host "~ Extract_Tables updated to Incomplete."
 								
 							}
-						
+					}	
 						
 						#---------------------------------------------
 						# Tables to Process
@@ -11832,7 +11832,7 @@ Start-Job -Name Job12 -ScriptBlock {		                                    #<----
 						
 						Write-Host 
 						Write-Host "~ Total Processing Time: $Total_Processing_Time"
-					}
+					
 				
 			
 			} UNTIL ($Tables_To_Process -eq 0 -OR $Total_Processing_Time -gt '00:30:00')
@@ -12784,7 +12784,7 @@ Start-Job -Name Job13 -ScriptBlock {		                                    #<----
 								Write-Host "~ Extract_Tables updated to Incomplete."
 								
 							}
-						
+					}	
 						
 						#---------------------------------------------
 						# Tables to Process
@@ -12819,7 +12819,7 @@ Start-Job -Name Job13 -ScriptBlock {		                                    #<----
 						
 						Write-Host 
 						Write-Host "~ Total Processing Time: $Total_Processing_Time"
-					}
+					
 				
 			
 			} UNTIL ($Tables_To_Process -eq 0 -OR $Total_Processing_Time -gt '00:30:00')
@@ -13771,7 +13771,7 @@ Start-Job -Name Job14 -ScriptBlock {		                                    #<----
 								Write-Host "~ Extract_Tables updated to Incomplete."
 								
 							}
-						
+					}	
 						
 						#---------------------------------------------
 						# Tables to Process
@@ -13806,7 +13806,7 @@ Start-Job -Name Job14 -ScriptBlock {		                                    #<----
 						
 						Write-Host 
 						Write-Host "~ Total Processing Time: $Total_Processing_Time"
-					}
+					
 				
 			
 			} UNTIL ($Tables_To_Process -eq 0 -OR $Total_Processing_Time -gt '00:30:00')
@@ -14758,7 +14758,7 @@ Start-Job -Name Job15 -ScriptBlock {		                                    #<----
 								Write-Host "~ Extract_Tables updated to Incomplete."
 								
 							}
-						
+					}	
 						
 						#---------------------------------------------
 						# Tables to Process
@@ -14793,7 +14793,7 @@ Start-Job -Name Job15 -ScriptBlock {		                                    #<----
 						
 						Write-Host 
 						Write-Host "~ Total Processing Time: $Total_Processing_Time"
-					}
+					
 				
 			
 			} UNTIL ($Tables_To_Process -eq 0 -OR $Total_Processing_Time -gt '00:30:00')
@@ -15745,7 +15745,7 @@ Start-Job -Name Job16 -ScriptBlock {		                                    #<----
 								Write-Host "~ Extract_Tables updated to Incomplete."
 								
 							}
-						
+					}	
 						
 						#---------------------------------------------
 						# Tables to Process
@@ -15780,7 +15780,7 @@ Start-Job -Name Job16 -ScriptBlock {		                                    #<----
 						
 						Write-Host 
 						Write-Host "~ Total Processing Time: $Total_Processing_Time"
-					}
+					
 				
 			
 			} UNTIL ($Tables_To_Process -eq 0 -OR $Total_Processing_Time -gt '00:30:00')
@@ -16732,7 +16732,7 @@ Start-Job -Name Job17 -ScriptBlock {		                                    #<----
 								Write-Host "~ Extract_Tables updated to Incomplete."
 								
 							}
-						
+					}	
 						
 						#---------------------------------------------
 						# Tables to Process
@@ -16767,7 +16767,7 @@ Start-Job -Name Job17 -ScriptBlock {		                                    #<----
 						
 						Write-Host 
 						Write-Host "~ Total Processing Time: $Total_Processing_Time"
-					}
+					
 				
 			
 			} UNTIL ($Tables_To_Process -eq 0 -OR $Total_Processing_Time -gt '00:30:00')
@@ -17719,7 +17719,7 @@ Start-Job -Name Job18 -ScriptBlock {		                                    #<----
 								Write-Host "~ Extract_Tables updated to Incomplete."
 								
 							}
-						
+					}	
 						
 						#---------------------------------------------
 						# Tables to Process
@@ -17754,7 +17754,7 @@ Start-Job -Name Job18 -ScriptBlock {		                                    #<----
 						
 						Write-Host 
 						Write-Host "~ Total Processing Time: $Total_Processing_Time"
-					}
+					
 				
 			
 			} UNTIL ($Tables_To_Process -eq 0 -OR $Total_Processing_Time -gt '00:30:00')
@@ -18706,7 +18706,7 @@ Start-Job -Name Job19 -ScriptBlock {		                                    #<----
 								Write-Host "~ Extract_Tables updated to Incomplete."
 								
 							}
-						
+					}	
 						
 						#---------------------------------------------
 						# Tables to Process
@@ -18741,7 +18741,7 @@ Start-Job -Name Job19 -ScriptBlock {		                                    #<----
 						
 						Write-Host 
 						Write-Host "~ Total Processing Time: $Total_Processing_Time"
-					}
+					
 				
 			
 			} UNTIL ($Tables_To_Process -eq 0 -OR $Total_Processing_Time -gt '00:30:00')
@@ -19693,7 +19693,7 @@ Start-Job -Name Job20 -ScriptBlock {		                                    #<----
 								Write-Host "~ Extract_Tables updated to Incomplete."
 								
 							}
-						
+					}	
 						
 						#---------------------------------------------
 						# Tables to Process
@@ -19728,7 +19728,7 @@ Start-Job -Name Job20 -ScriptBlock {		                                    #<----
 						
 						Write-Host 
 						Write-Host "~ Total Processing Time: $Total_Processing_Time"
-					}
+					
 				
 			
 			} UNTIL ($Tables_To_Process -eq 0 -OR $Total_Processing_Time -gt '00:30:00')
@@ -20680,7 +20680,7 @@ Start-Job -Name Job21 -ScriptBlock {		                                    #<----
 								Write-Host "~ Extract_Tables updated to Incomplete."
 								
 							}
-						
+					}	
 						
 						#---------------------------------------------
 						# Tables to Process
@@ -20715,7 +20715,7 @@ Start-Job -Name Job21 -ScriptBlock {		                                    #<----
 						
 						Write-Host 
 						Write-Host "~ Total Processing Time: $Total_Processing_Time"
-					}
+					
 				
 			
 			} UNTIL ($Tables_To_Process -eq 0 -OR $Total_Processing_Time -gt '00:30:00')
@@ -21667,7 +21667,7 @@ Start-Job -Name Job22 -ScriptBlock {		                                    #<----
 								Write-Host "~ Extract_Tables updated to Incomplete."
 								
 							}
-						
+					}	
 						
 						#---------------------------------------------
 						# Tables to Process
@@ -21702,7 +21702,7 @@ Start-Job -Name Job22 -ScriptBlock {		                                    #<----
 						
 						Write-Host 
 						Write-Host "~ Total Processing Time: $Total_Processing_Time"
-					}
+					
 				
 			
 			} UNTIL ($Tables_To_Process -eq 0 -OR $Total_Processing_Time -gt '00:30:00')
@@ -22654,7 +22654,7 @@ Start-Job -Name Job23 -ScriptBlock {		                                    #<----
 								Write-Host "~ Extract_Tables updated to Incomplete."
 								
 							}
-						
+					}	
 						
 						#---------------------------------------------
 						# Tables to Process
@@ -22689,7 +22689,7 @@ Start-Job -Name Job23 -ScriptBlock {		                                    #<----
 						
 						Write-Host 
 						Write-Host "~ Total Processing Time: $Total_Processing_Time"
-					}
+					
 				
 			
 			} UNTIL ($Tables_To_Process -eq 0 -OR $Total_Processing_Time -gt '00:30:00')
@@ -23641,7 +23641,7 @@ Start-Job -Name Job24 -ScriptBlock {		                                    #<----
 								Write-Host "~ Extract_Tables updated to Incomplete."
 								
 							}
-						
+					}	
 						
 						#---------------------------------------------
 						# Tables to Process
@@ -23676,7 +23676,7 @@ Start-Job -Name Job24 -ScriptBlock {		                                    #<----
 						
 						Write-Host 
 						Write-Host "~ Total Processing Time: $Total_Processing_Time"
-					}
+					
 				
 			
 			} UNTIL ($Tables_To_Process -eq 0 -OR $Total_Processing_Time -gt '00:30:00')
@@ -24628,7 +24628,7 @@ Start-Job -Name Job25 -ScriptBlock {		                                    #<----
 								Write-Host "~ Extract_Tables updated to Incomplete."
 								
 							}
-						
+					}	
 						
 						#---------------------------------------------
 						# Tables to Process
@@ -24663,7 +24663,7 @@ Start-Job -Name Job25 -ScriptBlock {		                                    #<----
 						
 						Write-Host 
 						Write-Host "~ Total Processing Time: $Total_Processing_Time"
-					}
+					
 				
 			
 			} UNTIL ($Tables_To_Process -eq 0 -OR $Total_Processing_Time -gt '00:30:00')
@@ -25615,7 +25615,7 @@ Start-Job -Name Job26 -ScriptBlock {		                                    #<----
 								Write-Host "~ Extract_Tables updated to Incomplete."
 								
 							}
-						
+					}	
 						
 						#---------------------------------------------
 						# Tables to Process
@@ -25650,7 +25650,7 @@ Start-Job -Name Job26 -ScriptBlock {		                                    #<----
 						
 						Write-Host 
 						Write-Host "~ Total Processing Time: $Total_Processing_Time"
-					}
+					
 				
 			
 			} UNTIL ($Tables_To_Process -eq 0 -OR $Total_Processing_Time -gt '00:30:00')
@@ -26602,7 +26602,7 @@ Start-Job -Name Job27 -ScriptBlock {		                                    #<----
 								Write-Host "~ Extract_Tables updated to Incomplete."
 								
 							}
-						
+					}	
 						
 						#---------------------------------------------
 						# Tables to Process
@@ -26637,7 +26637,7 @@ Start-Job -Name Job27 -ScriptBlock {		                                    #<----
 						
 						Write-Host 
 						Write-Host "~ Total Processing Time: $Total_Processing_Time"
-					}
+					
 				
 			
 			} UNTIL ($Tables_To_Process -eq 0 -OR $Total_Processing_Time -gt '00:30:00')
@@ -27589,7 +27589,7 @@ Start-Job -Name Job28 -ScriptBlock {		                                    #<----
 								Write-Host "~ Extract_Tables updated to Incomplete."
 								
 							}
-						
+					}	
 						
 						#---------------------------------------------
 						# Tables to Process
@@ -27624,7 +27624,7 @@ Start-Job -Name Job28 -ScriptBlock {		                                    #<----
 						
 						Write-Host 
 						Write-Host "~ Total Processing Time: $Total_Processing_Time"
-					}
+					
 				
 			
 			} UNTIL ($Tables_To_Process -eq 0 -OR $Total_Processing_Time -gt '00:30:00')
@@ -28576,7 +28576,7 @@ Start-Job -Name Job29 -ScriptBlock {		                                    #<----
 								Write-Host "~ Extract_Tables updated to Incomplete."
 								
 							}
-						
+					}	
 						
 						#---------------------------------------------
 						# Tables to Process
@@ -28611,7 +28611,7 @@ Start-Job -Name Job29 -ScriptBlock {		                                    #<----
 						
 						Write-Host 
 						Write-Host "~ Total Processing Time: $Total_Processing_Time"
-					}
+					
 				
 			
 			} UNTIL ($Tables_To_Process -eq 0 -OR $Total_Processing_Time -gt '00:30:00')
@@ -29563,7 +29563,7 @@ Start-Job -Name Job30 -ScriptBlock {		                                    #<----
 								Write-Host "~ Extract_Tables updated to Incomplete."
 								
 							}
-						
+					}	
 						
 						#---------------------------------------------
 						# Tables to Process
@@ -29598,7 +29598,7 @@ Start-Job -Name Job30 -ScriptBlock {		                                    #<----
 						
 						Write-Host 
 						Write-Host "~ Total Processing Time: $Total_Processing_Time"
-					}
+					
 				
 			
 			} UNTIL ($Tables_To_Process -eq 0 -OR $Total_Processing_Time -gt '00:30:00')

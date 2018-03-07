@@ -81,7 +81,7 @@ BEGIN
 			)
 			DECLARE @NeedToRun INT
 			SELECT @NeedToRun = (
-				SELECT CASE WHEN COALESCE(CONVERT(DATE,Time_Stamp),CONVERT(DATE,GETDATE()-1)) < CONVERT(DATE,GETDATE()) OR Alpha_Result NOT IN (5,9,13,17,21) THEN 1 ELSE 0 END 
+				SELECT CASE WHEN COALESCE(CONVERT(DATE,Time_Stamp),CONVERT(DATE,GETDATE()-1)) < CONVERT(DATE,GETDATE()) OR Alpha_Result NOT IN (6,11,15,19,23) THEN 1 ELSE 0 END 
 					FROM Oa_Extract.Extract_Tables A
 						LEFT JOIN
 							(SELECT Alpha_Stage AS Production_Table
@@ -218,13 +218,18 @@ BEGIN
 						SELECT @SQL_Code_Block_20 = (SELECT Code_Block_20 FROM Oa_Extract.Extract_Tables WHERE Ext_Table = @Table_Name_By_Loop);
 						
 						SET @SQL_4A = 'INSERT INTO ' + @TABLE_NAME4 + ' (' + @INSERT_FIELDS4 + ') SELECT ' + @SELECT_STATEMENT4 + ' FROM ' + @FROM_STATEMENT4 + ' WHERE 1 = 1 ' + @WHERE_STATEMENT4										
+						
+						EXEC dbo.usp_Insert_Alpha_1 @Alpha_Stage = @TABLE_NAME, @Alpha_Step_Number = '0D', @Alpha_Step_Name = 'Extract Table Insert - Begin', @Alpha_Result = 1;
+						
 						EXEC(@SQL_4A)
 						EXEC(@SQL_Code_Block_1 + ' ' + @SQL_Code_Block_2 + ' ' + @SQL_Code_Block_3)
 						EXEC(@SQL_Code_Block_4 + ' ' + @SQL_Code_Block_5 + ' ' + @SQL_Code_Block_6)
 						EXEC(@SQL_Code_Block_7 + ' ' + @SQL_Code_Block_8 + ' ' + @SQL_Code_Block_8)
 						EXEC(@SQL_Code_Block_10 + ' ' + @SQL_Code_Block_11 + ' ' + @SQL_Code_Block_12)
 						EXEC(@SQL_Code_Block_13 + ' ' + @SQL_Code_Block_14 + ' ' + @SQL_Code_Block_15)
-						EXEC(@SQL_Code_Block_16 + ' ' + @SQL_Code_Block_18 + ' ' + @SQL_Code_Block_19)						
+						EXEC(@SQL_Code_Block_16 + ' ' + @SQL_Code_Block_18 + ' ' + @SQL_Code_Block_19)		
+
+						EXEC dbo.usp_Insert_Alpha_1 @Alpha_Stage = @TABLE_NAME, @Alpha_Step_Number = '0E', @Alpha_Step_Name = 'Extract Table Insert - End', @Alpha_Result = 1;
 						
 						DECLARE @BEG_TIME4 DATETIME
 						DECLARE @END_TIME4 DATETIME
@@ -237,7 +242,7 @@ BEGIN
 						DECLARE @BEG_TIME4A NVARCHAR(MAX) = N'SELECT @BEG_TIME4 = (SELECT MAX(Alpha_DateTime) FROM dbo.Alpha_Table_1 WHERE 1 = 1 AND Alpha_Stage = ''' + @TABLE_NAME4 + ''' AND RIGHT(Alpha_Step_Number,1) = ''A'')'
 						EXEC sp_executesql @BEG_TIME4A, N'@BEG_TIME4 DATETIME OUT', @BEG_TIME4 OUT
 
-						DECLARE @END_TIME4A NVARCHAR(MAX) = N'SELECT @END_TIME4 = (SELECT Alpha_DateTime FROM dbo.Alpha_Table_1 WHERE 1 = 1 AND Alpha_Stage = ''' + @TABLE_NAME4 + ''' AND RIGHT(Alpha_Step_Number,1) = ''C'')'
+						DECLARE @END_TIME4A NVARCHAR(MAX) = N'SELECT @END_TIME4 = (SELECT Alpha_DateTime FROM dbo.Alpha_Table_1 WHERE 1 = 1 AND Alpha_Stage = ''' + @TABLE_NAME4 + ''' AND RIGHT(Alpha_Step_Number,1) = ''E'')'
 						EXEC sp_executesql @END_TIME4A, N'@END_TIME4 DATETIME OUT', @END_TIME4 OUT
 
 						SET @DURATION4 = DATEDIFF(SECOND,@BEG_TIME4,@END_TIME4)

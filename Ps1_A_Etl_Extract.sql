@@ -2696,6 +2696,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Plus_Description NVARCHAR(MAX)
 			, Lds_RecurringGiftRule UNIQUEIDENTIFIER
 			, Lds_RecurringGiftGroup UNIQUEIDENTIFIER
+			, Plus_ParentGift UNIQUEIDENTIFIER
 			' -- Dest_Create_Fields
 		, 'New_ConstituentDonor
 			, New_OrganizationDonor
@@ -2738,6 +2739,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Plus_Description
 			, Lds_RecurringGiftRule
 			, Lds_RecurringGiftGroup
+			, Plus_ParentGift
 			' -- Dest_Insert_Fields
 		, ' ' -- Dest_Where_Statement
 		, 'New_ConstituentDonor UNIQUEIDENTIFIER
