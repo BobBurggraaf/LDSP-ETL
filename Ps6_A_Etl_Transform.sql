@@ -5262,7 +5262,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 				IF OBJECT_ID(''_Gift_Credit_'') IS NOT NULL 
 				DROP TABLE _Gift_Credit_
 
-				CREATE TABLE _Gift_Credit_ (
+				CREATE TABLE dbo._Gift_Credit_ (
 					New_RecognitionCreditId UNIQUEIDENTIFIER
 					, New_RelatedConstituent UNIQUEIDENTIFIER
 					, New_OrganizationId UNIQUEIDENTIFIER
@@ -5287,7 +5287,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 					, Single_Hard_Credit__Rule_10 INT NOT NULL DEFAULT 0
 				)
 
-				INSERT INTO _Gift_Credit_ (
+				INSERT INTO dbo._Gift_Credit_ (
 					New_RecognitionCreditId
 					, New_RelatedConstituent
 					, New_OrganizationId
@@ -5319,11 +5319,11 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 
 				--Ext_Gift
 
-				IF OBJECT_ID(''_Gift_'') IS NOT NULL 
-				DROP TABLE _Gift_
+				IF OBJECT_ID(''dbo._Gift_'') IS NOT NULL 
+				DROP TABLE dbo._Gift_
 
 
-				CREATE TABLE _Gift_ (
+				CREATE TABLE dbo._Gift_ (
 					New_ConstituentDonor UNIQUEIDENTIFIER
 					, New_OrganizationDonor UNIQUEIDENTIFIER
 					, New_FundAccount UNIQUEIDENTIFIER
@@ -5378,7 +5378,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 					, Accounting_Date_Present__Rule_12 INT NOT NULL DEFAULT 1
 				)
 
-				INSERT INTO _Gift_ (
+				INSERT INTO dbo._Gift_ (
 					New_ConstituentDonor
 					, New_OrganizationDonor
 					, New_FundAccount
@@ -5485,7 +5485,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 				IF OBJECT_ID(''_Gift_Hist_'') IS NOT NULL 
 				DROP TABLE _Gift_Hist_
 
-				CREATE TABLE _Gift_Hist_ (
+				CREATE TABLE dbo._Gift_Hist_ (
 						New_RelatedGift UNIQUEIDENTIFIER
 						, Plus_Constituent UNIQUEIDENTIFIER
 						, Plus_Organization UNIQUEIDENTIFIER
@@ -5512,7 +5512,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 						, Summed_Value_Per_Gift_Equal_Zero__Rule_13 INT NOT NULL DEFAULT 1
 				)
 
-				INSERT INTO _Gift_Hist_ (
+				INSERT INTO dbo._Gift_Hist_ (
 						New_RelatedGift
 						, Plus_Constituent
 						, Plus_Organization
@@ -5563,11 +5563,11 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 						IF OBJECT_ID(''_I5_Deletes_'') IS NOT NULL 
 						DROP TABLE _I5_Deletes_
 						
-						CREATE TABLE _I5_Deletes_ (
+						CREATE TABLE dbo._I5_Deletes_ (
 							GiftId UNIQUEIDENTIFIER
 						)
 						
-						INSERT INTO _I5_Deletes_ (
+						INSERT INTO dbo._I5_Deletes_ (
 							GiftId
 						)
 						
@@ -5589,7 +5589,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 						-- 9615 current records with this status
 						
 						
-						MERGE INTO _Gift_ T
+						MERGE INTO dbo._Gift_ T
 							USING (
 								SELECT GiftId
 								FROM _I5_Deletes_
@@ -5597,7 +5597,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 							WHEN MATCHED THEN 
 								DELETE;
 						
-						MERGE INTO _Gift_Credit_ T
+						MERGE INTO dbo._Gift_Credit_ T
 							USING (
 								SELECT GiftId
 								FROM _I5_Deletes_
@@ -5605,7 +5605,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 							WHEN MATCHED THEN 
 								DELETE;
 								
-						MERGE INTO _Gift_Hist_ T
+						MERGE INTO dbo._Gift_Hist_ T
 							USING (
 								SELECT GiftId
 								FROM _I5_Deletes_
@@ -5615,7 +5615,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 						
 					-- Rule 2	
 
-						MERGE INTO _Gift_ T
+						MERGE INTO dbo._Gift_ T
 							USING (
 								SELECT DISTINCT New_GiftId AS GiftId
 									FROM Ext_Gift
@@ -5626,7 +5626,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 							WHEN MATCHED THEN 
 								DELETE;
 
-						MERGE INTO _Gift_Credit_ T
+						MERGE INTO dbo._Gift_Credit_ T
 							USING (
 								SELECT DISTINCT A.New_GiftId AS GiftId
 									FROM Ext_Gift A
@@ -5645,7 +5645,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 							WHEN MATCHED THEN 
 								DELETE;
 								
-						MERGE INTO _Gift_Hist_ T
+						MERGE INTO dbo._Gift_Hist_ T
 							USING (
 								SELECT DISTINCT A.New_GiftId AS GiftId
 									FROM Ext_Gift A
@@ -5666,7 +5666,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 
 					-- Rule 3
 					
-						MERGE INTO _Gift_ T
+						MERGE INTO dbo._Gift_ T
 							USING (
 								SELECT DISTINCT A.New_GiftId AS GiftId
 									FROM Ext_Gift A
@@ -5686,7 +5686,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 									, T.Constituent_When_Two_Donors__Rule_3 = 1
 									;
 
-						MERGE INTO _Gift_Credit_ T
+						MERGE INTO dbo._Gift_Credit_ T
 							USING (
 									SELECT A.New_RecognitionCreditId
 										FROM Ext_Recognition_Credit A
@@ -5710,14 +5710,14 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 					
 					-- 5
 					
-						MERGE INTO _Gift_Credit_ T
+						MERGE INTO dbo._Gift_Credit_ T
 							USING (
 									SELECT DISTINCT B.New_RelatedGift 
 										, B.ContactId AS Wrong_ContactId -- Needs to be changed to SOFT
 										FROM
 											(SELECT New_GiftId
 												, COALESCE(New_ConstituentDonor, New_OrganizationDonor) AS ContactId
-												FROM _Gift_
+												FROM dbo._Gift_
 											) A
 											LEFT JOIN
 											(SELECT New_RelatedGift
@@ -5735,14 +5735,14 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 									, T.Changed_Plus_Type_Per_Gift__Rule_5 = 1
 									;
 
-						MERGE INTO _Gift_Credit_ T
+						MERGE INTO dbo._Gift_Credit_ T
 							USING (
 									SELECT DISTINCT B.New_RelatedGift 
 										, B.ContactId AS Correct_ContactId -- Needs to be changed to HARD
 										FROM
 											(SELECT New_GiftId
 												, COALESCE(New_ConstituentDonor, New_OrganizationDonor) AS ContactId
-												FROM _Gift_
+												FROM dbo._Gift_
 											) A
 											LEFT JOIN
 											(SELECT New_RelatedGift
@@ -5765,15 +5765,15 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 					
 					-- Rule 7
 					
-						MERGE INTO _Gift_Credit_ T
+						MERGE INTO dbo._Gift_Credit_ T
 							USING (
 								SELECT A.New_RecognitionCreditId
-									FROM _Gift_Credit_ A
+									FROM dbo._Gift_Credit_ A
 									WHERE 1 = 1
 										AND NOT EXISTS
 											(
 											SELECT *
-												FROM _Gift_Credit_ B
+												FROM dbo._Gift_Credit_ B
 												WHERE 1 = 1
 													AND A.New_RecognitionCreditId = B.New_RecognitionCreditId 
 													AND (B.Plus_Type = 100000002 
@@ -5786,7 +5786,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 						
 					-- Rule 8
 					
-						MERGE INTO _Gift_Credit_ T
+						MERGE INTO dbo._Gift_Credit_ T
 							USING (
 									SELECT A.New_RelatedGift
 										, MAX(COALESCE(A.New_RelatedConstituent,A.New_OrganizationId)) AS ContactId
@@ -5815,7 +5815,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 						
 					-- Rule 9
 					
-						MERGE INTO _Gift_Credit_ T
+						MERGE INTO dbo._Gift_Credit_ T
 							USING (
 								SELECT New_RecognitionCreditId
 									, New_RelatedGift
@@ -5825,7 +5825,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 																		ORDER BY A.Plus_Type) AS Row_Num
 											, A.New_RecognitionCreditId
 											, A.New_RelatedGift
-											FROM _Gift_Credit_ A
+											FROM dbo._Gift_Credit_ A
 										) A
 									WHERE 1 = 1
 										AND Row_Num > 1
@@ -5838,16 +5838,16 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 						IF OBJECT_ID(''_Multiple_Hard_Credit_'') IS NOT NULL 
 						DROP TABLE _Multiple_Hard_Credit_
 
-						CREATE TABLE _Multiple_Hard_Credit_ (
+						CREATE TABLE dbo._Multiple_Hard_Credit_ (
 							New_GiftId UNIQUEIDENTIFIER
 						)
 
-						INSERT INTO _Multiple_Hard_Credit_ (
+						INSERT INTO dbo._Multiple_Hard_Credit_ (
 							New_GiftId
 						)
 
 						SELECT New_GiftId
-							FROM _GIFT_
+							FROM dbo._GIFT_
 							WHERE 1 = 1
 								AND New_GiftId IN
 									(
@@ -5863,7 +5863,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 									)
 
 
-						MERGE INTO _Gift_Credit_ T
+						MERGE INTO dbo._Gift_Credit_ T
 						USING (
 								SELECT New_GiftId
 									FROM _Multiple_Hard_Credit_
@@ -5874,11 +5874,11 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 								, T.Single_Hard_Credit__Rule_10 = 1
 								;
 
-						MERGE INTO _Gift_Credit_ T
+						MERGE INTO dbo._Gift_Credit_ T
 						USING (
 								SELECT New_GiftId
 									, COALESCE(New_ConstituentDonor,New_OrganizationDonor) AS ContactId
-									FROM _GIFT_
+									FROM dbo._GIFT_
 									WHERE 1 = 1
 										AND New_GiftId IN
 											(
@@ -5900,17 +5900,17 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 					
 					-- Rule 13
 						-- Missing Plus_AccountingDate where it is present on another record
-						MERGE INTO _Gift_Hist_ T
+						MERGE INTO dbo._Gift_Hist_ T
 							USING (
 									SELECT A.New_RelatedGift
 										, MAX(A.Plus_AccountingDate) AS Plus_AccountingDate
-										FROM _Gift_Hist_ A
+										FROM dbo._Gift_Hist_ A
 											INNER JOIN 
 												(SELECT DISTINCT A.New_RelatedGift
 													FROM			
 														(SELECT A.New_RelatedGift
 															, ROW_NUMBER() OVER(PARTITION BY A.New_RelatedGift ORDER BY A.New_RelatedGift) AS Row_Num
-															FROM _Gift_Hist_ A
+															FROM dbo._Gift_Hist_ A
 															WHERE 1 = 1
 																AND A.New_RelatedGift IN
 																	(SELECT New_RelatedGift
@@ -5932,7 +5932,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 									, T.Summed_Value_Per_Gift_Equal_Zero__Rule_13 = 0
 									;	
 						-- Single record that will not sum to zero
-						INSERT INTO _Gift_Hist_ (
+						INSERT INTO dbo._Gift_Hist_ (
 							New_RelatedGift
 							, Plus_Constituent
 							, Plus_Organization
@@ -5982,15 +5982,15 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 							, A.RelatedGift_Present__Rule_11
 							, A.Accounting_Date_Present__Rule_12
 							, 0 AS Summed_Value_Per_Gift_Equal_Zero__Rule_13
-							FROM _Gift_Hist_ A
+							FROM dbo._Gift_Hist_ A
 								INNER JOIN
 									(SELECT A.New_RelatedGift, COUNT(*) AS Cnt
-										FROM _Gift_Hist_ A
+										FROM dbo._Gift_Hist_ A
 										GROUP BY A.New_RelatedGift
 										HAVING COUNT(*) = 1
 									) B ON A.New_RelatedGift = B.New_RelatedGift						
 						-- Delete any additional records that do not have a Plus_AccountingDate
-						MERGE INTO _Gift_Hist_ T
+						MERGE INTO dbo._Gift_Hist_ T
 							USING (
 									SELECT New_RelatedGift
 										FROM _Gift_Hist_
@@ -6206,7 +6206,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 										SELECT ''BYU'' AS School
 											, A.New_ConstituentDonor AS ContactId
 											, MIN(A.New_ReceiptDate) AS Min_Date 
-											FROM _Gift_ A
+											FROM dbo._Gift_ A
 											WHERE 1 = 1
 												AND EXISTS
 													(SELECT *
@@ -6222,7 +6222,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 										SELECT ''BYUI'' AS School
 											, A.New_ConstituentDonor AS ContactId
 											, MIN(A.New_ReceiptDate) AS Min_Date 
-											FROM _Gift_ A
+											FROM dbo._Gift_ A
 											WHERE 1 = 1
 												AND EXISTS
 													(SELECT *
@@ -6236,7 +6236,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 										SELECT ''BYUH'' AS School
 											, A.New_ConstituentDonor AS ContactId
 											, MIN(A.New_ReceiptDate) AS Min_Date 
-											FROM _Gift_ A
+											FROM dbo._Gift_ A
 											WHERE 1 = 1
 												AND EXISTS 
 													(SELECT *
@@ -6250,7 +6250,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 										SELECT ''LDSBC'' AS School
 											, A.New_ConstituentDonor AS ContactId
 											, MIN(A.New_ReceiptDate) AS Min_Date 
-											FROM _Gift_ A
+											FROM dbo._Gift_ A
 											WHERE 1 = 1
 												AND EXISTS
 													(SELECT *
@@ -6580,7 +6580,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 						(
 						SELECT A.New_ConstituentDonor
 							, MIN(A.New_ReceiptDate) AS Byu_Donor_Affiliated_Date 
-							FROM _Gift_ A
+							FROM dbo._Gift_ A
 							WHERE 1 = 1
 								AND EXISTS
 									(SELECT *
@@ -6596,7 +6596,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 						(
 						SELECT A.New_ConstituentDonor
 							, MIN(A.New_ReceiptDate) AS Byui_Donor_Affiliated_Date 
-							FROM _Gift_ A
+							FROM dbo._Gift_ A
 							WHERE 1 = 1
 								AND EXISTS
 									(SELECT *
@@ -6610,7 +6610,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 						(
 						SELECT A.New_ConstituentDonor
 							, MIN(A.New_ReceiptDate) AS Byuh_Donor_Affiliated_Date 
-							FROM _Gift_ A
+							FROM dbo._Gift_ A
 							WHERE 1 = 1
 								AND EXISTS
 									(SELECT *
@@ -6624,7 +6624,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 						(
 						SELECT A.New_ConstituentDonor
 							, MIN(A.New_ReceiptDate) AS Ldsbc_Donor_Affiliated_Date 
-							FROM _Gift_ A
+							FROM dbo._Gift_ A
 							WHERE 1 = 1
 								AND EXISTS
 									(SELECT *
@@ -8960,21 +8960,21 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 		, 'EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = @TABLE_NAME, @Alpha_Step_Number = ''110F'', @Alpha_Step_Name = ''Create Indexes - Begin'', @Alpha_Result = 1;                                                                             
 			EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = @TABLE_NAME, @Alpha_Step_Number = ''110F'', @Alpha_Step_Name = ''Create Indexes - End'', @Alpha_Result = 1;
 			' -- Attribute_3
-		, 'IF OBJECT_ID(''Alumni_Temp_1'') IS NOT NULL
-					DROP TABLE Alumni_Temp_1
-					IF OBJECT_ID(''Alumni_Temp_2'') IS NOT NULL
-					DROP TABLE Alumni_Temp_2
-					IF OBJECT_ID(''Alumni_Temp_3'') IS NOT NULL
-					DROP TABLE Alumni_Temp_3
-					IF OBJECT_ID(''_Alumni_Student'') IS NOT NULL
-					DROP TABLE _Alumni_Student
-					IF OBJECT_ID(''_Alumni_Alum'') IS NOT NULL
-					DROP TABLE _Alumni_Alum
+		, 'IF OBJECT_ID(''dbo.Alumni_Temp_1'') IS NOT NULL
+					DROP TABLE dbo.Alumni_Temp_1
+					IF OBJECT_ID(''dbo.Alumni_Temp_2'') IS NOT NULL
+					DROP TABLE dbo.Alumni_Temp_2
+					IF OBJECT_ID(''dbo.Alumni_Temp_3'') IS NOT NULL
+					DROP TABLE dbo.Alumni_Temp_3
+					IF OBJECT_ID(''dbo._Alumni_Student'') IS NOT NULL
+					DROP TABLE dbo._Alumni_Student
+					IF OBJECT_ID(''dbo._Alumni_Alum'') IS NOT NULL
+					DROP TABLE dbo._Alumni_Alum
 			BEGIN TRY                                      
 				DECLARE @TABLE_CNT1 AS VARCHAR(100)
 				DECLARE @TABLE_CNT2 AS VARCHAR(100)
 				EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''_Alumni_Dim'', @Alpha_Step_Number = ''110G'', @Alpha_Step_Name = ''Dim Tables - Transform - Begin'', @Alpha_Result = 1; 
-					CREATE TABLE _Alumni_Student(
+					CREATE TABLE dbo._Alumni_Student(
 						New_StudentAttendanceId UNIQUEIDENTIFIER
 						, New_Term NVARCHAR(100)
 						, New_Year NVARCHAR(100)
@@ -8996,7 +8996,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 						, New_LongDescription NVARCHAR(100)
 						, Emphasis NVARCHAR(100)
 						)             
-					INSERT INTO _Alumni_Student (
+					INSERT INTO dbo._Alumni_Student (
 						New_StudentAttendanceId
 						, New_Term
 						, New_Year
@@ -9094,7 +9094,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 											LEFT JOIN Ext_Major E ON SA.Plus_Emphasis = E.New_MajorId
 									) B ON A.New_StudentAttendanceId = B.New_StudentAttendanceId
 								) A                                                                   
-					CREATE TABLE _Alumni_Alum(
+					CREATE TABLE dbo._Alumni_Alum(
 						Plus_AlumniId UNIQUEIDENTIFIER
 						, Plus_Name NVARCHAR(100)
 						, Plus_ActualGraduationDate DATETIME
@@ -9118,7 +9118,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 						, Program NVARCHAR(100)
 						, Emphasis NVARCHAR(100)
 						) 
-					INSERT INTO _Alumni_Alum (
+					INSERT INTO dbo._Alumni_Alum (
 						Plus_AlumniId
 						, Plus_Name -- School/Graduated
 						, Plus_ActualGraduationDate
@@ -9201,7 +9201,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 										LEFT JOIN _Plus_AlumniStatus_ PA ON A.Plus_AlumniStatus = PA.Column_Value
 										LEFT JOIN _Plus_DegreeLevel_ PD ON D.Plus_DegreeLevel = PD.Column_Value
 								) B ON A.Plus_AlumniId = B.Plus_AlumniId
-					SELECT * INTO Alumni_Temp_1
+					SELECT * INTO dbo.Alumni_Temp_1
 						FROM 
 							(
 							SELECT COALESCE(New_StudentsAttendanceId, Plus_Constituent) AS ContactId
@@ -9303,7 +9303,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 												, New_LongDescription -- Acronym
 												, NULL AS Program
 												, Emphasis         
-												FROM _Alumni_Student
+												FROM dbo._Alumni_Student
 											UNION
 											SELECT NULL AS New_StudentAttendanceId -- UniqueId
 											, NULL AS New_Term
@@ -9337,24 +9337,24 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 											, New_LongDescription -- Acronym
 											, Program
 											, Emphasis
-											FROM _Alumni_Alum
+											FROM dbo._Alumni_Alum
 											) A
 									) A
 							) A
-				SELECT @TABLE_CNT1 = (SELECT CONVERT(NVARCHAR(100),COUNT(*)) FROM Alumni_Temp_1) 
+				SELECT @TABLE_CNT1 = (SELECT CONVERT(NVARCHAR(100),COUNT(*)) FROM dbo.Alumni_Temp_1) 
 				EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''_Alumni_Dim'', @Alpha_Step_Number = ''110G'', @Alpha_Step_Name = ''Dim Temp Table - Count'', @Alpha_Count = @TABLE_CNT1, @Alpha_Result = 1;
-					SELECT * INTO Alumni_Temp_2
+					SELECT * INTO dbo.Alumni_Temp_2
 						FROM 
 							(
 							SELECT ContactId
 								, ROW_NUMBER() OVER(ORDER BY ContactId) AS Alumni_Group_Key --> HARD CODED <--
 								FROM
 									(SELECT DISTINCT ContactId   
-										FROM Alumni_Temp_1) A
+										FROM dbo.Alumni_Temp_1) A
 							) A
-				SELECT @TABLE_CNT2 = (SELECT CONVERT(NVARCHAR(100),COUNT(*)) FROM Alumni_Temp_2)                                             
+				SELECT @TABLE_CNT2 = (SELECT CONVERT(NVARCHAR(100),COUNT(*)) FROM dbo.Alumni_Temp_2)                                             
 				EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''_Alumni_Dim'', @Alpha_Step_Number = ''110G'', @Alpha_Step_Name = ''Bridge Temp Table - Count'', @Alpha_Count = @TABLE_CNT2, @Alpha_Result = 1;                                        
-					SELECT * INTO Alumni_Temp_3
+					SELECT * INTO dbo.Alumni_Temp_3
 						FROM 
 							(
 							SELECT DISTINCT A.ContactId 
@@ -9390,8 +9390,8 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 								, A.New_LongDescription
 								, A.Program
 								, A.Emphasis  
-								FROM Alumni_Temp_1 A
-									LEFT JOIN Alumni_Temp_2 B ON A.ContactId = B.ContactId
+								FROM dbo.Alumni_Temp_1 A
+									LEFT JOIN dbo.Alumni_Temp_2 B ON A.ContactId = B.ContactId
 							) A 
 				EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''_Alumni_Dim'', @Alpha_Step_Number = ''110G'', @Alpha_Step_Name = ''Dim Table - Transform - End'', @Alpha_Result = 1;
 				DECLARE @TABLE_CNT3 AS VARCHAR(100)
@@ -9469,7 +9469,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 							, A.New_LongDescription
 							, A.Program
 							, A.Emphasis  
-							FROM Alumni_Temp_3 A
+							FROM dbo.Alumni_Temp_3 A
 					INSERT INTO _Alumni_Bridge --> HARD CODED <--
 						(ContactId
 						, Alumni_Key --> HARD CODED <--
@@ -11585,6 +11585,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 														FROM _Student_Dim
 														WHERE 1 = 1
 															AND Student_Key != 0
+															AND LEN(Plus_Year) = 4
 													) A
 											) B
 									) C
@@ -12120,7 +12121,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 		, ' ' -- Attribute_20
 		, 'EXEC dbo.usp_Transform_Data @Transform_Data_Table_Name = ''_Date_Dim''; ------> HARDCODE <------
 			' -- Attribute_21
-		, 1 -- Active
+		, 0 -- Active
 		, GETDATE() -- Insert_Date
 		, NULL  -- Update_Date                
 	)
@@ -12505,7 +12506,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 		, ' ' -- Attribute_20
 		, 'EXEC dbo.usp_Transform_Data @Transform_Data_Table_Name = ''_Date_Dim2''; ------> HARDCODE <------
 			' -- Attribute_21
-		, 1 -- Active
+		, 0 -- Active
 		, GETDATE() -- Insert_Date
 		, NULL  -- Update_Date                
 	)
@@ -12781,7 +12782,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 									ELSE NULL END AS Plus_SharedCreditType 
 									, B.FullName
 									, B.New_LdspId
-									FROM _Gift_Credit_ A
+									FROM dbo._Gift_Credit_ A
 										LEFT JOIN Ext_Contact B ON A.New_RelatedConstituent = B.ContactId
 									WHERE 1 = 1
 										AND B.New_LdspId IS NOT NULL
@@ -13589,8 +13590,8 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 			IF OBJECT_ID(''tempdb..#Contact_Added_Temp'') IS NOT NULL
 			DROP TABLE #Contact_Added_Temp 
 
-			IF OBJECT_ID(''_Donor_Pre_Dim'') IS NOT NULL
-			DROP TABLE _Donor_Pre_Dim 
+			IF OBJECT_ID(''dbo._Donor_Pre_Dim'') IS NOT NULL
+			DROP TABLE dbo._Donor_Pre_Dim 
 
 			'
 		, 'BEGIN TRY
@@ -13982,7 +13983,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 		, 'BEGIN TRY
 				DECLARE @TABLE_CNT_8 NVARCHAR(100)
 				EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''Donor Dim'', @Alpha_Step_Number = ''122M'', @Alpha_Step_Name = ''Support Tables - _Donor_Pre_Dim - Begin'', @Alpha_Result = 1;                                                
-					SELECT * INTO _Donor_Pre_Dim
+					SELECT * INTO dbo._Donor_Pre_Dim
 						FROM
 							(
 							SELECT DISTINCT CONVERT(NVARCHAR(100),A.Donor_Key) AS Donor_Key
@@ -14090,7 +14091,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 								FROM #Contact_Added_Temp A
 									LEFT JOIN Ext_Account B ON A.Donor_Key = CONVERT(NVARCHAR(100),B.AccountId)
 				) A                                                      
-				SELECT @TABLE_CNT_8 = (SELECT CONVERT(NVARCHAR(100), COUNT(*) ) FROM _Donor_Pre_Dim);
+				SELECT @TABLE_CNT_8 = (SELECT CONVERT(NVARCHAR(100), COUNT(*) ) FROM dbo._Donor_Pre_Dim);
 				EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''Donor Dim'', @Alpha_Step_Number = ''122M'', @Alpha_Step_Name = ''Support Tables - _Donor_Pre_Dim - End'', @Alpha_Count = @TABLE_CNT_8, @Alpha_Result = 1;
 			END TRY
 			BEGIN CATCH
@@ -14110,8 +14111,8 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 					DROP TABLE dbo._Numbered_ContactIds
 			BEGIN TRY
 				DECLARE @TABLE_CNT_10 NVARCHAR(100)
-				EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''Donor Dim'', @Alpha_Step_Number = ''122N'', @Alpha_Step_Name = ''Support Tables - _Numbered_ContactIds - Begin'', @Alpha_Result = 1;                               
-					CREATE TABLE _Numbered_ContactIds (
+				EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''Donor Dim'', @Alpha_Step_Number = ''122N'', @Alpha_Step_Name = ''Support Tables - dbo._Numbered_ContactIds - Begin'', @Alpha_Result = 1;                               
+					CREATE TABLE dbo._Numbered_ContactIds (
 						ContactId NVARCHAR(100) 
 						, RowNum INT PRIMARY KEY
 						)
@@ -14124,22 +14125,22 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 									FROM LDSPhilanthropiesDW.dbo._Donor_Pre_Dim
 								UNION
 								SELECT DISTINCT CONVERT(NVARCHAR(100),New_ConstituentDonor) AS ContactId
-									FROM _Gift_
+									FROM dbo._Gift_
 								UNION
 								SELECT DISTINCT CONVERT(NVARCHAR(100),New_OrganizationDonor) AS ContactId
-									FROM _Gift_
+									FROM dbo._Gift_
 								) A
 							WHERE 1 = 1      
 								AND ContactId IS NOT NULL
 				SELECT @TABLE_CNT_10 = (SELECT CONVERT(NVARCHAR(100), COUNT(*) ) FROM _Numbered_ContactIds);
 					INSERT INTO LDSPhilanthropiesDW.dbo.Alpha_Table_2                         
 						(Alpha_DateTime,Alpha_Stage,Alpha_Step_Number,Alpha_Step_Name,Alpha_Begin_Time,Alpha_End_Time,Alpha_Duration_In_Seconds,Alpha_Count,Alpha_Query,Alpha_Result,ErrorNumber,ErrorSeverity,ErrorState,ErrorProcedure,ErrorLine,ErrorMessage)
-							VALUES(GETDATE(),''Donor Dim'',''122N'',''Support Tables - _Numbered_ContactIds - End'',NULL,NULL,NULL,@TABLE_CNT_10,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL);
+							VALUES(GETDATE(),''Donor Dim'',''122N'',''Support Tables - dbo._Numbered_ContactIds - End'',NULL,NULL,NULL,@TABLE_CNT_10,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL);
 			END TRY
 			BEGIN CATCH
 					INSERT INTO LDSPhilanthropiesDW.dbo.Alpha_Table_2                      
 						(Alpha_DateTime,Alpha_Stage,Alpha_Step_Number,Alpha_Step_Name,Alpha_Begin_Time,Alpha_End_Time,Alpha_Duration_In_Seconds,Alpha_Count,Alpha_Query,Alpha_Result,ErrorNumber,ErrorSeverity,ErrorState,ErrorProcedure,ErrorLine,ErrorMessage)
-							VALUES(GETDATE(),''Donor Dim'',''122X'',''Support Tables - _Numbered_ContactIds - Error'',NULL,NULL,NULL,NULL,NULL,0,ERROR_NUMBER(),ERROR_SEVERITY(),ERROR_STATE(),ERROR_PROCEDURE(),ERROR_LINE(),ERROR_MESSAGE());              
+							VALUES(GETDATE(),''Donor Dim'',''122X'',''Support Tables - dbo._Numbered_ContactIds - Error'',NULL,NULL,NULL,NULL,NULL,0,ERROR_NUMBER(),ERROR_SEVERITY(),ERROR_STATE(),ERROR_PROCEDURE(),ERROR_LINE(),ERROR_MESSAGE());              
 			END CATCH
 				IF EXISTS(SELECT * FROM sys.indexes WHERE object_id = object_id(''dbo._Connection_Dim'') AND NAME =''IX_Connection_ContactId'') 
 				DROP INDEX IX_Connection_ContactId ON dbo._Connection_Dim; 
@@ -15069,7 +15070,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 			'
 		, 'IF OBJECT_ID(''dbo._Donor_Dim_1'',''U'') IS NOT NULL
 			DROP TABLE dbo._Donor_Dim_1
-			CREATE TABLE [_Donor_Dim_1] (
+			CREATE TABLE dbo._Donor_Dim_1 (
 				[Donor_Key] NVARCHAR(100),
 				[Donor_Personal_Suffix] nvarchar(400),
 				[Donor_Major_Gift_Propen] nvarchar(400),
@@ -15207,7 +15208,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 					BEGIN TRY
 						DECLARE @TABLE_CNT_20 NVARCHAR(100)                                                                                     
 						EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''Donor Dim 1'', @Alpha_Step_Number = ''122P'', @Alpha_Step_Name = ''Loop Tables - Loop 1 - Begin'', @Alpha_Result = 1;
-							INSERT INTO _Donor_Dim_1 (
+							INSERT INTO dbo._Donor_Dim_1 (
 								Donor_Key
 								, Donor_Personal_Suffix   
 								, Donor_Major_Gift_Propen
@@ -15260,7 +15261,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 										LEFT JOIN LDSPhilanthropiesDW.dbo._Donor_Est_Home_Value_ N ON A.Plus_EstimatedHomemarketValue = N.Column_Value
 									WHERE 1 = 1
 										AND NUM.RowNum BETWEEN @RowNum_Beg AND @RowNum_End                                              
-						SELECT @TABLE_CNT_20 = (SELECT CONVERT(NVARCHAR (100), COUNT(*) ) FROM _Donor_Dim_1);
+						SELECT @TABLE_CNT_20 = (SELECT CONVERT(NVARCHAR (100), COUNT(*) ) FROM dbo._Donor_Dim_1);
 						EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''Donor Dim 1'', @Alpha_Step_Number = ''122P'', @Alpha_Step_Name = ''Loop Tables - Loop 1 - End'', @Alpha_Count = @TABLE_CNT_20, @Alpha_Result = 1;
 					END TRY
 					BEGIN CATCH    
@@ -15501,7 +15502,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 													FROM
 														(SELECT Donor_Key
 															, CONVERT(NVARCHAR(20),CAST(New_Birthdate AS DATETIME),110) AS Birthdate
-															FROM _Donor_Pre_Dim 
+															FROM dbo._Donor_Pre_Dim 
 															WHERE 1 = 1
 																AND SUBSTRING(New_Birthdate,4,2) <> ''00''
 																AND SUBSTRING(New_Birthdate,1,2) <> ''00''
@@ -15666,11 +15667,11 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 				EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''GA Tables'', @Alpha_Step_Number = ''122T'', @Alpha_Step_Name = ''GA Tables - Begin'', @Alpha_Result = 1;
 					IF OBJECT_ID(''dbo._General_Authority_'',''U'') IS NOT NULL
 					DROP TABLE dbo._General_Authority_
-					CREATE TABLE _General_Authority_ (
+					CREATE TABLE dbo._General_Authority_ (
 						Donor_Key  NVARCHAR(100) 
 						, General_Authority NVARCHAR(1)
 						) 
-					INSERT INTO _General_Authority_ (
+					INSERT INTO dbo._General_Authority_ (
 						Donor_Key
 						, General_Authority
 						)
@@ -15690,11 +15691,11 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 									GROUP BY CONVERT(NVARCHAR(100),Donor_Key)
 				IF OBJECT_ID(''dbo._Emeritus_General_Authority_'',''U'') IS NOT NULL
 				DROP TABLE dbo._Emeritus_General_Authority_
-					CREATE TABLE _Emeritus_General_Authority_ (
+					CREATE TABLE dbo._Emeritus_General_Authority_ (
 						Donor_Key  NVARCHAR(100) 
 						, Emeritus_General_Authority NVARCHAR(1)
 						) 
-					INSERT INTO _Emeritus_General_Authority_ (
+					INSERT INTO dbo._Emeritus_General_Authority_ (
 						Donor_Key
 						, Emeritus_General_Authority
 						)
@@ -15714,11 +15715,11 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 									GROUP BY CONVERT(NVARCHAR(100),Donor_Key)
 				IF OBJECT_ID(''dbo._Mission_President_'',''U'') IS NOT NULL
 				DROP TABLE dbo._Mission_President_
-					CREATE TABLE _Mission_President_ (
+					CREATE TABLE dbo._Mission_President_ (
 						Donor_Key  NVARCHAR(100) 
 						, Mission_President NVARCHAR(1)
 						) 
-					INSERT INTO _Mission_President_ (
+					INSERT INTO dbo._Mission_President_ (
 						Donor_Key
 						, Mission_President
 						)
@@ -15737,11 +15738,11 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 									GROUP BY CONVERT(NVARCHAR(100),Donor_Key)
 				IF OBJECT_ID(''dbo._Temple_President_'',''U'') IS NOT NULL
 				DROP TABLE dbo._Temple_President_
-					CREATE TABLE _Temple_President_ (
+					CREATE TABLE dbo._Temple_President_ (
 						Donor_Key  NVARCHAR(100) 
 						, Temple_President NVARCHAR(1)
 						) 
-					INSERT INTO _Temple_President_ (
+					INSERT INTO dbo._Temple_President_ (
 						Donor_Key
 						, Temple_President
 						)
@@ -15758,37 +15759,37 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 									FROM Ext_Psa A
 									FULL OUTER JOIN Ext_International_Experience B ON A.ContactId = B.New_InternationalExperiencesAId) A
 									GROUP BY Donor_Key
-				SELECT @TABLE_CNT_20 = (SELECT CONVERT(NVARCHAR (100), COUNT(*) ) FROM _General_Authority_);
-				SELECT @TABLE_CNT_21 = (SELECT CONVERT(NVARCHAR (100), COUNT(*) ) FROM _Emeritus_General_Authority_);
-				SELECT @TABLE_CNT_22 = (SELECT CONVERT(NVARCHAR (100), COUNT(*) ) FROM _Mission_President_);
-				SELECT @TABLE_CNT_23 = (SELECT CONVERT(NVARCHAR (100), COUNT(*) ) FROM _Temple_President_);
+				SELECT @TABLE_CNT_20 = (SELECT CONVERT(NVARCHAR (100), COUNT(*) ) FROM dbo._General_Authority_);
+				SELECT @TABLE_CNT_21 = (SELECT CONVERT(NVARCHAR (100), COUNT(*) ) FROM dbo._Emeritus_General_Authority_);
+				SELECT @TABLE_CNT_22 = (SELECT CONVERT(NVARCHAR (100), COUNT(*) ) FROM dbo._Mission_President_);
+				SELECT @TABLE_CNT_23 = (SELECT CONVERT(NVARCHAR (100), COUNT(*) ) FROM dbo._Temple_President_);
 				EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''GA Tables'', @Alpha_Step_Number = ''122T'', @Alpha_Step_Name = ''GA Table'', @Alpha_Count = @TABLE_CNT_20, @Alpha_Result = 1;
 				EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''GA Tables'', @Alpha_Step_Number = ''122T'', @Alpha_Step_Name = ''EGA Table'', @Alpha_Count = @TABLE_CNT_21, @Alpha_Result = 1;
 				EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''GA Tables'', @Alpha_Step_Number = ''122T'', @Alpha_Step_Name = ''MP Table'', @Alpha_Count = @TABLE_CNT_22, @Alpha_Result = 1;
 				EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''GA Tables'', @Alpha_Step_Number = ''122T'', @Alpha_Step_Name = ''TP Table'', @Alpha_Count = @TABLE_CNT_23, @Alpha_Result = 1;
 				MERGE _Donor_Dim AS T
-					USING _General_Authority_ AS S
+					USING dbo._General_Authority_ AS S
 					ON (T.Donor_Key = S.Donor_Key)
 					WHEN MATCHED 
 					THEN UPDATE SET 
 					T.General_Authority = S.General_Authority
 				;
 				MERGE _Donor_Dim AS T
-					USING _Emeritus_General_Authority_ AS S
+					USING dbo._Emeritus_General_Authority_ AS S
 					ON (T.Donor_Key = S.Donor_Key)
 					WHEN MATCHED 
 					THEN UPDATE SET 
 					T.Emeritus_General_Authority = S.Emeritus_General_Authority
 				;
 				MERGE _Donor_Dim AS T
-					USING _Mission_President_ AS S
+					USING dbo._Mission_President_ AS S
 					ON (T.Donor_Key = S.Donor_Key)
 					WHEN MATCHED 
 					THEN UPDATE SET 
 					T.Mission_President = S.Mission_President
 				;
 				MERGE _Donor_Dim AS T
-					USING _Temple_President_ AS S
+					USING dbo._Temple_President_ AS S
 					ON (T.Donor_Key = S.Donor_Key)
 					WHEN MATCHED 
 					THEN UPDATE SET 
@@ -15939,7 +15940,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 			SET @LOOP_NUM = 0
 			'
 		, 'MERGE _Donor_Dim AS T
-				USING _Donor_Dim_1 AS S
+				USING dbo._Donor_Dim_1 AS S
 				ON (T.Donor_Key = S.Donor_Key)
 				WHEN MATCHED 
 				THEN UPDATE SET 
@@ -17360,7 +17361,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 							, ''N'' AS Donation_Receipt_Ytd_Two_Weeks_Ago
 							, A.Plus_Description AS Donation_Description
 							, K.Column_Label AS Lds_BatchType
-							FROM _Gift_ A
+							FROM dbo._Gift_ A
 								LEFT JOIN _Donation_StatusCode_ B ON A.StatusCode = B.Column_Value
 								LEFT JOIN _Donation_GiftSource_ C ON A.Plus_GiftSource = C.Column_Value
 								LEFT JOIN _Donation_Kind_ D ON A.Plus_Kind = D.Column_Value
@@ -17658,8 +17659,8 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 				MERGE INTO _Appeal_Dim T
 					USING (
 							SELECT DISTINCT CONVERT(NVARCHAR(100),C.ActivityId) AS Appeal_Key
-								FROM _Gift_ A
-									LEFT JOIN _Gift_Hist_ B ON A.New_GiftId = B.New_RelatedGift
+								FROM dbo._Gift_ A
+									LEFT JOIN dbo._Gift_Hist_ B ON A.New_GiftId = B.New_RelatedGift
 									LEFT JOIN Ext_Campaign_Activity C ON A.Plus_Appeal = C.ActivityId
 						) S ON T.Appeal_Key = S.Appeal_Key
 					WHEN NOT MATCHED BY SOURCE THEN 
@@ -18007,7 +18008,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 						USING (
 								SELECT New_GiftId AS Donation_Key
 									, ''Y'' AS Recurring_Gift
-									FROM _Gift_
+									FROM dbo._Gift_
 									WHERE 1 = 1
 										AND (Lds_RecurringGiftRule IS NOT NULL
 												OR Lds_RecurringGiftGroup IS NOT NULL)								
@@ -18154,7 +18155,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 		, ' ' -- Attribute_2
 		, 'EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = @TABLE_NAME, @Alpha_Step_Number = ''129E'', @Alpha_Step_Name = ''Create Indexes - Begin'', @Alpha_Result = 1;
 				CREATE NONCLUSTERED INDEX IX_Gift_C_O_F_I_G_P_G_O_E_A 
-					ON _Gift_(StatusCode)
+					ON dbo._Gift_(StatusCode)
 					INCLUDE (
 						New_ConstituentDonor
 						, New_OrganizationDonor
@@ -18260,7 +18261,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 									, Plus_Type
 									, Plus_SubType
 									, Plus_Appeal
-									FROM _Numbered_ContactIds A
+									FROM dbo._Numbered_ContactIds A
 										LEFT JOIN 
 											(SELECT CONVERT(NVARCHAR(100),COALESCE(New_ConstituentDonor,New_OrganizationDonor)) AS ContactId
 												, New_ConstituentDonor
@@ -18277,7 +18278,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 												, OwnerId
 												, Plus_EntitledBenefitValue
 												, Plus_Appeal
-												FROM _Gift_ A
+												FROM dbo._Gift_ A
 												WHERE 1 = 1
 													AND StatusCode != 100000003 -- i5 Deleted
 											) B ON A.ContactId = B.ContactId
@@ -19457,10 +19458,10 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 					-- Records in Gift but not in Credit
 					, (SELECT COUNT(A.New_GiftId) AS G_But_Not_C_Cnt
 							, SUM(A.New_GiftAmount) AS G_But_Not_C_Sum
-							FROM _Gift_ A
+							FROM dbo._Gift_ A
 								INNER JOIN 
 									(SELECT New_GiftId
-											FROM _Gift_
+											FROM dbo._Gift_
 									EXCEPT
 									SELECT New_RelatedGift AS New_GiftId
 											FROM _Gift_Credit_
@@ -19470,13 +19471,13 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 					-- Records in Credit but not in Gift
 					, (SELECT COUNT(A.New_RelatedGift) AS C_But_Not_G_Cnt
 						, SUM(A.New_CreditAmount) AS C_But_Not_G_Sum
-						FROM _Gift_Credit_ A
+						FROM dbo._Gift_Credit_ A
 							INNER JOIN 
 								(SELECT New_RelatedGift
 										FROM _Gift_Credit_
 								EXCEPT
 								SELECT New_GiftId AS New_RelatedGift
-										FROM _Gift_
+										FROM dbo._Gift_
 								) B ON A.New_RelatedGift = B.New_RelatedGift
 						) C
 
@@ -19904,7 +19905,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 				CREATE NONCLUSTERED INDEX IX_Gift_Hist_New_RelatedGift 
 					ON _Gift_Hist_(New_RelatedGift ASC);
 				CREATE NONCLUSTERED INDEX IX_Gift_New_GiftId 
-					ON _Gift_(New_GiftId ASC)
+					ON dbo._Gift_(New_GiftId ASC)
 					INCLUDE (
 					New_ConstituentDonor
 					, New_OrganizationDonor
@@ -19915,7 +19916,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 					, New_GiftAmount
 					);
 				CREATE NONCLUSTERED INDEX IX_Gift_StatusCode 
-					ON _Gift_(StatusCode ASC)
+					ON dbo._Gift_(StatusCode ASC)
 					INCLUDE (
 					New_GiftId
 					, New_ConstituentDonor
@@ -20089,7 +20090,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 											, Plus_Appeal
 											, New_AccountingDate
 											, StatusCode
-											FROM _Numbered_ContactIds A
+											FROM dbo._Numbered_ContactIds A
 												LEFT JOIN 
 													(SELECT CONVERT(NVARCHAR(100),COALESCE(New_ConstituentDonor,New_OrganizationDonor)) AS ContactId
 														, New_ConstituentDonor
@@ -20108,7 +20109,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 														, Plus_Appeal
 														, New_AccountingDate
 														, StatusCode
-														FROM _Gift_ A
+														FROM dbo._Gift_ A
 														WHERE 1 = 1 
 															AND StatusCode != 100000003 -- I5 Deletes
 															AND StatusCode != 1 -- Processing
@@ -20148,7 +20149,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 										END AS Record_Status
 									, A.New_Amount AS Accounting_Amt
 									, A.New_GiftHistoryId AS Accounting_Key
-									FROM _Gift_Hist_ A
+									FROM dbo._Gift_Hist_ A
 										INNER JOIN 
 											(SELECT New_RelatedGift
 												FROM
@@ -20163,10 +20164,10 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 														FROM 
 															(SELECT New_GiftId	
 																, SUM(New_GiftAmount) AS New_GiftAmount
-																FROM _Gift_ A
+																FROM dbo._Gift_ A
 																	INNER JOIN 
 																		(SELECT DISTINCT New_RelatedGift
-																			FROM _Gift_Hist_ B
+																			FROM dbo._Gift_Hist_ B
 																			WHERE 1 = 1
 																				AND B.New_RelatedGift IS NOT NULL  -- Must have a related GiftId (21,488 records do not have a New_RelatedGift)
 																				AND B.StatusCode != 100000001 -- No records that were i5 Deleted
@@ -20195,7 +20196,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 															) C ON A.New_GiftId = C.New_RelatedGift
 															LEFT JOIN
 															(SELECT DISTINCT New_GiftId -- Remove all records in the _Accounting_Fact that are I5 Delete status in Ext_Gift
-																FROM _Gift_ A
+																FROM dbo._Gift_ A
 																WHERE 1 = 1
 																	AND StatusCode = 100000003
 															) D ON A.New_GiftId = D.New_GiftId
@@ -20365,7 +20366,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 					USING (
 							SELECT DISTINCT CONVERT(NVARCHAR(100),A.New_GiftHistoryId) AS Accounting_Key
 								, CONVERT(NVARCHAR(100),C.Hier_Key) AS Hier_Key
-								FROM _Gift_Hist_ A
+								FROM dbo._Gift_Hist_ A
 									INNER JOIN _Fund_Dim B ON CONVERT(NVARCHAR(100),A.Plus_FundAccount) = B.Fund_Key
 									INNER JOIN _Hier_Dim C ON B.New_InstitutionalHierarchy = C.Hier_Key
 						) S ON T.Accounting_Key = S.Accounting_Key
@@ -20378,7 +20379,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 							SELECT DISTINCT CONVERT(NVARCHAR(100),A.Donation_Key) AS Donation_Key
 								, CONVERT(NVARCHAR(100),B.New_InstitutionalHierarchyId) AS Hier_Key
 								FROM _Accounting_Fact A
-									INNER JOIN _Gift_ B ON A.Donation_Key = B.New_GiftId
+									INNER JOIN dbo._Gift_ B ON A.Donation_Key = B.New_GiftId
 								WHERE 1 = 1
 									AND A.Hier_Key = ''0''
 									AND B.StatusCode != 1 -- Processing
@@ -21139,7 +21140,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 								FROM
 									(SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS ContactId 
 										, SUM(A.New_CreditAmount) AS Credit_Amount
-										FROM _Gift_Credit_ A
+										FROM dbo._Gift_Credit_ A
 											INNER JOIN Ext_Institution B ON A.Plus_InstitutionalHieararchy = B.New_Institutionid
 										WHERE 1 = 1
 											AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-1,0),112) -- Beginning of this year
@@ -21174,7 +21175,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 								FROM
 									(SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS ContactId 
 										, SUM(A.New_CreditAmount) AS Credit_Amount
-										FROM _Gift_Credit_ A
+										FROM dbo._Gift_Credit_ A
 											INNER JOIN Ext_Institution B ON A.Plus_InstitutionalHieararchy = B.New_Institutionid
 										WHERE 1 = 1
 											AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-1,0),112) -- Beginning of this year
@@ -21215,7 +21216,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 								FROM
 									(SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS ContactId 
 										, SUM(A.New_CreditAmount) AS Credit_Amount
-										FROM _Gift_Credit_ A
+										FROM dbo._Gift_Credit_ A
 											INNER JOIN Ext_Institution B ON A.Plus_InstitutionalHieararchy = B.New_Institutionid
 										WHERE 1 = 1
 											AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-1,0),112) -- Beginning of this year
@@ -21257,7 +21258,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 								FROM
 									(SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS ContactId 
 										, SUM(A.New_CreditAmount) AS Credit_Amount
-										FROM _Gift_Credit_ A
+										FROM dbo._Gift_Credit_ A
 											INNER JOIN Ext_Institution B ON A.Plus_InstitutionalHieararchy = B.New_Institutionid
 										WHERE 1 = 1
 											AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-1,0),112) -- Beginning of this year
@@ -23964,7 +23965,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 					USING (
 							SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS Donor_Key 
 								, SUM(A.New_CreditAmount) AS Donor_Total_Giving_To_Byu_Current_Year_Amt
-								FROM _Gift_Credit_ A
+								FROM dbo._Gift_Credit_ A
 									INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
 								WHERE 1 = 1
 									AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-1,0),112) -- Beginning of this year
@@ -24001,7 +24002,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 					USING (
 							SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS Donor_Key 
 								, SUM(A.New_CreditAmount) AS Donor_Total_Giving_To_Byu_Current_Year_Minus_1_Amt
-								FROM _Gift_Credit_ A
+								FROM dbo._Gift_Credit_ A
 									INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
 								WHERE 1 = 1
 									AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-2,0),112) -- Beginning of this year -1
@@ -24032,7 +24033,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 					USING (
 							SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS Donor_Key 
 								, SUM(A.New_CreditAmount) AS Donor_Total_Giving_To_Byu_Current_Year_Minus_2_Amt
-								FROM _Gift_Credit_ A
+								FROM dbo._Gift_Credit_ A
 									INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
 								WHERE 1 = 1
 									AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-3,0),112) -- Beginning of this year -2
@@ -24063,7 +24064,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 					USING (
 							SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS Donor_Key 
 								, SUM(A.New_CreditAmount) AS Donor_Total_Giving_To_Byu_Current_Year_Minus_3_Amt
-								FROM _Gift_Credit_ A
+								FROM dbo._Gift_Credit_ A
 									INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
 								WHERE 1 = 1
 									AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-4,0),112) -- Beginning of this year -3
@@ -24094,7 +24095,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 					USING (
 							SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS Donor_Key 
 								, SUM(A.New_CreditAmount) AS Donor_Total_Giving_To_Byui_Current_Year_Amt
-								FROM _Gift_Credit_ A
+								FROM dbo._Gift_Credit_ A
 									INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
 								WHERE 1 = 1
 									AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-1,0),112) -- Beginning of this year
@@ -24125,7 +24126,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 					USING (
 							SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS Donor_Key 
 								, SUM(A.New_CreditAmount) AS Donor_Total_Giving_To_Byui_Current_Year_Minus_1_Amt
-								FROM _Gift_Credit_ A
+								FROM dbo._Gift_Credit_ A
 									INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
 								WHERE 1 = 1
 									AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-2,0),112) -- Beginning of this year -1
@@ -24156,7 +24157,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 					USING (
 							SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS Donor_Key 
 								, SUM(A.New_CreditAmount) AS Donor_Total_Giving_To_Byui_Current_Year_Minus_2_Amt
-								FROM _Gift_Credit_ A
+								FROM dbo._Gift_Credit_ A
 									INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
 								WHERE 1 = 1
 									AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-3,0),112) -- Beginning of this year -2
@@ -24187,7 +24188,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 					USING (
 							SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS Donor_Key 
 								, SUM(A.New_CreditAmount) AS Donor_Total_Giving_To_Byui_Current_Year_Minus_3_Amt
-								FROM _Gift_Credit_ A
+								FROM dbo._Gift_Credit_ A
 									INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
 								WHERE 1 = 1
 									AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-4,0),112) -- Beginning of this year -3
@@ -24218,7 +24219,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 					USING (
 							SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS Donor_Key 
 								, SUM(A.New_CreditAmount) AS Donor_Total_Giving_To_Byuh_Current_Year_Amt
-								FROM _Gift_Credit_ A
+								FROM dbo._Gift_Credit_ A
 									INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
 								WHERE 1 = 1
 									AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-1,0),112) -- Beginning of this year
@@ -24249,7 +24250,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 					USING (
 							SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS Donor_Key 
 								, SUM(A.New_CreditAmount) AS Donor_Total_Giving_To_Byuh_Current_Year_Minus_1_Amt
-								FROM _Gift_Credit_ A
+								FROM dbo._Gift_Credit_ A
 									INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
 								WHERE 1 = 1
 									AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-2,0),112) -- Beginning of this year -1
@@ -24280,7 +24281,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 					USING (
 							SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS Donor_Key 
 								, SUM(A.New_CreditAmount) AS Donor_Total_Giving_To_Byuh_Current_Year_Minus_2_Amt
-								FROM _Gift_Credit_ A
+								FROM dbo._Gift_Credit_ A
 									INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
 								WHERE 1 = 1
 									AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-3,0),112) -- Beginning of this year -2
@@ -24317,7 +24318,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 					USING (
 							SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS Donor_Key 
 								, SUM(A.New_CreditAmount) AS Donor_Total_Giving_To_Byuh_Current_Year_Minus_3_Amt
-								FROM _Gift_Credit_ A
+								FROM dbo._Gift_Credit_ A
 									INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
 								WHERE 1 = 1
 									AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-4,0),112) -- Beginning of this year -3
@@ -24354,7 +24355,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 					USING (
 							SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS Donor_Key 
 								, SUM(A.New_CreditAmount) AS Donor_Total_Giving_To_Ldsbc_Current_Year_Amt
-								FROM _Gift_Credit_ A
+								FROM dbo._Gift_Credit_ A
 									INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
 								WHERE 1 = 1
 									AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-1,0),112) -- Beginning of this year
@@ -24391,7 +24392,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 					USING (
 							SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS Donor_Key 
 								, SUM(A.New_CreditAmount) AS Donor_Total_Giving_To_Ldsbc_Current_Year_Minus_1_Amt
-								FROM _Gift_Credit_ A
+								FROM dbo._Gift_Credit_ A
 									INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
 								WHERE 1 = 1
 									AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-2,0),112) -- Beginning of this year -1
@@ -24428,7 +24429,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 					USING (
 							SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS Donor_Key 
 								, SUM(A.New_CreditAmount) AS Donor_Total_Giving_To_Ldsbc_Current_Year_Minus_2_Amt
-								FROM _Gift_Credit_ A
+								FROM dbo._Gift_Credit_ A
 									INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
 								WHERE 1 = 1
 									AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-3,0),112) -- Beginning of this year -2
@@ -24465,7 +24466,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 					USING (
 							SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS Donor_Key 
 								, SUM(A.New_CreditAmount) AS Donor_Total_Giving_To_Ldsbc_Current_Year_Minus_3_Amt
-								FROM _Gift_Credit_ A
+								FROM dbo._Gift_Credit_ A
 									INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
 								WHERE 1 = 1
 									AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-4,0),112) -- Beginning of this year -3
@@ -24531,7 +24532,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 					USING (
 							SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS Donor_Key 
 								, SUM(A.New_CreditAmount) AS Donor_Total_Giving_To_Byu_Current_Year_Minus_4_Amt
-								FROM _Gift_Credit_ A
+								FROM dbo._Gift_Credit_ A
 									INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
 								WHERE 1 = 1
 									AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-5,0),112) -- Beginning of this year -4
@@ -24568,7 +24569,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 					USING (
 							SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS Donor_Key 
 								, SUM(A.New_CreditAmount) AS Donor_Total_Giving_To_Byu_Current_Year_Minus_5_Amt
-								FROM _Gift_Credit_ A
+								FROM dbo._Gift_Credit_ A
 									INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
 								WHERE 1 = 1
 									AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-6,0),112) -- Beginning of this year -5
@@ -24599,7 +24600,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 					USING (
 							SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS Donor_Key 
 								, SUM(A.New_CreditAmount) AS Donor_Total_Giving_To_Byui_Current_Year_Minus_4_Amt
-								FROM _Gift_Credit_ A
+								FROM dbo._Gift_Credit_ A
 									INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
 								WHERE 1 = 1
 									AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-5,0),112) -- Beginning of this year -4
@@ -24630,7 +24631,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 					USING (
 							SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS Donor_Key 
 								, SUM(A.New_CreditAmount) AS Donor_Total_Giving_To_Byui_Current_Year_Minus_5_Amt
-								FROM _Gift_Credit_ A
+								FROM dbo._Gift_Credit_ A
 									INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
 								WHERE 1 = 1
 									AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-6,0),112) -- Beginning of this year -5
@@ -24661,7 +24662,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 					USING (
 							SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS Donor_Key 
 								, SUM(A.New_CreditAmount) AS Donor_Total_Giving_To_Byuh_Current_Year_Minus_4_Amt
-								FROM _Gift_Credit_ A
+								FROM dbo._Gift_Credit_ A
 									INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
 								WHERE 1 = 1
 									AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-5,0),112) -- Beginning of this year -4
@@ -24692,7 +24693,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 					USING (
 							SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS Donor_Key 
 								, SUM(A.New_CreditAmount) AS Donor_Total_Giving_To_Byuh_Current_Year_Minus_5_Amt
-								FROM _Gift_Credit_ A
+								FROM dbo._Gift_Credit_ A
 									INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
 								WHERE 1 = 1
 									AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-6,0),112) -- Beginning of this year -5
@@ -24723,7 +24724,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 					USING (
 							SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS Donor_Key 
 								, SUM(A.New_CreditAmount) AS Donor_Total_Giving_To_Ldsbc_Current_Year_Minus_4_Amt
-								FROM _Gift_Credit_ A
+								FROM dbo._Gift_Credit_ A
 									INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
 								WHERE 1 = 1
 									AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-5,0),112) -- Beginning of this year -4
@@ -24754,7 +24755,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 					USING (
 							SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS Donor_Key 
 								, SUM(A.New_CreditAmount) AS Donor_Total_Giving_To_Ldsbc_Current_Year_Minus_5_Amt
-								FROM _Gift_Credit_ A
+								FROM dbo._Gift_Credit_ A
 									INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
 								WHERE 1 = 1
 									AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-6,0),112) -- Beginning of this year -5
@@ -24785,7 +24786,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 					USING (
 							SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS Donor_Key 
 								, SUM(A.New_CreditAmount) AS Donor_Total_Giving_Current_Year_Minus_4_Amt
-								FROM _Gift_Credit_ A
+								FROM dbo._Gift_Credit_ A
 								WHERE 1 = 1
 									AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-5,0),112) -- Beginning of this year -4
 															 AND CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-4,-1),112) -- End of this year -4
@@ -24814,7 +24815,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 					USING (
 							SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS Donor_Key 
 								, SUM(A.New_CreditAmount) AS Donor_Total_Giving_Current_Year_Minus_5_Amt
-								FROM _Gift_Credit_ A
+								FROM dbo._Gift_Credit_ A
 								WHERE 1 = 1
 									AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-6,0),112) -- Beginning of this year -5
 															 AND CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-5,-1),112) -- End of this year -5
@@ -24845,7 +24846,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 							FROM
 							(SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS Donor_Key 
 								, SUM(A.New_CreditAmount) AS Donor_Total_Giving_Byu_High_Flag
-								FROM _Gift_Credit_ A
+								FROM dbo._Gift_Credit_ A
 									INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
 								WHERE 1 = 1
 									AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-2,0),112) -- Beginning of this year -1
@@ -24858,7 +24859,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 							UNION
 							SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS Donor_Key 
 								, SUM(A.New_CreditAmount) AS Donor_Total_Giving_Byu_High_Flag
-								FROM _Gift_Credit_ A
+								FROM dbo._Gift_Credit_ A
 									INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
 								WHERE 1 = 1
 									AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-3,0),112) -- Beginning of this year -2
@@ -24871,7 +24872,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 							UNION
 							SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS Donor_Key 
 								, SUM(A.New_CreditAmount) AS Donor_Total_Giving_Byu_High_Flag
-								FROM _Gift_Credit_ A
+								FROM dbo._Gift_Credit_ A
 									INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
 								WHERE 1 = 1
 									AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-4,0),112) -- Beginning of this year -3
@@ -24884,7 +24885,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 							UNION
 							SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS Donor_Key 
 								, SUM(A.New_CreditAmount) AS Donor_Total_Giving_Byu_High_Flag
-								FROM _Gift_Credit_ A
+								FROM dbo._Gift_Credit_ A
 									INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
 								WHERE 1 = 1
 									AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-5,0),112) -- Beginning of this year -4
@@ -24897,7 +24898,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 							UNION
 							SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS Donor_Key 
 								, SUM(A.New_CreditAmount) AS Donor_Total_Giving_Byu_High_Flag
-								FROM _Gift_Credit_ A
+								FROM dbo._Gift_Credit_ A
 									INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
 								WHERE 1 = 1
 									AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-6,0),112) -- Beginning of this year -5
@@ -24938,7 +24939,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 							FROM
 							(SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS Donor_Key 
 								, SUM(A.New_CreditAmount) AS Donor_Total_Giving_Byui_High_Flag
-								FROM _Gift_Credit_ A
+								FROM dbo._Gift_Credit_ A
 									INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
 								WHERE 1 = 1
 									AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-2,0),112) -- Beginning of this year -1
@@ -24951,7 +24952,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 							UNION
 							SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS Donor_Key 
 								, SUM(A.New_CreditAmount) AS Donor_Total_Giving_Byui_High_Flag
-								FROM _Gift_Credit_ A
+								FROM dbo._Gift_Credit_ A
 									INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
 								WHERE 1 = 1
 									AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-3,0),112) -- Beginning of this year -2
@@ -24964,7 +24965,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 							UNION
 							SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS Donor_Key 
 								, SUM(A.New_CreditAmount) AS Donor_Total_Giving_Byui_High_Flag
-								FROM _Gift_Credit_ A
+								FROM dbo._Gift_Credit_ A
 									INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
 								WHERE 1 = 1
 									AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-4,0),112) -- Beginning of this year -3
@@ -24977,7 +24978,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 							UNION
 							SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS Donor_Key 
 								, SUM(A.New_CreditAmount) AS Donor_Total_Giving_Byui_High_Flag
-								FROM _Gift_Credit_ A
+								FROM dbo._Gift_Credit_ A
 									INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
 								WHERE 1 = 1
 									AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-5,0),112) -- Beginning of this year -4
@@ -24990,7 +24991,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 							UNION
 							SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS Donor_Key 
 								, SUM(A.New_CreditAmount) AS Donor_Total_Giving_Byui_High_Flag
-								FROM _Gift_Credit_ A
+								FROM dbo._Gift_Credit_ A
 									INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
 								WHERE 1 = 1
 									AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-6,0),112) -- Beginning of this year -5
@@ -25031,7 +25032,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 							FROM
 							(SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS Donor_Key 
 								, SUM(A.New_CreditAmount) AS Donor_Total_Giving_Byuh_High_Flag
-								FROM _Gift_Credit_ A
+								FROM dbo._Gift_Credit_ A
 									INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
 								WHERE 1 = 1
 									AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-2,0),112) -- Beginning of this year -1
@@ -25044,7 +25045,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 							UNION
 							SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS Donor_Key 
 								, SUM(A.New_CreditAmount) AS Donor_Total_Giving_Byuh_High_Flag
-								FROM _Gift_Credit_ A
+								FROM dbo._Gift_Credit_ A
 									INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
 								WHERE 1 = 1
 									AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-3,0),112) -- Beginning of this year -2
@@ -25057,7 +25058,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 							UNION
 							SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS Donor_Key 
 								, SUM(A.New_CreditAmount) AS Donor_Total_Giving_Byuh_High_Flag
-								FROM _Gift_Credit_ A
+								FROM dbo._Gift_Credit_ A
 									INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
 								WHERE 1 = 1
 									AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-4,0),112) -- Beginning of this year -3
@@ -25070,7 +25071,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 							UNION
 							SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS Donor_Key 
 								, SUM(A.New_CreditAmount) AS Donor_Total_Giving_Byuh_High_Flag
-								FROM _Gift_Credit_ A
+								FROM dbo._Gift_Credit_ A
 									INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
 								WHERE 1 = 1
 									AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-5,0),112) -- Beginning of this year -4
@@ -25083,7 +25084,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 							UNION
 							SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS Donor_Key 
 								, SUM(A.New_CreditAmount) AS Donor_Total_Giving_Byuh_High_Flag
-								FROM _Gift_Credit_ A
+								FROM dbo._Gift_Credit_ A
 									INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
 								WHERE 1 = 1
 									AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-6,0),112) -- Beginning of this year -5
@@ -25124,7 +25125,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 							FROM
 							(SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS Donor_Key 
 								, SUM(A.New_CreditAmount) AS Donor_Total_Giving_Ldsbc_High_Flag
-								FROM _Gift_Credit_ A
+								FROM dbo._Gift_Credit_ A
 									INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
 								WHERE 1 = 1
 									AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-2,0),112) -- Beginning of this year -1
@@ -25137,7 +25138,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 							UNION
 							SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS Donor_Key 
 								, SUM(A.New_CreditAmount) AS Donor_Total_Giving_Ldsbc_High_Flag
-								FROM _Gift_Credit_ A
+								FROM dbo._Gift_Credit_ A
 									INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
 								WHERE 1 = 1
 									AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-3,0),112) -- Beginning of this year -2
@@ -25150,7 +25151,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 							UNION
 							SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS Donor_Key 
 								, SUM(A.New_CreditAmount) AS Donor_Total_Giving_Ldsbc_High_Flag
-								FROM _Gift_Credit_ A
+								FROM dbo._Gift_Credit_ A
 									INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
 								WHERE 1 = 1
 									AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-4,0),112) -- Beginning of this year -3
@@ -25163,7 +25164,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 							UNION
 							SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS Donor_Key 
 								, SUM(A.New_CreditAmount) AS Donor_Total_Giving_Ldsbc_High_Flag
-								FROM _Gift_Credit_ A
+								FROM dbo._Gift_Credit_ A
 									INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
 								WHERE 1 = 1
 									AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-5,0),112) -- Beginning of this year -4
@@ -25176,7 +25177,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 							UNION
 							SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS Donor_Key 
 								, SUM(A.New_CreditAmount) AS Donor_Total_Giving_Ldsbc_High_Flag
-								FROM _Gift_Credit_ A
+								FROM dbo._Gift_Credit_ A
 									INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
 								WHERE 1 = 1
 									AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-6,0),112) -- Beginning of this year -5
@@ -25521,7 +25522,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 											, ''N'' AS Accounting_Same_Month_Adj_Yn
 											, ''N'' AS Accounting_Current_Year_Adj_Yn
 											, NULL AS Accounting_Recognition_Credit_Recipients
-											FROM _Gift_Hist_ A
+											FROM dbo._Gift_Hist_ A
 												LEFT JOIN _Donation_Dim B ON A.New_RelatedGift = B.Donation_Key
 										UNION ALL
 										SELECT CONVERT(NVARCHAR(100), A.New_GiftId) AS Donation_Key  
@@ -25536,7 +25537,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 											, ''N'' AS Accounting_Same_Month_Adj_Yn
 											, ''N'' AS Accounting_Current_Year_Adj_Yn
 											, NULL AS Accounting_Recognition_Credit_Recipients
-											FROM _Gift_ A
+											FROM dbo._Gift_ A
 												LEFT JOIN _Donation_GiftSource_ C ON A.Plus_GiftSource = C.Column_Value
 										) A 
 										LEFT JOIN _Accounting_Fact B ON CONCAT(A.Donation_Key,A.Accounting_Key) = CONCAT(B.Donation_Key,B.Accounting_Key)
@@ -25779,14 +25780,14 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 													, CONVERT(NVARCHAR(100),A.New_GiftHistoryId) AS Accounting_Key 
 													, A.New_TenderType AS Accounting_Tender_Type_Id
 													, C.Column_Label AS Accounting_Tender_Type_Desc
-													FROM _Gift_Hist_ A
+													FROM dbo._Gift_Hist_ A
 														LEFT JOIN _Plus_Tender_Type_ C ON A.New_TenderType = C.Column_Value
 												UNION ALL
 												SELECT CONVERT(NVARCHAR(100), A.New_GiftId) AS Donation_Key  
 													,  ''0'' AS Accounting_Key 
 													, A.New_TenderType
 													, C.Column_Label AS Accounting_Tender_Type
-													FROM _Gift_ A
+													FROM dbo._Gift_ A
 														LEFT JOIN _Plus_Tender_Type_ C ON A.New_TenderType = C.Column_Value
 												) A
 												LEFT JOIN _Accounting_Fact B ON CONCAT(A.Donation_Key,A.Accounting_Key) = CONCAT(B.Donation_Key,B.Accounting_Key)
@@ -25800,12 +25801,12 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 												FROM
 													(SELECT DISTINCT A.New_TenderType AS Accounting_Tender_Type_Id
 														, C.Column_Label AS Accounting_Tender_Type_Desc
-														FROM _Gift_Hist_ A
+														FROM dbo._Gift_Hist_ A
 															LEFT JOIN _Plus_Tender_Type_ C ON A.New_TenderType = C.Column_Value
 													UNION
 													SELECT DISTINCT A.New_TenderType
 														, C.Column_Label AS Accounting_Tender_Type
-														FROM _Gift_ A
+														FROM dbo._Gift_ A
 															LEFT JOIN _Plus_Tender_Type_ C ON A.New_TenderType = C.Column_Value
 													) A
 												WHERE 1 = 1
@@ -25947,7 +25948,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 													, CONVERT(NVARCHAR(100),A.New_GiftHistoryId) AS Accounting_Key
 													, A.Plus_Kind AS Accounting_Kind_Id
 													, D.Column_Label AS Accounting_Kind_Desc
-													FROM _Gift_Hist_ A
+													FROM dbo._Gift_Hist_ A
 														LEFT JOIN _Donation_Dim B ON A.New_RelatedGift = B.Donation_Key 
 														LEFT JOIN _Plus_Kind_ D ON A.Plus_Kind = D.Column_Value
 												UNION ALL
@@ -25955,7 +25956,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 													,  ''0'' AS Accounting_Key
 													, A.Plus_Kind AS Accounting_Kind_Id
 													, D.Column_Label AS Accounting_Kind_Desc
-													FROM _Gift_ A
+													FROM dbo._Gift_ A
 														LEFT JOIN _Plus_Kind_ D ON A.Plus_Kind = D.Column_Value
 												) A
 												LEFT JOIN _Accounting_Fact B ON CONCAT(A.Donation_Key,A.Accounting_Key) = CONCAT(B.Donation_Key,B.Accounting_Key)
@@ -25969,13 +25970,13 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 												FROM
 													(SELECT DISTINCT A.Plus_Kind AS Accounting_Kind_Id
 														, D.Column_Label AS Accounting_Kind_Desc
-														FROM _Gift_Hist_ A
+														FROM dbo._Gift_Hist_ A
 															LEFT JOIN _Donation_Dim B ON A.New_RelatedGift = B.Donation_Key 
 															LEFT JOIN _Plus_Kind_ D ON A.Plus_Kind = D.Column_Value
 													UNION
 													SELECT DISTINCT A.Plus_Kind AS Accounting_Kind_Id
 														, D.Column_Label AS Accounting_Kind_Desc
-														FROM _Gift_ A
+														FROM dbo._Gift_ A
 															LEFT JOIN _Plus_Kind_ D ON A.Plus_Kind = D.Column_Value
 													) A
 												WHERE 1 = 1
@@ -26118,14 +26119,14 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 													, A.Plus_Transmitted AS Accounting_Transmitted_Id
 													, CASE WHEN A.Plus_Transmitted = 0 THEN ''N''
 														ELSE ''Y'' END AS Accounting_Transmitted_Desc
-													FROM _Gift_Hist_ A
+													FROM dbo._Gift_Hist_ A
 												UNION ALL
 												SELECT CONVERT(NVARCHAR(100), A.New_GiftId) AS Donation_Key  
 													, ''0'' AS Accounting_Key
 													, A.New_Transmitted AS Accounting_Transmitted_Id
 													, CASE WHEN A.New_Transmitted = 0 THEN ''N''
 														ELSE ''Y'' END AS Accounting_Transmitted_Desc
-													FROM _Gift_ A
+													FROM dbo._Gift_ A
 												) A
 												LEFT JOIN _Accounting_Fact B ON CONCAT(A.Donation_Key,A.Accounting_Key) = CONCAT(B.Donation_Key,B.Accounting_Key)
 											WHERE 1 = 1
@@ -26139,12 +26140,12 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 													(SELECT DISTINCT A.Plus_Transmitted AS Accounting_Transmitted_Id
 														, CASE WHEN A.Plus_Transmitted = 0 THEN ''N''
 															ELSE ''Y'' END AS Accounting_Transmitted_Desc
-														FROM _Gift_Hist_ A
+														FROM dbo._Gift_Hist_ A
 													UNION
 													SELECT DISTINCT A.New_Transmitted AS Accounting_Transmitted_Id
 														, CASE WHEN A.New_Transmitted = 0 THEN ''N''
 															ELSE ''Y'' END AS Accounting_Transmitted_Desc
-														FROM _Gift_ A
+														FROM dbo._Gift_ A
 													) A
 												WHERE 1 = 1
 													AND Accounting_Transmitted_Id IS NOT NULL
@@ -26285,8 +26286,8 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 											, COALESCE(B.Plus_ReceiptText,C.Plus_ReceiptText) AS Accounting_Text_Receipt_Text
 											, B.Plus_GiftAdjustmentNote AS Accounting_Text_Gift_Adjustment_Text
 											FROM _Accounting_Fact A
-												LEFT JOIN _Gift_Hist_ B ON A.Donation_Key = CONVERT(NVARCHAR(100), B.New_RelatedGift) AND A.Accounting_Key = CONVERT(NVARCHAR(100), B.New_GiftHistoryId)
-												LEFT JOIN _Gift_ C ON A.Donation_Key = CONVERT(NVARCHAR(100), C.New_GiftId)
+												LEFT JOIN dbo._Gift_Hist_ B ON A.Donation_Key = CONVERT(NVARCHAR(100), B.New_RelatedGift) AND A.Accounting_Key = CONVERT(NVARCHAR(100), B.New_GiftHistoryId)
+												LEFT JOIN dbo._Gift_ C ON A.Donation_Key = CONVERT(NVARCHAR(100), C.New_GiftId)
 										) A
 										LEFT JOIN
 											(SELECT ROW_NUMBER() OVER(ORDER BY A.Accounting_Fact_Key) AS Accounting_Text_Key
@@ -26304,8 +26305,8 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 														, COALESCE(B.Plus_ReceiptText,C.Plus_ReceiptText) AS Accounting_Text_Receipt_Text
 														, B.Plus_GiftAdjustmentNote AS Accounting_Text_Gift_Adjustment_Text
 														FROM _Accounting_Fact A
-															LEFT JOIN _Gift_Hist_ B ON A.Donation_Key = CONVERT(NVARCHAR(100), B.New_RelatedGift) AND A.Accounting_Key = CONVERT(NVARCHAR(100), B.New_GiftHistoryId)
-															LEFT JOIN _Gift_ C ON A.Donation_Key = CONVERT(NVARCHAR(100), C.New_GiftId)
+															LEFT JOIN dbo._Gift_Hist_ B ON A.Donation_Key = CONVERT(NVARCHAR(100), B.New_RelatedGift) AND A.Accounting_Key = CONVERT(NVARCHAR(100), B.New_GiftHistoryId)
+															LEFT JOIN dbo._Gift_ C ON A.Donation_Key = CONVERT(NVARCHAR(100), C.New_GiftId)
 														WHERE 1 = 1
 															AND (COALESCE(B.Plus_Description,C.Plus_Description) IS NOT NULL
 																	OR COALESCE(B.Plus_ReceiptText,C.Plus_ReceiptText) IS NOT NULL
@@ -29609,7 +29610,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 						FROM
 							(SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS ContactId 
 								, SUM(A.New_CreditAmount) AS Credit_Amount
-								FROM _Gift_Credit_ A
+								FROM dbo._Gift_Credit_ A
 									INNER JOIN Ext_Institution B ON A.Plus_InstitutionalHieararchy = B.New_Institutionid
 								WHERE 1 = 1
 									AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(MONTH, -3, GETDATE()),112) -- 3 Months Ago
@@ -29631,7 +29632,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 						FROM
 							(SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS ContactId 
 								, SUM(A.New_CreditAmount) AS Credit_Amount
-								FROM _Gift_Credit_ A
+								FROM dbo._Gift_Credit_ A
 									INNER JOIN Ext_Institution B ON A.Plus_InstitutionalHieararchy = B.New_Institutionid
 								WHERE 1 = 1
 									AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(MONTH, -3, GETDATE()),112) -- 3 Months Ago
@@ -29653,7 +29654,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 						FROM
 							(SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS ContactId 
 								, SUM(A.New_CreditAmount) AS Credit_Amount
-								FROM _Gift_Credit_ A
+								FROM dbo._Gift_Credit_ A
 									INNER JOIN Ext_Institution B ON A.Plus_InstitutionalHieararchy = B.New_Institutionid
 								WHERE 1 = 1
 									AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(MONTH, -3, GETDATE()),112) -- 3 Months Ago
@@ -29675,7 +29676,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 						FROM
 							(SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS ContactId 
 								, SUM(A.New_CreditAmount) AS Credit_Amount
-								FROM _Gift_Credit_ A
+								FROM dbo._Gift_Credit_ A
 									INNER JOIN Ext_Institution B ON A.Plus_InstitutionalHieararchy = B.New_Institutionid
 								WHERE 1 = 1
 									AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(MONTH, -3, GETDATE()),112) -- 3 Months Ago
@@ -29697,7 +29698,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 						FROM
 							(SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS ContactId 
 								, SUM(A.New_CreditAmount) AS Credit_Amount
-								FROM _Gift_Credit_ A
+								FROM dbo._Gift_Credit_ A
 									INNER JOIN Ext_Institution B ON A.Plus_InstitutionalHieararchy = B.New_Institutionid
 								WHERE 1 = 1
 									AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(MONTH, -3, GETDATE()),112) -- 3 Months Ago
@@ -30147,7 +30148,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 							FROM
 								(SELECT COALESCE(A.New_ConstituentDonor, A.New_OrganizationDonor) AS Donor_Key
 									, MIN(A.New_PostDate) AS Donor_First_Gift_Post_Date_Byu 
-									FROM _Gift_ A
+									FROM dbo._Gift_ A
 									WHERE 1 = 1
 										AND EXISTS
 											(SELECT *
@@ -30172,7 +30173,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 							FROM
 								(SELECT COALESCE(A.New_ConstituentDonor, A.New_OrganizationDonor) AS Donor_Key
 									, MIN(A.New_PostDate) AS Donor_First_Gift_Post_Date_Byui 
-									FROM _Gift_ A
+									FROM dbo._Gift_ A
 									WHERE 1 = 1
 										AND EXISTS
 											(SELECT *
@@ -30195,7 +30196,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 							FROM
 								(SELECT COALESCE(A.New_ConstituentDonor, A.New_OrganizationDonor) AS Donor_Key
 									, MIN(A.New_PostDate) AS Donor_First_Gift_Post_Date_Byuh 
-									FROM _Gift_ A
+									FROM dbo._Gift_ A
 									WHERE 1 = 1
 										AND EXISTS
 											(SELECT *
@@ -30218,7 +30219,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 							FROM
 								(SELECT COALESCE(A.New_ConstituentDonor, A.New_OrganizationDonor) AS Donor_Key
 									, MIN(A.New_PostDate) AS Donor_First_Gift_Post_Date_Ldsbc 
-									FROM _Gift_ A
+									FROM dbo._Gift_ A
 									WHERE 1 = 1
 										AND EXISTS
 											(SELECT *
@@ -30305,7 +30306,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 				USING (
 						SELECT COALESCE(A.New_RelatedConstituent,A.New_OrganizationId) AS Donor_Key 
 							, SUM(A.New_CreditAmount) AS Donor_Total_Lifetime_Giving_To_Byu_Last_5_Years
-							FROM _Gift_Credit_ A
+							FROM dbo._Gift_Credit_ A
 								INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
 							WHERE 1 = 1
 								AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-6,0),112) -- 5 full calendar years + Ytd
@@ -30323,7 +30324,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 				USING (
 						SELECT COALESCE(A.New_RelatedConstituent,A.New_OrganizationId) AS Donor_Key 
 							, SUM(A.New_CreditAmount) AS Donor_Total_Lifetime_Giving_To_Byui_Last_5_Years
-							FROM _Gift_Credit_ A
+							FROM dbo._Gift_Credit_ A
 								INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
 							WHERE 1 = 1
 								AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-6,0),112) -- 5 full calendar years + Ytd
@@ -30341,7 +30342,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 				USING (
 						SELECT COALESCE(A.New_RelatedConstituent,A.New_OrganizationId) AS Donor_Key 
 							, SUM(A.New_CreditAmount) AS Donor_Total_Lifetime_Giving_To_Byuh_Last_5_Years
-							FROM _Gift_Credit_ A
+							FROM dbo._Gift_Credit_ A
 								INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
 							WHERE 1 = 1
 								AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-6,0),112) -- 5 full calendar years + Ytd
@@ -30359,7 +30360,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 				USING (
 						SELECT COALESCE(A.New_RelatedConstituent,A.New_OrganizationId) AS Donor_Key 
 							, SUM(A.New_CreditAmount) AS Donor_Total_Lifetime_Giving_To_Ldsbc_Last_5_Years
-							FROM _Gift_Credit_ A
+							FROM dbo._Gift_Credit_ A
 								INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
 							WHERE 1 = 1
 								AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-6,0),112) -- 5 full calendar years + Ytd
@@ -30377,7 +30378,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 				USING (
 						SELECT COALESCE(A.New_RelatedConstituent,A.New_OrganizationId) AS Donor_Key 
 							, SUM(A.New_CreditAmount) AS Donor_Total_Lifetime_Giving_To_Church_Last_5_Years
-							FROM _Gift_Credit_ A
+							FROM dbo._Gift_Credit_ A
 								INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
 							WHERE 1 = 1
 								AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-6,0),112) -- 5 full calendar years + Ytd
@@ -32836,7 +32837,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 				USING (
 						SELECT COALESCE(A.New_ConstituentDonor,A.New_OrganizationDonor) AS Donor_Key
 							, SUM(A.New_GiftAmount) AS Donor_Recurring_Total_Last_Month_Byu
-							FROM _Gift_ A
+							FROM dbo._Gift_ A
 								INNER JOIN Ext_Fund_Account B ON A.New_FundAccount = B.New_FundAccountId
 								INNER JOIN Ext_Institution C ON B.New_InstitutionalHierarchy = C.New_InstitutionId
 							WHERE 1 = 1
@@ -32855,7 +32856,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 				USING (
 						SELECT COALESCE(A.New_ConstituentDonor,A.New_OrganizationDonor) AS Donor_Key
 							, SUM(A.New_GiftAmount) AS Donor_Recurring_Total_Last_Month_Byui
-							FROM _Gift_ A
+							FROM dbo._Gift_ A
 								INNER JOIN Ext_Fund_Account B ON A.New_FundAccount = B.New_FundAccountId
 								INNER JOIN Ext_Institution C ON B.New_InstitutionalHierarchy = C.New_InstitutionId
 							WHERE 1 = 1
@@ -32874,7 +32875,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 				USING (
 						SELECT COALESCE(A.New_ConstituentDonor,A.New_OrganizationDonor) AS Donor_Key
 							, SUM(A.New_GiftAmount) AS Donor_Recurring_Total_Last_Month_Byuh
-							FROM _Gift_ A
+							FROM dbo._Gift_ A
 								INNER JOIN Ext_Fund_Account B ON A.New_FundAccount = B.New_FundAccountId
 								INNER JOIN Ext_Institution C ON B.New_InstitutionalHierarchy = C.New_InstitutionId
 							WHERE 1 = 1
@@ -32893,7 +32894,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 				USING (
 						SELECT COALESCE(A.New_ConstituentDonor,A.New_OrganizationDonor) AS Donor_Key
 							, SUM(A.New_GiftAmount) AS Donor_Recurring_Total_Last_Month_Ldsbc
-							FROM _Gift_ A
+							FROM dbo._Gift_ A
 								INNER JOIN Ext_Fund_Account B ON A.New_FundAccount = B.New_FundAccountId
 								INNER JOIN Ext_Institution C ON B.New_InstitutionalHierarchy = C.New_InstitutionId
 							WHERE 1 = 1
@@ -32912,7 +32913,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 				USING (
 						SELECT COALESCE(A.New_ConstituentDonor,A.New_OrganizationDonor) AS Donor_Key
 							, SUM(A.New_GiftAmount) AS Donor_Recurring_Total_Month_Before_Last_Byu
-							FROM _Gift_ A
+							FROM dbo._Gift_ A
 								INNER JOIN Ext_Fund_Account B ON A.New_FundAccount = B.New_FundAccountId
 								INNER JOIN Ext_Institution C ON B.New_InstitutionalHierarchy = C.New_InstitutionId
 							WHERE 1 = 1
@@ -32931,7 +32932,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 				USING (
 						SELECT COALESCE(A.New_ConstituentDonor,A.New_OrganizationDonor) AS Donor_Key
 							, SUM(A.New_GiftAmount) AS Donor_Recurring_Total_Month_Before_Last_Byui
-							FROM _Gift_ A
+							FROM dbo._Gift_ A
 								INNER JOIN Ext_Fund_Account B ON A.New_FundAccount = B.New_FundAccountId
 								INNER JOIN Ext_Institution C ON B.New_InstitutionalHierarchy = C.New_InstitutionId
 							WHERE 1 = 1
@@ -32950,7 +32951,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 				USING (
 						SELECT COALESCE(A.New_ConstituentDonor,A.New_OrganizationDonor) AS Donor_Key
 							, SUM(A.New_GiftAmount) AS Donor_Recurring_Total_Month_Before_Last_Byuh
-							FROM _Gift_ A
+							FROM dbo._Gift_ A
 								INNER JOIN Ext_Fund_Account B ON A.New_FundAccount = B.New_FundAccountId
 								INNER JOIN Ext_Institution C ON B.New_InstitutionalHierarchy = C.New_InstitutionId
 							WHERE 1 = 1
@@ -32969,7 +32970,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 				USING (
 						SELECT COALESCE(A.New_ConstituentDonor,A.New_OrganizationDonor) AS Donor_Key
 							, SUM(A.New_GiftAmount) AS Donor_Recurring_Total_Month_Before_Last_Ldsbc
-							FROM _Gift_ A
+							FROM dbo._Gift_ A
 								INNER JOIN Ext_Fund_Account B ON A.New_FundAccount = B.New_FundAccountId
 								INNER JOIN Ext_Institution C ON B.New_InstitutionalHierarchy = C.New_InstitutionId
 							WHERE 1 = 1
@@ -33058,7 +33059,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 				USING (
 						SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS Donor_Key 
 							, SUM(A.New_CreditAmount) AS Donor_Total_Giving_To_Church_Current_Year_Amt
-							FROM _Gift_Credit_ A
+							FROM dbo._Gift_Credit_ A
 								INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
 							WHERE 1 = 1
 								AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-1,0),112) -- Beginning of this year
@@ -33076,7 +33077,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 				USING (
 						SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS Donor_Key 
 							, SUM(A.New_CreditAmount) AS Donor_Total_Giving_To_Church_Current_Year_Minus_1_Amt
-							FROM _Gift_Credit_ A
+							FROM dbo._Gift_Credit_ A
 								INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
 							WHERE 1 = 1
 								AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-2,0),112) -- Beginning of this year -1
@@ -33094,7 +33095,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 				USING (
 						SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS Donor_Key 
 							, SUM(A.New_CreditAmount) AS Donor_Total_Giving_To_Church_Current_Year_Minus_2_Amt
-							FROM _Gift_Credit_ A
+							FROM dbo._Gift_Credit_ A
 								INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
 							WHERE 1 = 1
 								AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-3,0),112) -- Beginning of this year -2
@@ -33112,7 +33113,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 				USING (
 						SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS Donor_Key 
 							, SUM(A.New_CreditAmount) AS Donor_Total_Giving_To_Church_Current_Year_Minus_3_Amt
-							FROM _Gift_Credit_ A
+							FROM dbo._Gift_Credit_ A
 								INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
 							WHERE 1 = 1
 								AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-4,0),112) -- Beginning of this year -3
@@ -33130,7 +33131,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 				USING (
 						SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS Donor_Key 
 							, SUM(A.New_CreditAmount) AS Donor_Total_Giving_To_Church_Current_Year_Minus_4_Amt
-							FROM _Gift_Credit_ A
+							FROM dbo._Gift_Credit_ A
 								INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
 							WHERE 1 = 1
 								AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-5,0),112) -- Beginning of this year -4
@@ -33148,7 +33149,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 				USING (
 						SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS Donor_Key 
 							, SUM(A.New_CreditAmount) AS Donor_Total_Giving_To_Church_Current_Year_Minus_5_Amt
-							FROM _Gift_Credit_ A
+							FROM dbo._Gift_Credit_ A
 								INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
 							WHERE 1 = 1
 								AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-6,0),112) -- Beginning of this year -5
@@ -34245,7 +34246,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 				USING (
 						SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS Donor_Key 
 							, SUM(A.New_CreditAmount) AS Donor_Total_Giving_Current_Year_Minus_4_With_Matching
-							FROM _Gift_Credit_ A
+							FROM dbo._Gift_Credit_ A
 							WHERE 1 = 1
 								AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-5,0),112) -- Beginning of this year -4
 														 AND CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-4,-1),112) -- End of this year -4
@@ -34260,7 +34261,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 				USING (
 						SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS Donor_Key 
 							, SUM(A.New_CreditAmount) AS Donor_Total_Giving_Current_Year_Minus_5_With_Matching
-							FROM _Gift_Credit_ A
+							FROM dbo._Gift_Credit_ A
 							WHERE 1 = 1
 								AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-6,0),112) -- Beginning of this year -5
 														 AND CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-5,-1),112) -- End of this year -5
