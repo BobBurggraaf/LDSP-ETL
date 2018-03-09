@@ -33,8 +33,8 @@ ALTER PROCEDURE dbo.usp_Barsoom @Barsoom_Cnt AS BIGINT
 AS
 BEGIN
 
-	IF NOT EXISTS (SELECT * FROM sysobjects WHERE Name = 'Barsoom' AND xtype = 'U')
-		CREATE TABLE Barsoom(
+	IF NOT EXISTS (SELECT * FROM sysobjects WHERE Name = 'dbo.Barsoom' AND xtype = 'U')
+		CREATE TABLE dbo.Barsoom(
 			Barsoom_Date DATETIME
 		)
 
@@ -113,12 +113,12 @@ BEGIN
 				, @subject = 'Transform - Barsoom'  -->>>>>> EMAIL SUBJECT <<<<<<<--
 				, @body = @Email_Body	
 				
-			INSERT INTO Barsoom (
+			INSERT INTO dbo.Barsoom (
 				Barsoom_Date
 			)
 			SELECT GETDATE()
 			
-			SELECT @Barsoom_Date_Cnt = (SELECT COUNT(*) FROM Barsoom)
+			SELECT @Barsoom_Date_Cnt = (SELECT COUNT(*) FROM dbo.Barsoom)
 			
 			SET @Barsoom_Multiplier = 10 * @Barsoom_Date_Cnt
 				IF @Barsoom_Multiplier >= 60

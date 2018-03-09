@@ -14220,9 +14220,9 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 							(SELECT MAX(RowNum) AS Max_RowNum
 								FROM _Numbered_ContactIds) A
 					)
-			DECLARE @Barsoom_Base BIGINT
-			SET @Barsoom_Base = ((133 - 1465400)/-1)
-			EXEC usp_Barsoom @Barsoom_Cnt = @Barsoom_Base
+			--DECLARE @Barsoom_Base BIGINT
+			--SET @Barsoom_Base = ((133 - 1465400)/-1)
+			--EXEC usp_Barsoom @Barsoom_Cnt = @Barsoom_Base
 			DECLARE @LOOP_NUM INT
 			SET @LOOP_NUM = 1
 				WHILE  @LOOP_NUM <= @Total_Loop_Num 
@@ -15093,7 +15093,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 				)
 			IF OBJECT_ID(''dbo._Donor_Dim_2'',''U'') IS NOT NULL
 			DROP TABLE dbo._Donor_Dim_2
-			CREATE TABLE [_Donor_Dim_2] (
+			CREATE TABLE dbo._Donor_Dim_2 (
 				[Donor_Key] NVARCHAR(100),
 				[Donor_Title] nvarchar(100),
 				[Donor_Professional_Suffix] nvarchar(100),
@@ -15113,7 +15113,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 				)
 			IF OBJECT_ID(''dbo._Donor_Dim_3'',''U'') IS NOT NULL
 			DROP TABLE dbo._Donor_Dim_3
-			CREATE TABLE [_Donor_Dim_3] (
+			CREATE TABLE dbo._Donor_Dim_3 (
 				[Donor_Key] NVARCHAR(100),
 				[Donor_Individual_Infor_Envel] nvarchar(300),
 				[Donor_Couple_Infor_Envel] nvarchar(300),
@@ -15133,7 +15133,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 			-- Create Tables
 			IF OBJECT_ID(''dbo._Donor_Dim_41'',''U'') IS NOT NULL
 			DROP TABLE dbo._Donor_Dim_41
-			CREATE TABLE [_Donor_Dim_41] (
+			CREATE TABLE dbo._Donor_Dim_41 (
 				Donor_Key NVARCHAR(100)
 				, All_Personal_Connections NVARCHAR(4000)
 				, Donor_Age INT
@@ -15141,7 +15141,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 			
 			IF OBJECT_ID(''dbo._Donor_Dim_42'',''U'') IS NOT NULL
 			DROP TABLE dbo._Donor_Dim_42
-			CREATE TABLE [_Donor_Dim_42] (
+			CREATE TABLE dbo._Donor_Dim_42 (
 				Donor_Key NVARCHAR(100)
 				, Byu_Degrees NVARCHAR(4000)
 				, ByuI_Degrees NVARCHAR(4000)
@@ -15149,7 +15149,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 				
 			IF OBJECT_ID(''dbo._Donor_Dim_43'',''U'') IS NOT NULL
 			DROP TABLE dbo._Donor_Dim_43
-			CREATE TABLE [_Donor_Dim_43] (
+			CREATE TABLE dbo._Donor_Dim_43 (
 				Donor_Key NVARCHAR(100)
 				, ByuH_Degrees NVARCHAR(4000)
 				, Ldsbc_Degrees NVARCHAR(4000)
@@ -15183,7 +15183,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 			-- Create Table
 			IF OBJECT_ID(''dbo._Donor_Dim_6'',''U'') IS NOT NULL
 			DROP TABLE dbo._Donor_Dim_6
-			CREATE TABLE [_Donor_Dim_6] (
+			CREATE TABLE dbo._Donor_Dim_6 (
 				Donor_Key NVARCHAR(100)
 				, All_Employment NVARCHAR(4000) 
 				, Current_Employment NVARCHAR(4000)
@@ -15258,7 +15258,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 										LEFT JOIN LDSPhilanthropiesDW.dbo._Donor_Gift_Cap_En_ K ON A.Plus_GiftCapacityEn = K.Column_Value
 										LEFT JOIN LDSPhilanthropiesDW.dbo._Donor_Phil_Cap_Rate_ L ON A.Plus_PhilanthropicCapacityRatingPcr = L.Column_Value
 										LEFT JOIN LDSPhilanthropiesDW.dbo._Donor_Est_House_Income_ M ON A.Plus_EstimatedHouseHoldIncome = M.Column_Value
-										LEFT JOIN LDSPhilanthropiesDW.dbo._Donor_Est_Home_Value_ N ON A.Plus_EstimatedHomemarketValue = N.Column_Value
+										LEFT JOIN LDSPhilanthropiesDW.dbo._Donor_Est_House_Value_ N ON A.Plus_EstimatedHomemarketValue = N.Column_Value
 									WHERE 1 = 1
 										AND NUM.RowNum BETWEEN @RowNum_Beg AND @RowNum_End                                              
 						SELECT @TABLE_CNT_20 = (SELECT CONVERT(NVARCHAR (100), COUNT(*) ) FROM dbo._Donor_Dim_1);
@@ -15302,7 +15302,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 					BEGIN TRY
 						DECLARE @TABLE_CNT_20 NVARCHAR(100)                                                                                     
 						EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''Donor Dim 2'', @Alpha_Step_Number = ''122Q'', @Alpha_Step_Name = ''Loop Tables - Loop 1 - Begin'', @Alpha_Result = 1;
-							INSERT INTO _Donor_Dim_2 (
+							INSERT INTO dbo._Donor_Dim_2 (
 								Donor_Key
 								, Donor_Title
 								, Donor_Professional_Suffix
@@ -15349,7 +15349,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 										LEFT JOIN LDSPhilanthropiesDW.dbo.Ext_Country W ON A.New_HomeCountry = W.New_CountryId
 									WHERE 1 = 1
 										AND NUM.RowNum BETWEEN @RowNum_Beg AND @RowNum_End                                              
-						SELECT @TABLE_CNT_20 = (SELECT CONVERT(NVARCHAR (100), COUNT(*) ) FROM _Donor_Dim_2);
+						SELECT @TABLE_CNT_20 = (SELECT CONVERT(NVARCHAR (100), COUNT(*) ) FROM dbo._Donor_Dim_2);
 						EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''Donor Dim 2'', @Alpha_Step_Number = ''122Q'', @Alpha_Step_Name = ''Loop Tables - Loop 1 - End'', @Alpha_Count = @TABLE_CNT_20, @Alpha_Result = 1;
 					END TRY
 					BEGIN CATCH    
@@ -15390,7 +15390,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 						BEGIN TRY
 							DECLARE @TABLE_CNT_20 NVARCHAR(100)                                                                                     
 							EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''Donor Dim 3'', @Alpha_Step_Number = ''122R'', @Alpha_Step_Name = ''Loop Tables - Loop 1 - Begin'', @Alpha_Result = 1;
-								INSERT INTO _Donor_Dim_3 (
+								INSERT INTO dbo._Donor_Dim_3 (
 									Donor_Key
 									, Donor_Individual_Infor_Envel
 									, Donor_Couple_Infor_Envel
@@ -15426,7 +15426,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 												) Y ON A.Donor_Key = Y.ContactId
 											WHERE 1 = 1
 												AND NUM.RowNum BETWEEN @RowNum_Beg AND @RowNum_End                                              
-							SELECT @TABLE_CNT_20 = (SELECT CONVERT(NVARCHAR (100), COUNT(*) ) FROM _Donor_Dim_3);
+							SELECT @TABLE_CNT_20 = (SELECT CONVERT(NVARCHAR (100), COUNT(*) ) FROM dbo._Donor_Dim_3);
 							EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''Donor Dim 3'', @Alpha_Step_Number = ''122R'', @Alpha_Step_Name = ''Loop Tables - Loop 1 - End'', @Alpha_Count = @TABLE_CNT_20, @Alpha_Result = 1;
 						END TRY
 						BEGIN CATCH    
@@ -15468,7 +15468,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 							-- _Donor_Dim_41
 							DECLARE @TABLE_CNT_201 NVARCHAR(100)                                                                                     
 							EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''Donor Dim 41'', @Alpha_Step_Number = ''122S'', @Alpha_Step_Name = ''Loop Tables - Loop 1 - Begin'', @Alpha_Result = 1;
-								INSERT INTO _Donor_Dim_41 (
+								INSERT INTO dbo._Donor_Dim_41 (
 									Donor_Key
 									, All_Personal_Connections
 									, Donor_Age
@@ -15512,12 +15512,12 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 												) AGE ON NUM.ContactId = AGE.ContactId
 										WHERE 1 = 1
 											AND NUM.RowNum BETWEEN @RowNum_Beg AND @RowNum_End                                              
-							SELECT @TABLE_CNT_201 = (SELECT CONVERT(NVARCHAR (100), COUNT(*) ) FROM _Donor_Dim_41);
+							SELECT @TABLE_CNT_201 = (SELECT CONVERT(NVARCHAR (100), COUNT(*) ) FROM dbo._Donor_Dim_41);
 							EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''Donor Dim 41'', @Alpha_Step_Number = ''122S'', @Alpha_Step_Name = ''Loop Tables - Loop 1 - End'', @Alpha_Count = @TABLE_CNT_201, @Alpha_Result = 1;
 							-- _Donor_Dim_42
 							DECLARE @TABLE_CNT_202 NVARCHAR(100)                                                                                     
 							EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''Donor Dim 42'', @Alpha_Step_Number = ''122S'', @Alpha_Step_Name = ''Loop Tables - Loop 1 - Begin'', @Alpha_Result = 1;
-								INSERT INTO _Donor_Dim_42 (
+								INSERT INTO dbo._Donor_Dim_42 (
 									Donor_Key
 									, Byu_Degrees
 									, ByuI_Degrees
@@ -15574,12 +15574,12 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 												) BYUI ON NUM.ContactId = BYUI.ContactId  
 										WHERE 1 = 1
 											AND NUM.RowNum BETWEEN @RowNum_Beg AND @RowNum_End                                              
-							SELECT @TABLE_CNT_202 = (SELECT CONVERT(NVARCHAR (100), COUNT(*) ) FROM _Donor_Dim_42);
+							SELECT @TABLE_CNT_202 = (SELECT CONVERT(NVARCHAR (100), COUNT(*) ) FROM dbo._Donor_Dim_42);
 							EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''Donor Dim 42'', @Alpha_Step_Number = ''122S'', @Alpha_Step_Name = ''Loop Tables - Loop 1 - End'', @Alpha_Count = @TABLE_CNT_202, @Alpha_Result = 1;
 							-- _Donor_Dim_43
 							DECLARE @TABLE_CNT_203 NVARCHAR(100)                                                                                     
 							EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''Donor Dim 43'', @Alpha_Step_Number = ''122S'', @Alpha_Step_Name = ''Loop Tables - Loop 1 - Begin'', @Alpha_Result = 1;
-								INSERT INTO _Donor_Dim_43 (
+								INSERT INTO dbo._Donor_Dim_43 (
 									Donor_Key
 									, ByuH_Degrees
 									, Ldsbc_Degrees 
@@ -15636,7 +15636,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 												) LDSBC ON NUM.ContactId = LDSBC.ContactId
 										WHERE 1 = 1
 											AND NUM.RowNum BETWEEN @RowNum_Beg AND @RowNum_End                                              
-							SELECT @TABLE_CNT_203 = (SELECT CONVERT(NVARCHAR (100), COUNT(*) ) FROM _Donor_Dim_43);
+							SELECT @TABLE_CNT_203 = (SELECT CONVERT(NVARCHAR (100), COUNT(*) ) FROM dbo._Donor_Dim_43);
 							EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''Donor Dim 43'', @Alpha_Step_Number = ''122S'', @Alpha_Step_Name = ''Loop Tables - Loop 1 - End'', @Alpha_Count = @TABLE_CNT_203, @Alpha_Result = 1;
 						END TRY
 						BEGIN CATCH    
@@ -15832,7 +15832,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 						BEGIN TRY
 							DECLARE @TABLE_CNT_20 NVARCHAR(100)                                                                                     
 							EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''Donor Dim 6'', @Alpha_Step_Number = ''122U'', @Alpha_Step_Name = ''Loop Tables - Loop 1 - Begin'', @Alpha_Result = 1;
-								INSERT INTO _Donor_Dim_6 (
+								INSERT INTO dbo._Donor_Dim_6 (
 									Donor_Key
 									, All_Employment 
 									, Current_Employment
@@ -15916,7 +15916,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 												) EF ON NUM.ContactId = EF.ContactId                                                                                         
 										WHERE 1 = 1
 											AND NUM.RowNum BETWEEN @RowNum_Beg AND @RowNum_End                                              
-							SELECT @TABLE_CNT_20 = (SELECT CONVERT(NVARCHAR (100), COUNT(*) ) FROM _Donor_Dim_6);
+							SELECT @TABLE_CNT_20 = (SELECT CONVERT(NVARCHAR (100), COUNT(*) ) FROM dbo._Donor_Dim_6);
 							EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''Donor Dim 6'', @Alpha_Step_Number = ''122U'', @Alpha_Step_Name = ''Loop Tables - Loop 1 - End'', @Alpha_Count = @TABLE_CNT_20, @Alpha_Result = 1;
 						END TRY
 						BEGIN CATCH    
@@ -15963,7 +15963,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 				, T.Donor_Est_Household_Income_Value = S.Donor_Est_Household_Income_Value
 				, T.Donor_Est_Home_Market_Val_Value = S.Donor_Est_Home_Market_Val_Value;
 			MERGE _Donor_Dim AS T
-				USING _Donor_Dim_2 AS S
+				USING dbo._Donor_Dim_2 AS S
 				ON (T.Donor_Key = S.Donor_Key)
 				WHEN MATCHED 
 				THEN UPDATE SET 
@@ -15983,7 +15983,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 				, T.Donor_Org_Matching_Ratio_Value = S.Donor_Org_Matching_Ratio_Value
 				, T.Donor_Org_Pref_Cont_Meth_Val = S.Donor_Org_Pref_Cont_Meth_Val;
 			MERGE _Donor_Dim AS T
-				USING _Donor_Dim_3 AS S
+				USING dbo._Donor_Dim_3 AS S
 				ON (T.Donor_Key = S.Donor_Key)
 				WHEN MATCHED 
 				THEN UPDATE SET 
@@ -15992,7 +15992,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 				, T.Donor_Individual_Form_Envel = S.Donor_Individual_Form_Envel
 				, T.Donor_Couple_Form_Envel = S.Donor_Couple_Form_Envel;
 			MERGE _Donor_Dim AS T
-				USING _Donor_Dim_41 AS S
+				USING dbo._Donor_Dim_41 AS S
 				ON (T.Donor_Key = S.Donor_Key)
 				WHEN MATCHED 
 				THEN UPDATE SET 
@@ -16000,7 +16000,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 				, T.Donor_Age = S.Donor_Age
 				;
 			MERGE _Donor_Dim AS T
-				USING _Donor_Dim_42 AS S
+				USING dbo._Donor_Dim_42 AS S
 				ON (T.Donor_Key = S.Donor_Key)
 				WHEN MATCHED 
 				THEN UPDATE SET 
@@ -16008,7 +16008,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 				, T.ByuI_Degrees = S.ByuI_Degrees
 				;
 			MERGE _Donor_Dim AS T
-				USING _Donor_Dim_43 AS S
+				USING dbo._Donor_Dim_43 AS S
 				ON (T.Donor_Key = S.Donor_Key)
 				WHEN MATCHED 
 				THEN UPDATE SET 
@@ -16016,7 +16016,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 				, T.Ldsbc_Degrees = S.Ldsbc_Degrees
 				;
 			MERGE _Donor_Dim AS T
-				USING _Donor_Dim_6 AS S
+				USING dbo._Donor_Dim_6 AS S
 				ON (T.Donor_Key = S.Donor_Key)
 				WHEN MATCHED 
 				THEN UPDATE SET 
@@ -16226,8 +16226,8 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 							, CASE WHEN A.Plus_Unrestricted = 0 THEN ''N'' 
 								WHEN A.Plus_Unrestricted = 1 THEN ''Y'' 
 								ELSE NULL END AS Plus_Unrestricted
-							, CASE WHEN A.Plus_Scholarship = ''F'' THEN ''N'' 
-								WHEN A.Plus_Scholarship = ''T'' THEN ''Y'' 
+							, CASE WHEN A.Plus_Scholarship = 0 THEN ''N'' 
+								WHEN A.Plus_Scholarship = 1 THEN ''Y'' 
 								ELSE NULL END AS Plus_Scholarship
 							, CASE WHEN A.New_Endowment = 0 THEN ''N'' 
 								WHEN A.New_Endowment = 1 THEN ''Y'' 
@@ -16245,39 +16245,39 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 							, A.Plus_AwardRestrictionGPA
 							, CONVERT(NVARCHAR(100),A.Plus_AwardRestrictionMajor) AS Plus_AwardRestrictionMajor
 							, CONVERT(NVARCHAR(100),A.Plus_GeographicArea) AS Plus_GeographicArea
-							, CASE WHEN A.Plus_AwardRestrictionSeminaryGraduate = ''F'' THEN ''N'' 
-								WHEN A.Plus_AwardRestrictionSeminaryGraduate = ''T'' THEN ''Y'' 
+							, CASE WHEN A.Plus_AwardRestrictionSeminaryGraduate = 0 THEN ''N'' 
+								WHEN A.Plus_AwardRestrictionSeminaryGraduate = 1 THEN ''Y'' 
 								ELSE NULL END AS Plus_AwardRestrictionSeminaryGraduate
-							, CASE WHEN A.Plus_NeedBased = ''F'' THEN ''N''
-								WHEN A.Plus_NeedBased = ''T'' THEN ''Y'' 
+							, CASE WHEN A.Plus_NeedBased = 0 THEN ''N''
+								WHEN A.Plus_NeedBased = 1 THEN ''Y'' 
 								ELSE NULL END AS Plus_NeedBased
-							, CASE WHEN A.Plus_AwardRestrictionSingleParent = ''F'' THEN ''N'' 
-								WHEN A.Plus_AwardRestrictionSingleParent = ''T'' THEN ''Y'' 
+							, CASE WHEN A.Plus_AwardRestrictionSingleParent = 0 THEN ''N'' 
+								WHEN A.Plus_AwardRestrictionSingleParent = 1 THEN ''Y'' 
 								ELSE NULL END AS Plus_AwardRestrictionSingleParent
-							, CASE WHEN A.Plus_AwardRestrictionReturnedMissionary = ''F'' THEN ''N'' 
-								WHEN A.Plus_AwardRestrictionReturnedMissionary = ''T'' THEN ''Y''
+							, CASE WHEN A.Plus_AwardRestrictionReturnedMissionary = 0 THEN ''N'' 
+								WHEN A.Plus_AwardRestrictionReturnedMissionary = 1 THEN ''Y''
 								ELSE NULL END AS Plus_AwardRestrictionReturnedMissionary
-							, CASE WHEN A.Plus_PayItForward = ''F'' THEN ''N'' 
-								WHEN A.Plus_PayItForward = ''T'' THEN ''Y'' 
+							, CASE WHEN A.Plus_PayItForward = 0 THEN ''N'' 
+								WHEN A.Plus_PayItForward = 1 THEN ''Y'' 
 								ELSE NULL END AS Plus_PayItForward
 							, A.Plus_AwardRestrictionNotes
-							, CASE WHEN A.Plus_Athletics = ''F'' THEN ''N'' 
-								WHEN A.Plus_Athletics = ''T'' THEN ''Y'' 
+							, CASE WHEN A.Plus_Athletics = 0 THEN ''N'' 
+								WHEN A.Plus_Athletics = 1 THEN ''Y'' 
 								ELSE NULL END AS Plus_Athletics
-							, CASE WHEN A.Plus_FourYear = ''F'' THEN ''N'' 
-								WHEN A.Plus_FourYear = ''T'' THEN ''Y'' 
+							, CASE WHEN A.Plus_FourYear = 0 THEN ''N'' 
+								WHEN A.Plus_FourYear = 1 THEN ''Y'' 
 								ELSE NULL END AS Plus_FourYear
-							, CASE WHEN A.Plus_GraduateProfessional = ''F'' THEN ''N''
-								WHEN A.Plus_GraduateProfessional = ''T'' THEN ''Y'' 
+							, CASE WHEN A.Plus_GraduateProfessional = 0 THEN ''N''
+								WHEN A.Plus_GraduateProfessional = 1 THEN ''Y'' 
 								ELSE NULL END AS Plus_GraduateProfessional
-							, CASE WHEN A.Plus_TvRadio = ''F'' THEN ''N'' 
-								WHEN A.Plus_TvRadio = ''T'' THEN ''Y'' 
+							, CASE WHEN A.Plus_TvRadio = 0 THEN ''N'' 
+								WHEN A.Plus_TvRadio = 1 THEN ''Y'' 
 								ELSE NULL END AS Plus_TvRadio
-							, CASE WHEN A.Plus_TechnologySpec = ''F'' THEN ''N''
-								WHEN A.Plus_TechnologySpec = ''T'' THEN ''Y'' 
+							, CASE WHEN A.Plus_TechnologySpec = 0 THEN ''N''
+								WHEN A.Plus_TechnologySpec = 1 THEN ''Y'' 
 								ELSE NULL END AS Plus_TechnologySpec
-							, CASE WHEN A.Plus_AlumniAssociation = ''F'' THEN ''N'' 
-								WHEN A.Plus_AlumniAssociation = ''T'' THEN ''Y'' 
+							, CASE WHEN A.Plus_AlumniAssociation = 0 THEN ''N'' 
+								WHEN A.Plus_AlumniAssociation = 1 THEN ''Y'' 
 								ELSE NULL END AS Plus_AlumniAssociation
 							, A.Plus_MatchingGiftText
 							, A.Plus_PrincipalAccountNumber
@@ -18172,7 +18172,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 		' -- Attribute_3
 		, 'IF OBJECT_ID(''dbo._Donation_Pre_Fact'',''U'') IS NOT NULL
 			DROP TABLE dbo._Donation_Pre_Fact
-			CREATE TABLE _Donation_Pre_Fact (
+			CREATE TABLE dbo._Donation_Pre_Fact (
 				User_Pre_Key  UNIQUEIDENTIFIER 
 				, Donation_Credit_Amt  MONEY 
 				, Donor_Pre_Key  UNIQUEIDENTIFIER 
@@ -18193,7 +18193,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 		, 'BEGIN TRY                                                  
 				DECLARE @TABLE_CNT113 AS VARCHAR(100)                                    
 				EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''_Donation_Pre_Fact'', @Alpha_Step_Number = ''129F'', @Alpha_Step_Name = ''Support Table - Load - Begin'', @Alpha_Result = 1;                                                    
-					INSERT INTO _Donation_Pre_Fact 
+					INSERT INTO dbo._Donation_Pre_Fact 
 						(User_Pre_Key 
 						, Donation_Credit_Amt 
 						, Donor_Pre_Key 
@@ -18298,7 +18298,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 								LEFT JOIN _Recog_Credit_Type_ F ON A.Plus_Type = F.Column_Value
 								LEFT JOIN _PLUS_SUBTYPE_ G ON A.Plus_SubType = G.Column_Value
 							WHERE 1 = 1
-				SELECT @TABLE_CNT113 = (SELECT CONVERT(NVARCHAR(100),COUNT(*)) FROM _Donation_Pre_Fact)                                         
+				SELECT @TABLE_CNT113 = (SELECT CONVERT(NVARCHAR(100),COUNT(*)) FROM dbo._Donation_Pre_Fact)                                         
 				EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''_Donation_Pre_Fact'', @Alpha_Step_Number = ''129F'', @Alpha_Step_Name = ''Support Table - Count'', @Alpha_Count = @TABLE_CNT113, @Alpha_Result = 1;                                           
 				EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''_Donation_Pre_Fact'', @Alpha_Step_Number = ''129F'', @Alpha_Step_Name = ''Support Table - Load - End'', @Alpha_Result = 1;
 			END TRY             
@@ -18404,7 +18404,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 							, ''0'' AS User_Coordinating_Liaison_Key
 							, ''0'' AS User_Pending_Liaison_Key
 							, ''0'' AS User_Connected_Liaison_Key
-							FROM _Donation_Pre_Fact A
+							FROM dbo._Donation_Pre_Fact A
 								LEFT JOIN _Donor_Dim B ON A.Donor_Pre_Key = B.Donor_Key
 				SELECT @TABLE_CNT114 = (SELECT CONVERT(NVARCHAR(100),COUNT(*)) FROM _Donation_Fact)
 				EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''_Donation_Fact'', @Alpha_Step_Number = ''129G'', @Alpha_Step_Name = ''_Donation_Fact - Count'', @Alpha_Count = @TABLE_CNT114, @Alpha_Result = 1;
