@@ -17583,7 +17583,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 							, H.Column_Label AS Campaign_Type
 							, D.StatusCode AS Campaign_Status
 							, F.Column_Label AS Scope -- Picklist
-							, D.Plus_Requestor AS Requester
+							, NULL AS Requester
 							, CASE WHEN CONVERT(NVARCHAR(100),D.Plus_Affiliate) = ''100000000'' THEN CONVERT(NVARCHAR(100),I.New_Name)
 								WHEN CONVERT(NVARCHAR(100),D.Plus_Affiliate) = ''100000001'' THEN CONVERT(NVARCHAR(100),C.New_Name) END AS Representing
 							, G.Column_Label AS Department_Owner              --Picklist              
@@ -22342,7 +22342,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 						LEFT JOIN
 							(SELECT Donor_Retention_Type_Key
 								, Donor_Retention_Type_Code
-								FROM _Donor_Retention_Type_Dim
+								FROM dbo._Donor_Retention_Type_Dim
 							) B ON A.Donor_Type = B.Donor_Retention_Type_Code
 						LEFT JOIN
 							(SELECT A.Donor_Key
@@ -22766,7 +22766,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 						LEFT JOIN
 							(SELECT Donor_Retention_Type_Key
 								, Donor_Retention_Type_Code
-								FROM _Donor_Retention_Type_Dim
+								FROM dbo._Donor_Retention_Type_Dim
 							) B ON A.Donor_Type = B.Donor_Retention_Type_Code
 						LEFT JOIN
 							(SELECT A.Donor_Key
@@ -23190,7 +23190,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 						LEFT JOIN
 							(SELECT Donor_Retention_Type_Key
 								, Donor_Retention_Type_Code
-								FROM _Donor_Retention_Type_Dim
+								FROM dbo._Donor_Retention_Type_Dim
 							) B ON A.Donor_Type = B.Donor_Retention_Type_Code
 						LEFT JOIN
 							(SELECT A.Donor_Key
@@ -23614,7 +23614,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 						LEFT JOIN
 							(SELECT Donor_Retention_Type_Key
 								, Donor_Retention_Type_Code
-								FROM _Donor_Retention_Type_Dim
+								FROM dbo._Donor_Retention_Type_Dim
 							) B ON A.Donor_Type = B.Donor_Retention_Type_Code
 						LEFT JOIN
 							(SELECT A.Donor_Key
