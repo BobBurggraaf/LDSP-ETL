@@ -130,8 +130,8 @@ FUNCTION Insert-Alpha_Table_1
 		#---------------------------------------------
 		# Destination variables
 		#---------------------------------------------
-		[STRING] $Dest_Instance = 'MSSQL12336\S01'
-		[STRING] $Dest_Db = 'OneAccord_Warehouse'
+		[STRING] $Dest_Instance = 'W15904\S01'
+		[STRING] $Dest_Db = 'LDSPhilanthropiesDW'
 		[STRING] $Dest_Connect_String = "Data Source=$Dest_Instance;Initial Catalog=$Dest_Db;Integrated Security=TRUE;"
 				
 		####################################################################################################################

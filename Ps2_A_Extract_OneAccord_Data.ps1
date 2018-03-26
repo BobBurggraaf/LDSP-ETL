@@ -79,7 +79,7 @@ FUNCTION Copy-OneAccord_Data
 		# Log file
 		#---------------------------------------------
 		[STRING]$Folder_Date = Get-Date -Format "yyyyMMdd"
-		$New_Folder_Path = "C:\Users\fams\Documents\Year_2018\PowerShell\Logs\Extract_" + $Folder_Date
+		$New_Folder_Path = "F:\Powershell Scripts\Logs\Extract_" + $Folder_Date
 		IF(!(Test-Path $New_Folder_Path))
 			{
 				New-Item -ItemType Directory -Force -Path $New_Folder_Path
@@ -129,8 +129,8 @@ FUNCTION Copy-OneAccord_Data
 				#---------------------------------------------
 				# Destination variables
 				#---------------------------------------------
-				[STRING] $Dest_Instance = 'MSSQL12336\S01'
-				[STRING] $Dest_Db = 'OneAccord_Warehouse'
+				[STRING] $Dest_Instance = 'W15904\S01'
+				[STRING] $Dest_Db = 'LDSPhilanthropiesDW'
 				[STRING] $Dest_Connect_String = "Data Source=$Dest_Instance;Initial Catalog=$Dest_Db;Integrated Security=TRUE;"
 				[INT] $Bulk_Copy_Batch_Size = 10000
 				[INT] $Bulk_Copy_Timeout = 600
