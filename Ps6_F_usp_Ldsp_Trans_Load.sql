@@ -8,7 +8,7 @@ GO
 
 
 
-ALTER PROCEDURE [dbo].[usp_Ldsp_Trans_Load] 
+CREATE OR ALTER PROCEDURE [dbo].[usp_Ldsp_Trans_Load] 
 AS
 BEGIN
 
@@ -631,6 +631,78 @@ IF @Step_Date != @Todays_Date OR @Step_Date IS NULL
 
 	END	
 
+
+	
+-- -------------------------------------------
+-- EMAIL
+-- -------------------------------------------
+
+
+DECLARE @Email_Step1_Error_Cnt INT
+DECLARE @Email_Body VARCHAR(MAX)
+ 
+SELECT @Email_Step1_Error_Cnt = (SELECT COUNT(Alpha_Result) FROM LDSPhilanthropiesDW.dbo.Alpha_Table_2 WHERE Alpha_Result = '0'); 
+
+EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = 'Trans\Load Tables Email', @Alpha_Step_Number = 'Email_1A', @Alpha_Step_Name = 'Trans\Load - Email Error Count', @Alpha_Count = @Email_Step1_Error_Cnt, @Alpha_Result = 1;
+
+
+SET @Email_Body = 'The LDSP Trans\Load ETL has completed with ' + CONVERT(VARCHAR(12),@Email_Step1_Error_Cnt) + ' errors.'
+
+
+CREATE TABLE #Prod_Summary (
+		[Production Table] NVARCHAR(100)
+		, Duration INT
+		, [Count] INT
+		, [Time] NVARCHAR(15)
+		, Message NVARCHAR(1000)
+		, [Timestamp] DATETIME
+	)
+	
+	INSERT INTO #Prod_Summary
+	SELECT Alpha_Stage AS [Production Table]
+	, Alpha_Duration_In_Seconds AS Duration
+	, Alpha_Count AS [Count]
+	, LEFT(RIGHT(CONVERT(VARCHAR,Alpha_DateTime,9),14),8) + ' ' + RIGHT(CONVERT(VARCHAR,Alpha_DateTime,9),2) AS [Time]
+	, ErrorMessage AS Message 
+	, Alpha_DateTime AS [Timestamp]
+	FROM Alpha_Table_2 
+	WHERE 1 = 1
+		AND (Alpha_Step_Name = 'Stats'
+				OR Alpha_Result = 0)
+	
+	DECLARE @xml NVARCHAR(MAX)
+	DECLARE @body NVARCHAR(MAX)
+	
+	SET @xml = CAST((SELECT [Production Table] AS 'td','', Duration AS 'td','', [Count] AS 'td','', [Time] AS 'td','', Message AS 'td' FROM #Prod_Summary ORDER BY [Timestamp] DESC
+		FOR XML PATH('tr'), ELEMENTS ) AS NVARCHAR(MAX))
+	
+	SET @body ='<html><body><H3> ' + @Email_Body + '</H3>
+		<table border = 1> 
+		<tr>
+		<th> Production Table </th> <th> Duration </th> <th> Count </th> <th> Time </th> <th> Message </th> </tr>'    
+		 
+	SET @body = @body + @xml +'</table></body></html>'
+	
+
+	EXEC msdb.dbo.sp_send_dbmail
+	@recipients = 'fams@LDSChurch.org' 
+	, @subject = 'NEW SERVER: LDSP Trans/Load Complete'  -->>>>>> EMAIL SUBJECT <<<<<<<--
+	, @body = @body
+	, @body_format = 'HTML'
+	, @query = 'SELECT TOP 2500 * FROM LDSPhilanthropiesDW.dbo.Alpha_Table_2'  -- MAXES OUT MEMORY AND WON'T SEND EMAIL
+	, @query_result_header=1
+	, @query_no_truncate=1
+	, @attach_query_result_as_file=1
+	, @query_attachment_filename = 'Alpha Table 2.csv'
+	, @query_result_separator = '^'
+	
+	DROP TABLE #Prod_Summary
+
+	EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = 'Trans\Load Tables Email', @Alpha_Step_Number = 'Email_1B', @Alpha_Step_Name = 'Trans\Load - Email', @Alpha_Result = 1;
+
 END
+
+
+
 
 

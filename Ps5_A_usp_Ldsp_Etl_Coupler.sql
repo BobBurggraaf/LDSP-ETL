@@ -10,7 +10,7 @@ GO
 
 
 
-ALTER PROCEDURE dbo.usp_Ldsp_Etl_Coupler 
+CREATE OR ALTER PROCEDURE dbo.usp_Ldsp_Etl_Coupler 
 AS
 BEGIN
 -- --------------------------
@@ -283,6 +283,73 @@ END
 SET @FiveAttempts = 0
 
 
+
+-- -------------------------------------------
+-- EMAIL
+-- -------------------------------------------
+
+
+DECLARE @Email_Step1_Error_Cnt INT
+DECLARE @Email_Body VARCHAR(MAX)
+ 
+SELECT @Email_Step1_Error_Cnt = (SELECT COUNT(Alpha_Result) FROM LDSPhilanthropiesDW.dbo.Alpha_Table_1 WHERE Alpha_Result = '0'); 
+
+EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = 'Extract Tables Email', @Alpha_Step_Number = 'Email_1A', @Alpha_Step_Name = 'Extract - Email Error Count', @Alpha_Count = @Email_Step1_Error_Cnt, @Alpha_Result = 1;
+
+
+SET @Email_Body = 'The LDSP Extract ETL has completed with ' + CONVERT(VARCHAR(12),@Email_Step1_Error_Cnt) + ' errors.'
+
+
+CREATE TABLE #Ext_Summary (
+		[Production Table] NVARCHAR(100)
+		, Duration INT
+		, [Count] INT
+		, [Time] NVARCHAR(15)
+		, Message NVARCHAR(1000)
+		, [Timestamp] DATETIME
+	)
+	
+	INSERT INTO #Ext_Summary
+	SELECT Alpha_Stage AS [Production Table]
+	, Alpha_Duration_In_Seconds AS Duration
+	, Alpha_Count AS [Count]
+	, LEFT(RIGHT(CONVERT(VARCHAR,Alpha_DateTime,9),14),8) + ' ' + RIGHT(CONVERT(VARCHAR,Alpha_DateTime,9),2) AS [Time]
+	, ErrorMessage AS Message 
+	, Alpha_DateTime AS [Timestamp]
+	FROM Alpha_Table_1 
+	WHERE 1 = 1
+		AND (Alpha_Step_Name = 'Stats'
+				OR Alpha_Result = 0)
+	
+	DECLARE @xml NVARCHAR(MAX)
+	DECLARE @body NVARCHAR(MAX)
+	
+	SET @xml = CAST((SELECT [Production Table] AS 'td','', Duration AS 'td','', [Count] AS 'td','', [Time] AS 'td','', Message AS 'td' FROM #Ext_Summary ORDER BY [Timestamp] DESC
+		FOR XML PATH('tr'), ELEMENTS ) AS NVARCHAR(MAX))
+	
+	SET @body ='<html><body><H3> ' + @Email_Body + '</H3>
+		<table border = 1> 
+		<tr>
+		<th> Production Table </th> <th> Duration </th> <th> Count </th> <th> Time </th> <th> Message </th> </tr>'    
+		 
+	SET @body = @body + @xml +'</table></body></html>'
+	
+
+	EXEC msdb.dbo.sp_send_dbmail
+	@recipients = 'fams@LDSChurch.org' 
+	, @subject = 'NEW SERVER: LDSP Extract ETL Complete'  -->>>>>> EMAIL SUBJECT <<<<<<<--
+	, @body = @body
+	, @body_format = 'HTML'
+	, @query = 'SELECT * FROM LDSPhilanthropiesDW.dbo.Alpha_Table_1'
+	, @query_result_header=1
+	, @query_no_truncate=1
+	, @attach_query_result_as_file=1
+	, @query_attachment_filename = 'Alpha Table 1.csv'
+	, @query_result_separator = '^'
+	
+	DROP TABLE #Ext_Summary
+
+	EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = 'Extract Tables Email', @Alpha_Step_Number = 'Email_1B', @Alpha_Step_Name = 'Extract - Email', @Alpha_Result = 1;
 	
 
 END
