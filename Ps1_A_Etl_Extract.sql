@@ -49,6 +49,8 @@ CREATE TABLE LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 	, Active BIT
 	, Extract_Stage NVARCHAR(50)
 	, Extract_Stage_DateTime DATETIME
+	, Coupler_Stage NVARCHAR(50)
+	, Coupler_Stage_DateTime DATETIME
 	, Insert_Date DATETIME
 	, Update_Date DATETIME
 	);
@@ -89,6 +91,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 	, Active
 	, Extract_Stage
 	, Extract_Stage_DateTime
+	, Coupler_Stage
+	, Coupler_Stage_DateTime
 	, Insert_Date
 	, Update_Date
 	)
@@ -204,7 +208,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, New_LdspId
 			, Name
 			, ParentAccountId
-			, CONVERT(NVARCHAR(4000),Description) AS Description
+			, CONVERT(NVARCHAR(4000),SUBSTRING(Description,1,4000)) AS Description
 			, DoNotPostalMail
 			, DoNotBulkPostalMail
 			, DoNotEmail
@@ -253,6 +257,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -332,6 +338,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -429,7 +437,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, RegardingObjectId
 			, Subject
 			, RegardingObjectIdName
-			, CONVERT(NVARCHAR(4000),Description) AS Description
+			, CONVERT(NVARCHAR(4000),SUBSTRING(Description,1,4000)) AS Description
 			, OwnerId
 			, CampactChannelTypeCode
 			, CASE WHEN DATENAME(dy,A.CreatedOn) BETWEEN F.Mdt_Begin_Date_Number AND F.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.CreatedOn)
@@ -471,6 +479,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -523,6 +533,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -590,6 +602,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -681,7 +695,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Plus_Association
 			, Plus_DepartmentFunction	
 			, Plus_Cause		
-			, CONVERT(NVARCHAR(4000),Description) AS Description
+			, CONVERT(NVARCHAR(4000),SUBSTRING(Description,1,4000)) AS Description
 			, CONVERT(NVARCHAR(50),BudgetedCost_Base) AS BudgetedCost_Base
 			, CONVERT(NVARCHAR(50),ExpectedRevenue) AS ExpectedRevenue
 			, CONVERT(NVARCHAR(50),OtherCost) AS OtherCost
@@ -717,6 +731,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -769,6 +785,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -861,6 +879,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -919,6 +939,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -1220,7 +1242,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Plus_SpousePreferredFullName
 			, Plus_ConnectedLiaison
 			, Plus_PendingLiaison
-			, CONVERT(NVARCHAR(4000),Plus_I5TextLinesLdsp) AS Plus_I5TextLinesLdsp
+			, CONVERT(NVARCHAR(4000),SUBSTRING(Plus_I5TextLinesLdsp,1,4000)) AS Plus_I5TextLinesLdsp
 			, Plus_TotalGivenLast5Years
 			, Lds_IsQualified
 			, CASE WHEN DATENAME(dy,A.Lds_QualifiedOn) BETWEEN C.Mdt_Begin_Date_Number AND C.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.Lds_QualifiedOn)
@@ -1255,6 +1277,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -1312,6 +1336,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -1435,7 +1461,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, New_Street2
 			, New_Street3
 			, New_Zip4
-			, CONVERT(NVARCHAR(300),Plus_AddressDisplay) AS Plus_AddressDisplay
+			, CONVERT(NVARCHAR(300),SUBSTRING(Plus_AddressDisplay,1,300)) AS Plus_AddressDisplay
 			, Plus_Longitude
 			, Plus_Latitude
 			, StateCode
@@ -1481,6 +1507,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -1568,6 +1596,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -1649,6 +1679,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -1706,6 +1738,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)	
@@ -1758,6 +1792,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -1815,6 +1851,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -1872,6 +1910,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -1929,6 +1969,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -1991,6 +2033,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -2127,6 +2171,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -2211,6 +2257,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -2374,6 +2422,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -2588,8 +2638,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 					ELSE DATEADD(hh,-7,A.Plus_EffectiveTo) END AS Plus_EffectiveTo
 			, New_CaePurpose
 			, Plus_SubClassAccountNumber
-			, CONVERT(NVARCHAR(300),New_Description) AS New_Description
-			, CONVERT(NVARCHAR(200),Plus_Notes) AS Plus_Notes
+			, CONVERT(NVARCHAR(300),SUBSTRING(New_Description,1,300)) AS New_Description
+			, CONVERT(NVARCHAR(200),SUBSTRING(Plus_Notes,1,200) AS Plus_Notes
 			, Plus_AwardRestrictionGender
 			, Plus_AwardRestrictionClassYear
 			, Plus_AwardRestrictionCollege
@@ -2602,14 +2652,14 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Plus_AwardRestrictionSingleParent
 			, Plus_AwardRestrictionReturnedMissionary
 			, Plus_PayItForward
-			, CONVERT(NVARCHAR(4000),Plus_AwardRestrictionNotes) AS Plus_AwardRestrictionNotes
+			, CONVERT(NVARCHAR(4000),SUBSTRING(Plus_AwardRestrictionNotes,1,4000)) AS Plus_AwardRestrictionNotes
 			, Plus_Athletics
 			, Plus_FourYear
 			, Plus_GraduateProfessional
 			, Plus_TvRadio
 			, Plus_TechnologySpec
 			, Plus_AlumniAssociation
-			, CONVERT(NVARCHAR(4000),Plus_MatchingGiftText) AS Plus_MatchingGiftText
+			, CONVERT(NVARCHAR(4000),SUBSTRING(Plus_MatchingGiftText,1,4000)) AS Plus_MatchingGiftText
 			, Plus_PrincipalAccountNumber
 			, Plus_Spendable
 			, Plus_ProposedEndowment
@@ -2645,6 +2695,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)	
@@ -2839,8 +2891,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, OwnerId
 			, New_GiftNumber
 			, StatusCode
-			, CONVERT(NVARCHAR(4000),Plus_ReceiptText) AS Plus_ReceiptText
-			, CONVERT(NVARCHAR(4000),Plus_SpecialGiftInstructions) AS Plus_SpecialGiftInstructions
+			, CONVERT(NVARCHAR(4000),SUBSTRING(Plus_ReceiptText,1,4000)) AS Plus_ReceiptText
+			, CONVERT(NVARCHAR(4000),SUBSTRING(Plus_SpecialGiftInstructions,1,4000)) AS Plus_SpecialGiftInstructions
 			, Plus_CheckNumber
 			, Plus_GiftSource
 			, Plus_Kind
@@ -2855,8 +2907,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, New_Transmitted
 			, Plus_AnonymousGift
 			, Plus_ReceiptDeliveryMethod
-			, CONVERT(NVARCHAR(4000),Plus_GiftInstructions) AS Plus_GiftInstructions
-			, CONVERT(NVARCHAR(4000),Plus_AcknowledgementInstructions) AS Plus_AcknowledgementInstructions
+			, CONVERT(NVARCHAR(4000),SUBSTRING(Plus_GiftInstructions,1,4000)) AS Plus_GiftInstructions
+			, CONVERT(NVARCHAR(4000),SUBSTRING(Plus_AcknowledgementInstructions,1,4000)) AS Plus_AcknowledgementInstructions
 			, Plus_ExcludeFromReport
 			, Plus_IncludeOnYearEndReceipt
 			, Plus_GoodsServicesProvided
@@ -2870,7 +2922,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Plus_Appeal
 			, Plus_MatchExpected
 			, New_Batch
-			, CONVERT(NVARCHAR(4000),Plus_Description) AS Plus_Description
+			, CONVERT(NVARCHAR(4000),SUBSTRING(Plus_Description,1,4000)) AS Plus_Description
 			, Lds_RecurringGiftRule
 			, Lds_RecurringGiftGroup
 			' -- Ext_Select_Statement
@@ -2903,6 +2955,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -3008,10 +3062,10 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, New_TenderType
 			, Plus_Kind
 			, Plus_Transmitted
-			, CONVERT(NVARCHAR(4000),Plus_Description) AS Plus_Description
-			, CONVERT(NVARCHAR(4000),Plus_ReceiptText) AS Plus_ReceiptText
+			, CONVERT(NVARCHAR(4000),SUBSTRING(Plus_Description,1,4000)) AS Plus_Description
+			, CONVERT(NVARCHAR(4000),SUBSTRING(Plus_ReceiptText,1,4000)) AS Plus_ReceiptText
 			, New_Name
-			, CONVERT(NVARCHAR(4000),Plus_GiftAdjustmentNote) AS Plus_GiftAdjustmentNote
+			, CONVERT(NVARCHAR(4000),SUBSTRING(Plus_GiftAdjustmentNote,1,4000)) AS Plus_GiftAdjustmentNote
 			, New_GiftHistoryId
 			, Plus_GiftNumber
 			, CASE WHEN DATENAME(dy,A.Plus_PostDate) BETWEEN D.Mdt_Begin_Date_Number AND D.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.Plus_PostDate)
@@ -3046,6 +3100,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -3098,6 +3154,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -3205,6 +3263,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)	
@@ -3311,6 +3371,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)	
@@ -3363,6 +3425,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -3446,7 +3510,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, New_BusinessPerson
 			, Plus_I5CreatedBy
 			, Plus_I5CreatedOn
-			, CONVERT(NVARCHAR(4000),Plus_Notes) AS Plus_Notes
+			, CONVERT(NVARCHAR(4000),SUBSTRING(Plus_Notes,1,4000)) AS Plus_Notes
 			, New_Source
 			' -- Ext_Select_Statement
 		, 'Oa_Extract.New_LanguageSpecialAffiliationBase
@@ -3475,6 +3539,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -3547,6 +3613,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -3636,6 +3704,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -3762,6 +3832,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -4045,9 +4117,9 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Plus_PlannedGift
 			, Plus_CheckNumber
 			, New_Confidential
-			, CONVERT(NVARCHAR(4000),Plus_AcknowledgementInstructions) AS Plus_AcknowledgementInstructions
-			, CONVERT(NVARCHAR(4000),Plus_NewAccountInstructions) AS Plus_NewAccountInstructions
-			, CONVERT(NVARCHAR(4000),Plus_SpecialGiftInstructions) AS Plus_SpecialGiftInstructions
+			, CONVERT(NVARCHAR(4000),SUBSTRING(Plus_AcknowledgementInstructions,1,4000)) AS Plus_AcknowledgementInstructions
+			, CONVERT(NVARCHAR(4000),SUBSTRING(Plus_NewAccountInstructions,1,4000)) AS Plus_NewAccountInstructions
+			, CONVERT(NVARCHAR(4000),SUBSTRING(Plus_SpecialGiftInstructions,1,4000)) AS Plus_SpecialGiftInstructions
 			, Plus_TelefundRep
 			, New_BalanceDue_Base
 			, New_TotalPaid_Base
@@ -4074,7 +4146,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 					ELSE DATEADD(hh,-7,A.Plus_FundingDate) END AS Plus_FundingDate
 			, CASE WHEN DATENAME(dy,A.Plus_EstimatedMaturityDate) BETWEEN H.Mdt_Begin_Date_Number AND H.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.Plus_EstimatedMaturityDate)
 					ELSE DATEADD(hh,-7,A.Plus_EstimatedMaturityDate) END AS Plus_EstimatedMaturityDate
-			, CONVERT(NVARCHAR(4000),Plus_Designation) AS Plus_Designation
+			, CONVERT(NVARCHAR(4000),SUBSTRING(Plus_Designation,1,4000)) AS Plus_Designation
 			, Plus_NameOfTrust
 			, plus_PlannedGivingType
 			, Plus_VehicleType
@@ -4091,7 +4163,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Plus_Cri
 			, CASE WHEN DATENAME(dy,A.Plus_PaymentStartDate) BETWEEN I.Mdt_Begin_Date_Number AND I.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.Plus_PaymentStartDate)
 					ELSE DATEADD(hh,-7,A.Plus_PaymentStartDate) END AS Plus_PaymentStartDate
-			, CONVERT(NVARCHAR(4000),Plus_GpsNotes) AS Plus_GpsNotes
+			, CONVERT(NVARCHAR(4000),SUBSTRING(Plus_GpsNotes,1,4000)) AS Plus_GpsNotes
 			, Plus_Appeal
 			, New_FundAccount
 			, New_InstitutionalHierarchy
@@ -4140,6 +4212,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -4192,6 +4266,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -4244,6 +4320,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -4342,6 +4420,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -4412,7 +4492,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 					ELSE DATEADD(hh,-7,A.New_EndDate) END AS New_EndDate
 			, New_ShortName
 			, New_InstitutionId
-			, CONVERT(NVARCHAR(500),New_Description) AS New_Description			
+			, CONVERT(NVARCHAR(500),SUBSTRING(New_Description,1,500)) AS New_Description			
 			, New_Affiliate
 			, New_AssociationId
 			, New_Name
@@ -4448,6 +4528,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -4547,6 +4629,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
 		, GETDATE()
 		, NULL	
 	)	
@@ -4604,6 +4688,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -4661,6 +4747,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -4765,6 +4853,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -4817,6 +4907,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -4879,6 +4971,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -5069,6 +5163,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -5121,6 +5217,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -5237,6 +5335,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -5320,6 +5420,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -5397,6 +5499,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)	
@@ -5449,6 +5553,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)	
@@ -5511,6 +5617,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -5568,7 +5676,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_Insert_Fields
 		, 'DISTINCT Plus_Constituent AS ContactId 
 			, Plus_LegacyPsaCodeId AS Psa_Key
-			, CONVERT(NVARCHAR(50),Plus_PsaCode) AS Psa_Code
+			, CONVERT(NVARCHAR(50),SUBSTRING(Plus_PsaCode,1,50)) AS Psa_Code
 			, CASE WHEN DATENAME(dy,A.Plus_EffectiveFrom) BETWEEN B.Mdt_Begin_Date_Number AND B.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.Plus_EffectiveFrom)
 					ELSE DATEADD(hh,-7,A.Plus_EffectiveFrom) END AS Psa_Eff_From
 			, CASE WHEN DATENAME(dy,A.Plus_EffectiveTo) BETWEEN C.Mdt_Begin_Date_Number AND C.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.Plus_EffectiveTo)
@@ -5579,7 +5687,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, CASE WHEN DATENAME(dy,A.ModifiedOn) BETWEEN E.Mdt_Begin_Date_Number AND E.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.ModifiedOn)
 					ELSE DATEADD(hh,-7,A.ModifiedOn) END AS Psa_Change_Dt
 			, Plus_Category AS Psa_Type
-			, CONVERT(NVARCHAR(500),Plus_CodeDescription) AS Psa_Text_Line
+			, CONVERT(NVARCHAR(500),SUBSTRING(Plus_CodeDescription,1,500)) AS Psa_Text_Line
 			' -- Ext_Select_Statement
 		, 'Oa_Extract.Plus_LegacyPsaCodeBase A
 				LEFT JOIN dbo._MDT_Conversion_Dim B ON YEAR(A.Plus_EffectiveFrom) = B.Date_Year
@@ -5611,6 +5719,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -5668,6 +5778,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)	
@@ -5791,6 +5903,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -5873,6 +5987,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -5960,6 +6076,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)	
