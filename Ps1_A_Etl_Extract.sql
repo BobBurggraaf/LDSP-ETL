@@ -15,6 +15,7 @@ GO
 CREATE TABLE LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 	(
 	Extract_Tables_Key  INT IDENTITY(1,1) PRIMARY KEY
+	, Tier INT
 	, Source_Table NVARCHAR(100)
 	, Destination_Table NVARCHAR(100)
 	, Ext_Table NVARCHAR(100)
@@ -51,13 +52,16 @@ CREATE TABLE LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 	, Extract_Stage_DateTime DATETIME
 	, Coupler_Stage NVARCHAR(50)
 	, Coupler_Stage_DateTime DATETIME
+	, Tier_2_Stage NVARCHAR(50)
+	, Tier_2_Stage_DateTime DATETIME
 	, Insert_Date DATETIME
 	, Update_Date DATETIME
 	);
 	
 INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 	(
-	Source_Table
+	Tier
+	, Source_Table
 	, Destination_Table
 	, Ext_Table
 	, Dest_Create_Fields
@@ -93,6 +97,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 	, Extract_Stage_DateTime
 	, Coupler_Stage
 	, Coupler_Stage_DateTime
+	, Tier_2_Stage
+	, Tier_2_Stage_DateTime
 	, Insert_Date
 	, Update_Date
 	)
@@ -100,7 +106,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 -- --------------------------
 -- AccountBase (Ext_Account)
 -- --------------------------
-	('dbo.AccountBase' -- Source_Table
+	( 1 -- Tier
+		, 'dbo.AccountBase' -- Source_Table
 		, 'Oa_Extract.AccountBase' -- Destination_Table
 		, 'Ext_Account' -- Ext_Table
 		,'AccountId UNIQUEIDENTIFIER
@@ -259,6 +266,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Extract_Stage_DateTime
 		, NULL -- Coupler_Stage
 		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -266,7 +275,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 -- --------------------------
 -- ActivityPartyBase (Ext_Activity)
 -- --------------------------
-	('dbo.ActivityPartyBase' -- Source_Table
+	( 1 -- Tier
+		, 'dbo.ActivityPartyBase' -- Source_Table
 		, 'Oa_Extract.ActivityPartyBase' -- Destination_Table
 		, 'Ext_Activity' -- Ext_Table
 		, 'ActivityPartyId UNIQUEIDENTIFIER
@@ -340,6 +350,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Extract_Stage_DateTime
 		, NULL -- Coupler_Stage
 		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -347,7 +359,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 -- --------------------------
 -- ActivityPointerBase (Ext_Activity_Pointer)
 -- --------------------------
-	('dbo.ActivityPointerBase' -- Source_Table
+	( 1 -- Tier
+		, 'dbo.ActivityPointerBase' -- Source_Table
 		, 'Oa_Extract.ActivityPointerBase' -- Destination_Table
 		, 'Ext_Activity_Pointer' -- Ext_Table
 		, 'ActivityId UNIQUEIDENTIFIER
@@ -481,6 +494,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Extract_Stage_DateTime
 		, NULL -- Coupler_Stage
 		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -488,7 +503,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 -- --------------------------
 -- AppointmentBase (Ext_Appointment)
 -- --------------------------
-	('dbo.AppointmentBase' -- Source_Table
+	( 1 -- Tier
+		, 'dbo.AppointmentBase' -- Source_Table
 		, 'Oa_Extract.AppointmentBase' -- Destination_Table
 		, 'Ext_Appointment' -- Ext_Table
 		, 'ActivityId UNIQUEIDENTIFIER
@@ -535,6 +551,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Extract_Stage_DateTime
 		, NULL -- Coupler_Stage
 		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -542,7 +560,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 -- --------------------------
 -- CampaignActivityBase (Ext_Campaign_Activity)
 -- --------------------------
-	('dbo.CampaignActivityBase' -- Source_Table
+	( 1 -- Tier
+		, 'dbo.CampaignActivityBase' -- Source_Table
 		, 'Oa_Extract.CampaignActivityBase' -- Destination_Table
 		, 'Ext_Campaign_Activity' -- Ext_Table
 		, 'ActivityId UNIQUEIDENTIFIER
@@ -604,6 +623,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Extract_Stage_DateTime
 		, NULL -- Coupler_Stage
 		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -611,7 +632,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 -- --------------------------
 -- CampaignBase (Ext_Campaign)
 -- --------------------------
-	('dbo.CampaignBase' -- Source_Table
+	( 1 -- Tier
+		, 'dbo.CampaignBase' -- Source_Table
 		, 'Oa_Extract.CampaignBase' -- Destination_Table
 		, 'Ext_Campaign' -- Ext_Table
 		, 'CampaignId UNIQUEIDENTIFIER
@@ -733,6 +755,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Extract_Stage_DateTime
 		, NULL -- Coupler_Stage
 		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -740,7 +764,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 -- --------------------------
 -- CampaignResponseBase (Ext_Campaign_Response)
 -- --------------------------
-	('dbo.CampaignResponseBase' -- Source_Table
+	( 1 -- Tier
+		, 'dbo.CampaignResponseBase' -- Source_Table
 		, 'Oa_Extract.CampaignResponseBase' -- Destination_Table
 		, 'Ext_Campaign_Response' -- Ext_Table
 		, 'ActivityId UNIQUEIDENTIFIER
@@ -787,6 +812,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Extract_Stage_DateTime
 		, NULL -- Coupler_Stage
 		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -794,7 +821,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 -- --------------------------
 -- ConnectionBase (Ext_Connection)
 -- --------------------------
-	('dbo.ConnectionBase' -- Source_Table
+	( 1 -- Tier
+		, 'dbo.ConnectionBase' -- Source_Table
 		, 'Oa_Extract.ConnectionBase' -- Destination_Table
 		, 'Ext_Connection' -- Ext_Table
 		, 'Record1Id UNIQUEIDENTIFIER
@@ -881,6 +909,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Extract_Stage_DateTime
 		, NULL -- Coupler_Stage
 		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -888,7 +918,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 -- --------------------------
 -- ConnectionRoleBase (Ext_Connection_Role)
 -- --------------------------
-	('dbo.ConnectionRoleBase' -- Source_Table
+	( 1 -- Tier
+		, 'dbo.ConnectionRoleBase' -- Source_Table
 		, 'Oa_Extract.ConnectionRoleBase' -- Destination_Table
 		, 'Ext_Connection_Role' -- Ext_Table
 		, 'ConnectionRoleId UNIQUEIDENTIFIER
@@ -941,6 +972,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Extract_Stage_DateTime
 		, NULL -- Coupler_Stage
 		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -948,7 +981,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 -- --------------------------
 -- ContactBase (Ext_Contact)
 -- --------------------------
-	('dbo.ContactBase' -- Source_Table
+	( 1 -- Tier
+		, 'dbo.ContactBase' -- Source_Table
 		, 'Oa_Extract.ContactBase' -- Destination_Table
 		, 'Ext_Contact' -- Ext_Table
 		, 'ContactId UNIQUEIDENTIFIER
@@ -1279,6 +1313,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Extract_Stage_DateTime
 		, NULL -- Coupler_Stage
 		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -1286,7 +1322,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 -- --------------------------
 -- Entity (Ext_Entity)
 -- --------------------------
-	('dbo.Entity' -- Source_Table
+	( 1 -- Tier
+		, 'dbo.Entity' -- Source_Table
 		, 'Oa_Extract.Entity' -- Destination_Table
 		, 'Ext_Entity' -- Ext_Table
 		, 'ObjectTypeCode INT
@@ -1338,6 +1375,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Extract_Stage_DateTime
 		, NULL -- Coupler_Stage
 		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -1345,7 +1384,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 -- --------------------------
 -- New_AddressBase (Ext_Address)
 -- --------------------------
-	('dbo.New_AddressBase' -- Source_Table
+	( 1 -- Tier
+		, 'dbo.New_AddressBase' -- Source_Table
 		, 'Oa_Extract.New_AddressBase' -- Destination_Table
 		, 'Ext_Address' -- Ext_Table
 		, 'Plus_RelatedContact UNIQUEIDENTIFIER
@@ -1509,6 +1549,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Extract_Stage_DateTime
 		, NULL -- Coupler_Stage
 		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -1516,7 +1558,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 -- --------------------------
 -- New_AssociationBase (Ext_Association)
 -- --------------------------
-	('dbo.New_AssociationBase' -- Source_Table
+	( 1 -- Tier
+		, 'dbo.New_AssociationBase' -- Source_Table
 		, 'Oa_Extract.New_AssociationBase' -- Destination_Table
 		, 'Ext_Association' -- Ext_Table
 		, 'New_AssociationId UNIQUEIDENTIFIER
@@ -1598,6 +1641,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Extract_Stage_DateTime
 		, NULL -- Coupler_Stage
 		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -1605,7 +1650,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 -- --------------------------
 -- New_AssociationMembershipBase (Ext_Association_Membership)
 -- --------------------------
-	('dbo.New_AssociationMembershipBase' -- Source_Table
+	( 1 -- Tier
+		, 'dbo.New_AssociationMembershipBase' -- Source_Table
 		, 'Oa_Extract.New_AssociationMembershipBase' -- Destination_Table
 		, 'Ext_Association_Membership' -- Ext_Table
 		, 'New_AssociationMembershipId UNIQUEIDENTIFIER
@@ -1681,6 +1727,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Extract_Stage_DateTime
 		, NULL -- Coupler_Stage
 		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -1688,7 +1736,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 -- --------------------------
 -- New_BatchesBase (Ext_Batch)
 -- --------------------------
-	('dbo.New_BatchesBase' -- Source_Table
+	( 1 -- Tier
+		, 'dbo.New_BatchesBase' -- Source_Table
 		, 'Oa_Extract.New_BatchesBase' -- Destination_Table
 		, 'Ext_Batch' -- Ext_Table
 		, 'New_BatchesId UNIQUEIDENTIFIER
@@ -1740,6 +1789,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Extract_Stage_DateTime
 		, NULL -- Coupler_Stage
 		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)	
@@ -1747,7 +1798,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 -- --------------------------
 -- New_CityBase (Ext_City)
 -- --------------------------
-	('dbo.New_CityBase' -- Source_Table
+	( 1 -- Tier
+		, 'dbo.New_CityBase' -- Source_Table
 		, 'Oa_Extract.New_CityBase' -- Destination_Table
 		, 'Ext_City' -- Ext_Table
 		, 'New_CityId UNIQUEIDENTIFIER
@@ -1794,6 +1846,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Extract_Stage_DateTime
 		, NULL -- Coupler_Stage
 		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -1801,7 +1855,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 -- --------------------------
 -- New_CollegeBase (Ext_College)
 -- --------------------------
-	('dbo.New_CollegeBase' -- Source_Table
+	( 1 -- Tier
+		, 'dbo.New_CollegeBase' -- Source_Table
 		, 'Oa_Extract.New_CollegeBase' -- Destination_Table
 		, 'Ext_College' -- Ext_Table
 		, 'New_CollegeId UNIQUEIDENTIFIER
@@ -1853,6 +1908,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Extract_Stage_DateTime
 		, NULL -- Coupler_Stage
 		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -1860,7 +1917,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 -- --------------------------
 -- New_CountryBase (Ext_Country)
 -- --------------------------
-	('dbo.New_CountryBase' -- Source_Table
+	( 1 -- Tier
+		, 'dbo.New_CountryBase' -- Source_Table
 		, 'Oa_Extract.New_CountryBase' -- Destination_Table
 		, 'Ext_Country' -- Ext_Table
 		, 'New_CountryId UNIQUEIDENTIFIER
@@ -1912,6 +1970,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Extract_Stage_DateTime
 		, NULL -- Coupler_Stage
 		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -1919,7 +1979,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 -- --------------------------
 -- New_CountyBase (Ext_County)
 -- --------------------------
-	('dbo.New_CountyBase' -- Source_Table
+	( 1 -- Tier
+		, 'dbo.New_CountyBase' -- Source_Table
 		, 'Oa_Extract.New_CountyBase' -- Destination_Table
 		, 'Ext_County' -- Ext_Table
 		, 'New_CountyId UNIQUEIDENTIFIER
@@ -1971,6 +2032,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Extract_Stage_DateTime
 		, NULL -- Coupler_Stage
 		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -1978,7 +2041,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 -- --------------------------
 -- New_DegreeBase (Ext_Degree)
 -- --------------------------
-	('dbo.New_DegreeBase' -- Source_Table
+	( 1 -- Tier
+		, 'dbo.New_DegreeBase' -- Source_Table
 		, 'Oa_Extract.New_DegreeBase' -- Destination_Table
 		, 'Ext_Degree' -- Ext_Table
 		, 'New_DegreeId UNIQUEIDENTIFIER
@@ -2035,6 +2099,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Extract_Stage_DateTime
 		, NULL -- Coupler_Stage
 		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -2042,7 +2108,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 -- --------------------------
 -- New_DropIncludeBase (Ext_Drop_Include)
 -- --------------------------
-	('dbo.New_DropIncludeBase' -- Source_Table
+	( 1 -- Tier
+		, 'dbo.New_DropIncludeBase' -- Source_Table
 		, 'Oa_Extract.New_DropIncludeBase' -- Destination_Table
 		, 'Ext_Drop_Include' -- Ext_Table
 		, 'New_DropIncludeId UNIQUEIDENTIFIER
@@ -2173,6 +2240,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Extract_Stage_DateTime
 		, NULL -- Coupler_Stage
 		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -2180,7 +2249,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 -- --------------------------
 -- New_EmailBase (Ext_Email)
 -- --------------------------
-	('dbo.New_EmailBase' -- Source_Table
+	( 1 -- Tier
+		, 'dbo.New_EmailBase' -- Source_Table
 		, 'Oa_Extract.New_EmailBase' -- Destination_Table
 		, 'Ext_Email' -- Ext_Table
 		, 'New_EmailId UNIQUEIDENTIFIER
@@ -2259,6 +2329,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Extract_Stage_DateTime
 		, NULL -- Coupler_Stage
 		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -2266,7 +2338,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 -- --------------------------
 -- New_EmploymentBase (Ext_Employment)
 -- --------------------------
-	('dbo.New_EmploymentBase' -- Source_Table
+	( 1 -- Tier
+		, 'dbo.New_EmploymentBase' -- Source_Table
 		, 'Oa_Extract.New_EmploymentBase' -- Destination_Table
 		, 'Ext_Employment' -- Ext_Table
 		, 'New_EmploymentsId UNIQUEIDENTIFIER
@@ -2424,6 +2497,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Extract_Stage_DateTime
 		, NULL -- Coupler_Stage
 		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -2431,7 +2506,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 -- --------------------------
 -- New_FundAccountBase (Ext_Fund_Account)
 -- --------------------------
-	('dbo.New_FundAccountBase' -- Source_Table
+	( 1 -- Tier
+		, 'dbo.New_FundAccountBase' -- Source_Table
 		, 'Oa_Extract.New_FundAccountBase' -- Destination_Table
 		, 'Ext_Fund_Account' -- Ext_Table
 		, 'New_FundAccountId UNIQUEIDENTIFIER
@@ -2639,7 +2715,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, New_CaePurpose
 			, Plus_SubClassAccountNumber
 			, CONVERT(NVARCHAR(300),SUBSTRING(New_Description,1,300)) AS New_Description
-			, CONVERT(NVARCHAR(200),SUBSTRING(Plus_Notes,1,200) AS Plus_Notes
+			, CONVERT(NVARCHAR(200),SUBSTRING(Plus_Notes,1,200)) AS Plus_Notes
 			, Plus_AwardRestrictionGender
 			, Plus_AwardRestrictionClassYear
 			, Plus_AwardRestrictionCollege
@@ -2697,6 +2773,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Extract_Stage_DateTime
 		, NULL -- Coupler_Stage
 		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)	
@@ -2704,7 +2782,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 -- --------------------------
 -- New_GiftBase (Ext_Gift)
 -- --------------------------
-	('dbo.New_GiftBase' -- Source_Table
+	( 1 -- Tier
+		, 'dbo.New_GiftBase' -- Source_Table
 		, 'Oa_Extract.New_GiftBase' -- Destination_Table
 		, 'Ext_Gift' -- Ext_Table
 		, 'New_ConstituentDonor UNIQUEIDENTIFIER
@@ -2957,6 +3036,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Extract_Stage_DateTime
 		, NULL -- Coupler_Stage
 		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -2964,7 +3045,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 -- --------------------------
 -- New_GiftHistoryBase (Ext_Gift_Hist)
 -- --------------------------
-	('dbo.New_GiftHistoryBase' -- Source_Table
+	( 1 -- Tier
+		, 'dbo.New_GiftHistoryBase' -- Source_Table
 		, 'Oa_Extract.New_GiftHistoryBase' -- Destination_Table
 		, 'Ext_Gift_Hist' -- Ext_Table
 		, 'New_RelatedGift UNIQUEIDENTIFIER
@@ -3102,6 +3184,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Extract_Stage_DateTime
 		, NULL -- Coupler_Stage
 		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -3109,7 +3193,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 -- --------------------------
 -- New_IndustryBase (Ext_Industry)
 -- --------------------------
-	('dbo.New_IndustryBase' -- Source_Table
+	( 1 -- Tier
+		, 'dbo.New_IndustryBase' -- Source_Table
 		, 'Oa_Extract.New_IndustryBase' -- Destination_Table
 		, 'Ext_Industry' -- Ext_Table
 		, 'New_IndustryId UNIQUEIDENTIFIER
@@ -3156,6 +3241,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Extract_Stage_DateTime
 		, NULL -- Coupler_Stage
 		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -3163,7 +3250,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 -- --------------------------
 -- New_InstitutionBase (Ext_Institution)
 -- --------------------------
-	('dbo.New_InstitutionBase' -- Source_Table
+	( 1 -- Tier
+		, 'dbo.New_InstitutionBase' -- Source_Table
 		, 'Oa_Extract.New_InstitutionBase' -- Destination_Table
 		, 'Ext_Institution' -- Ext_Table
 		, 'New_Institutionid UNIQUEIDENTIFIER
@@ -3265,6 +3353,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Extract_Stage_DateTime
 		, NULL -- Coupler_Stage
 		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)	
@@ -3272,7 +3362,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 -- --------------------------
 -- New_InternationalExperienceBase (Ext_International_Experience)
 -- --------------------------
-	('dbo.New_InternationalExperienceBase' -- Source_Table
+	( 1 -- Tier
+		, 'dbo.New_InternationalExperienceBase' -- Source_Table
 		, 'Oa_Extract.New_InternationalExperienceBase' -- Destination_Table
 		, 'Ext_International_Experience' -- Ext_Table
 		, 'New_InternationalExperienceId UNIQUEIDENTIFIER
@@ -3373,6 +3464,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Extract_Stage_DateTime
 		, NULL -- Coupler_Stage
 		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)	
@@ -3380,7 +3473,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 -- --------------------------
 -- New_JobCodeBase (Ext_Job_Code)
 -- --------------------------
-	('dbo.New_JobCodeBase' -- Source_Table
+	( 1 -- Tier
+		, 'dbo.New_JobCodeBase' -- Source_Table
 		, 'Oa_Extract.New_JobCodeBase' -- Destination_Table
 		, 'Ext_Job_Code' -- Ext_Table
 		, 'New_JobCodeId UNIQUEIDENTIFIER
@@ -3427,6 +3521,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Extract_Stage_DateTime
 		, NULL -- Coupler_Stage
 		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -3434,7 +3530,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 -- --------------------------
 -- New_LanguageSpecialAffiliationBase (Ext_Language)
 -- --------------------------
-	('dbo.New_LanguageSpecialAffiliationBase' -- Source_Table
+	( 1 -- Tier
+		, 'dbo.New_LanguageSpecialAffiliationBase' -- Source_Table
 		, 'Oa_Extract.New_LanguageSpecialAffiliationBase' -- Destination_Table
 		, 'Ext_Language' -- Ext_Table
 		, 'New_LanguageSpecialAffiliationId  UNIQUEIDENTIFIER
@@ -3541,6 +3638,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Extract_Stage_DateTime
 		, NULL -- Coupler_Stage
 		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -3548,7 +3647,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 -- --------------------------
 -- New_MajorBase (Ext_Major)
 -- --------------------------
-	('dbo.New_MajorBase' -- Source_Table
+	( 1 -- Tier
+		, 'dbo.New_MajorBase' -- Source_Table
 		, 'Oa_Extract.New_MajorBase' -- Destination_Table
 		, 'Ext_Major' -- Ext_Table
 		, 'New_College UNIQUEIDENTIFIER
@@ -3615,6 +3715,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Extract_Stage_DateTime
 		, NULL -- Coupler_Stage
 		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -3622,7 +3724,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 -- --------------------------
 -- New_OtherIdentifiersBase (Ext_Other_Identifiers)
 -- --------------------------
-	('dbo.New_OtherIdentifiersBase' -- Source_Table
+	( 1 -- Tier
+		, 'dbo.New_OtherIdentifiersBase' -- Source_Table
 		, 'Oa_Extract.New_OtherIdentifiersBase' -- Destination_Table
 		, 'Ext_Other_Identifiers' -- Ext_Table
 		, 'New_OtherIdentifiersId UNIQUEIDENTIFIER
@@ -3706,6 +3809,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Extract_Stage_DateTime
 		, NULL -- Coupler_Stage
 		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -3713,7 +3818,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 -- --------------------------
 -- New_PhoneBase (Ext_Phone)
 -- --------------------------
-	('dbo.New_PhoneBase' -- Source_Table
+	( 1 -- Tier
+		, 'dbo.New_PhoneBase' -- Source_Table
 		, 'Oa_Extract.New_PhoneBase' -- Destination_Table
 		, 'Ext_Phone' -- Ext_Table
 		, 'New_PhoneId UNIQUEIDENTIFIER
@@ -3834,6 +3940,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Extract_Stage_DateTime
 		, NULL -- Coupler_Stage
 		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -3841,7 +3949,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 -- --------------------------
 -- New_PledgeBase (Ext_Pledge)
 -- --------------------------
-	('dbo.New_PledgeBase' -- Source_Table
+	( 1 -- Tier
+		, 'dbo.New_PledgeBase' -- Source_Table
 		, 'Oa_Extract.New_PledgeBase' -- Destination_Table
 		, 'Ext_Pledge' -- Ext_Table
 		, 'New_PledgeId UNIQUEIDENTIFIER
@@ -4214,6 +4323,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Extract_Stage_DateTime
 		, NULL -- Coupler_Stage
 		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -4221,7 +4332,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 -- --------------------------
 -- New_PostalCodeBase (Ext_Postal)
 -- --------------------------
-	('dbo.New_PostalCodeBase' -- Source_Table
+	( 1 -- Tier
+		, 'dbo.New_PostalCodeBase' -- Source_Table
 		, 'Oa_Extract.New_PostalCodeBase' -- Destination_Table
 		, 'Ext_Postal' -- Ext_Table
 		, 'New_PostalcodeId UNIQUEIDENTIFIER
@@ -4268,6 +4380,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Extract_Stage_DateTime
 		, NULL -- Coupler_Stage
 		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -4275,7 +4389,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 -- --------------------------
 -- New_ProfessionalSuffixBase (Ext_Professional_Suffix)
 -- --------------------------
-	('dbo.New_ProfessionalSuffixBase' -- Source_Table
+	( 1 -- Tier
+		, 'dbo.New_ProfessionalSuffixBase' -- Source_Table
 		, 'Oa_Extract.New_ProfessionalSuffixBase' -- Destination_Table
 		, 'Ext_Professional_Suffix' -- Ext_Table
 		, 'New_ProfessionalSuffixId UNIQUEIDENTIFIER
@@ -4322,6 +4437,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Extract_Stage_DateTime
 		, NULL -- Coupler_Stage
 		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -4329,7 +4446,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 -- --------------------------
 -- New_RecognitionAssociationBase (Ext_Recognition_Association)
 -- --------------------------
-	('dbo.New_RecognitionAssociationBase' -- Source_Table
+	( 1 -- Tier
+		, 'dbo.New_RecognitionAssociationBase' -- Source_Table
 		, 'Oa_Extract.New_RecognitionAssociationBase' -- Destination_Table
 		, 'Ext_Recognition_Association' -- Ext_Table
 		, 'New_RecognitionAssociationId UNIQUEIDENTIFIER
@@ -4422,6 +4540,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Extract_Stage_DateTime
 		, NULL -- Coupler_Stage
 		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -4429,7 +4549,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 -- --------------------------
 -- New_RecognitionBase (Ext_Recognition)
 -- --------------------------
-	('dbo.New_RecognitionBase' -- Source_Table
+	( 1 -- Tier
+		, 'dbo.New_RecognitionBase' -- Source_Table
 		, 'Oa_Extract.New_RecognitionBase' -- Destination_Table
 		, 'Ext_Recognition' -- Ext_Table
 		, 'New_RecognitionId UNIQUEIDENTIFIER
@@ -4530,6 +4651,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Extract_Stage_DateTime
 		, NULL -- Coupler_Stage
 		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -4537,7 +4660,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 -- --------------------------
 -- New_RecognitionCreditBase (Ext_Recognition_Credit)
 -- --------------------------
-	('dbo.New_RecognitionCreditBase' -- Source_Table
+	( 1 -- Tier
+		, 'dbo.New_RecognitionCreditBase' -- Source_Table
 		, 'Oa_Extract.New_RecognitionCreditBase' -- Destination_Table
 		, 'Ext_Recognition_Credit' -- Ext_Table
 		, 'New_RecognitionCreditId UNIQUEIDENTIFIER
@@ -4631,6 +4755,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Extract_Stage_DateTime
 		, NULL -- Coupler_Stage
 		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
 		, GETDATE()
 		, NULL	
 	)	
@@ -4638,7 +4764,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 -- --------------------------
 -- New_SourceBase (Ext_Source)
 -- --------------------------
-	('dbo.New_SourceBase' -- Source_Table
+	( 1 -- Tier
+		, 'dbo.New_SourceBase' -- Source_Table
 		, 'Oa_Extract.New_SourceBase' -- Destination_Table
 		, 'Ext_Source' -- Ext_Table
 		, 'New_SourceId UNIQUEIDENTIFIER
@@ -4690,6 +4817,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Extract_Stage_DateTime
 		, NULL -- Coupler_Stage
 		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -4697,7 +4826,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 -- --------------------------
 -- New_StateBase (Ext_State)
 -- --------------------------
-	('dbo.New_StateBase' -- Source_Table
+	( 1 -- Tier
+		, 'dbo.New_StateBase' -- Source_Table
 		, 'Oa_Extract.New_StateBase' -- Destination_Table
 		, 'Ext_State' -- Ext_Table
 		, 'New_StateId UNIQUEIDENTIFIER
@@ -4749,6 +4879,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Extract_Stage_DateTime
 		, NULL -- Coupler_Stage
 		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -4756,7 +4888,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 -- --------------------------
 -- New_StudentAttendanceBase (Ext_Student)
 -- --------------------------
-	('dbo.New_StudentAttendanceBase' -- Source_Table
+	( 1 -- Tier
+		, 'dbo.New_StudentAttendanceBase' -- Source_Table
 		, 'Oa_Extract.New_StudentAttendanceBase' -- Destination_Table
 		, 'Ext_Student' -- Ext_Table
 		, 'New_StudentAttendanceId UNIQUEIDENTIFIER
@@ -4855,6 +4988,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Extract_Stage_DateTime
 		, NULL -- Coupler_Stage
 		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -4862,7 +4997,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 -- --------------------------
 -- New_TitleBase (Ext_Title)
 -- --------------------------
-	('dbo.New_TitleBase' -- Source_Table
+	( 1 -- Tier
+		, 'dbo.New_TitleBase' -- Source_Table
 		, 'Oa_Extract.New_TitleBase' -- Destination_Table
 		, 'Ext_Title' -- Ext_Table
 		, 'New_TitleId UNIQUEIDENTIFIER
@@ -4909,6 +5045,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Extract_Stage_DateTime
 		, NULL -- Coupler_Stage
 		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -4916,7 +5054,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 -- --------------------------
 -- New_UniversityBase (Ext_University)
 -- --------------------------
-	('dbo.New_UniversityBase' -- Source_Table
+	( 1 -- Tier
+		, 'dbo.New_UniversityBase' -- Source_Table
 		, 'Oa_Extract.New_UniversityBase' -- Destination_Table
 		, 'Ext_University' -- Ext_Table
 		, 'New_UniversityId UNIQUEIDENTIFIER
@@ -4973,6 +5112,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Extract_Stage_DateTime
 		, NULL -- Coupler_Stage
 		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -4980,7 +5121,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 -- --------------------------
 -- OpportunityBase (Ext_Opportunity)
 -- --------------------------
-	('dbo.OpportunityBase' -- Source_Table
+	( 1 -- Tier
+		, 'dbo.OpportunityBase' -- Source_Table
 		, 'Oa_Extract.OpportunityBase' -- Destination_Table
 		, 'Ext_Opportunity' -- Ext_Table
 		, 'OpportunityId UNIQUEIDENTIFIER
@@ -5165,6 +5307,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Extract_Stage_DateTime
 		, NULL -- Coupler_Stage
 		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -5172,7 +5316,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 -- --------------------------
 -- Plus_AddressFormatBase (Ext_Address_Format)
 -- --------------------------
-	('dbo.Plus_AddressFormatBase' -- Source_Table
+	( 1 -- Tier
+		, 'dbo.Plus_AddressFormatBase' -- Source_Table
 		, 'Oa_Extract.Plus_AddressFormatBase' -- Destination_Table
 		, 'Ext_Address_Format' -- Ext_Table
 		, 'Plus_AddressFormatId UNIQUEIDENTIFIER
@@ -5219,6 +5364,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Extract_Stage_DateTime
 		, NULL -- Coupler_Stage
 		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -5226,7 +5373,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 -- --------------------------
 -- Plus_AlumniBase (Ext_Alumni)
 -- --------------------------
-	('dbo.Plus_AlumniBase' -- Source_Table
+	( 1 -- Tier
+		, 'dbo.Plus_AlumniBase' -- Source_Table
 		, 'Oa_Extract.Plus_AlumniBase' -- Destination_Table
 		, 'Ext_Alumni' -- Ext_Table
 		, 'Plus_AlumniId UNIQUEIDENTIFIER
@@ -5337,6 +5485,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Extract_Stage_DateTime
 		, NULL -- Coupler_Stage
 		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -5344,7 +5494,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 -- --------------------------
 -- Plus_DonorScoreBase (Ext_Donor_Score)
 -- --------------------------
-	('dbo.Plus_DonorScoreBase' -- Source_Table
+	( 1 -- Tier
+		, 'dbo.Plus_DonorScoreBase' -- Source_Table
 		, 'Oa_Extract.Plus_DonorScoreBase' -- Destination_Table
 		, 'Ext_Donor_Score' -- Ext_Table
 		, '	Plus_DonorScoreId UNIQUEIDENTIFIER
@@ -5422,6 +5573,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Extract_Stage_DateTime
 		, NULL -- Coupler_Stage
 		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -5429,7 +5582,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 -- --------------------------
 -- Plus_EnvelopeNamesAndSalutationsBase (Ext_Envelope_Names_And_Salutations)
 -- --------------------------
-	('dbo.Plus_EnvelopeNamesAndSalutationsBase' -- Source_Table
+	( 1 -- Tier
+		, 'dbo.Plus_EnvelopeNamesAndSalutationsBase' -- Source_Table
 		, 'Oa_Extract.Plus_EnvelopeNamesAndSalutationsBase' -- Destination_Table
 		, 'Ext_Envelope_Names_And_Salutations' -- Ext_Table
 		, 'Plus_Etiquette INT
@@ -5501,6 +5655,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Extract_Stage_DateTime
 		, NULL -- Coupler_Stage
 		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)	
@@ -5508,7 +5664,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 -- --------------------------
 -- Plus_InterestBase (Ext_Interest)
 -- --------------------------
-	('dbo.Plus_InterestBase' -- Source_Table
+	( 1 -- Tier
+		, 'dbo.Plus_InterestBase' -- Source_Table
 		, 'Oa_Extract.Plus_InterestBase' -- Destination_Table
 		, 'Ext_Interest' -- Ext_Table
 		, 'Plus_InterestId UNIQUEIDENTIFIER
@@ -5555,6 +5712,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Extract_Stage_DateTime
 		, NULL -- Coupler_Stage
 		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)	
@@ -5562,7 +5721,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 -- --------------------------
 -- Plus_LegacyM11Base (Ext_Plus_LegacyM11Base)
 -- --------------------------
-	('dbo.Plus_LegacyM11Base' -- Source_Table
+	( 1 -- Tier
+		, 'dbo.Plus_LegacyM11Base' -- Source_Table
 		, 'Oa_Extract.Plus_LegacyM11Base' -- Destination_Table
 		, 'Ext_Plus_LegacyM11Base' -- Ext_Table
 		, 'ActivityId UNIQUEIDENTIFIER
@@ -5619,6 +5779,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Extract_Stage_DateTime
 		, NULL -- Coupler_Stage
 		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -5626,7 +5788,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 -- --------------------------
 -- Plus_LegacyPsaCodeBase (Ext_Psa)
 -- --------------------------
-	('dbo.Plus_LegacyPsaCodeBase' -- Source_Table
+	( 1 -- Tier
+		, 'dbo.Plus_LegacyPsaCodeBase' -- Source_Table
 		, 'Oa_Extract.Plus_LegacyPsaCodeBase' -- Destination_Table
 		, 'Ext_Psa' -- Ext_Table
 		, 'Plus_Constituent UNIQUEIDENTIFIER
@@ -5721,6 +5884,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Extract_Stage_DateTime
 		, NULL -- Coupler_Stage
 		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -5728,7 +5893,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 -- --------------------------
 -- Plus_PayrollGroupBase (Ext_Payroll_Group)
 -- --------------------------
-	('dbo.Plus_PayrollGroupBase' -- Source_Table
+	( 1 -- Tier
+		, 'dbo.Plus_PayrollGroupBase' -- Source_Table
 		, 'Oa_Extract.Plus_PayrollGroupBase' -- Destination_Table
 		, 'Ext_Payroll_Group' -- Ext_Table
 		, 'Plus_PayrollGroupId UNIQUEIDENTIFIER
@@ -5780,6 +5946,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Extract_Stage_DateTime
 		, NULL -- Coupler_Stage
 		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)	
@@ -5787,7 +5955,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 -- --------------------------
 -- Plus_RecurringGiftRulesBase (Ext_Recurring_Gift_Rules)
 -- --------------------------
-	('dbo.Plus_RecurringGiftRulesBase' -- Source_Table
+	( 1 -- Tier
+		, 'dbo.Plus_RecurringGiftRulesBase' -- Source_Table
 		, 'Oa_Extract.Plus_RecurringGiftRulesBase' -- Destination_Table
 		, 'Ext_Recurring_Gift_Rules' -- Ext_Table
 		, 'Plus_RecurringGiftRulesId UNIQUEIDENTIFIER
@@ -5905,6 +6074,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Extract_Stage_DateTime
 		, NULL -- Coupler_Stage
 		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -5912,7 +6083,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 -- --------------------------
 -- StringMapBase (Ext_String_Map)
 -- --------------------------
-	('dbo.StringMapBase' -- Source_Table
+	( 1 -- Tier
+		, 'dbo.StringMapBase' -- Source_Table
 		, 'Oa_Extract.StringMapBase' -- Destination_Table
 		, 'Ext_String_Map' -- Ext_Table
 		, 'ObjectTypeCode INT
@@ -5989,6 +6161,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Extract_Stage_DateTime
 		, NULL -- Coupler_Stage
 		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
 		, GETDATE()
 		, NULL
 	)
@@ -5996,7 +6170,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 -- --------------------------
 -- SystemUserBase (Ext_System_User)
 -- --------------------------
-	('dbo.SystemUserBase' -- Source_Table
+	( 1 -- Tier
+		, 'dbo.SystemUserBase' -- Source_Table
 		, 'Oa_Extract.SystemUserBase' -- Destination_Table
 		, 'Ext_System_User' -- Ext_Table
 		, 'SystemUserId UNIQUEIDENTIFIER
@@ -6078,9 +6253,180 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Extract_Stage_DateTime
 		, NULL -- Coupler_Stage
 		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
 		, GETDATE()
 		, NULL
+	)
+,
+-- --------------------------
+-- Picklist Table
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Picklist' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Physical_Table_Name NVARCHAR(64)
+			, Column_Name NVARCHAR(100)
+			, Column_Label NVARCHAR(400)
+			, Column_Value INT
+			' -- Ext_Create_Fields
+		, 'Physical_Table_Name
+			, Column_Name
+			, Column_Label
+			, Column_Value
+			' -- Ext_Insert_Fields
+		, ' DISTINCT  UPPER(B.PhysicalName) AS Physical_Table_Name
+			, UPPER(A.AttributeName) AS Column_Name
+			, CONVERT(NVARCHAR(400),A.Value) AS Column_Label
+			, A.AttributeValue AS Column_Value
+			' -- Ext_Select_Statement
+		, ' Ext_String_Map A
+				INNER JOIN Ext_Entity B ON A.ObjectTypeCode = B.ObjectTypeCode
+			' -- Ext_From_Statement
+		, '''AND LangId = 1033''
+			' -- Ext_Where_Statement
+		, ' ' -- Code_Block_1
+		, ' ' -- Code_Block_2
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL              
+	)
+	,
+-- --------------------------
+-- _Phone_Type_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Phone_Type_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist
+			' -- Ext_From_Statement
+		, '''AND Physical_Table_Name = ''NEW_PHONE'' AND Column_Name = ''NEW_TYPE''''
+			' -- Ext_Where_Statement	
+		, ' ' -- Code_Block_1
+		, ' ' -- Code_Block_2
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL               
 	)	
+	,
+-- --------------------------
+-- _Phone_Line_Type_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Phone_Line_Type_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist
+			' -- Ext_From_Statement
+		, '''AND Physical_Table_Name = ''NEW_PHONE'' AND Column_Name = ''PLUS_LINETYPE''''
+			' -- Ext_Where_Statement	
+		, ' ' -- Code_Block_1
+		, ' ' -- Code_Block_2
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
 	;	
 	
 
