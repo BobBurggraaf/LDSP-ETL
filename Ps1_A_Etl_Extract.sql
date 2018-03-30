@@ -22,13 +22,13 @@ CREATE TABLE LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 	, Dest_Create_Fields NVARCHAR(4000)
 	, Dest_Insert_Fields NVARCHAR(4000)
 	, Dest_Where_Statement NVARCHAR(4000)
-	, Ext_Create_Fields NVARCHAR(4000)
+	, Ext_Create_Fields NVARCHAR(MAX)
 	, Ext_Insert_Fields NVARCHAR(4000)
 	, Ext_Select_Statement NVARCHAR(4000)
 	, Ext_From_Statement NVARCHAR(4000)
 	, Ext_Where_Statement NVARCHAR(4000)
-	, Code_Block_1 NVARCHAR(4000)
-	, Code_Block_2 NVARCHAR(4000)
+	, Tier_3_Stage NVARCHAR(50)
+	, Tier_3_Stage_DateTime DATETIME
 	, Code_Block_3 NVARCHAR(4000)
 	, Code_Block_4 NVARCHAR(4000)
 	, Code_Block_5 NVARCHAR(4000)
@@ -72,8 +72,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 	, Ext_Select_Statement
 	, Ext_From_Statement
 	, Ext_Where_Statement
-	, Code_Block_1
-	, Code_Block_2
+	, Tier_3_Stage
+	, Tier_3_Stage_DateTime
 	, Code_Block_3
 	, Code_Block_4
 	, Code_Block_5
@@ -241,8 +241,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			LEFT JOIN dbo._MDT_Conversion_Dim B ON YEAR(A.Lds_QualifiedOn) = B.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
 		, ' ' -- Code_Block_3
 		, ' ' -- Code_Block_4
 		, ' ' -- Code_Block_5
@@ -325,7 +325,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 				LEFT JOIN dbo._MDT_Conversion_Dim B ON YEAR(A.ScheduledStart) = B.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Code_Block_1
+		, ' ' -- Tier_3_Stage
 		, ' ' -- Code_Block_2
 		, ' ' -- Code_Block_3
 		, ' ' -- Code_Block_4
@@ -469,7 +469,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 				LEFT JOIN dbo._MDT_Conversion_Dim G ON YEAR(A.ModifiedOn) = G.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Code_Block_1
+		, ' ' -- Tier_3_Stage
 		, ' ' -- Code_Block_2
 		, ' ' -- Code_Block_3
 		, ' ' -- Code_Block_4
@@ -526,7 +526,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.AppointmentBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Code_Block_1
+		, ' ' -- Tier_3_Stage
 		, ' ' -- Code_Block_2
 		, ' ' -- Code_Block_3
 		, ' ' -- Code_Block_4
@@ -598,8 +598,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.CampaignActivityBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
 		, ' ' -- Code_Block_3
 		, ' ' -- Code_Block_4
 		, ' ' -- Code_Block_5
@@ -730,8 +730,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.CampaignBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
 		, ' ' -- Code_Block_3
 		, ' ' -- Code_Block_4
 		, ' ' -- Code_Block_5
@@ -787,8 +787,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.CampaignResponseBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
 		, ' ' -- Code_Block_3
 		, ' ' -- Code_Block_4
 		, ' ' -- Code_Block_5
@@ -884,8 +884,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.ConnectionBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
 		, ' ' -- Code_Block_3
 		, ' ' -- Code_Block_4
 		, ' ' -- Code_Block_5
@@ -947,8 +947,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.ConnectionRoleBase			
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
 		, ' ' -- Code_Block_3
 		, ' ' -- Code_Block_4
 		, ' ' -- Code_Block_5
@@ -1288,8 +1288,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 				LEFT JOIN dbo._MDT_Conversion_Dim C ON YEAR(A.Lds_QualifiedOn) = C.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
 		, ' ' -- Code_Block_3
 		, ' ' -- Code_Block_4
 		, ' ' -- Code_Block_5
@@ -1350,8 +1350,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.Entity
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
 		, ' ' -- Code_Block_3
 		, ' ' -- Code_Block_4
 		, ' ' -- Code_Block_5
@@ -1524,8 +1524,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.New_AddressBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
 		, ' ' -- Code_Block_3
 		, ' ' -- Code_Block_4
 		, ' ' -- Code_Block_5
@@ -1616,8 +1616,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.New_AssociationBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
 		, ' ' -- Code_Block_3
 		, ' ' -- Code_Block_4
 		, ' ' -- Code_Block_5
@@ -1702,8 +1702,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 				LEFT JOIN dbo._MDT_Conversion_Dim C ON YEAR(A.New_EndDate) = C.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
 		, ' ' -- Code_Block_3
 		, ' ' -- Code_Block_4
 		, ' ' -- Code_Block_5
@@ -1764,8 +1764,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.New_BatchesBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
 		, ' ' -- Code_Block_3
 		, ' ' -- Code_Block_4
 		, ' ' -- Code_Block_5
@@ -1821,8 +1821,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.New_CityBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
 		, ' ' -- Code_Block_3
 		, ' ' -- Code_Block_4
 		, ' ' -- Code_Block_5
@@ -1883,8 +1883,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.New_CollegeBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
 		, ' ' -- Code_Block_3
 		, ' ' -- Code_Block_4
 		, ' ' -- Code_Block_5
@@ -1945,8 +1945,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.New_CountryBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
 		, ' ' -- Code_Block_3
 		, ' ' -- Code_Block_4
 		, ' ' -- Code_Block_5
@@ -2007,8 +2007,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.New_CountyBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
 		, ' ' -- Code_Block_3
 		, ' ' -- Code_Block_4
 		, ' ' -- Code_Block_5
@@ -2074,8 +2074,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.New_DegreeBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
 		, ' ' -- Code_Block_3
 		, ' ' -- Code_Block_4
 		, ' ' -- Code_Block_5
@@ -2215,8 +2215,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 				LEFT JOIN dbo._MDT_Conversion_Dim C ON YEAR(A.New_EndDate) = C.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
 		, ' ' -- Code_Block_3
 		, ' ' -- Code_Block_4
 		, ' ' -- Code_Block_5
@@ -2304,8 +2304,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.New_EmailBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
 		, ' ' -- Code_Block_3
 		, ' ' -- Code_Block_4
 		, ' ' -- Code_Block_5
@@ -2472,8 +2472,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 				LEFT JOIN dbo._MDT_Conversion_Dim D ON YEAR(A.ModifiedOn) = D.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
 		, ' ' -- Code_Block_3
 		, ' ' -- Code_Block_4
 		, ' ' -- Code_Block_5
@@ -2748,8 +2748,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 				LEFT JOIN dbo._MDT_Conversion_Dim C ON YEAR(A.Plus_EffectiveTo) = C.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
 		, ' ' -- Code_Block_3
 		, ' ' -- Code_Block_4
 		, ' ' -- Code_Block_5
@@ -3011,8 +3011,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 				LEFT JOIN dbo._MDT_Conversion_Dim D ON YEAR(A.New_PostDate) = D.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
 		, ' ' -- Code_Block_3
 		, ' ' -- Code_Block_4
 		, ' ' -- Code_Block_5
@@ -3159,8 +3159,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 				LEFT JOIN dbo._MDT_Conversion_Dim D ON YEAR(A.Plus_PostDate) = D.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
 		, ' ' -- Code_Block_3
 		, ' ' -- Code_Block_4
 		, ' ' -- Code_Block_5
@@ -3216,8 +3216,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.New_IndustryBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
 		, ' ' -- Code_Block_3
 		, ' ' -- Code_Block_4
 		, ' ' -- Code_Block_5
@@ -3328,8 +3328,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.New_InstitutionBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
 		, ' ' -- Code_Block_3
 		, ' ' -- Code_Block_4
 		, ' ' -- Code_Block_5
@@ -3439,8 +3439,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 				LEFT JOIN dbo._MDT_Conversion_Dim C ON YEAR(A.New_EndDate) = C.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
 		, ' ' -- Code_Block_3
 		, ' ' -- Code_Block_4
 		, ' ' -- Code_Block_5
@@ -3496,8 +3496,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.New_JobCodeBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
 		, ' ' -- Code_Block_3
 		, ' ' -- Code_Block_4
 		, ' ' -- Code_Block_5
@@ -3613,8 +3613,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.New_LanguageSpecialAffiliationBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
 		, ' ' -- Code_Block_3
 		, ' ' -- Code_Block_4
 		, ' ' -- Code_Block_5
@@ -3690,8 +3690,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.New_MajorBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
 		, ' ' -- Code_Block_3
 		, ' ' -- Code_Block_4
 		, ' ' -- Code_Block_5
@@ -3784,8 +3784,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 				LEFT JOIN dbo._MDT_Conversion_Dim B ON YEAR(A.ModifiedOn) = B.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
 		, ' ' -- Code_Block_3
 		, ' ' -- Code_Block_4
 		, ' ' -- Code_Block_5
@@ -3915,8 +3915,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 				LEFT JOIN dbo._MDT_Conversion_Dim B ON YEAR(A.ModifiedOn) = B.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
 		, ' ' -- Code_Block_3
 		, ' ' -- Code_Block_4
 		, ' ' -- Code_Block_5
@@ -4298,8 +4298,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 				LEFT JOIN dbo._MDT_Conversion_Dim I ON YEAR(A.Plus_PaymentStartDate) = I.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
 		, ' ' -- Code_Block_3
 		, ' ' -- Code_Block_4
 		, ' ' -- Code_Block_5
@@ -4355,8 +4355,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.New_PostalCodeBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
 		, ' ' -- Code_Block_3
 		, ' ' -- Code_Block_4
 		, ' ' -- Code_Block_5
@@ -4412,8 +4412,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.New_ProfessionalSuffixBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
 		, ' ' -- Code_Block_3
 		, ' ' -- Code_Block_4
 		, ' ' -- Code_Block_5
@@ -4515,8 +4515,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 				LEFT JOIN dbo._MDT_Conversion_Dim D ON YEAR(A.Plus_ScholarshipAwardDate) = D.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
 		, ' ' -- Code_Block_3
 		, ' ' -- Code_Block_4
 		, ' ' -- Code_Block_5
@@ -4626,8 +4626,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 				LEFT JOIN dbo._MDT_Conversion_Dim C ON YEAR(A.New_StartDate) = C.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
 		, ' ' -- Code_Block_3
 		, ' ' -- Code_Block_4
 		, ' ' -- Code_Block_5
@@ -4730,8 +4730,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 				LEFT JOIN dbo._MDT_Conversion_Dim B ON YEAR(A.New_ReceiptDate) = B.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
 		, ' ' -- Code_Block_3
 		, ' ' -- Code_Block_4
 		, ' ' -- Code_Block_5
@@ -4792,8 +4792,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.New_SourceBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
 		, ' ' -- Code_Block_3
 		, ' ' -- Code_Block_4
 		, ' ' -- Code_Block_5
@@ -4854,8 +4854,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.New_StateBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
 		, ' ' -- Code_Block_3
 		, ' ' -- Code_Block_4
 		, ' ' -- Code_Block_5
@@ -4963,8 +4963,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 				LEFT JOIN dbo._MDT_Conversion_Dim B ON YEAR(A.New_ExpectedGraduationDate) = B.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
 		, ' ' -- Code_Block_3
 		, ' ' -- Code_Block_4
 		, ' ' -- Code_Block_5
@@ -5020,8 +5020,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.New_TitleBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
 		, ' ' -- Code_Block_3
 		, ' ' -- Code_Block_4
 		, ' ' -- Code_Block_5
@@ -5087,8 +5087,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.New_UniversityBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
 		, ' ' -- Code_Block_3
 		, ' ' -- Code_Block_4
 		, ' ' -- Code_Block_5
@@ -5282,8 +5282,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 				LEFT JOIN dbo._MDT_Conversion_Dim J ON YEAR(A.Plus_ProposalStatusChangeDate) = J.Date_Year				
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
 		, ' ' -- Code_Block_3
 		, ' ' -- Code_Block_4
 		, ' ' -- Code_Block_5
@@ -5339,8 +5339,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.Plus_AddressFormatBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
 		, ' ' -- Code_Block_3
 		, ' ' -- Code_Block_4
 		, ' ' -- Code_Block_5
@@ -5460,8 +5460,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 				LEFT JOIN dbo._MDT_Conversion_Dim C ON YEAR(A.Plus_PreferredGraduationDate) = C.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
 		, ' ' -- Code_Block_3
 		, ' ' -- Code_Block_4
 		, ' ' -- Code_Block_5
@@ -5548,8 +5548,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.Plus_DonorScoreBase				
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
 		, ' ' -- Code_Block_3
 		, ' ' -- Code_Block_4
 		, ' ' -- Code_Block_5
@@ -5630,8 +5630,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.Plus_EnvelopeNamesAndSalutationsBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
 		, ' ' -- Code_Block_3
 		, ' ' -- Code_Block_4
 		, ' ' -- Code_Block_5
@@ -5687,8 +5687,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.Plus_InterestBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
 		, ' ' -- Code_Block_3
 		, ' ' -- Code_Block_4
 		, ' ' -- Code_Block_5
@@ -5754,8 +5754,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.Plus_LegacyM11Base
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
 		, ' ' -- Code_Block_3
 		, ' ' -- Code_Block_4
 		, ' ' -- Code_Block_5
@@ -5859,8 +5859,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 				LEFT JOIN dbo._MDT_Conversion_Dim E ON YEAR(A.ModifiedOn) = E.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
 		, ' ' -- Code_Block_3
 		, ' ' -- Code_Block_4
 		, ' ' -- Code_Block_5
@@ -5921,8 +5921,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.Plus_PayrollGroupBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
 		, ' ' -- Code_Block_3
 		, ' ' -- Code_Block_4
 		, ' ' -- Code_Block_5
@@ -6049,8 +6049,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 				LEFT JOIN dbo._MDT_Conversion_Dim D ON YEAR(A.CreatedOn) = D.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
 		, ' ' -- Code_Block_3
 		, ' ' -- Code_Block_4
 		, ' ' -- Code_Block_5
@@ -6136,8 +6136,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.StringMapBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
 		, ' ' -- Code_Block_3
 		, ' ' -- Code_Block_4
 		, ' ' -- Code_Block_5
@@ -6228,8 +6228,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.SystemUserBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
 		, ' ' -- Code_Block_3
 		, ' ' -- Code_Block_4
 		, ' ' -- Code_Block_5
@@ -6260,12 +6260,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 	)
 ,
 -- --------------------------
--- Picklist Table
+-- Picklist Table 1
 -- --------------------------
 	( 2 -- Tier
 		, ' ' -- Source_Table
 		, ' ' -- Destination_Table
-		, '_Picklist' -- Ext_Table
+		, '_Picklist_1' -- Ext_Table
 		, ' ' -- Dest_Create_Fields
 		, ' ' -- Dest_Insert_Fields
 		, ' ' -- Dest_Where_Statement
@@ -6273,6 +6273,60 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Column_Name NVARCHAR(100)
 			, Column_Label NVARCHAR(400)
 			, Column_Value INT
+			, New_Phone NVARCHAR(100) DEFAULT ''New_Phone''
+			, New_Type NVARCHAR(100) DEFAULT ''New_Type''
+			, Plus_LineType NVARCHAR(100) DEFAULT ''Plus_LineType''
+			, New_PreferredTime NVARCHAR(100) DEFAULT ''New_PreferredTime''
+			, Plus_ConfidentialInstruction NVARCHAR(100) DEFAULT ''Plus_ConfidentialInstruction''
+			, New_Recognition NVARCHAR(100) DEFAULT ''New_Recognition''
+			, New_Affiliate NVARCHAR(100) DEFAULT ''New_Affiliate''
+			, New_Address NVARCHAR(100) DEFAULT ''New_Address''
+			, Plus_OneAccordQuality NVARCHAR(100) DEFAULT ''Plus_OneAccordQuality''
+			, New_AddressType NVARCHAR(100) DEFAULT ''New_AddressType''
+			, New_Email NVARCHAR(100) DEFAULT ''New_Email''
+			, New_EmailType NVARCHAR(100) DEFAULT ''New_EmailType''
+			, New_DropInclude NVARCHAR(100) DEFAULT ''New_DropInclude''
+			, New_Interaction NVARCHAR(100) DEFAULT ''New_Interaction''
+			, New_CommType NVARCHAR(100) DEFAULT ''New_CommType''
+			, New_Reason NVARCHAR(100) DEFAULT ''New_Reason''
+			, New_LanguageSpecialAffiliation NVARCHAR(100) DEFAULT ''New_LanguageSpecialAffiliation''
+			, New_Language NVARCHAR(100) DEFAULT ''New_Language''
+			, New_Speech NVARCHAR(100) DEFAULT ''New_Speech''
+			, New_ReadLevel NVARCHAR(100) DEFAULT ''New_ReadLevel''
+			, New_WriteLevel NVARCHAR(100) DEFAULT ''New_WriteLevel''
+			, New_Association NVARCHAR(100) DEFAULT ''New_Association''
+			, New_Sponsor NVARCHAR(100) DEFAULT ''New_Sponsor''
+			, Contact NVARCHAR(100) DEFAULT ''Contact''
+			, GenderCode NVARCHAR(100) DEFAULT ''GenderCode''
+			, FamilyStatusCode NVARCHAR(100) DEFAULT ''FamilyStatusCode''
+			, New_Ethnicity NVARCHAR(100) DEFAULT ''New_Ethnicity''
+			, Plus_ChurchMember NVARCHAR(100) DEFAULT ''Plus_ChurchMember''
+			, New_PersonalSuffix NVARCHAR(100) DEFAULT ''New_PersonalSuffix''
+			, New_MajorGiftPropensity1 NVARCHAR(100) DEFAULT ''New_MajorGiftPropensity1''
+			, Plus_AnnualGift1 NVARCHAR(100) DEFAULT ''Plus_AnnualGift1''
+			, Plus_PlannedGift NVARCHAR(100) DEFAULT ''Plus_PlannedGift''
+			, Plus_GiftCapacityEnp NVARCHAR(100) DEFAULT ''Plus_GiftCapacityEnp''
+			, Plus_GiftCapacityEn NVARCHAR(100) DEFAULT ''Plus_GiftCapacityEn''
+			, PhilanthropicCapacityRatingPcr NVARCHAR(100) DEFAULT ''PhilanthropicCapacityRatingPcr''
+			, Plus_EstimatedHouseholdIncome NVARCHAR(100) DEFAULT ''Plus_EstimatedHouseholdIncome''
+			, Plus_EstimatedHomeMarketValue NVARCHAR(100) DEFAULT ''Plus_EstimatedHomeMarketValue''
+			, Plus_BlockClusters NVARCHAR(100) DEFAULT ''Plus_BlockClusters''
+			, Account NVARCHAR(100) DEFAULT ''Account''
+			, AccountClassificationCode NVARCHAR(100) DEFAULT ''AccountClassificationCode''
+			, New_RetireeRatio NVARCHAR(100) DEFAULT ''New_RetireeRatio''
+			, New_SplitRatio NVARCHAR(100) DEFAULT ''New_SplitRatio''
+			, New_MatchingRatio NVARCHAR(100) DEFAULT ''New_MatchingRatio''
+			, PreferredContactMethodCode NVARCHAR(100) DEFAULT ''PreferredContactMethodCode''
+			, Plus_EnvelopeNamesAndSalutations NVARCHAR(100) DEFAULT ''Plus_EnvelopeNamesAndSalutations''
+			, Plus_Etiquette NVARCHAR(100) DEFAULT ''Plus_Etiquette''
+			, New_Gift NVARCHAR(100) DEFAULT ''New_Gift''
+			, StatusCode NVARCHAR(100) DEFAULT ''StatusCode''
+			, Plus_GiftSource NVARCHAR(100) DEFAULT ''Plus_GiftSource''
+			, Plus_Kind NVARCHAR(100) DEFAULT ''Plus_Kind''
+			, New_TenderType NVARCHAR(100) DEFAULT ''New_TenderType''
+			, Plus_ReceiptDeliveryMethod NVARCHAR(100) DEFAULT ''Plus_ReceiptDeliveryMethod''
+			, Plus_ContactRole NVARCHAR(100) DEFAULT ''Plus_ContactRole''
+			, Plus_Salutation NVARCHAR(100) DEFAULT ''Plus_Salutation''
 			' -- Ext_Create_Fields
 		, 'Physical_Table_Name
 			, Column_Name
@@ -6287,10 +6341,209 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' Ext_String_Map A
 				INNER JOIN Ext_Entity B ON A.ObjectTypeCode = B.ObjectTypeCode
 			' -- Ext_From_Statement
-		, '''AND LangId = 1033''
+		, 'AND LangId = 1033
 			' -- Ext_Where_Statement
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL              
+	)
+,
+-- --------------------------
+-- Picklist Table 2
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Picklist_2' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Physical_Table_Name NVARCHAR(64)
+			, Column_Name NVARCHAR(100)
+			, Column_Label NVARCHAR(400)
+			, Column_Value INT
+			, New_Type NVARCHAR(100) DEFAULT ''New_Type''
+			, Plus_Kind NVARCHAR(100) DEFAULT ''Plus_Kind''
+			, Plus_GiftSource NVARCHAR(100) DEFAULT ''Plus_GiftSource''
+			, Contact NVARCHAR(100) DEFAULT ''Contact''
+			, Plus_GiftCapacityEn NVARCHAR(100) DEFAULT ''Plus_GiftCapacityEn''
+			, StatusCode NVARCHAR(100) DEFAULT ''StatusCode''
+			, New_FundAccount NVARCHAR(100) DEFAULT ''New_FundAccount''
+			, Plus_GiftPurposeType NVARCHAR(100) DEFAULT ''Plus_GiftPurposeType''
+			, Plus_GiftPurposeSubtype NVARCHAR(100) DEFAULT ''Plus_GiftPurposeSubtype''
+			, New_CaePurpose NVARCHAR(100) DEFAULT ''New_CaePurpose''
+			, Plus_AwardRestrictionGender NVARCHAR(100) DEFAULT ''Plus_AwardRestrictionGender''
+			, Plus_AwardRestrictionClassYear NVARCHAR(100) DEFAULT ''Plus_AwardRestrictionClassYear''
+			, Plus_AwardRestrictionEthnicity NVARCHAR(100) DEFAULT ''Plus_AwardRestrictionEthnicity''
+			, New_RecognitionCredit NVARCHAR(100) DEFAULT ''New_RecognitionCredit''
+			, Plus_Type NVARCHAR(100) DEFAULT ''Plus_Type''
+			, New_Employment NVARCHAR(100) DEFAULT ''New_Employment''
+			, Plus_ChurchEmploymentStatus NVARCHAR(100) DEFAULT ''Plus_ChurchEmploymentStatus''
+			, New_OtherIdentifiers NVARCHAR(100) DEFAULT ''New_OtherIdentifiers''
+			, Plus_Alumni NVARCHAR(100) DEFAULT ''Plus_Alumni''
+			, Plus_AlumniStatus NVARCHAR(100) DEFAULT ''Plus_AlumniStatus''
+			, New_Degree NVARCHAR(100) DEFAULT ''New_Degree''
+			, Plus_DegreeLevel NVARCHAR(100) DEFAULT ''Plus_DegreeLevel''
+			, CampaignActivity NVARCHAR(100) DEFAULT ''CampaignActivity''
+			, Plus_CommunicationType NVARCHAR(100) DEFAULT ''Plus_CommunicationType''
+			, Plus_Affiliate NVARCHAR(100) DEFAULT ''Plus_Affiliate''
+			, Plus_DepartmentFunction NVARCHAR(100) DEFAULT ''Plus_DepartmentFunction''
+			, New_InternationalExperience NVARCHAR(100) DEFAULT ''New_InternationalExperience''
+			, New_Experience NVARCHAR(100) DEFAULT ''New_Experience''
+			, Plus_LdsPosition NVARCHAR(100) DEFAULT ''Plus_LdsPosition''
+			, Plus_LegacyM11 NVARCHAR(100) DEFAULT ''Plus_LegacyM11''
+			, Plus_M11MessageType NVARCHAR(100) DEFAULT ''Plus_M11MessageType''
+			, Plus_M11ActivityType NVARCHAR(100) DEFAULT ''Plus_M11ActivityType''
+			' -- Ext_Create_Fields
+		, 'Physical_Table_Name
+			, Column_Name
+			, Column_Label
+			, Column_Value
+			' -- Ext_Insert_Fields
+		, ' DISTINCT  UPPER(B.PhysicalName) AS Physical_Table_Name
+			, UPPER(A.AttributeName) AS Column_Name
+			, CONVERT(NVARCHAR(400),A.Value) AS Column_Label
+			, A.AttributeValue AS Column_Value
+			' -- Ext_Select_Statement
+		, ' Ext_String_Map A
+				INNER JOIN Ext_Entity B ON A.ObjectTypeCode = B.ObjectTypeCode
+			' -- Ext_From_Statement
+		, 'AND LangId = 1033
+			' -- Ext_Where_Statement
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL              
+	)
+,
+-- --------------------------
+-- Picklist Table 3
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Picklist_3' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Physical_Table_Name NVARCHAR(64)
+			, Column_Name NVARCHAR(100)
+			, Column_Label NVARCHAR(400)
+			, Column_Value INT
+			, New_Type NVARCHAR(100) DEFAULT ''New_Type''
+			, Plus_Kind NVARCHAR(100) DEFAULT ''Plus_Kind''
+			, Plus_GiftSource NVARCHAR(100) DEFAULT ''Plus_GiftSource''
+			, Contact NVARCHAR(100) DEFAULT ''Contact''
+			, Plus_GiftCapacityEn NVARCHAR(100) DEFAULT ''Plus_GiftCapacityEn''
+			, StatusCode NVARCHAR(100) DEFAULT ''StatusCode''	
+			, New_Employment NVARCHAR(100) DEFAULT ''New_Employment''
+			, New_FundAccount NVARCHAR(100) DEFAULT ''New_FundAccount''
+			, CampaignActivity NVARCHAR(100) DEFAULT ''CampaignActivity''
+			, New_RecognitionCredit NVARCHAR(100) DEFAULT ''New_RecognitionCredit''
+			, Plus_Type NVARCHAR(100) DEFAULT ''Plus_Type''
+			, New_Pledge NVARCHAR(100) DEFAULT ''New_Pledge''
+			, Plus_TenderType NVARCHAR(100) DEFAULT ''Plus_TenderType''
+			, Plus_PlannedGift NVARCHAR(100) DEFAULT ''Plus_PlannedGift''
+			, New_Confidential NVARCHAR(100) DEFAULT ''New_Confidential''
+			, Plus_PlannedGivingPaymentFrequency NVARCHAR(100) DEFAULT ''Plus_PlannedGivingPaymentFrequency''
+			, New_Bookable NVARCHAR(100) DEFAULT ''New_Bookable''
+			, Plus_MatchExpected NVARCHAR(100) DEFAULT ''Plus_MatchExpected''
+			, Plus_GiftRevocability NVARCHAR(100) DEFAULT ''Plus_GiftRevocability''
+			, Plus_RemainderBeneficiary NVARCHAR(100) DEFAULT ''Plus_RemainderBeneficiary''
+			, New_Documentation NVARCHAR(100) DEFAULT ''New_Documentation''
+			, Plus_PlannedGivingType NVARCHAR(100) DEFAULT ''Plus_PlannedGivingType''
+			, Plus_VehicleType NVARCHAR(100) DEFAULT ''Plus_VehicleType''
+			, Plus_VehicleSubtype NVARCHAR(100) DEFAULT ''Plus_VehicleSubtype''
+			, Plus_Duration NVARCHAR(100) DEFAULT ''Plus_Duration''
+			, Plus_LivesType NVARCHAR(100) DEFAULT ''Plus_LivesType''
+			, Plus_DonorScore NVARCHAR(100) DEFAULT ''Plus_DonorScore''
+			, Plus_GiftType NVARCHAR(100) DEFAULT ''Plus_GiftType''
+			, Plus_StatusCode NVARCHAR(100) DEFAULT ''Plus_StatusCode''
+			, Plus_PlannedGiftTier NVARCHAR(100) DEFAULT ''Plus_PlannedGiftTier''
+			, Plus_ReportFrequency NVARCHAR(100) DEFAULT ''Plus_ReportFrequency''
+			, Plus_ProposedEndowment NVARCHAR(100) DEFAULT ''Plus_ProposedEndowment''
+			, ChannelTypeCode NVARCHAR(100) DEFAULT ''ChannelTypeCode''
+			, Plus_Subtype NVARCHAR(100) DEFAULT ''Plus_Subtype''
+			, Opportunity NVARCHAR(100) DEFAULT ''Opportunity''
+			, StateCode NVARCHAR(100) DEFAULT ''StateCode''
+			, Plus_ProposalStatus NVARCHAR(100) DEFAULT ''Plus_ProposalStatus''
+			, Plus_NewAccount NVARCHAR(100) DEFAULT ''Plus_NewAccount''
+			, ActivityPointer NVARCHAR(100) DEFAULT ''ActivityPointer''
+			, New_AssociationMembership NVARCHAR(100) DEFAULT ''New_AssociationMembership''
+			, Lds_ExpectancyType NVARCHAR(100) DEFAULT ''Lds_ExpectancyType''
+			, Plus_RecurringGiftRules NVARCHAR(100) DEFAULT ''Plus_RecurringGiftRules''
+			, Plus_Frequency NVARCHAR(100) DEFAULT ''Plus_Frequency''
+			, New_Batches NVARCHAR(100) DEFAULT ''New_Batches''
+			, Lds_BatchType NVARCHAR(100) DEFAULT ''Lds_BatchType''
+			' -- Ext_Create_Fields
+		, 'Physical_Table_Name
+			, Column_Name
+			, Column_Label
+			, Column_Value
+			' -- Ext_Insert_Fields
+		, ' DISTINCT  UPPER(B.PhysicalName) AS Physical_Table_Name
+			, UPPER(A.AttributeName) AS Column_Name
+			, CONVERT(NVARCHAR(400),A.Value) AS Column_Label
+			, A.AttributeValue AS Column_Value
+			' -- Ext_Select_Statement
+		, ' Ext_String_Map A
+				INNER JOIN Ext_Entity B ON A.ObjectTypeCode = B.ObjectTypeCode
+			' -- Ext_From_Statement
+		, 'AND LangId = 1033
+			' -- Ext_Where_Statement
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
 		, ' ' -- Code_Block_3
 		, ' ' -- Code_Block_4
 		, ' ' -- Code_Block_5
@@ -6339,12 +6592,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Column_Value
 			, Column_Label
 			' -- Ext_Select_Statement
-		, '_Picklist
+		, '_Picklist_1
 			' -- Ext_From_Statement
-		, '''AND Physical_Table_Name = ''NEW_PHONE'' AND Column_Name = ''NEW_TYPE''''
+		, 'AND Physical_Table_Name = [NEW_PHONE] AND Column_Name = [NEW_TYPE]
 			' -- Ext_Where_Statement	
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
 		, ' ' -- Code_Block_3
 		, ' ' -- Code_Block_4
 		, ' ' -- Code_Block_5
@@ -6393,12 +6646,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Column_Value
 			, Column_Label
 			' -- Ext_Select_Statement
-		, '_Picklist
+		, '_Picklist_1
 			' -- Ext_From_Statement
-		, '''AND Physical_Table_Name = ''NEW_PHONE'' AND Column_Name = ''PLUS_LINETYPE''''
+		, 'AND Physical_Table_Name = [NEW_PHONE] AND Column_Name = [PLUS_LINETYPE]
 			' -- Ext_Where_Statement	
-		, ' ' -- Code_Block_1
-		, ' ' -- Code_Block_2
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
 		, ' ' -- Code_Block_3
 		, ' ' -- Code_Block_4
 		, ' ' -- Code_Block_5
@@ -6427,6 +6680,5711 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, GETDATE()
 		, NULL
 	)
+	,
+-- --------------------------
+-- _Phone_Preferred_Time_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Phone_Preferred_Time_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_1
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [NEW_PHONE] AND Column_Name = [NEW_PREFERREDTIME]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL 
+	)
+	,
+-- --------------------------
+-- _Phone_Confidential_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Phone_Confidential_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_1
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [NEW_PHONE] AND Column_Name = [NEW_PREFERREDTIME]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL 
+	)
+	,
+-- --------------------------
+-- _Award_Type_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Award_Type_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_1
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [NEW_RECOGNITION] AND Column_Name = [NEW_TYPE]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL 	
+	)	
+	,
+-- --------------------------
+-- _Award_Affiliate_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Award_Affiliate_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_1
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [NEW_RECOGNITION] AND Column_Name = [NEW_AFFILIATE]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL  
+	)
+	,
+-- --------------------------
+-- _Address_Quality_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Address_Quality_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_1
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [NEW_ADDRESS] AND Column_Name = [PLUS_ONEACCORDQUALITY]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL  
+	)
+	,
+-- --------------------------
+-- _Address_Confidential_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Address_Confidential_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_1
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [NEW_ADDRESS] AND Column_Name = [PLUS_CONFIDENTIALINSTRUCTION]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _Address_Type_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Address_Type_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_1
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [NEW_ADDRESS] AND Column_Name = [NEW_ADDRESSTYPE]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _Email_Type_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Email_Type_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_1
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [NEW_EMAIL] AND Column_Name = [NEW_EMAILTYPE]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _Email_Confidential_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Email_Confidential_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_1
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [NEW_EMAIL] AND Column_Name = [PLUS_CONFIDENTIALINSTRUCTION]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL 
+	)
+	,
+-- --------------------------
+-- _Drop_Include_Type_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Drop_Include_Type_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_1
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [NEW_DROPINCLUDE] AND Column_Name = [NEW_TYPE]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL  
+	)
+	,
+-- --------------------------
+-- _Drop_Include_Scope_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Drop_Include_Scope_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_1
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [NEW_DROPINCLUDE] AND Column_Name = [NEW_INTERACTION]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL  
+	)
+	,
+-- --------------------------
+-- _Drop_Include_CommType_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Drop_Include_CommType_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_1
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [NEW_DROPINCLUDE] AND Column_Name = [NEW_COMMTYPE]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL  
+	)
+	,
+-- --------------------------
+-- _Drop_Include_Reason_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Drop_Include_Reason_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_1
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [NEW_DROPINCLUDE] AND Column_Name = [NEW_REASON]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _Language_Lang_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Language_Lang_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_1
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [NEW_LANGUAGESPECIALAFFILIATION] AND Column_Name = [NEW_LANGUAGE]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL 
+	)
+	,
+-- --------------------------
+-- _Language_Speech_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Language_Speech_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_1
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [NEW_LANGUAGESPECIALAFFILIATION] AND Column_Name = [NEW_SPEECH]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL  
+	)
+	,
+-- --------------------------
+-- _Language_Read_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Language_Read_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_1
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [NEW_LANGUAGESPECIALAFFILIATION] AND Column_Name = [NEW_READLEVEL]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL 
+	)
+	,
+-- --------------------------
+-- _Language_Write_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Language_Write_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_1
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [NEW_LANGUAGESPECIALAFFILIATION] AND Column_Name = [NEW_WRITELEVEL]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL  
+	)
+	,
+-- --------------------------
+-- _Association_Type_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Association_Type_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_1
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [NEW_ASSOCIATION] AND Column_Name = [NEW_TYPE]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _Association_Sponsor_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Association_Sponsor_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_1
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [NEW_ASSOCIATION] AND Column_Name = [NEW_SPONSOR]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL 
+	)
+	,
+-- --------------------------
+-- _Donor_Gender_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Donor_Gender_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_1
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [CONTACT] AND Column_Name = [GENDERCODE]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL 
+	)
+	,
+-- --------------------------
+-- _Donor_Family_Status_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Donor_Family_Status_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_1
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [CONTACT] AND Column_Name = [FAMILYSTATUSCODE]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL 
+	)
+	,
+-- --------------------------
+-- _Donor_Ethnicity_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Donor_Ethnicity_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_1
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [CONTACT] AND Column_Name = [NEW_ETHNICITY]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _Donor_Church_Member_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Donor_Church_Member_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_1
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [CONTACT] AND Column_Name = [PLUS_CHURCHMEMBER]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL  
+	)
+	,
+-- --------------------------
+-- _Donor_Personal_Suffix_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Donor_Personal_Suffix_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_1
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [CONTACT] AND Column_Name = [NEW_PERSONALSUFFIX]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL 
+	)
+	,
+-- --------------------------
+-- _Donor_Major_Gift_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Donor_Major_Gift_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_1
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [CONTACT] AND Column_Name = [NEW_MAJORGIFTPROPENSITY1]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _Donor_Annual_Gift_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Donor_Annual_Gift_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_1
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [CONTACT] AND Column_Name = [PLUS_ANNUALGIFT1]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL 
+	)
+	,
+-- --------------------------
+-- _Donor_Planned_Gift_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Donor_Planned_Gift_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_1
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [CONTACT] AND Column_Name = [PLUS_PLANNEDGIFT]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL 
+	)
+	,
+-- --------------------------
+-- _Donor_Gift_Cap_Enp_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Donor_Gift_Cap_Enp_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_1
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [CONTACT] AND Column_Name = [PLUS_GIFTCAPACITYENP]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL  
+	)
+	,
+-- --------------------------
+-- _Donor_Gift_Cap_En_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Donor_Gift_Cap_En_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_1
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [CONTACT] AND Column_Name = [PLUS_GIFTCAPACITYEN]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL 
+	)
+	,
+-- --------------------------
+-- _Donor_Phil_Cap_Rate_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Donor_Phil_Cap_Rate_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_1
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [CONTACT] AND Column_Name = [PHILANTHROPICCAPACITYRATINGPCR]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL  
+	)
+	,
+-- --------------------------
+-- _Donor_Est_House_Income_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Donor_Est_House_Income_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_1
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [CONTACT] AND Column_Name = [PLUS_ESTIMATEDHOUSEHOLDINCOME]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL  
+	)
+	,
+-- --------------------------
+-- _Donor_Est_House_Value_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Donor_Est_House_Value_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_1
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [CONTACT] AND Column_Name = [PLUS_ESTIMATEDHOMEMARKETVALUE]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL  
+	)
+	,
+-- --------------------------
+-- _Donor_Blockclusters_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Donor_Blockclusters_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_1
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [CONTACT] AND Column_Name = [PLUS_BLOCKCLUSTERS]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL  
+	)
+	,
+-- --------------------------
+-- _Donor_Act_Class_Code_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Donor_Act_Class_Code_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_1
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [ACCOUNT] AND Column_Name = [ACCOUNTCLASSIFICATIONCODE]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL  
+	)
+	,
+-- --------------------------
+-- _Donor_Retiree_Ratio_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Donor_Retiree_Ratio_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_1
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [ACCOUNT] AND Column_Name = [NEW_RETIREERATIO]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL  
+	)
+	,
+-- --------------------------
+-- _Donor_Split_Ratio_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Donor_Split_Ratio_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_1
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [ACCOUNT] AND Column_Name = [NEW_SPLITRATIO]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL 
+	)
+	,
+-- --------------------------
+-- _Donor_Matching_Ratio_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Donor_Matching_Ratio_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_1
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [ACCOUNT] AND Column_Name = [NEW_MATCHINGRATIO]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL  
+	)
+	,
+-- --------------------------
+-- _Donor_Pref_Contact_Method_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Donor_Pref_Contact_Method_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_1
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [ACCOUNT] AND Column_Name = [PREFERREDCONTACTMETHODCODE]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL 
+	)
+	,
+-- --------------------------
+-- _Donor_Etiquette_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Donor_Etiquette_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_1
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [PLUS_ENVELOPENAMESANDSALUTATIONS] AND Column_Name = [PLUS_ETIQUETTE]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL  
+	)
+	,
+-- --------------------------
+-- _Donation_StatusCode_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Donation_StatusCode_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_1
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [NEW_GIFT] AND Column_Name = [STATUSCODE]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _Donation_GiftSource_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Donation_GiftSource_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_1
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [NEW_GIFT] AND Column_Name = [PLUS_GIFTSOURCE]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)             
+	,
+-- --------------------------
+-- _Donation_Kind_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Donation_Kind_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_1
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [NEW_GIFT] AND Column_Name = [PLUS_KIND]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL  
+	)             
+	,
+-- --------------------------
+-- _Donation_TenderType_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Donation_TenderType_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_1
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [NEW_GIFT] AND Column_Name = [NEW_TENDERTYPE]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)             
+	,
+-- --------------------------
+-- _Donation_ReceiptDeliveryMethod_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Donation_ReceiptDeliveryMethod_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_1
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [NEW_GIFT] AND Column_Name = [PLUS_RECEIPTDELIVERYMETHOD]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _Donation_ContactRole_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Donation_ContactRole_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_1
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [NEW_GIFT] AND Column_Name = [PLUS_CONTACTROLE]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _Donation_Salutation_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Donation_Salutation_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_1
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [NEW_GIFT] AND Column_Name = [PLUS_SALUTATION]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _Fund_GiftPurposeType_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Fund_GiftPurposeType_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_2
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [NEW_FUNDACCOUNT] AND Column_Name = [PLUS_GIFTPURPOSETYPE]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _Fund_GiftPurposeSubType_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Fund_GiftPurposeSubType_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_2
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [NEW_FUNDACCOUNT] AND Column_Name = [PLUS_GIFTPURPOSESUBTYPE]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _Fund_CaePurpose_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Fund_CaePurpose_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_2
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [NEW_FUNDACCOUNT] AND Column_Name = [NEW_CAEPURPOSE]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _Fund_AwardRestrictionGender_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Fund_AwardRestrictionGender_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_2
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [NEW_FUNDACCOUNT] AND Column_Name = [PLUS_AWARDRESTRICTIONGENDER]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _Fund_AwardRestrictionClassYear_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Fund_AwardRestrictionClassYear_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_2
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [NEW_FUNDACCOUNT] AND Column_Name = [PLUS_AWARDRESTRICTIONCLASSYEAR]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _Fund_AwardRestrictionEthnicity_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Fund_AwardRestrictionEthnicity_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_2
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [NEW_FUNDACCOUNT] AND Column_Name = [PLUS_AWARDRESTRICTIONETHNICITY]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL 
+	)
+	,
+-- --------------------------
+-- _Recog_Credit_Type_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Recog_Credit_Type_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_2
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [NEW_RECOGNITIONCREDIT] AND Column_Name = [PLUS_TYPE]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL 
+	)
+	,
+-- --------------------------
+-- _Plus_Church_Employment_Status_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Plus_Church_Employment_Status_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_2
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [NEW_EMPLOYMENT] AND Column_Name = [PLUS_CHURCHEMPLOYMENTSTATUS]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL 
+	)
+	,
+-- --------------------------
+-- _New_OtherIdentifiers_New_Type_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_New_OtherIdentifiers_New_Type_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_2
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [NEW_OTHERIDENTIFIERS] AND Column_Name = [NEW_TYPE]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL 
+	)
+	,
+-- --------------------------
+-- _Plus_AlumniStatus_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Plus_AlumniStatus_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_2
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [PLUS_ALUMNI] AND Column_Name = [PLUS_ALUMNISTATUS]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)             
+	,
+-- --------------------------
+-- _Plus_DegreeLevel_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Plus_DegreeLevel_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_2
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [NEW_DEGREE] AND Column_Name = [PLUS_DEGREELEVEL]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _Campaign_Activity_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Campaign_Activity_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_2
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [CAMPAIGNACTIVITY] AND Column_Name = [PLUS_COMMUNICATIONTYPE]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _Affiliate_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Affiliate_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_2
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [CAMPAIGNACTIVITY] AND Column_Name = [PLUS_AFFILIATE]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _Department_Function_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Department_Function_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_2
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [CAMPAIGNACTIVITY] AND Column_Name = [PLUS_DEPARTMENTFUNCTION]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)             
+	,
+-- --------------------------
+-- _New_Experience_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_New_Experience_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_2
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [NEW_INTERNATIONALEXPERIENCE] AND Column_Name = [NEW_EXPERIENCE]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _Plus_LdsPosition_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Plus_LdsPosition_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_2
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [NEW_INTERNATIONALEXPERIENCE] AND Column_Name = [PLUS_LDSPOSITION]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,             
+-- --------------------------
+-- _Plus_M11MessageType_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Plus_M11MessageType_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_2
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [PLUS_LEGACYM11] AND Column_Name = [PLUS_M11MESSAGETYPE]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,             
+-- --------------------------
+-- _Plus_M11ActivityType_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Plus_M11ActivityType_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_2
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [PLUS_LEGACYM11] AND Column_Name = [PLUS_M11ACTIVITYTYPE]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _Plus_Kind_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Plus_Kind_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_3
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [NEW_PLEDGE] AND Column_Name = [PLUS_KIND]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL 
+	)
+	,
+-- --------------------------
+-- _Plus_Tender_Type_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Plus_Tender_Type_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_3
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [NEW_PLEDGE] AND Column_Name = [PLUS_TENDERTYPE]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _Plus_Gift_Source_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Plus_Gift_Source_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_3
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [NEW_PLEDGE] AND Column_Name = [PLUS_GIFTSOURCE]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _Plus_Planned_Gift_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Plus_Planned_Gift_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_3
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [NEW_PLEDGE] AND Column_Name = [PLUS_PLANNEDGIFT]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _New_Confidential_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_New_Confidential_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_3
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [NEW_PLEDGE] AND Column_Name = [NEW_CONFIDENTIAL]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _Plus_PlannedGivingPaymentFrequency_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Plus_PlannedGivingPaymentFrequency_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_3
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [NEW_PLEDGE] AND Column_Name = [PLUS_PLANNEDGIVINGPAYMENTFREQUENCY]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _New_Bookable_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_New_Bookable_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_3
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [NEW_PLEDGE] AND Column_Name = [NEW_BOOKABLE]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _Plus_MatchExpected_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Plus_MatchExpected_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_3
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [NEW_PLEDGE] AND Column_Name = [PLUS_MATCHEXPECTED]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _Plus_GiftRevocability_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Plus_GiftRevocability_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_3
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [NEW_PLEDGE] AND Column_Name = [PLUS_GIFTREVOCABILITY]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _Plus_RemainderBeneficiary_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Plus_RemainderBeneficiary_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_3
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [NEW_PLEDGE] AND Column_Name = [PLUS_REMAINDERBENEFICIARY]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _New_Documentation_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_New_Documentation_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_3
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [NEW_PLEDGE] AND Column_Name = [NEW_DOCUMENTATION]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL 
+	)
+	,
+-- --------------------------
+-- _Plus_PlannedGivingType_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Plus_PlannedGivingType_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_3
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [NEW_PLEDGE] AND Column_Name = [PLUS_PLANNEDGIVINGTYPE]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL  
+	)
+	,
+-- --------------------------
+-- _Plus_VehicleType_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Plus_VehicleType_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_3
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [NEW_PLEDGE] AND Column_Name = [PLUS_VEHICLETYPE]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _Plus_VehicleSubType_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Plus_VehicleSubType_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_3
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [NEW_PLEDGE] AND Column_Name = [PLUS_VEHICLESUBTYPE]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _Plus_Duration_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Plus_Duration_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_3
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [NEW_PLEDGE] AND Column_Name = [PLUS_DURATION]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _Plus_LivesType_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Plus_LivesType_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_3
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [NEW_PLEDGE] AND Column_Name = [PLUS_LIVESTYPE]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _PLUS_GIFTTYPE_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Plus_GiftType_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_3
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [PLUS_DONORSCORE] AND Column_Name = [PLUS_GIFTTYPE]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _PLUS_STATUSCODE_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Plus_StatusCode_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_3
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [PLUS_DONORSCORE] AND Column_Name = [PLUS_STATUSCODE]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _PLUS_PLANNEDGIFTTIER_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Plus_PlannedGiftTier_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_3
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [CONTACT] AND Column_Name = [PLUS_PLANNEDGIFTTIER]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _PLUS_GIFTCAPACITYEN_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Plus_GiftCapacityEn_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_3
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [CONTACT] AND Column_Name = [PLUS_GIFTCAPACITYEN]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _EMPLOYMENT_STATUSCODE_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Employment_StatusCode_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_3
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [NEW_EMPLOYMENT] AND Column_Name = [STATUSCODE]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _FUNDACCOUNT_STATUSCODE_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_FundAccount_StatusCode_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_3
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [NEW_FUNDACCOUNT] AND Column_Name = [STATUSCODE]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _FUNDACCOUNT_PLUS_REPORTFREQUENCY_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_FundAccount_Plus_ReportFrequency_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_3
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [NEW_FUNDACCOUNT] AND Column_Name = [PLUS_REPORTFREQUENCY]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _FUNDACCOUNT_PLUS_PROPOSEDENDOWMENT_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_FundAccount_Plus_ProposedEndowment_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_3
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [NEW_FUNDACCOUNT] AND Column_Name = [PLUS_PROPOSEDENDOWMENT]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _CHANNEL_TYPE_CODE_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Channel_Type_Code_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_3
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [CAMPAIGNACTIVITY] AND Column_Name = [CHANNELTYPECODE]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _PLUS_SUBTYPE_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Plus_SubType_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_3
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [NEW_RECOGNITIONCREDIT] AND Column_Name = [PLUS_SUBTYPE]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _PLEDGE_STATUS_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Pledge_Status_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_3
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [NEW_PLEDGE] AND Column_Name = [STATUSCODE]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _OPPORTUNITY_STATECODE_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Opportunity_StateCode_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_3
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [OPPORTUNITY] AND Column_Name = [STATECODE]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _OPPORTUNITY_STATUSCODE_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Opportunity_StatusCode_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_3
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [OPPORTUNITY] AND Column_Name = [STATUSCODE]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _OPPORTUNITY_PROPOSALSTATUS_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Opportunity_ProposalStatus_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_3
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [OPPORTUNITY] AND Column_Name = [PLUS_PROPOSALSTATUS]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _OPPORTUNITY_PLUS_NEWACCOUNT_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Opportunity_Plus_NewAccount_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_3
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [OPPORTUNITY] AND Column_Name = [PLUS_NEWACCOUNT]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _ActivityPointer_StateCode_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_ActivityPointer_StateCode_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_3
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [ACTIVITYPOINTER] AND Column_Name = [STATECODE]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _ActivityPointer_StatusCode_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_ActivityPointer_StatusCode_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_3
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [ACTIVITYPOINTER] AND Column_Name = [STATUSCODE]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _New_AssociationMembership_StatusCode_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_New_AssociationMembership_StatusCode_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_3
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [NEW_ASSOCIATIONMEMBERSHIP] AND Column_Name = [STATUSCODE]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _Lds_ExpectancyType_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Lds_ExpectancyType_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_3
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [NEW_PLEDGE] AND Column_Name = [LDS_EXPECTANCYTYPE]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _Recurring_Gift_Type_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Recurring_Gift_Type_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_3
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [PLUS_RECURRINGGIFTRULES] AND Column_Name = [PLUS_TYPE]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _Recurring_Frequency_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Recurring_Frequency_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_3
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [PLUS_RECURRINGGIFTRULES] AND Column_Name = [PLUS_FREQUENCY]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _Recurring_StateCode_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Recurring_StateCode_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_3
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [PLUS_RECURRINGGIFTRULES] AND Column_Name = [STATECODE]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _Recurring_StatusCode_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Recurring_StatusCode_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_3
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [PLUS_RECURRINGGIFTRULES] AND Column_Name = [STATUSCODE]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _Lds_BatchType_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Lds_BatchType_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Column_Value INT
+			, Column_Label  NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Insert_Fields
+		, 'Column_Value
+			, Column_Label
+			' -- Ext_Select_Statement
+		, '_Picklist_3
+			' -- Ext_From_Statement
+		, 'AND Physical_Table_Name = [NEW_BATCHES] AND Column_Name = [LDS_BATCHTYPE]
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _Email_Dim
+-- --------------------------
+	( 3 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Email_Dim' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'ContactId NVARCHAR(100) 
+			, Email_Key  INT  PRIMARY KEY
+			, Email_Group_Key  INT 
+			, Email_Address  NVARCHAR(150) 
+			, Email_Primary_Yn  NVARCHAR(1) 
+			, Email_Type  NVARCHAR(400) 
+			, Email_Type_Value  INT 
+			, Email_Active_Yn  NVARCHAR(1) 
+			, Email_Confirmed_Yn  NVARCHAR(1)
+			, Email_Confidential_Yn  NVARCHAR(1)
+			' -- Ext_Create_Fields
+		, 'ContactId  
+			, Email_Key 
+			, Email_Group_Key 
+			, Email_Address
+			, Email_Primary_Yn 
+			, Email_Type
+			, Email_Type_Value 
+			, Email_Active_Yn
+			, Email_Confirmed_Yn
+			, Email_Confidential_Yn
+			' -- Ext_Insert_Fields
+		, 'SELECT
+				A.New_ConstituentId AS ContactId  
+				, ROW_NUMBER() OVER(ORDER BY A.New_EmailId) AS Email_Key 
+				, C.Email_Group_Key
+				, A.New_Emails AS Email_Address
+				, CASE WHEN A.New_Primary = 0 THEN ''N'' ELSE ''Y'' END AS Email_Primary_Yn 
+				, B.Column_Label AS Email_Type
+				, B.Column_Value AS Email_Type_Value 
+				, CASE WHEN A.StateCode = 1 THEN ''N'' ELSE ''Y'' END AS Email_Active_Yn
+				, CASE WHEN A.New_ConfirmationDate IS NULL THEN ''N'' ELSE ''Y'' END AS Email_Confirmed_Yn
+				, CASE WHEN A.New_Confidential = 0 THEN ''N'' ELSE ''Y'' END AS Email_Confidential_Yn    				
+			' -- Ext_Select_Statement
+		, 'Ext_Email A
+				LEFT JOIN _Email_Type_ B ON A.New_EmailType = B.Column_Value
+				LEFT JOIN 
+						(SELECT New_ConstituentID
+							, ROW_NUMBER() OVER(ORDER BY New_ConstituentID) AS Email_Group_Key --> HARD CODED <--
+							FROM
+								(SELECT DISTINCT New_ConstituentID   
+									FROM Ext_Email A
+										LEFT JOIN _Email_Type_ B ON A.New_EmailType = B.Column_Value										
+								) A
+						) C ON A.New_ConstituentID = C.New_ConstituentID
+			' -- Ext_From_Statement
+		, 'AND A.StateCode != 1
+			' -- Ext_Where_Statement	
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)	
 	;	
 	
 
