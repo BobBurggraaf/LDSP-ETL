@@ -2282,6 +2282,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, New_Confidential BIT
 			, New_EmailType INT
 			, New_ConfirmationDate DATETIME
+			, Y NVARCHAR(1) DEFAULT ''Y''
+			, N NVARCHAR(1) DEFAULT ''N''
 			' -- Ext_Create_Fields
 		, 'New_EmailId
 			, New_ConstituentId
@@ -3296,6 +3298,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, New_AssociationUsage BIT
 			, New_DonationUsage BIT
 			, New_Inst NVARCHAR(100)
+			, Y NVARCHAR(1) DEFAULT ''Y''
+			, N NVARCHAR(1) DEFAULT ''N''
 			' -- Ext_Create_Fields
 		, 'New_Institutionid
 			, New_Name
@@ -12329,23 +12333,22 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Email_Confirmed_Yn
 			, Email_Confidential_Yn
 			' -- Ext_Insert_Fields
-		, 'SELECT
-				A.New_ConstituentId AS ContactId  
-				, ROW_NUMBER() OVER(ORDER BY A.New_EmailId) AS Email_Key 
-				, C.Email_Group_Key
-				, A.New_Emails AS Email_Address
-				, CASE WHEN A.New_Primary = 0 THEN ''N'' ELSE ''Y'' END AS Email_Primary_Yn 
-				, B.Column_Label AS Email_Type
-				, B.Column_Value AS Email_Type_Value 
-				, CASE WHEN A.StateCode = 1 THEN ''N'' ELSE ''Y'' END AS Email_Active_Yn
-				, CASE WHEN A.New_ConfirmationDate IS NULL THEN ''N'' ELSE ''Y'' END AS Email_Confirmed_Yn
-				, CASE WHEN A.New_Confidential = 0 THEN ''N'' ELSE ''Y'' END AS Email_Confidential_Yn    				
+		, 'A.New_ConstituentId AS ContactId  
+			, ROW_NUMBER() OVER(ORDER BY A.New_EmailId) AS Email_Key 
+			, C.Email_Group_Key
+			, A.New_Emails AS Email_Address
+			, CASE WHEN A.New_Primary = 0 THEN [N] ELSE [Y] END AS Email_Primary_Yn 
+			, B.Column_Label AS Email_Type
+			, B.Column_Value AS Email_Type_Value 
+			, CASE WHEN A.StateCode = 1 THEN [N] ELSE [Y] END AS Email_Active_Yn
+			, CASE WHEN A.New_ConfirmationDate IS NULL THEN [N] ELSE [Y] END AS Email_Confirmed_Yn
+			, CASE WHEN A.New_Confidential = 0 THEN [N] ELSE [Y] END AS Email_Confidential_Yn    				
 			' -- Ext_Select_Statement
 		, 'Ext_Email A
 				LEFT JOIN _Email_Type_ B ON A.New_EmailType = B.Column_Value
 				LEFT JOIN 
 						(SELECT New_ConstituentID
-							, ROW_NUMBER() OVER(ORDER BY New_ConstituentID) AS Email_Group_Key --> HARD CODED <--
+							, ROW_NUMBER() OVER(ORDER BY New_ConstituentID) AS Email_Group_Key
 							FROM
 								(SELECT DISTINCT New_ConstituentID   
 									FROM Ext_Email A
@@ -12355,8 +12358,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND A.StateCode != 1
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
 		, ' ' -- Code_Block_3
 		, ' ' -- Code_Block_4
 		, ' ' -- Code_Block_5
@@ -12385,8 +12388,270 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, GETDATE()
 		, NULL
 	)	
+	,
+-- --------------------------
+-- _Psa_Dim
+-- --------------------------
+	( 3 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Psa_Dim' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'ContactId  NVARCHAR(100) 
+			, Psa_Key  INT  PRIMARY KEY
+			, Psa_Group_Key  INT 
+			, Psa_Code  NVARCHAR(50) 
+			, Psa_Eff_From  DATE 
+			, Psa_Eff_Thru  DATE 
+			, Psa_Act_Src  NVARCHAR(100) 
+			, Psa_Entered_Dt  DATE 
+			, Psa_Change_Dt  DATE 
+			, Psa_Type  VARCHAR(100) 
+			, Psa_Text_Line  NVARCHAR(100)
+			' -- Ext_Create_Fields
+		, 'ContactId 
+			, Psa_Key 
+			, Psa_Group_Key 
+			, Psa_Code 
+			, Psa_Eff_From 
+			, Psa_Eff_Thru 
+			, Psa_Act_Src 
+			, Psa_Entered_Dt 
+			, Psa_Change_Dt 
+			, Psa_Type 
+			, Psa_Text_Line
+			' -- Ext_Insert_Fields
+		, 'DISTINCT CONVERT(NVARCHAR(100),A.ContactId) AS ContactId
+			, ROW_NUMBER() OVER(ORDER BY A.Psa_Key) AS Psa_Key 
+			, B.Psa_Group_Key 
+			, A.Psa_Code 
+			, CONVERT(VARCHAR(10),A.Psa_Eff_From,101) AS Psa_Eff_From 
+			, CONVERT(VARCHAR(10),A.Psa_Eff_Thru,101) AS Psa_Eff_Thru 
+			, A.Psa_Act_Src 
+			, CONVERT(VARCHAR(10),A.Psa_Entered_Dt,101) AS Psa_Entered_Dt 
+			, CONVERT(VARCHAR(10),A.Psa_Change_Dt,101) AS Psa_Change_Dt 
+			, A.Psa_Type 
+			, A.Psa_Text_Line   				
+			' -- Ext_Select_Statement
+		, 'Ext_Psa A
+				LEFT JOIN 
+						(
+						SELECT ContactId
+							, ROW_NUMBER() OVER(ORDER BY ContactId) AS Psa_Group_Key 
+							FROM
+								(SELECT DISTINCT ContactId   
+									FROM Ext_Psa) A
+						) B ON A.ContactId = B.ContactId
+			' -- Ext_From_Statement
+		, '
+			' -- Ext_Where_Statement	
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+,
+-- --------------------------
+-- _Hier_Dim
+-- --------------------------
+	( 3 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Hier_Dim' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Hier_Key  NVARCHAR(100)  PRIMARY KEY
+			, Hier_Name  NVARCHAR(100) 
+			, Hier_Parent  NVARCHAR(100) 
+			, Hier_Level_1  NVARCHAR(100) 
+			, Hier_Level_2  NVARCHAR(100) 
+			, Hier_Level_3  NVARCHAR(100) 
+			, Hier_Avail_To_Alumni_Yn  NVARCHAR(1) 
+			, Hier_Avail_To_Student_Yn  NVARCHAR(1) 
+			, Hier_End_Node_Yn  NVARCHAR(1) 
+			, Hier_Education_Usage_Yn  NVARCHAR(1) 
+			, Hier_Association_Usage_Yn  NVARCHAR(1) 
+			, Hier_Donation_Usage_Yn  NVARCHAR(1)
+			, New_Inst NVARCHAR(100)
+			' -- Ext_Create_Fields
+		, 'Hier_Key 
+			, Hier_Name
+			, Hier_Parent 
+			, Hier_Level_1
+			, Hier_Level_2 
+			, Hier_Level_3
+			, Hier_Avail_To_Alumni_Yn 
+			, Hier_Avail_To_Student_Yn 
+			, Hier_End_Node_Yn 
+			, Hier_Education_Usage_Yn 
+			, Hier_Association_Usage_Yn 
+			, Hier_Donation_Usage_Yn
+			, New_Inst
+			' -- Ext_Insert_Fields
+		, 'DISTINCT CONVERT(NVARCHAR(100),A.New_InstitutionId) AS Hier_Key
+			, A.New_Name AS Hier_Name
+			, CONVERT(NVARCHAR(100),A.Plus_ParentInstitutionalHieararchy) AS Hier_Parent
+			, A.New_Level1 AS Hier_Level_1
+			, A.New_Level2 AS Hier_Level_2
+			, A.New_Level3 AS Hier_Level_3
+			, CASE WHEN A.New_AvailableToAlumni = 0 THEN [N]
+				WHEN A.New_AvailableToAlumni = 1 THEN [Y]
+				ELSE NULL END AS Hier_Avail_To_Alumni_Yn
+			, CASE WHEN A.New_AvailableToStudent = 0 THEN [N]
+				WHEN A.New_AvailableToStudent = 1 THEN [Y]
+				ELSE NULL END AS Hier_Avail_To_Student_Yn
+			, CASE WHEN A.New_IsEndNode = 0 THEN [N]
+				WHEN A.New_IsEndNode = 1 THEN [Y]
+				ELSE NULL END AS Hier_End_Node_Yn
+			, CASE WHEN A.New_EducationUsage = 0 THEN [N]
+				WHEN A.New_EducationUsage = 1 THEN [Y]
+				ELSE NULL END AS Hier_Education_Usage_Yn
+			, CASE WHEN A.New_AssociationUsage = 0 THEN [N]
+				WHEN A.New_AssociationUsage = 1 THEN [Y]
+				ELSE NULL END AS Hier_Association_Usage_Yn
+			, CASE WHEN A.New_DonationUsage = 0 THEN [N]
+				WHEN A.New_DonationUsage = 1 THEN [Y]
+				ELSE NULL END AS Hier_Donation_Usage_Yn           
+			, A.New_Inst   				
+			' -- Ext_Select_Statement
+		, 'Ext_Institution A 
+			' -- Ext_From_Statement
+		, '
+			' -- Ext_Where_Statement	
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)	
+,
+-- --------------------------
+-- _User_Dim
+-- --------------------------
+	( 3 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_User_Dim' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'User_Key NVARCHAR(100) PRIMARY KEY
+			, User_Full_Name NVARCHAR(200)
+			, User_First_Name NVARCHAR(64)
+			, User_Last_Name NVARCHAR(64)
+			, User_Personal_Email NVARCHAR(100)
+			, User_Title NVARCHAR(128)
+			, User_Internal_Email NVARCHAR(100)
+			, User_Mobile_Phone NVARCHAR(64)
+			, User_Domain_Name NVARCHAR(1024)
+			' -- Ext_Create_Fields
+		, 'User_Key
+			, User_Full_Name
+			, User_First_Name
+			, User_Last_Name
+			, User_Personal_Email
+			, User_Title
+			, User_Internal_Email
+			, User_Mobile_Phone
+			, User_Domain_Name
+			' -- Ext_Insert_Fields
+		, 'DISTINCT CONVERT(NVARCHAR(100),SystemUserId) AS User_Key
+			, FullName AS User_Full_Name
+			, FirstName AS User_First_Name
+			, LastName AS User_Last_Name
+			, PersonalEmailAddress AS User_Personal_Email
+			, Title AS User_Title
+			, InternalEmailAddress AS User_Internal_Email
+			, MobilePhone AS User_Mobile_Phone
+			, DomainName AS User_Domain_Name   				
+			' -- Ext_Select_Statement
+		, 'Ext_System_User
+			' -- Ext_From_Statement
+		, '
+			' -- Ext_Where_Statement	
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
 	;	
-	
 
 
 
