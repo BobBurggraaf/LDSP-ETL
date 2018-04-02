@@ -273,6 +273,94 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 	)
 	,
 -- --------------------------
+-- Plus_DonorScoreBase (Ext_Donor_Score)
+-- --------------------------
+	( 1 -- Tier
+		, 'dbo.Plus_DonorScoreBase' -- Source_Table
+		, 'Oa_Extract.Plus_DonorScoreBase' -- Destination_Table
+		, 'Ext_Donor_Score' -- Ext_Table
+		, '	Plus_DonorScoreId UNIQUEIDENTIFIER
+			, Plus_Constituent UNIQUEIDENTIFIER
+			, Plus_Institution UNIQUEIDENTIFIER
+			, Plus_I5LegacyDonorTypeDate DATETIME
+			, Plus_I5LegacyDonorType NVARCHAR(10)
+			, ModifiedOn DATETIME
+			, StatusCode INT
+			, StateCode INT
+			' -- Dest_Create_Fields
+		, '	Plus_DonorScoreId
+			, Plus_Constituent
+			, Plus_Institution
+			, Plus_I5LegacyDonorTypeDate
+			, Plus_I5LegacyDonorType
+			, ModifiedOn
+			, StatusCode
+			, StateCode
+			' -- Dest_Insert_Fields
+		, 'AND YEAR(Plus_I5LegacyDonorTypeDate) >= YEAR(GETDATE())-5
+			' -- Dest_Where_Statement
+		, '	Plus_DonorScoreId UNIQUEIDENTIFIER
+			, Plus_Constituent UNIQUEIDENTIFIER
+			, Plus_Institution UNIQUEIDENTIFIER
+			, Plus_I5LegacyDonorTypeDate DATETIME
+			, Plus_I5LegacyDonorType NVARCHAR(10)
+			, ModifiedOn DATETIME
+			, StatusCode INT
+			, StateCode INT
+			' -- Ext_Create_Fields
+		, '	Plus_DonorScoreId
+			, Plus_Constituent
+			, Plus_Institution
+			, Plus_I5LegacyDonorTypeDate
+			, Plus_I5LegacyDonorType
+			, ModifiedOn
+			, StatusCode
+			, StateCode
+			' -- Ext_Insert_Fields
+		, 'Plus_DonorScoreId
+			, Plus_Constituent
+			, Plus_Institution
+			, Plus_I5LegacyDonorTypeDate
+			, Plus_I5LegacyDonorType
+			, ModifiedOn
+			, StatusCode
+			, StateCode
+			' -- Ext_Select_Statement
+		, 'Oa_Extract.Plus_DonorScoreBase				
+			' -- Ext_From_Statement
+		, ' ' -- Ext_Where_Statement
+		, ' ' -- Tier_3_Stage
+		, ' ' -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
 -- ActivityPartyBase (Ext_Activity)
 -- --------------------------
 	( 1 -- Tier
@@ -4152,6 +4240,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, New_PledgeNumber NVARCHAR(100)
 			, StatusCode INT
 			, Lds_ExpectancyType INT
+			, Zero NVARCHAR(5) DEFAULT ''0''
 			' -- Ext_Create_Fields
 		, 'New_PledgeId
 			, New_TotalPledged
@@ -5496,94 +5585,6 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 	)
 	,
 -- --------------------------
--- Plus_DonorScoreBase (Ext_Donor_Score)
--- --------------------------
-	( 1 -- Tier
-		, 'dbo.Plus_DonorScoreBase' -- Source_Table
-		, 'Oa_Extract.Plus_DonorScoreBase' -- Destination_Table
-		, 'Ext_Donor_Score' -- Ext_Table
-		, '	Plus_DonorScoreId UNIQUEIDENTIFIER
-			, Plus_Constituent UNIQUEIDENTIFIER
-			, Plus_Institution UNIQUEIDENTIFIER
-			, Plus_I5LegacyDonorTypeDate DATETIME
-			, Plus_I5LegacyDonorType NVARCHAR(10)
-			, ModifiedOn DATETIME
-			, StatusCode INT
-			, StateCode INT
-			' -- Dest_Create_Fields
-		, '	Plus_DonorScoreId
-			, Plus_Constituent
-			, Plus_Institution
-			, Plus_I5LegacyDonorTypeDate
-			, Plus_I5LegacyDonorType
-			, ModifiedOn
-			, StatusCode
-			, StateCode
-			' -- Dest_Insert_Fields
-		, 'AND YEAR(Plus_I5LegacyDonorTypeDate) >= YEAR(GETDATE())-5
-			' -- Dest_Where_Statement
-		, '	Plus_DonorScoreId UNIQUEIDENTIFIER
-			, Plus_Constituent UNIQUEIDENTIFIER
-			, Plus_Institution UNIQUEIDENTIFIER
-			, Plus_I5LegacyDonorTypeDate DATETIME
-			, Plus_I5LegacyDonorType NVARCHAR(10)
-			, ModifiedOn DATETIME
-			, StatusCode INT
-			, StateCode INT
-			' -- Ext_Create_Fields
-		, '	Plus_DonorScoreId
-			, Plus_Constituent
-			, Plus_Institution
-			, Plus_I5LegacyDonorTypeDate
-			, Plus_I5LegacyDonorType
-			, ModifiedOn
-			, StatusCode
-			, StateCode
-			' -- Ext_Insert_Fields
-		, 'Plus_DonorScoreId
-			, Plus_Constituent
-			, Plus_Institution
-			, Plus_I5LegacyDonorTypeDate
-			, Plus_I5LegacyDonorType
-			, ModifiedOn
-			, StatusCode
-			, StateCode
-			' -- Ext_Select_Statement
-		, 'Oa_Extract.Plus_DonorScoreBase				
-			' -- Ext_From_Statement
-		, ' ' -- Ext_Where_Statement
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
-		, ' ' -- Code_Block_7
-		, ' ' -- Code_Block_8
-		, ' ' -- Code_Block_9
-		, ' ' -- Code_Block_10
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
-		, 1
-		, NULL -- Extract_Stage
-		, NULL -- Extract_Stage_DateTime
-		, NULL -- Coupler_Stage
-		, NULL -- Coupler_Stage_DateTime
-		, NULL -- Tier_2_Stage
-		, NULL -- Tier_2_Stage_DateTime
-		, GETDATE()
-		, NULL
-	)
-	,
--- --------------------------
 -- Plus_EnvelopeNamesAndSalutationsBase (Ext_Envelope_Names_And_Salutations)
 -- --------------------------
 	( 1 -- Tier
@@ -6011,6 +6012,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Plus_Type INT
 			, Plus_Organization UNIQUEIDENTIFIER
 			, CreatedOn DATETIME
+			, Zero NVARCHAR(5) DEFAULT ''0''
 			' -- Ext_Create_Fields
 		, 'Plus_RecurringGiftRulesId
 			, Plus_Constituent
@@ -12618,6 +12620,297 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, DomainName AS User_Domain_Name   				
 			' -- Ext_Select_Statement
 		, 'Ext_System_User
+			' -- Ext_From_Statement
+		, '
+			' -- Ext_Where_Statement	
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+,
+-- --------------------------
+-- _User_Initiative_Liaison_Dim
+-- --------------------------
+	( 3 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_User_Initiative_Liaison_Dim' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'User_Initiative_Liaison_Key NVARCHAR(100) PRIMARY KEY
+			, User_Full_Name NVARCHAR(200)
+			, User_First_Name NVARCHAR(64)
+			, User_Last_Name NVARCHAR(64)
+			, User_Personal_Email NVARCHAR(100)
+			, User_Title NVARCHAR(128)
+			, User_Internal_Email NVARCHAR(100)
+			, User_Mobile_Phone NVARCHAR(64)
+			, User_Domain_Name NVARCHAR(1024)
+			' -- Ext_Create_Fields
+		, 'User_Initiative_Liaison_Key
+			, User_Full_Name
+			, User_First_Name
+			, User_Last_Name
+			, User_Personal_Email
+			, User_Title
+			, User_Internal_Email
+			, User_Mobile_Phone
+			, User_Domain_Name
+			' -- Ext_Insert_Fields
+		, 'DISTINCT CONVERT(NVARCHAR(100),SystemUserId) AS User_Initiative_Liaison_Key
+			, FullName AS User_Full_Name
+			, FirstName AS User_First_Name
+			, LastName AS User_Last_Name
+			, PersonalEmailAddress AS User_Personal_Email
+			, Title AS User_Title
+			, InternalEmailAddress AS User_Internal_Email
+			, MobilePhone AS User_Mobile_Phone
+			, DomainName AS User_Domain_Name  				
+			' -- Ext_Select_Statement
+		, 'Ext_System_User
+			' -- Ext_From_Statement
+		, '
+			' -- Ext_Where_Statement	
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+,
+-- --------------------------
+-- _Expectancy_Fact
+-- --------------------------
+	( 3 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Expectancy_Fact' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Expectancy_Key NVARCHAR(100)
+			, New_TotalPledged MONEY
+			, New_BeginDate DATE
+			, Begin_Date_Key NUMERIC(10,0)
+			, New_EndDate DATE
+			, End_Date_Key NUMERIC(10,0)
+			, New_BalanceDue_Base MONEY
+			, New_TotalPaid_Base MONEY
+			, New_PaymentsToMake INT
+			, New_PaymentsReceived INT
+			, New_InstallmentAmount_Base MONEY
+			, Plus_InstallmentDate DATE
+			, Installment_Date_Key NUMERIC(10,0)
+			, Donation_Key NVARCHAR(100)
+			, User_Key NVARCHAR(100)
+			, Plus_FairMarketValue_Base MONEY
+			, Plus_PresentValue_Base MONEY
+			, New_SignatureDate DATE
+			, Signature_Date_Key NUMERIC(10,0)
+			, New_NotificationDate DATE
+			, Notification_Date_Key NUMERIC(10,0)
+			, Plus_FundingDate DATE
+			, Funding_Date_Key NUMERIC(10,0)
+			, Plus_EstimatedMaturityDate DATE
+			, Estimated_Maturity_Date_Key NUMERIC(10,0)
+			, Plus_PaymentAmount_Base MONEY
+			, Plus_AnnualAmount_Base MONEY
+			, Plus_PaymentStartDate DATE
+			, Payment_Start_Date_Key NUMERIC(10,0)
+			, Appeal_Key NVARCHAR(100)
+			, Fund_Key NVARCHAR(100)
+			, Hier_Key NVARCHAR(100)
+			, Donor_Key NVARCHAR(100)
+			, Initiative_Key NVARCHAR(100)
+			' -- Ext_Create_Fields
+		, 'Expectancy_Key
+			, New_TotalPledged
+			, New_BeginDate
+			, Begin_Date_Key
+			, New_EndDate
+			, End_Date_Key
+			, New_BalanceDue_Base
+			, New_TotalPaid_Base
+			, New_PaymentsToMake
+			, New_PaymentsReceived
+			, New_InstallmentAmount_Base
+			, Plus_InstallmentDate
+			, Installment_Date_Key
+			, Donation_Key
+			, User_Key
+			, Plus_FairMarketValue_Base
+			, Plus_PresentValue_Base
+			, New_SignatureDate
+			, Signature_Date_Key
+			, New_NotificationDate
+			, Notification_Date_Key
+			, Plus_FundingDate
+			, Funding_Date_Key
+			, Plus_EstimatedMaturityDate
+			, Estimated_Maturity_Date_Key
+			, Plus_PaymentAmount_Base
+			, Plus_AnnualAmount_Base
+			, Plus_PaymentStartDate
+			, Payment_Start_Date_Key
+			, Appeal_Key
+			, Fund_Key
+			, Hier_Key
+			, Donor_Key
+			, Initiative_Key
+			' -- Ext_Insert_Fields
+		, ' DISTINCT CONVERT(NVARCHAR(100),A.New_PledgeId) AS Expectancy_Key
+			, A.New_TotalPledged
+			, CONVERT(VARCHAR(10),A.New_BeginDate,101) AS New_BeginDate
+			, COALESCE(CONVERT(NUMERIC(10,0),CONVERT(VARCHAR(10),A.New_BeginDate,112)),0) AS Begin_Date_Key
+			, CONVERT(VARCHAR(10),A.New_EndDate,101) AS New_EndDate
+			, COALESCE(CONVERT(NUMERIC(10,0),CONVERT(VARCHAR(10),A.New_EndDate,112)),0) AS End_Date_Key
+			, A.New_BalanceDue_Base
+			, A.New_TotalPaid_Base
+			, A.New_PaymentsToMake
+			, A.New_PaymentsReceived
+			, A.New_InstallmentAmount_Base
+			, CONVERT(VARCHAR(10),A.Plus_InstallmentDate,101) AS Plus_InstallmentDate
+			, COALESCE(CONVERT(NUMERIC(10,0),CONVERT(VARCHAR(10),A.Plus_InstallmentDate,112)),0) AS Installment_Date_Key
+			, COALESCE(CONVERT(VARCHAR(100),A.Plus_ParentGift),Zero) AS Donation_Key
+			, COALESCE(CONVERT(NVARCHAR(102),A.OwnerId),Zero) AS User_Key
+			, A.Plus_FairMarketValue_Base
+			, A.Plus_PresentValue_Base
+			, CONVERT(VARCHAR(10),A.New_SignatureDate,101) AS New_SignatureDate
+			, COALESCE(CONVERT(NUMERIC(10,0),CONVERT(VARCHAR(10),A.New_SignatureDate,112)),0) AS Signature_Date_Key
+			, CONVERT(VARCHAR(10),A.New_NotificationDate,101) AS New_NotificationDate
+			, COALESCE(CONVERT(NUMERIC(10,0),CONVERT(VARCHAR(10),A.New_NotificationDate,112)),0) AS Notification_Date_Key
+			, CONVERT(VARCHAR(10),A.Plus_FundingDate,101) AS Plus_FundingDate
+			, COALESCE(CONVERT(NUMERIC(10,0),CONVERT(VARCHAR(10),A.Plus_FundingDate,112)),0) AS Funding_Date_Key
+			, CONVERT(VARCHAR(10),A.Plus_EstimatedMaturityDate,101) AS Plus_EstimatedMaturityDate
+			, COALESCE(CONVERT(NUMERIC(10,0),CONVERT(VARCHAR(10),A.Plus_EstimatedMaturityDate,112)),0) AS Estimated_Maturity_Date_Key
+			, A.Plus_PaymentAmount_Base
+			, A.Plus_AnnualAmount_Base
+			, CONVERT(VARCHAR(10),A.Plus_PaymentStartDate,101) AS Plus_PaymentStartDate
+			, COALESCE(CONVERT(NUMERIC(10,0),CONVERT(VARCHAR(10),A.Plus_PaymentStartDate,112)),0) AS Payment_Start_Date_Key
+			, COALESCE(CONVERT(NVARCHAR(100),A.Plus_Appeal),Zero) AS Appeal_Key
+			, COALESCE(CONVERT(NVARCHAR(100),A.New_FundAccount),Zero) AS Fund_Key
+			, COALESCE(CONVERT(NVARCHAR(100),A.New_InstitutionalHierarchy),Zero) AS Hier_Key
+			, COALESCE(COALESCE(CONVERT(NVARCHAR(100),A.New_ConstituentDonor), CONVERT(NVARCHAR(100),A.New_OrganizationDonor)),Zero) AS Donor_Key
+			, COALESCE(CONVERT(NVARCHAR(100),A.New_Opportunity),Zero) AS Initiative_Key 				
+			' -- Ext_Select_Statement
+		, 'Ext_Pledge A
+			' -- Ext_From_Statement
+		, '
+			' -- Ext_Where_Statement	
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+,
+-- --------------------------
+-- _Recurring_Gift_Fact
+-- --------------------------
+	( 3 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Recurring_Gift_Fact' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Recurring_Gift_Key NVARCHAR(100) NOT NULL
+			, Donor_Key NVARCHAR(100)
+			, Fund_Key NVARCHAR(100)
+			, Hier_Key NVARCHAR(100)
+			, Appeal_Key NVARCHAR(100)
+			, Recurring_Gift_Amt MONEY
+			' -- Ext_Create_Fields
+		, 'Recurring_Gift_Key
+			, Donor_Key
+			, Fund_Key
+			, Hier_Key
+			, Appeal_Key
+			, Recurring_Gift_Amt
+			' -- Ext_Insert_Fields
+		, 'CONVERT(NVARCHAR(100),A.Plus_RecurringGiftRulesId) AS Recurring_Gift_Key
+			, COALESCE(CONVERT(NVARCHAR(100),A.Plus_Constituent),A.Zero) AS Donor_Key
+			, COALESCE(CONVERT(NVARCHAR(100),A.Plus_FundAccount),A.Zero) AS Fund_Key
+			, COALESCE(CONVERT(NVARCHAR(100),A.Plus_InstitutionalHiearchy),A.Zero) AS Hier_Key
+			, COALESCE(CONVERT(NVARCHAR(100),A.Plus_CampaignAppeal),A.Zero) AS Appeal_Key
+			, A.Plus_Amount AS Recurring_Gift_Amt				
+			' -- Ext_Select_Statement
+		, 'Ext_Recurring_Gift_Rules A
 			' -- Ext_From_Statement
 		, '
 			' -- Ext_Where_Statement	
