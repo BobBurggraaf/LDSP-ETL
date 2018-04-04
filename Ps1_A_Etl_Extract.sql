@@ -1131,6 +1131,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Lds_IsQualified BIT
 			, Lds_QualifiedOn DATETIME
 			, Lds_QualifiedBy UNIQUEIDENTIFIER
+			, Lds_TelefundNotes NVARCHAR(MAX)
 			' -- Dest_Create_Fields
 		, 'ContactId
 			, New_Ldspid
@@ -1190,6 +1191,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Lds_IsQualified
 			, Lds_QualifiedOn
 			, Lds_QualifiedBy
+			, Lds_TelefundNotes
 			' -- Dest_Insert_Fields
 		, ' ' -- Dest_Where_Statement
 		, 'ContactId UNIQUEIDENTIFIER
@@ -1250,6 +1252,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Lds_IsQualified BIT
 			, Lds_QualifiedOn DATETIME
 			, Lds_QualifiedBy UNIQUEIDENTIFIER
+			, Lds_TelefundNotes NVARCHAR(4000)
 			' -- Ext_Create_Fields
 		, 'ContactId
 			, New_Ldspid
@@ -1309,6 +1312,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Lds_IsQualified
 			, Lds_QualifiedOn
 			, Lds_QualifiedBy
+			, Lds_TelefundNotes
 			' -- Ext_Insert_Fields
 		, 'ContactId
 			, New_Ldspid
@@ -1370,6 +1374,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, CASE WHEN DATENAME(dy,A.Lds_QualifiedOn) BETWEEN C.Mdt_Begin_Date_Number AND C.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.Lds_QualifiedOn)
 					ELSE DATEADD(hh,-7,A.Lds_QualifiedOn) END AS Lds_QualifiedOn
 			, Lds_QualifiedBy
+			, CONVERT(NVARCHAR(4000),SUBSTRING(Lds_TelefundNotes,1,4000)) AS Lds_TelefundNotes
 			' -- Ext_Select_Statement
 		, 'Oa_Extract.ContactBase A
 				LEFT JOIN dbo._MDT_Conversion_Dim B ON YEAR(A.Plus_WealthDate) = B.Date_Year

@@ -13200,6 +13200,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 			, Donor_Total_Giving_Current_Year_Minus_3_With_Matching MONEY
 			, Donor_Total_Giving_Current_Year_Minus_4_With_Matching MONEY
 			, Donor_Total_Giving_Current_Year_Minus_5_With_Matching MONEY
+			, Donor_Lds_TelefundNotes NVARCHAR(4000)
 			'
 		, 'Donor_Key      
 			, Activity_Group_Key 
@@ -13561,6 +13562,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 			, Donor_Total_Giving_Current_Year_Minus_3_With_Matching
 			, Donor_Total_Giving_Current_Year_Minus_4_With_Matching
 			, Donor_Total_Giving_Current_Year_Minus_5_With_Matching
+			, Donor_Lds_TelefundNotes
 			'
 		, ' '
 		, ' '
@@ -13963,6 +13965,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 								, B.Plus_SpousePreferredLastName
 								, B.Plus_SpousePreferredFullName
 								, B.Plus_I5TextLinesLdsp AS Donor_Ldsp_Text_Lines
+								, B.Lds_TelefundNotes AS Donor_Lds_TelefundNotes
 								FROM #Contact_Account_Temp A
 									LEFT JOIN Ext_Contact B ON A.Donor_Key = CONVERT(NVARCHAR(100),B.ContactId)                                                      
 				) A
@@ -14088,6 +14091,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 								, B.New_MatchingRatio
 								, B.PreferredContactMethodCode
 								, B.Plus_MatchingGiftProgram
+								, A.Donor_Lds_TelefundNotes
 								FROM #Contact_Added_Temp A
 									LEFT JOIN Ext_Account B ON A.Donor_Key = CONVERT(NVARCHAR(100),B.AccountId)
 				) A                                                      
@@ -14593,6 +14597,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 									, Donor_Total_Giving_Current_Year_Minus_3_With_Matching
 									, Donor_Total_Giving_Current_Year_Minus_4_With_Matching
 									, Donor_Total_Giving_Current_Year_Minus_5_With_Matching
+									, Donor_Lds_TelefundNotes
 									)
 									SELECT DISTINCT A.Donor_Key
 										, COALESCE(A.Activity_Group_Key,0) AS Activity_Group_Key
@@ -14954,6 +14959,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 										, NULL AS Donor_Total_Giving_Current_Year_Minus_3_With_Matching
 										, NULL AS Donor_Total_Giving_Current_Year_Minus_4_With_Matching
 										, NULL AS Donor_Total_Giving_Current_Year_Minus_5_With_Matching
+										, A.Donor_Lds_TelefundNotes
 										FROM LDSPhilanthropiesDW.dbo._Donor_Pre_Dim A
 											INNER JOIN LDSPhilanthropiesDW.dbo._Numbered_ContactIds NUM ON A.Donor_Key = NUM.ContactId 
 											LEFT JOIN LDSPhilanthropiesDW.dbo._Donor_Gender_ B ON A.GenderCode = B.Column_Value
