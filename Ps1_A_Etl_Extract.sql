@@ -12309,6 +12309,451 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 	)
 	,
 -- --------------------------
+-- Gift Rules - _Gift_Credit_
+-- --------------------------
+	( 3 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Gift_Credit_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'New_RecognitionCreditId UNIQUEIDENTIFIER
+			, New_RelatedConstituent UNIQUEIDENTIFIER
+			, New_OrganizationId UNIQUEIDENTIFIER
+			, New_RelatedGift UNIQUEIDENTIFIER
+			, New_CreditAmount MONEY
+			, Plus_Type INT
+			, Plus_OriginatingConstituent UNIQUEIDENTIFIER
+			, Plus_SubType INT
+			, New_ReceiptDate DATETIME
+			, Plus_InstitutionalHieararchy UNIQUEIDENTIFIER
+			, StatusCode INT
+			' -- Ext_Create_Fields
+		, 'New_RecognitionCreditId
+			, New_RelatedConstituent
+			, New_OrganizationId
+			, New_RelatedGift
+			, New_CreditAmount
+			, Plus_Type
+			, Plus_OriginatingConstituent
+			, Plus_SubType
+			, New_ReceiptDate
+			, Plus_InstitutionalHieararchy
+			, StatusCode
+			' -- Ext_Insert_Fields
+		, 'New_RecognitionCreditId
+			, New_RelatedConstituent
+			, CASE WHEN New_RelatedConstituent IS NOT NULL 
+					AND New_OrganizationId IS NOT NULL THEN NULL 
+				ELSE A.New_OrganizationId END AS New_OrganizationId
+			, New_RelatedGift
+			, New_CreditAmount
+			, CASE WHEN B.New_GiftId = A.New_RelatedGift 
+					AND A.Plus_Type =  100000000 
+					AND  COALESCE(B.New_ConstituentDonor, B.New_OrganizationDonor) != COALESCE(New_RelatedConstituent, New_OrganizationId) THEN 100000002 
+				WHEN B.New_GiftId = A.New_RelatedGift 
+					AND A.Plus_Type =  100000002 
+					AND  COALESCE(B.New_ConstituentDonor, B.New_OrganizationDonor) = COALESCE(New_RelatedConstituent, New_OrganizationId) THEN 100000000
+				ELSE A.Plus_Type END AS Plus_Type
+			, Plus_OriginatingConstituent
+			, Plus_SubType
+			, A.New_ReceiptDate
+			, A.Plus_InstitutionalHieararchy
+			, A.StatusCode    				
+			' -- Ext_Select_Statement
+		, 'Ext_Recognition_Credit A
+				INNER JOIN Ext_Gift B ON A.New_RelatedGift = B.New_GiftId
+			' -- Ext_From_Statement
+		, '		AND New_RelatedGift NOT IN
+					(
+					SELECT DISTINCT New_GiftId AS GiftId
+						FROM Ext_Gift
+						WHERE 1 = 1
+							AND StatusCode = 100000003
+					UNION
+					SELECT DISTINCT New_RelatedGift AS GiftId
+						FROM Ext_Recognition_Credit
+						WHERE 1 = 1
+							AND StatusCode = 100000001
+					UNION
+					SELECT DISTINCT New_RelatedGift AS GiftId
+						FROM Ext_Gift_Hist
+						WHERE 1 = 1
+							AND StatusCode = 100000001
+					)
+				AND COALESCE(A.New_RelatedConstituent,A.New_OrganizationId) IS NOT NULL
+				AND COALESCE(B.New_ConstituentDonor,B.New_OrganizationDonor) IS NOT NULL
+				AND A.Plus_Type IN (100000002,100000000)
+				AND EXISTS 
+						(SELECT New_RecognitionCreditId
+							FROM
+								(SELECT ROW_NUMBER() OVER(PARTITION BY COALESCE(A.New_RelatedConstituent,A.New_OrganizationId)
+																		, A.New_RelatedGift
+											ORDER BY A.Plus_Type) AS Row_Num
+									, A.New_RecognitionCreditId
+									, A.New_RelatedGift
+									FROM Ext_Recognition_Credit A
+								) Z
+							WHERE 1 = 1
+								AND Row_Num = 1
+								AND A.New_RecognitionCreditId = Z.New_RecognitionCreditId
+						)
+			' -- Ext_Where_Statement	
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)	
+	,
+-- --------------------------
+-- Gift Rules - _Gift_
+-- --------------------------
+	( 3 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Gift_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'New_ConstituentDonor UNIQUEIDENTIFIER
+			, New_OrganizationDonor UNIQUEIDENTIFIER
+			, New_FundAccount UNIQUEIDENTIFIER
+			, New_InstitutionalHierarchyId UNIQUEIDENTIFIER
+			, New_AssociatedPledge UNIQUEIDENTIFIER
+			, OpportunityId UNIQUEIDENTIFIER
+			, New_GiftAmount MONEY
+			, New_BatchNumber NVARCHAR(50)
+			, New_GiftId UNIQUEIDENTIFIER
+			, OwnerId UNIQUEIDENTIFIER			
+			, New_GiftNumber NVARCHAR(50)
+			, StatusCode INT
+			, Plus_ReceiptText NVARCHAR(4000)
+			, Plus_SpecialGiftInstructions NVARCHAR(4000)
+			, Plus_CheckNumber NVARCHAR(50)
+			, Plus_GiftSource INT
+			, Plus_Kind INT
+			, New_TenderType INT
+			, New_AccountingDate DATETIME
+			, New_ReceiptDate DATETIME
+			, New_PostDate DATETIME
+			, Plus_PlannedGift BIT
+			, New_Transmitted BIT
+			, Plus_AnonymousGift BIT
+			, Plus_ReceiptDeliveryMethod INT
+			, Plus_GiftInstructions NVARCHAR(4000)
+			, Plus_AcknowledgementInstructions NVARCHAR(4000)
+			, Plus_ExcludeFromReport BIT
+			, Plus_IncludeOnYearEndReceipt BIT
+			, Plus_GoodsServicesProvided BIT
+			, Plus_EntitledBenefitValue MONEY
+			, Plus_AcknowledgeContact NVARCHAR(100)
+			, Plus_ContactRole INT
+			, Plus_Salutation INT
+			, Plus_Signer UNIQUEIDENTIFIER
+			, Plus_NoAcknowledgement BIT
+			, Match_Gift_Number NVARCHAR(50)
+			, Plus_Appeal UNIQUEIDENTIFIER
+			, Plus_MatchExpected BIT
+			, New_Batch UNIQUEIDENTIFIER
+			, Plus_Description NVARCHAR(4000)
+			, Lds_RecurringGiftRule UNIQUEIDENTIFIER
+			, Lds_RecurringGiftGroup UNIQUEIDENTIFIER
+			' -- Ext_Create_Fields
+		, 'New_ConstituentDonor
+			, New_OrganizationDonor
+			, New_FundAccount
+			, New_InstitutionalHierarchyId
+			, New_AssociatedPledge
+			, OpportunityId
+			, New_GiftAmount
+			, New_BatchNumber
+			, New_GiftId
+			, OwnerId			
+			, New_GiftNumber
+			, StatusCode
+			, Plus_ReceiptText
+			, Plus_SpecialGiftInstructions
+			, Plus_CheckNumber
+			, Plus_GiftSource
+			, Plus_Kind
+			, New_TenderType
+			, New_AccountingDate
+			, New_ReceiptDate
+			, New_PostDate
+			, Plus_PlannedGift
+			, New_Transmitted
+			, Plus_AnonymousGift
+			, Plus_ReceiptDeliveryMethod
+			, Plus_GiftInstructions
+			, Plus_AcknowledgementInstructions
+			, Plus_ExcludeFromReport
+			, Plus_IncludeOnYearEndReceipt
+			, Plus_GoodsServicesProvided
+			, Plus_EntitledBenefitValue
+			, Plus_AcknowledgeContact
+			, Plus_ContactRole
+			, Plus_Salutation
+			, Plus_Signer
+			, Plus_NoAcknowledgement
+			, Match_Gift_Number
+			, Plus_Appeal
+			, Plus_MatchExpected
+			, New_Batch
+			, Plus_Description
+			, Lds_RecurringGiftRule
+			, Lds_RecurringGiftGroup
+			' -- Ext_Insert_Fields
+		, 'A.New_ConstituentDonor
+			, CASE WHEN COALESCE(A.New_ConstituentDonor,A.New_OrganizationDonor) IS NOT NULL THEN NULL 
+				ELSE A.New_OrganizationDonor END AS New_OrganizationDonor
+			, A.New_FundAccount
+			, A.New_InstitutionalHierarchyId
+			, A.New_AssociatedPledge
+			, C.OpportunityId
+			, A.New_GiftAmount
+			, A.New_BatchNumber
+			, A.New_GiftId
+			, A.OwnerId			
+			, A.New_GiftNumber
+			, A.StatusCode
+			, A.Plus_ReceiptText
+			, A.Plus_SpecialGiftInstructions
+			, A.Plus_CheckNumber
+			, A.Plus_GiftSource
+			, A.Plus_Kind
+			, A.New_TenderType
+			, A.New_AccountingDate
+			, A.New_ReceiptDate
+			, A.New_PostDate
+			, A.Plus_PlannedGift
+			, A.New_Transmitted
+			, A.Plus_AnonymousGift
+			, A.Plus_ReceiptDeliveryMethod
+			, A.Plus_GiftInstructions
+			, A.Plus_AcknowledgementInstructions
+			, A.Plus_ExcludeFromReport
+			, A.Plus_IncludeOnYearEndReceipt
+			, A.Plus_GoodsServicesProvided
+			, A.Plus_EntitledBenefitValue
+			, A.Plus_AcknowledgeContact
+			, A.Plus_ContactRole
+			, A.Plus_Salutation
+			, A.Plus_Signer
+			, A.Plus_NoAcknowledgement
+			, A.Match_Gift_Number
+			, A.Plus_Appeal
+			, A.Plus_MatchExpected
+			, A.New_Batch
+			, A.Plus_Description
+			, A.Lds_RecurringGiftRule
+			, A.Lds_RecurringGiftGroup    				
+			' -- Ext_Select_Statement
+		, 'Ext_Gift A
+				LEFT JOIN Ext_Pledge B ON A.New_AssociatedPledge = B.New_PledgeId
+				LEFT JOIN Ext_Opportunity C ON B.New_Opportunity = C.OpportunityId
+			' -- Ext_From_Statement
+		, 'AND A.New_GiftId NOT IN
+				(
+				SELECT DISTINCT New_GiftId AS GiftId
+					FROM Ext_Gift
+					WHERE 1 = 1
+						AND StatusCode = 100000003
+				UNION
+				SELECT DISTINCT New_RelatedGift AS GiftId
+					FROM Ext_Recognition_Credit
+					WHERE 1 = 1
+						AND StatusCode = 100000001
+				UNION
+				SELECT DISTINCT New_RelatedGift AS GiftId
+					FROM Ext_Gift_Hist
+					WHERE 1 = 1
+						AND StatusCode = 100000001
+				)
+			AND COALESCE(A.New_ConstituentDonor,A.New_OrganizationDonor) IS NOT NULL
+			' -- Ext_Where_Statement	
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)	
+	,
+-- --------------------------
+-- Gift Rules - _Gift_Hist_
+-- --------------------------
+	( 3 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Gift_Hist_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'New_RelatedGift UNIQUEIDENTIFIER
+			, Plus_Constituent UNIQUEIDENTIFIER
+			, Plus_Organization UNIQUEIDENTIFIER
+			, Plus_FundAccount UNIQUEIDENTIFIER
+			, OwnerId UNIQUEIDENTIFIER
+			, Plus_AccountingDate DATETIME
+			, StatusCode INT
+			, New_Amount MONEY
+			, New_ReceiptDate DATETIME
+			, New_TenderType INT
+			, Plus_Kind INT
+			, Plus_Transmitted BIT
+			, Plus_Description NVARCHAR(4000)
+			, Plus_ReceiptText NVARCHAR(4000)
+			, New_Name NVARCHAR(100)
+			, Plus_GiftAdjustmentNote NVARCHAR(4000)
+			, New_GiftHistoryId UNIQUEIDENTIFIER
+			, Plus_GiftNumber NVARCHAR(50)
+			, Plus_PostDate DATETIME
+			' -- Ext_Create_Fields
+		, 'New_RelatedGift
+			, Plus_Constituent
+			, Plus_Organization
+			, Plus_FundAccount
+			, OwnerId
+			, Plus_AccountingDate
+			, StatusCode
+			, New_Amount
+			, New_ReceiptDate
+			, New_TenderType
+			, Plus_Kind
+			, Plus_Transmitted
+			, Plus_Description
+			, Plus_ReceiptText
+			, New_Name
+			, Plus_GiftAdjustmentNote
+			, New_GiftHistoryId
+			, Plus_GiftNumber
+			, Plus_PostDate
+			' -- Ext_Insert_Fields
+		, 'A.New_RelatedGift
+			, A.Plus_Constituent
+			, A.Plus_Organization
+			, A.Plus_FundAccount
+			, A.OwnerId
+			, A.Plus_AccountingDate
+			, A.StatusCode
+			, A.New_Amount
+			, A.New_ReceiptDate
+			, A.New_TenderType
+			, A.Plus_Kind
+			, A.Plus_Transmitted
+			, A.Plus_Description
+			, A.Plus_ReceiptText
+			, A.New_Name
+			, A.Plus_GiftAdjustmentNote
+			, A.New_GiftHistoryId
+			, A.Plus_GiftNumber
+			, A.Plus_PostDate    				
+			' -- Ext_Select_Statement
+		, 'Ext_Gift_Hist A
+				INNER JOIN Ext_Gift B ON A.New_RelatedGift = B.New_GiftId
+			' -- Ext_From_Statement
+		, 'AND A.New_RelatedGift IS NOT NULL
+			AND A.New_RelatedGift NOT IN
+				(
+				SELECT DISTINCT New_GiftId AS GiftId
+					FROM Ext_Gift
+					WHERE 1 = 1
+						AND StatusCode = 100000003
+				UNION
+				SELECT DISTINCT New_RelatedGift AS GiftId
+					FROM Ext_Recognition_Credit
+					WHERE 1 = 1
+						AND StatusCode = 100000001
+				UNION
+				SELECT DISTINCT New_RelatedGift AS GiftId
+					FROM Ext_Gift_Hist
+					WHERE 1 = 1
+						AND StatusCode = 100000001
+				)
+			AND COALESCE(A.Plus_Constituent,A.Plus_Organization) IS NOT NULL
+			AND COALESCE(B.New_ConstituentDonor,B.New_OrganizationDonor) IS NOT NULL
+			' -- Ext_Where_Statement	
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, ' ' -- Code_Block_3
+		, ' ' -- Code_Block_4
+		, ' ' -- Code_Block_5
+		, ' ' -- Code_Block_6
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)	
+	,
+-- --------------------------
 -- _Email_Dim
 -- --------------------------
 	( 3 -- Tier

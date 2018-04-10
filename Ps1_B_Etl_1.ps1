@@ -2404,7 +2404,7 @@ FUNCTION Insert-Alpha_Table_1
 														FROM Oa_Extract.Extract_Tables
 														WHERE 1 = 1
 															AND Tier = 3
-															AND Ext_Table IN ('_Email_Dim','_Psa_Dim','_Hier_Dim','_User_Dim','_User_Initiative_Liaison_Dim','_Expectancy_Fact','_Recurring_Gift_Fact')
+															AND Ext_Table IN ('_Email_Dim','_Psa_Dim','_Hier_Dim','_User_Dim','_User_Initiative_Liaison_Dim','_Expectancy_Fact','_Recurring_Gift_Fact','_Gift_','_Gift_Credit_','_Gift_Hist_')
 															AND 1 =
 																(SELECT COUNT(CASE WHEN Coupler_Stage = 'Complete' THEN 1 ELSE NULL END) AS Cnt
 																	FROM Oa_Extract.Extract_Tables
@@ -2446,6 +2446,30 @@ FUNCTION Insert-Alpha_Table_1
 																	FROM Oa_Extract.Extract_Tables
 																	WHERE 1 = 1
 																		AND Ext_Table = 'Ext_Recurring_Gift_Rules'
+																)
+															AND 1 =
+																(SELECT COUNT(CASE WHEN Coupler_Stage = 'Complete' THEN 1 ELSE NULL END) AS Cnt
+																	FROM Oa_Extract.Extract_Tables
+																	WHERE 1 = 1
+																		AND Ext_Table = 'Ext_Recognition_Credit'
+																)
+															AND 1 =
+																(SELECT COUNT(CASE WHEN Coupler_Stage = 'Complete' THEN 1 ELSE NULL END) AS Cnt
+																	FROM Oa_Extract.Extract_Tables
+																	WHERE 1 = 1
+																		AND Ext_Table = 'Ext_Gift'
+																)
+															AND 1 =
+																(SELECT COUNT(CASE WHEN Coupler_Stage = 'Complete' THEN 1 ELSE NULL END) AS Cnt
+																	FROM Oa_Extract.Extract_Tables
+																	WHERE 1 = 1
+																		AND Ext_Table = 'Ext_Gift_Hist'
+																)
+															AND 1 =
+																(SELECT COUNT(CASE WHEN Coupler_Stage = 'Complete' THEN 1 ELSE NULL END) AS Cnt
+																	FROM Oa_Extract.Extract_Tables
+																	WHERE 1 = 1
+																		AND Ext_Table = 'Ext_Opportunity'
 																)
 															AND (Tier_3_Stage IS NULL 
 																OR Tier_3_Stage = 'Incomplete'
