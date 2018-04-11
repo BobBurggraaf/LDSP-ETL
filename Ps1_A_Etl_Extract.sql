@@ -12596,6 +12596,17 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 						AND StatusCode = 100000001
 				)
 			AND COALESCE(A.New_ConstituentDonor,A.New_OrganizationDonor) IS NOT NULL
+			AND A.New_GiftId NOT IN
+				(SELECT A.New_GiftId
+					FROM dbo._Gift_ A
+						INNER JOIN 
+							(SELECT New_GiftId
+									FROM dbo._Gift_
+							EXCEPT
+							SELECT New_RelatedGift AS New_GiftId
+									FROM _Gift_Credit_
+							) B ON A.New_GiftId = B.New_GiftId				
+				)
 			' -- Ext_Where_Statement	
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
