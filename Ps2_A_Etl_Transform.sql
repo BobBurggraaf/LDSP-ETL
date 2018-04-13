@@ -5810,8 +5810,6 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 						UNION
 						SELECT DISTINCT ContactId FROM _Award_Bridge
 						UNION
-						SELECT DISTINCT ContactId FROM _Drop_Include_Bridge
-						UNION
 						SELECT DISTINCT ContactId FROM _Email_Bridge
 						UNION
 						SELECT DISTINCT ContactId FROM _Employment_Bridge
@@ -5869,8 +5867,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 								, COALESCE(C.Address_Group_Key,0) AS Address_Group_Key
 								, COALESCE(D.Alumni_Group_Key,0) AS Alumni_Group_Key
 								, COALESCE(E.Association_Group_Key,0) AS Association_Group_Key
-								, COALESCE(F.Award_Group_Key,0) AS Award_Group_Key
-								, COALESCE(G.Drop_Include_Group_Key,0) AS Drop_Include_Group_Key 
+								, COALESCE(F.Award_Group_Key,0) AS Award_Group_Key 
 								, COALESCE(H.Affiliated_Key,0) AS Affiliated_Key
 								--, COALESCE(I.Wealth_Key,0) AS Wealth_Key
 								FROM #ContactId_Temp A
@@ -5879,7 +5876,6 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 									LEFT JOIN _Alumni_Bridge D ON A.ContactId = D.ContactId
 									LEFT JOIN _Association_Bridge E ON A.ContactId = E.ContactId
 									LEFT JOIN _Award_Bridge F ON A.ContactId = F.ContactId
-									LEFT JOIN _Drop_Include_Bridge G ON A.ContactId = G.ContactId
 									LEFT JOIN _Affiliated_Dim H ON A.ContactId = H.ContactId
 									-- LEFT JOIN _Wealth_Dim I ON A.ContactId = I.ContactId
 							) A
