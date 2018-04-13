@@ -29,10 +29,10 @@ CREATE TABLE LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 	, Ext_Where_Statement NVARCHAR(4000)
 	, Tier_3_Stage NVARCHAR(50)
 	, Tier_3_Stage_DateTime DATETIME
-	, Code_Block_3 NVARCHAR(4000)
-	, Code_Block_4 NVARCHAR(4000)
-	, Code_Block_5 NVARCHAR(4000)
-	, Code_Block_6 NVARCHAR(4000)
+	, Tier_4_Stage NVARCHAR(50)
+	, Tier_4_Stage_DateTime DATETIME
+	, Ext_Select_Statement_2 NVARCHAR(4000)
+	, Ext_From_Statement_2 NVARCHAR(4000)
 	, Code_Block_7 NVARCHAR(4000)
 	, Code_Block_8 NVARCHAR(4000)
 	, Code_Block_9 NVARCHAR(4000)
@@ -74,10 +74,10 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 	, Ext_Where_Statement
 	, Tier_3_Stage
 	, Tier_3_Stage_DateTime
-	, Code_Block_3
-	, Code_Block_4
-	, Code_Block_5
-	, Code_Block_6
+	, Tier_4_Stage
+	, Tier_4_Stage_DateTime
+	, Ext_Select_Statement_2
+	, Ext_From_Statement_2
 	, Code_Block_7
 	, Code_Block_8
 	, Code_Block_9
@@ -241,12 +241,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			LEFT JOIN dbo._MDT_Conversion_Dim B ON YEAR(A.Lds_QualifiedOn) = B.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -329,12 +329,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.Plus_DonorScoreBase				
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -413,12 +413,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 				LEFT JOIN dbo._MDT_Conversion_Dim B ON YEAR(A.ScheduledStart) = B.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Code_Block_2
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -557,12 +557,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 				LEFT JOIN dbo._MDT_Conversion_Dim G ON YEAR(A.ModifiedOn) = G.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Code_Block_2
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -614,12 +614,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.AppointmentBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Code_Block_2
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -686,12 +686,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.CampaignActivityBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -818,12 +818,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.CampaignBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -875,12 +875,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.CampaignResponseBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -972,12 +972,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.ConnectionBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -1035,12 +1035,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.ConnectionRoleBase			
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -1253,6 +1253,39 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Lds_QualifiedOn DATETIME
 			, Lds_QualifiedBy UNIQUEIDENTIFIER
 			, Lds_TelefundNotes NVARCHAR(4000)
+			, Number_Signs NVARCHAR(2) DEFAULT ''##''
+			, N00 NVARCHAR(2) DEFAULT ''00''
+			, N01 NVARCHAR(2) DEFAULT ''01''
+			, N02 NVARCHAR(2) DEFAULT ''02''
+			, N03 NVARCHAR(2) DEFAULT ''03''
+			, N04 NVARCHAR(2) DEFAULT ''04''
+			, N05 NVARCHAR(2) DEFAULT ''05''
+			, N06 NVARCHAR(2) DEFAULT ''06''
+			, N07 NVARCHAR(2) DEFAULT ''07''
+			, N08 NVARCHAR(2) DEFAULT ''08''
+			, N09 NVARCHAR(2) DEFAULT ''09''
+			, N10 NVARCHAR(2) DEFAULT ''10''
+			, N11 NVARCHAR(2) DEFAULT ''11''
+			, N12 NVARCHAR(2) DEFAULT ''12''
+			, N13 NVARCHAR(2) DEFAULT ''13''
+			, N14 NVARCHAR(2) DEFAULT ''14''
+			, N15 NVARCHAR(2) DEFAULT ''15''
+			, N16 NVARCHAR(2) DEFAULT ''16''
+			, N17 NVARCHAR(2) DEFAULT ''17''
+			, N18 NVARCHAR(2) DEFAULT ''18''
+			, N19 NVARCHAR(2) DEFAULT ''19''
+			, N20 NVARCHAR(2) DEFAULT ''20''
+			, N21 NVARCHAR(2) DEFAULT ''21''
+			, N22 NVARCHAR(2) DEFAULT ''22''
+			, N23 NVARCHAR(2) DEFAULT ''23''
+			, N24 NVARCHAR(2) DEFAULT ''24''
+			, N25 NVARCHAR(2) DEFAULT ''25''
+			, N26 NVARCHAR(2) DEFAULT ''26''
+			, N27 NVARCHAR(2) DEFAULT ''27''
+			, N28 NVARCHAR(2) DEFAULT ''28''
+			, N29 NVARCHAR(2) DEFAULT ''29''
+			, N30 NVARCHAR(2) DEFAULT ''30''
+			, N31 NVARCHAR(2) DEFAULT ''31''
 			' -- Ext_Create_Fields
 		, 'ContactId
 			, New_Ldspid
@@ -1381,12 +1414,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 				LEFT JOIN dbo._MDT_Conversion_Dim C ON YEAR(A.Lds_QualifiedOn) = C.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -1443,12 +1476,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.Entity
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -1617,12 +1650,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.New_AddressBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -1685,6 +1718,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, New_Type INT
 			, New_Sponsor INT
 			, New_Name NVARCHAR(100)
+			, Y NVARCHAR(1) DEFAULT ''Y''
+			, N NVARCHAR(1) DEFAULT ''N''
 			' -- Ext_Create_Fields
 		, 'New_AssociationId
 			, New_ShortName
@@ -1709,12 +1744,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.New_AssociationBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -1795,12 +1830,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 				LEFT JOIN dbo._MDT_Conversion_Dim C ON YEAR(A.New_EndDate) = C.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -1857,12 +1892,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.New_BatchesBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -1914,12 +1949,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.New_CityBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -1976,12 +2011,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.New_CollegeBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -2038,12 +2073,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.New_CountryBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -2100,12 +2135,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.New_CountyBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -2167,12 +2202,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.New_DegreeBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -2262,6 +2297,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, New_EndDate DATETIME
 			, Plus_CampaignId UNIQUEIDENTIFIER
 			, New_Association UNIQUEIDENTIFIER
+			, Y NVARCHAR(1) DEFAULT ''Y''
+			, N NVARCHAR(1) DEFAULT ''N''
 			' -- Ext_Create_Fields
 		, 'New_DropIncludeId
 			, New_DropIncludesId
@@ -2308,12 +2345,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 				LEFT JOIN dbo._MDT_Conversion_Dim C ON YEAR(A.New_EndDate) = C.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -2399,12 +2436,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.New_EmailBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -2509,6 +2546,10 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Plus_RelatedAddress UNIQUEIDENTIFIER
 			, Plus_RelatedPhone UNIQUEIDENTIFIER
 			, Lds_CampusAddress NVARCHAR(100)
+			, Y NVARCHAR(1) DEFAULT ''Y''
+			, N NVARCHAR(1) DEFAULT ''N''
+			, Emp_Dash NVARCHAR(20) DEFAULT ''Employment - ''
+			, Blank NVARCHAR(1) DEFAULT NULL
 			' -- Ext_Create_Fields
 		, 'New_EmploymentsId
 			, New_EmploymentId
@@ -2567,12 +2608,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 				LEFT JOIN dbo._MDT_Conversion_Dim D ON YEAR(A.ModifiedOn) = D.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -2843,12 +2884,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 				LEFT JOIN dbo._MDT_Conversion_Dim C ON YEAR(A.Plus_EffectiveTo) = C.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -3106,12 +3147,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 				LEFT JOIN dbo._MDT_Conversion_Dim D ON YEAR(A.New_PostDate) = D.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -3254,12 +3295,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 				LEFT JOIN dbo._MDT_Conversion_Dim D ON YEAR(A.Plus_PostDate) = D.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -3311,12 +3352,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.New_IndustryBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -3425,12 +3466,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.New_InstitutionBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -3536,12 +3577,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 				LEFT JOIN dbo._MDT_Conversion_Dim C ON YEAR(A.New_EndDate) = C.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -3593,12 +3634,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.New_JobCodeBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -3676,6 +3717,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Plus_I5CreatedOn NVARCHAR(15)
 			, Plus_Notes NVARCHAR(4000)
 			, New_Source UNIQUEIDENTIFIER
+			, Y NVARCHAR(1) DEFAULT ''Y''
+			, N NVARCHAR(1) DEFAULT ''N''
 			' -- Ext_Create_Fields
 		, 'New_LanguageSpecialAffiliationId
 			, New_LanguageSAId
@@ -3710,12 +3753,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.New_LanguageSpecialAffiliationBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -3787,12 +3830,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.New_MajorBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -3881,12 +3924,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 				LEFT JOIN dbo._MDT_Conversion_Dim B ON YEAR(A.ModifiedOn) = B.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -4015,12 +4058,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 				LEFT JOIN dbo._MDT_Conversion_Dim B ON YEAR(A.ModifiedOn) = B.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -4399,12 +4442,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 				LEFT JOIN dbo._MDT_Conversion_Dim I ON YEAR(A.Plus_PaymentStartDate) = I.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -4456,12 +4499,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.New_PostalCodeBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -4513,12 +4556,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.New_ProfessionalSuffixBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -4616,12 +4659,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 				LEFT JOIN dbo._MDT_Conversion_Dim D ON YEAR(A.Plus_ScholarshipAwardDate) = D.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -4727,12 +4770,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 				LEFT JOIN dbo._MDT_Conversion_Dim C ON YEAR(A.New_StartDate) = C.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -4831,12 +4874,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 				LEFT JOIN dbo._MDT_Conversion_Dim B ON YEAR(A.New_ReceiptDate) = B.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -4893,12 +4936,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.New_SourceBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -4955,12 +4998,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.New_StateBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -5064,12 +5107,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 				LEFT JOIN dbo._MDT_Conversion_Dim B ON YEAR(A.New_ExpectedGraduationDate) = B.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -5121,12 +5164,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.New_TitleBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -5188,12 +5231,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.New_UniversityBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -5383,12 +5426,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 				LEFT JOIN dbo._MDT_Conversion_Dim J ON YEAR(A.Plus_ProposalStatusChangeDate) = J.Date_Year				
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -5440,12 +5483,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.Plus_AddressFormatBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -5561,12 +5604,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 				LEFT JOIN dbo._MDT_Conversion_Dim C ON YEAR(A.Plus_PreferredGraduationDate) = C.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -5643,12 +5686,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.Plus_EnvelopeNamesAndSalutationsBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -5700,12 +5743,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.Plus_InterestBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -5767,12 +5810,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.Plus_LegacyM11Base
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -5872,12 +5915,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 				LEFT JOIN dbo._MDT_Conversion_Dim E ON YEAR(A.ModifiedOn) = E.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -5934,12 +5977,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.Plus_PayrollGroupBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -6063,12 +6106,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 				LEFT JOIN dbo._MDT_Conversion_Dim D ON YEAR(A.CreatedOn) = D.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -6150,12 +6193,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.StringMapBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -6242,12 +6285,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.SystemUserBase
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -6357,12 +6400,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND LangId = 1033
 			' -- Ext_Where_Statement
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -6450,12 +6493,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND LangId = 1033
 			' -- Ext_Where_Statement
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -6556,12 +6599,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND LangId = 1033
 			' -- Ext_Where_Statement
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -6610,12 +6653,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_PHONE] AND Column_Name = [NEW_TYPE]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -6664,12 +6707,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_PHONE] AND Column_Name = [PLUS_LINETYPE]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -6718,12 +6761,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_PHONE] AND Column_Name = [NEW_PREFERREDTIME]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -6772,12 +6815,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_PHONE] AND Column_Name = [NEW_PREFERREDTIME]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -6826,12 +6869,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_RECOGNITION] AND Column_Name = [NEW_TYPE]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -6880,12 +6923,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_RECOGNITION] AND Column_Name = [NEW_AFFILIATE]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -6934,12 +6977,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_ADDRESS] AND Column_Name = [PLUS_ONEACCORDQUALITY]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -6988,12 +7031,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_ADDRESS] AND Column_Name = [PLUS_CONFIDENTIALINSTRUCTION]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -7042,12 +7085,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_ADDRESS] AND Column_Name = [NEW_ADDRESSTYPE]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -7096,12 +7139,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_EMAIL] AND Column_Name = [NEW_EMAILTYPE]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -7150,12 +7193,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_EMAIL] AND Column_Name = [PLUS_CONFIDENTIALINSTRUCTION]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -7204,12 +7247,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_DROPINCLUDE] AND Column_Name = [NEW_TYPE]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -7258,12 +7301,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_DROPINCLUDE] AND Column_Name = [NEW_INTERACTION]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -7312,12 +7355,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_DROPINCLUDE] AND Column_Name = [NEW_COMMTYPE]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -7366,12 +7409,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_DROPINCLUDE] AND Column_Name = [NEW_REASON]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -7420,12 +7463,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_LANGUAGESPECIALAFFILIATION] AND Column_Name = [NEW_LANGUAGE]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -7474,12 +7517,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_LANGUAGESPECIALAFFILIATION] AND Column_Name = [NEW_SPEECH]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -7528,12 +7571,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_LANGUAGESPECIALAFFILIATION] AND Column_Name = [NEW_READLEVEL]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -7582,12 +7625,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_LANGUAGESPECIALAFFILIATION] AND Column_Name = [NEW_WRITELEVEL]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -7636,12 +7679,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_ASSOCIATION] AND Column_Name = [NEW_TYPE]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -7690,12 +7733,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_ASSOCIATION] AND Column_Name = [NEW_SPONSOR]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -7744,12 +7787,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [CONTACT] AND Column_Name = [GENDERCODE]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -7798,12 +7841,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [CONTACT] AND Column_Name = [FAMILYSTATUSCODE]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -7852,12 +7895,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [CONTACT] AND Column_Name = [NEW_ETHNICITY]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -7906,12 +7949,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [CONTACT] AND Column_Name = [PLUS_CHURCHMEMBER]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -7960,12 +8003,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [CONTACT] AND Column_Name = [NEW_PERSONALSUFFIX]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -8014,12 +8057,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [CONTACT] AND Column_Name = [NEW_MAJORGIFTPROPENSITY1]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -8068,12 +8111,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [CONTACT] AND Column_Name = [PLUS_ANNUALGIFT1]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -8122,12 +8165,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [CONTACT] AND Column_Name = [PLUS_PLANNEDGIFT]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -8176,12 +8219,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [CONTACT] AND Column_Name = [PLUS_GIFTCAPACITYENP]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -8230,12 +8273,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [CONTACT] AND Column_Name = [PLUS_GIFTCAPACITYEN]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -8284,12 +8327,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [CONTACT] AND Column_Name = [PHILANTHROPICCAPACITYRATINGPCR]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -8338,12 +8381,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [CONTACT] AND Column_Name = [PLUS_ESTIMATEDHOUSEHOLDINCOME]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -8392,12 +8435,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [CONTACT] AND Column_Name = [PLUS_ESTIMATEDHOMEMARKETVALUE]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -8446,12 +8489,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [CONTACT] AND Column_Name = [PLUS_BLOCKCLUSTERS]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -8500,12 +8543,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [ACCOUNT] AND Column_Name = [ACCOUNTCLASSIFICATIONCODE]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -8554,12 +8597,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [ACCOUNT] AND Column_Name = [NEW_RETIREERATIO]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -8608,12 +8651,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [ACCOUNT] AND Column_Name = [NEW_SPLITRATIO]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -8662,12 +8705,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [ACCOUNT] AND Column_Name = [NEW_MATCHINGRATIO]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -8716,12 +8759,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [ACCOUNT] AND Column_Name = [PREFERREDCONTACTMETHODCODE]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -8770,12 +8813,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [PLUS_ENVELOPENAMESANDSALUTATIONS] AND Column_Name = [PLUS_ETIQUETTE]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -8824,12 +8867,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_GIFT] AND Column_Name = [STATUSCODE]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -8878,12 +8921,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_GIFT] AND Column_Name = [PLUS_GIFTSOURCE]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -8932,12 +8975,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_GIFT] AND Column_Name = [PLUS_KIND]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -8986,12 +9029,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_GIFT] AND Column_Name = [NEW_TENDERTYPE]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -9040,12 +9083,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_GIFT] AND Column_Name = [PLUS_RECEIPTDELIVERYMETHOD]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -9094,12 +9137,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_GIFT] AND Column_Name = [PLUS_CONTACTROLE]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -9148,12 +9191,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_GIFT] AND Column_Name = [PLUS_SALUTATION]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -9202,12 +9245,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_FUNDACCOUNT] AND Column_Name = [PLUS_GIFTPURPOSETYPE]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -9256,12 +9299,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_FUNDACCOUNT] AND Column_Name = [PLUS_GIFTPURPOSESUBTYPE]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -9310,12 +9353,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_FUNDACCOUNT] AND Column_Name = [NEW_CAEPURPOSE]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -9364,12 +9407,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_FUNDACCOUNT] AND Column_Name = [PLUS_AWARDRESTRICTIONGENDER]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -9418,12 +9461,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_FUNDACCOUNT] AND Column_Name = [PLUS_AWARDRESTRICTIONCLASSYEAR]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -9472,12 +9515,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_FUNDACCOUNT] AND Column_Name = [PLUS_AWARDRESTRICTIONETHNICITY]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -9526,12 +9569,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_RECOGNITIONCREDIT] AND Column_Name = [PLUS_TYPE]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -9580,12 +9623,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_EMPLOYMENT] AND Column_Name = [PLUS_CHURCHEMPLOYMENTSTATUS]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -9634,12 +9677,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_OTHERIDENTIFIERS] AND Column_Name = [NEW_TYPE]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -9688,12 +9731,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [PLUS_ALUMNI] AND Column_Name = [PLUS_ALUMNISTATUS]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -9742,12 +9785,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_DEGREE] AND Column_Name = [PLUS_DEGREELEVEL]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -9796,12 +9839,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [CAMPAIGNACTIVITY] AND Column_Name = [PLUS_COMMUNICATIONTYPE]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -9850,12 +9893,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [CAMPAIGNACTIVITY] AND Column_Name = [PLUS_AFFILIATE]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -9904,12 +9947,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [CAMPAIGNACTIVITY] AND Column_Name = [PLUS_DEPARTMENTFUNCTION]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -9958,12 +10001,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_INTERNATIONALEXPERIENCE] AND Column_Name = [NEW_EXPERIENCE]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -10012,12 +10055,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_INTERNATIONALEXPERIENCE] AND Column_Name = [PLUS_LDSPOSITION]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -10066,12 +10109,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [PLUS_LEGACYM11] AND Column_Name = [PLUS_M11MESSAGETYPE]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -10120,12 +10163,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [PLUS_LEGACYM11] AND Column_Name = [PLUS_M11ACTIVITYTYPE]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -10174,12 +10217,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_PLEDGE] AND Column_Name = [PLUS_KIND]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -10228,12 +10271,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_PLEDGE] AND Column_Name = [PLUS_TENDERTYPE]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -10282,12 +10325,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_PLEDGE] AND Column_Name = [PLUS_GIFTSOURCE]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -10336,12 +10379,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_PLEDGE] AND Column_Name = [PLUS_PLANNEDGIFT]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -10390,12 +10433,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_PLEDGE] AND Column_Name = [NEW_CONFIDENTIAL]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -10444,12 +10487,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_PLEDGE] AND Column_Name = [PLUS_PLANNEDGIVINGPAYMENTFREQUENCY]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -10498,12 +10541,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_PLEDGE] AND Column_Name = [NEW_BOOKABLE]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -10552,12 +10595,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_PLEDGE] AND Column_Name = [PLUS_MATCHEXPECTED]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -10606,12 +10649,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_PLEDGE] AND Column_Name = [PLUS_GIFTREVOCABILITY]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -10660,12 +10703,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_PLEDGE] AND Column_Name = [PLUS_REMAINDERBENEFICIARY]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -10714,12 +10757,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_PLEDGE] AND Column_Name = [NEW_DOCUMENTATION]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -10768,12 +10811,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_PLEDGE] AND Column_Name = [PLUS_PLANNEDGIVINGTYPE]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -10822,12 +10865,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_PLEDGE] AND Column_Name = [PLUS_VEHICLETYPE]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -10876,12 +10919,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_PLEDGE] AND Column_Name = [PLUS_VEHICLESUBTYPE]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -10930,12 +10973,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_PLEDGE] AND Column_Name = [PLUS_DURATION]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -10984,12 +11027,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_PLEDGE] AND Column_Name = [PLUS_LIVESTYPE]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -11038,12 +11081,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [PLUS_DONORSCORE] AND Column_Name = [PLUS_GIFTTYPE]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -11092,12 +11135,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [PLUS_DONORSCORE] AND Column_Name = [PLUS_STATUSCODE]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -11146,12 +11189,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [CONTACT] AND Column_Name = [PLUS_PLANNEDGIFTTIER]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -11200,12 +11243,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [CONTACT] AND Column_Name = [PLUS_GIFTCAPACITYEN]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -11254,12 +11297,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_EMPLOYMENT] AND Column_Name = [STATUSCODE]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -11308,12 +11351,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_FUNDACCOUNT] AND Column_Name = [STATUSCODE]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -11362,12 +11405,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_FUNDACCOUNT] AND Column_Name = [PLUS_REPORTFREQUENCY]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -11416,12 +11459,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_FUNDACCOUNT] AND Column_Name = [PLUS_PROPOSEDENDOWMENT]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -11470,12 +11513,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [CAMPAIGNACTIVITY] AND Column_Name = [CHANNELTYPECODE]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -11524,12 +11567,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_RECOGNITIONCREDIT] AND Column_Name = [PLUS_SUBTYPE]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -11578,12 +11621,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_PLEDGE] AND Column_Name = [STATUSCODE]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -11632,12 +11675,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [OPPORTUNITY] AND Column_Name = [STATECODE]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -11686,12 +11729,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [OPPORTUNITY] AND Column_Name = [STATUSCODE]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -11740,12 +11783,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [OPPORTUNITY] AND Column_Name = [PLUS_PROPOSALSTATUS]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -11794,12 +11837,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [OPPORTUNITY] AND Column_Name = [PLUS_NEWACCOUNT]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -11848,12 +11891,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [ACTIVITYPOINTER] AND Column_Name = [STATECODE]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -11902,12 +11945,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [ACTIVITYPOINTER] AND Column_Name = [STATUSCODE]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -11956,12 +11999,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_ASSOCIATIONMEMBERSHIP] AND Column_Name = [STATUSCODE]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -12010,12 +12053,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_PLEDGE] AND Column_Name = [LDS_EXPECTANCYTYPE]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -12064,12 +12107,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [PLUS_RECURRINGGIFTRULES] AND Column_Name = [PLUS_TYPE]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -12118,12 +12161,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [PLUS_RECURRINGGIFTRULES] AND Column_Name = [PLUS_FREQUENCY]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -12172,12 +12215,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [PLUS_RECURRINGGIFTRULES] AND Column_Name = [STATECODE]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -12226,12 +12269,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [PLUS_RECURRINGGIFTRULES] AND Column_Name = [STATUSCODE]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -12280,12 +12323,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND Physical_Table_Name = [NEW_BATCHES] AND Column_Name = [LDS_BATCHTYPE]
 			' -- Ext_Where_Statement	
-		, ' ' -- Tier_3_Stage
-		, ' ' -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -12405,10 +12448,10 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_Where_Statement	
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -12600,13 +12643,24 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 						AND StatusCode = 100000001
 				)
 			AND COALESCE(A.New_ConstituentDonor,A.New_OrganizationDonor) IS NOT NULL
+			AND A.New_GiftId NOT IN
+				(SELECT A.New_GiftId
+					FROM dbo._Gift_ A
+						INNER JOIN 
+							(SELECT New_GiftId
+									FROM dbo._Gift_
+							EXCEPT
+							SELECT New_RelatedGift AS New_GiftId
+									FROM _Gift_Credit_
+							) B ON A.New_GiftId = B.New_GiftId				
+				)
 			' -- Ext_Where_Statement	
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -12728,10 +12782,10 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_Where_Statement	
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -12816,10 +12870,10 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_Where_Statement	
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -12905,10 +12959,10 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_Where_Statement	
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -13004,10 +13058,10 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_Where_Statement	
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -13079,10 +13133,10 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_Where_Statement	
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -13154,10 +13208,10 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_Where_Statement	
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -13304,10 +13358,10 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_Where_Statement	
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9
@@ -13370,10 +13424,965 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_Where_Statement	
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
-		, ' ' -- Code_Block_3
-		, ' ' -- Code_Block_4
-		, ' ' -- Code_Block_5
-		, ' ' -- Code_Block_6
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+,
+-- --------------------------
+-- _Award_Dim
+-- --------------------------
+	( 4 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Award_Dim' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'ContactId NVARCHAR(100)
+			, Award_Key INT  PRIMARY KEY
+			, Award_Group_Key INT
+			, Award_Type NVARCHAR(400)
+			, Award_Affiliate_Type NVARCHAR(400)
+			, Award_Start_Dt DATE
+			, Award_End_Dt DATE
+			, Award_Scholarship_Granting_Office NVARCHAR(25)
+			, Award_Scholarship_Term NVARCHAR(15)
+			, Award_Scholarship_Code NVARCHAR(100)
+			, Award_Scholarship_Amount MONEY
+			, Award_Scholarship_Dt DATE
+			, Award_Name NVARCHAR(100)
+			' -- Ext_Create_Fields
+		, 'ContactId
+			, Award_Key
+			, Award_Group_Key
+			, Award_Type
+			, Award_Affiliate_Type
+			, Award_Start_Dt
+			, Award_End_Dt
+			, Award_Scholarship_Granting_Office
+			, Award_Scholarship_Term
+			, Award_Scholarship_Code
+			, Award_Scholarship_Amount
+			, Award_Scholarship_Dt
+			, Award_Name
+			' -- Ext_Insert_Fields
+		, 'DISTINCT CONVERT(NVARCHAR(100),RA.New_Constituent) AS ContactId
+			, ROW_NUMBER() OVER(ORDER BY RA.New_RecognitionAssociationId) AS Award_Key
+			, A.Award_Group_Key 
+			, AWD.Column_Label AS Award_Type
+			, AA.Column_Label AS Award_Affiliate_Type
+			, CONVERT(VARCHAR(10),RA.New_StartDate,101) AS Award_Start_Dt
+			, CONVERT(VARCHAR(10),RA.New_EndDate,101)  AS Award_End_Dt
+			, RA.Plus_ScholarshipGrantingOffice AS Award_Scholarship_Granting_Office
+			, RA.Plus_ScholarshipAwardTerm AS Award_Scholarship_Term
+			, RA.Plus_ScholarshipCode AS Award_Scholarship_Code
+			, RA.Plus_ScholarshipOfferedAmount AS Award_Scholarship_Amount
+			, CONVERT(VARCHAR(10),RA.Plus_ScholarshipAwardDate,101) AS Award_Scholarship_Dt
+			, R.New_Name AS Award_Name				
+			' -- Ext_Select_Statement
+		, 'Ext_Recognition_Association RA
+				LEFT JOIN Ext_Recognition R ON RA.New_Recognition = R.New_RecognitionId
+				LEFT JOIN _Award_Type_ AWD ON R.New_Type = AWD.Column_Value
+				LEFT JOIN _Award_Affiliate_ AA ON R.New_Affiliate = AA.Column_Value
+				LEFT JOIN 
+					(
+					SELECT New_Constituent
+						, ROW_NUMBER() OVER(ORDER BY New_Constituent) AS Award_Group_Key
+						FROM
+							(SELECT DISTINCT New_Constituent    
+								FROM Ext_Recognition_Association) A
+					) A ON RA.New_Constituent = A.New_Constituent
+			' -- Ext_From_Statement
+		, '
+			' -- Ext_Where_Statement	
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+,
+-- --------------------------
+-- _Phone_Dim
+-- --------------------------
+	( 4 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Phone_Dim' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'ContactId NVARCHAR(100)
+			, Phone_Key INT  PRIMARY KEY
+			, Phone_Group_Key INT
+			, Phone_Number NVARCHAR(100)
+			, Phone_Country_Code NVARCHAR(100)
+			, Phone_Extension NVARCHAR(100)
+			, Phone_Active_Yn NVARCHAR(1)
+			, Phone_Confirmed_Yn NVARCHAR(1)
+			, Phone_Primary_Yn NVARCHAR(1)
+			, Phone_Recieve_Text_Yn NVARCHAR(1)
+			, Phone_Confidential_Yn NVARCHAR(1)
+			, Phone_Type NVARCHAR(400)
+			, Phone_Line_Type NVARCHAR(400)
+			, Phone_Preferred_Time NVARCHAR(400)
+			, Phone_Type_Value INT
+			, Phone_Line_Type_Value INT
+			, Phone_Preferred_Time_Value INT
+			' -- Ext_Create_Fields
+		, 'ContactId
+			, Phone_Key
+			, Phone_Group_Key
+			, Phone_Number
+			, Phone_Country_Code
+			, Phone_Extension
+			, Phone_Active_Yn
+			, Phone_Confirmed_Yn
+			, Phone_Primary_Yn
+			, Phone_Recieve_Text_Yn
+			, Phone_Confidential_Yn
+			, Phone_Type
+			, Phone_Line_Type
+			, Phone_Preferred_Time
+			, Phone_Type_Value
+			, Phone_Line_Type_Value
+			, Phone_Preferred_Time_Value
+			' -- Ext_Insert_Fields
+		, 'DISTINCT CONVERT(NVARCHAR(100),A.New_NumberId) AS ContactId
+			, ROW_NUMBER() OVER(ORDER BY New_PhoneId) AS Phone_Key
+			, E.Phone_Group_Key
+			, A.New_PhoneNumber AS Phone_Number
+			, A.New_CountryCode AS Phone_Country_Code
+			, A.New_Ext AS Phone_Extension
+			, CASE WHEN A.StatusCode = 100000002 THEN [Y]
+				ELSE [N] END AS Phone_Active_Yn
+			, CASE WHEN A.New_ConfirmationDate IS NOT NULL THEN [Y]
+				ELSE [N] END AS Phone_Confirmed_Yn
+			, CASE WHEN A.New_Primary = 1 THEN [Y]
+				WHEN A.New_Primary = 0 THEN [N]
+				ELSE [Dash] END AS Phone_Primary_Yn
+			, CASE WHEN A.New_ReceiveText = 1 THEN [Y]
+				WHEN A.New_ReceiveText = 0 THEN [N]
+				ELSE [Dash] END AS Phone_Recieve_Text_Yn
+			, CASE WHEN A.New_Confidential = 1 THEN [Y]
+				WHEN A.New_Confidential = 0 THEN [N]
+				ELSE [Dash] END AS Phone_Confidential_Yn
+			, B.Column_Label AS Phone_Type
+			, C.Column_Label AS Phone_Line_Type
+			, D.Column_Label AS Phone_Preferred_Time
+			, B.Column_Value AS Phone_Type_Value
+			, C.Column_Value AS Phone_Line_Type_Value
+			, D.Column_Value AS Phone_Preferred_Time_Value				
+			' -- Ext_Select_Statement
+		, 'Ext_Phone A
+				LEFT JOIN _Phone_Type_ B ON A.New_Type = B.Column_Value
+				LEFT JOIN _Phone_Line_Type_ C ON A.Plus_LineType = C.Column_Value
+				LEFT JOIN _Phone_Preferred_Time_ D ON A.New_PreferredTime = D.Column_Value
+				LEFT JOIN 
+					(
+					SELECT New_NumberId
+						, ROW_NUMBER() OVER(ORDER BY A.New_NumberId) AS Phone_Group_Key
+						FROM
+							(SELECT DISTINCT New_NumberId    
+								FROM Ext_Phone) A
+					) E ON A.New_NumberId = E.New_NumberId
+			' -- Ext_From_Statement
+		, 'AND A.StatusCode = 100000002
+			' -- Ext_Where_Statement	
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+,
+-- --------------------------
+-- _Drop_Include_Dim
+-- --------------------------
+	( 4 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Drop_Include_Dim' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Drop_Include_Key INT PRIMARY KEY
+			, Drop_Include_Instit_Hierarchy  NVARCHAR(100)  
+			, Drop_Include_Type  NVARCHAR(400) 
+			, Drop_Include_Visit_Yn  NVARCHAR(1) 
+			, Drop_Include_Web_Yn  NVARCHAR(1) 
+			, Drop_Include_Phone_Yn  NVARCHAR(1) 
+			, Drop_Include_Email_Yn  NVARCHAR(1) 
+			, Drop_Include_Scope  NVARCHAR(400) 
+			, Drop_Include_Comm_Type  NVARCHAR(400) 
+			, Drop_Include_Type_Value  INT 
+			, Drop_Include_Scope_Value  INT 
+			, Drop_Include_Comm_Type_Value  INT 
+			, Drop_Include_Reason_Value  INT 
+			, Drop_Include_Group_Key  INT
+			, Drop_Include_Mail_Yn NVARCHAR(1)
+			, Drop_Include_Text_Yn NVARCHAR(1)
+			, New_StartDate DATE
+			, New_EndDate DATE
+			, Association NVARCHAR(100)
+			, Campaign NVARCHAR(128)
+			, New_Inst NVARCHAR(100)
+			, Hier_Name NVARCHAR(100)
+			' -- Ext_Create_Fields
+		, 'Drop_Include_Key
+			, Drop_Include_Instit_Hierarchy 
+			, Drop_Include_Type 
+			, Drop_Include_Visit_Yn
+			, Drop_Include_Web_Yn 
+			, Drop_Include_Phone_Yn 
+			, Drop_Include_Email_Yn
+			, Drop_Include_Scope 
+			, Drop_Include_Comm_Type 
+			, Drop_Include_Type_Value
+			, Drop_Include_Scope_Value
+			, Drop_Include_Comm_Type_Value 
+			, Drop_Include_Reason_Value 
+			, Drop_Include_Group_Key
+			, Drop_Include_Mail_Yn
+			, Drop_Include_Text_Yn
+			, New_StartDate
+			, New_EndDate
+			, Association
+			, Campaign
+			, New_Inst
+			, Hier_Name
+			' -- Ext_Insert_Fields
+		, 'ROW_NUMBER() OVER(ORDER BY A.New_DropIncludeId) AS Drop_Include_Key 
+			, CONVERT(NVARCHAR(100),A.New_InstitutionalHierarchy) AS Drop_Include_Instit_Hierarchy
+			, B.Column_Label AS Drop_Include_Type 
+			, CASE WHEN A.New_VisitDeliveryType = 1 THEN A.[Y] ELSE A.[N] END AS Drop_Include_Visit_Yn
+			, CASE WHEN A.New_WebDeliveryType = 1 THEN A.[Y] ELSE A.[N] END AS Drop_Include_Web_Yn 
+			, CASE WHEN A.New_PhoneDeliveryType = 1 THEN A.[Y] ELSE A.[N] END AS Drop_Include_Phone_Yn  
+			, CASE WHEN A.New_EmailDeliveryType = 1 THEN A.[Y] ELSE A.[N] END AS Drop_Include_Email_Yn
+			, C.Column_Label AS Drop_Include_Scope 
+			, D.Column_Label AS Drop_Include_Comm_Type 
+			, B.Column_Value AS Drop_Include_Type_Value
+			, C.Column_Value AS Drop_Include_Scope_Value
+			, D.Column_Value AS Drop_Include_Comm_Type_Value 
+			, E.Column_Value AS Drop_Include_Reason_Value 
+			, I.Drop_Include_Group_Key
+			, CASE WHEN A.New_MailDeliveryType = 1 THEN A.[Y] ELSE A.[N] END AS Drop_Include_Mail_Yn
+			, CASE WHEN A.New_TextDeliveryType = 1 THEN A.[Y] ELSE A.[N] END AS Drop_Include_Text_Yn
+			, CONVERT(VARCHAR(10),A.New_StartDate,101) AS New_StartDate
+			, CONVERT(VARCHAR(10),A.New_EndDate,101) AS New_EndDate
+			, F.New_ShortName AS Association
+			, G.Name AS Campaign
+			, H.New_Inst
+			, H.New_Name AS Hier_Name							
+			' -- Ext_Select_Statement
+		, 'Ext_Drop_Include A
+				LEFT JOIN _Drop_Include_Type_ B ON A.New_Type = B.Column_Value
+				LEFT JOIN _Drop_Include_Scope_ C ON A.New_Interaction = C.Column_Value
+				LEFT JOIN _Drop_Include_CommType_ D ON A.New_CommType = D.Column_Value
+				LEFT JOIN _Drop_Include_Reason_ E ON A.New_Reason = E.Column_Value
+				LEFT JOIN Ext_Association F ON A.New_Association = F.New_AssociationId
+				LEFT JOIN Ext_Campaign G ON A.Plus_CampaignId = G.CampaignId
+				LEFT JOIN Ext_Institution H ON A.New_InstitutionalHierarchy = H.New_InstitutionId
+				LEFT JOIN 
+					(
+					SELECT New_DropIncludesId
+						, ROW_NUMBER() OVER(ORDER BY A.New_DropIncludesId) AS Drop_Include_Group_Key
+						FROM
+							(SELECT DISTINCT New_DropIncludesId    
+								FROM Ext_Drop_Include) A
+					) I ON A.New_DropIncludesId = I.New_DropIncludesId
+			' -- Ext_From_Statement
+		, '
+			' -- Ext_Where_Statement	
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)	
+,
+-- --------------------------
+-- _Language_Dim
+-- --------------------------
+	( 4 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Language_Dim' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'ContactId  NVARCHAR(100) 
+			, Language_Key  INT  PRIMARY KEY
+			, Language_Group_Key  INT 
+			, Language_Name  NVARCHAR(400) 
+			, Language_Speech_Level  NVARCHAR(400) 
+			, Language_Read_Level  NVARCHAR(400) 
+			, Language_Write_Level  NVARCHAR(400) 
+			, Language_Name_Value  INT 
+			, Language_Speech_Level_Value  INT 
+			, Language_Read_Level_Value  INT 
+			, Language_Write_Level_Value  INT 
+			, Language_Teacher_Yn  NVARCHAR(1) 
+			, Language_Mission_Yn  NVARCHAR(1) 
+			, Language_Business_Yn  NVARCHAR(1) 
+			, Language_Translator_Yn  NVARCHAR(1)
+			, Source NVARCHAR(100)
+			' -- Ext_Create_Fields
+		, 'ContactId 
+			, Language_Key 
+			, Language_Group_Key 
+			, Language_Name 
+			, Language_Speech_Level 
+			, Language_Read_Level 
+			, Language_Write_Level 
+			, Language_Name_Value 
+			, Language_Speech_Level_Value 
+			, Language_Read_Level_Value 
+			, Language_Write_Level_Value 
+			, Language_Teacher_Yn 
+			, Language_Mission_Yn 
+			, Language_Business_Yn 
+			, Language_Translator_Yn
+			, Source
+			' -- Ext_Insert_Fields
+		, 'DISTINCT CONVERT(NVARCHAR(100),A.New_LanguageSAId) AS ContactId
+			, ROW_NUMBER() OVER(ORDER BY A.New_LanguageSpecialAffiliationId) AS Language_Key
+			, F.Drop_Include_Group_Key
+			, B.Column_Label AS Language_Name 
+			, C.Column_Label AS Language_Speech_Level 
+			, D.Column_Label AS Language_Read_Level 
+			, E.Column_Label AS Language_Write_Level 
+			, B.Column_Value AS Language_Name_Value 
+			, C.Column_Value AS Language_Speech_Level_Value 
+			, D.Column_Value AS Language_Read_Level_Value 
+			, E.Column_Value AS Language_Write_Level_Value 
+			, CASE WHEN A.New_Teacher = 0 THEN [N] ELSE [Y] END AS Language_Teacher_Yn 
+			, CASE WHEN A.New_Missionary = 0 THEN [N] ELSE [Y] END AS Language_Mission_Yn 
+			, CASE WHEN A.New_BusinessPerson = 0 THEN [N] ELSE [Y] END AS Language_Business_Yn 
+			, CASE WHEN A.New_Translator = 0 THEN [N] ELSE [Y] END AS Language_Translator_Yn 
+			, NS.New_Source AS Source										
+			' -- Ext_Select_Statement
+		, 'Ext_Language A
+				LEFT JOIN Ext_Source NS ON A.New_Source = NS.New_SourceId
+				LEFT JOIN _Language_Lang_ B ON A.New_Language = B.Column_Value
+				LEFT JOIN _Language_Speech_ C ON A.New_Speech = C.Column_Value
+				LEFT JOIN _Language_Read_ D ON A.New_ReadLevel = D.Column_Value
+				LEFT JOIN _Language_Write_ E ON A.New_WriteLevel = E.Column_Value
+				LEFT JOIN 
+					(
+					SELECT New_LanguageSAId
+						, ROW_NUMBER() OVER(ORDER BY A.New_LanguageSAId) AS Drop_Include_Group_Key
+						FROM
+							(SELECT DISTINCT New_LanguageSAId    
+								FROM Ext_Language) A
+					) F ON A.New_LanguageSAId = F.New_LanguageSAId
+			' -- Ext_From_Statement
+		, '
+			' -- Ext_Where_Statement	
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+,
+-- --------------------------
+-- _Association_Dim
+-- --------------------------
+	( 4 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Association_Dim' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'ContactId  NVARCHAR(100) 
+			, Association_Key  INT  PRIMARY KEY
+			, Association_Group_Key  INT 
+			, Association_Name  NVARCHAR(100) 
+			, Association_Acronym  NVARCHAR(100) 
+			, Association_Region  NVARCHAR(100) 
+			, Association_Chapter_Level  NVARCHAR(100) 
+			, Association_Type  NVARCHAR(400) 
+			, Association_Type_Value  INT 
+			, Association_Sponsor  NVARCHAR(400) 
+			, Association_Sponsor_Value  INT 
+			, Association_Active_Yn  NVARCHAR(1)
+			, New_StartDate DATE
+			, New_EndDate DATE
+			, StatusCode NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'ContactId 
+			, Association_Key 
+			, Association_Group_Key 
+			, Association_Name 
+			, Association_Acronym 
+			, Association_Region
+			, Association_Chapter_Level 
+			, Association_Type
+			, Association_Type_Value 
+			, Association_Sponsor
+			, Association_Sponsor_Value 
+			, Association_Active_Yn
+			, New_StartDate
+			, New_EndDate
+			, StatusCode
+			' -- Ext_Insert_Fields
+		, 'DISTINCT CONVERT(NVARCHAR(100),COALESCE(A.New_ConstituentId, A.New_RelatedOrganization)) AS ContactId
+			, ROW_NUMBER() OVER(ORDER BY A.New_AssociationMembershipId) AS Association_Key
+			, F.Association_Group_Key
+			, B.New_Name AS Association_Name 
+			, B.New_Acronym AS Association_Acronym 
+			, B.New_Region AS Association_Region
+			, B.New_ChapterLevel AS Association_Chapter_Level 
+			, C.Column_Label AS Association_Type
+			, C.Column_Value AS Association_Type_Value 
+			, D.Column_Label AS Association_Sponsor
+			, D.Column_Value AS Association_Sponsor_Value 
+			, CASE WHEN B.StateCode = 0 THEN [Y] ELSE [N] END AS Association_Active_Yn
+			, CONVERT(VARCHAR(10),A.New_StartDate,101) AS New_StartDate
+			, CONVERT(VARCHAR(10),A.New_EndDate,101) AS New_EndDate
+			, E.Column_Label AS StatusCode										
+			' -- Ext_Select_Statement
+		, 'Ext_Association_Membership A
+				LEFT JOIN Ext_Association B ON A.New_Association = B.New_AssociationId
+				LEFT JOIN _Association_Type_ C ON B.New_Type = C.Column_Value
+				LEFT JOIN _Association_Sponsor_ D ON B.New_Sponsor = D.Column_Value
+				LEFT JOIN _New_AssociationMembership_StatusCode_ E ON A.StatusCode = E.Column_Value	
+				LEFT JOIN 
+					(
+					SELECT ContactId
+						, ROW_NUMBER() OVER(ORDER BY ContactId) AS Association_Group_Key
+						FROM
+							(SELECT DISTINCT COALESCE(New_ConstituentId, New_RelatedOrganization) AS ContactId  
+								FROM Ext_Association_Membership) A
+					) F ON COALESCE(A.New_ConstituentId, A.New_RelatedOrganization) = F.ContactId
+			' -- Ext_From_Statement
+		, '
+			' -- Ext_Where_Statement	
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+,
+-- --------------------------
+-- _Employment_Dim
+-- --------------------------
+	( 4 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Employment_Dim' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'ContactId  NVARCHAR(100) 
+			, Employment_Key  INT  PRIMARY KEY
+			, Employment_Group_Key  INT 
+			, Employment_Donor_Yn  NVARCHAR(1) 
+			, Employment_Active_Yn  NVARCHAR(1) 
+			, Employment_Church_Affil_Dept  NVARCHAR(100)
+			, Employer NVARCHAR(100)
+			, Job_Title NVARCHAR(100)
+			, Job_Code NVARCHAR(100)
+			, Industry NVARCHAR(100)
+			, Source NVARCHAR(100)
+			, Church_Affiliated NVARCHAR(1)
+			, Start_Date DATE
+			, End_Date         DATE
+			, Internship NVARCHAR(1)
+			, Church_Employment_Status NVARCHAR(400)
+			, Employment_Institutional_Hierarchy NVARCHAR(100)
+			, New_InstitutionalHierarchyId NVARCHAR(100)
+			, Employer_Ldsp_Id NVARCHAR(100)
+			, StatusCode NVARCHAR(400)
+			, Employment_Modified_On_Date DATE
+			, Employment_Lds_CampusAddress NVARCHAR(100)
+			' -- Ext_Create_Fields
+		, 'ContactId 
+			, Employment_Key 
+			, Employment_Group_Key 
+			, Employment_Donor_Yn 
+			, Employment_Active_Yn 
+			, Employment_Church_Affil_Dept
+			, Employer
+			, Job_Title
+			, Job_Code
+			, Industry
+			, Source
+			, Church_Affiliated
+			, Start_Date
+			, End_Date         
+			, Internship
+			, Church_Employment_Status 
+			, Employment_Institutional_Hierarchy
+			, New_InstitutionalHierarchyId
+			, Employer_Ldsp_Id
+			, StatusCode
+			, Employment_Modified_On_Date
+			, Employment_Lds_CampusAddress
+			' -- Ext_Insert_Fields
+		, 'DISTINCT CONVERT(NVARCHAR(100),E.New_EmploymentsId) AS ContactId  
+			, ROW_NUMBER() OVER(ORDER BY E.New_EmploymentId) AS Employment_Key
+			, B.Employment_Group_Key
+			, CASE WHEN E.New_PaymentFrequency IS NULL THEN E.[N] ELSE E.[Y] END AS Employment_Donor_Yn 
+			, CASE WHEN E.StateCode = 0 THEN E.[Y] ELSE E.[N] END AS Employment_Active_Yn 
+			, E.New_Department AS Employment_Church_Affil_Dept
+			, CASE WHEN E.New_ChurchAff = 1 THEN NI.New_Name 
+				WHEN E.New_ChurchAff = 0 THEN COALESCE(REPLACE(E.New_Department,[Emp_Dash],[Blank]),A.Name,E.Plus_AlternateOrganizationName)
+				ELSE NULL END AS Employer
+			, E.New_Title AS Job_Title
+			, NJ.New_Name AS Job_Code
+			, NIB.New_Name AS Industry
+			, NS.New_Source AS Source
+			, CASE WHEN E.New_ChurchAff = 1 THEN E.[Y] 
+				WHEN E.New_ChurchAff = 0 THEN E.[N] 
+				ELSE NULL END AS Church_Affiliated
+			, CONVERT(VARCHAR(10),E.New_DateStarted,101) AS Start_Date
+			, CONVERT(VARCHAR(10),E.New_DateEnded,101) AS End_Date           
+			, CASE WHEN E.New_Internship = 1 THEN E.[Y]
+				WHEN E.New_Internship = 0 THEN E.[N] 
+				ELSE NULL END AS Internship
+			, P.Column_Label AS Church_Employment_Status 
+			, NI.New_Name AS Employment_Institutional_Hierarchy
+			, CONVERT(NVARCHAR(100),E.New_InstitutionalHierarchyId) AS New_InstitutionalHierarchyId
+			, A.New_LdspId AS Employer_Ldsp_Id
+			, S.Column_Label AS StatusCode
+			, E.ModifiedOn AS Employment_Modified_On_Date
+			, E.Lds_CampusAddress AS Employment_Lds_CampusAddress										
+			' -- Ext_Select_Statement
+		, 'Ext_Employment E
+				LEFT JOIN Ext_Source NS ON E.New_Source = NS.New_SourceId
+				LEFT JOIN Ext_Institution NI ON E.New_InstitutionalHierarchyId = NI.New_InstitutionId
+				LEFT JOIN Ext_Industry NIB ON E.New_IndustryCategory = NIB.New_IndustryId
+				LEFT JOIN Ext_Job_Code NJ ON E.New_JobCode = NJ.New_JobCodeId
+				LEFT JOIN Ext_Account A ON E.New_Company = A.AccountId
+				LEFT JOIN _Plus_Church_Employment_Status_ P ON E.Plus_ChurchEmploymentStatus = P.Column_Value
+				LEFT JOIN _Employment_StatusCode_ S ON E.StatusCode = S.Column_Value	
+				LEFT JOIN 
+					(
+					SELECT New_EmploymentsId AS ContactId
+						, ROW_NUMBER() OVER(ORDER BY New_EmploymentsId) AS Employment_Group_Key
+						FROM
+							(SELECT DISTINCT New_EmploymentsId    
+								FROM Ext_Employment) A
+					) B ON E.New_EmploymentsId = B.ContactId
+			' -- Ext_From_Statement
+		, '
+			' -- Ext_Where_Statement	
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+,
+-- --------------------------
+-- _Connection_Dim
+-- --------------------------
+	( 4 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Connection_Dim' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'ContactId NVARCHAR(100)
+			, Connection_Key INT PRIMARY KEY
+			, Connection_Group_Key INT
+			, Contact_Name NVARCHAR(160)
+			, Relationship NVARCHAR(100)
+			, Relationship_ContactId NVARCHAR(100)
+			, Relationship_LdspId NVARCHAR(100)
+			, Relationship_Name NVARCHAR(160)
+			, Relationship_Phone_Number NVARCHAR(100)
+			, Relationship_Email NVARCHAR(150) 
+			, Relationship_First_Name NVARCHAR(50)
+			, Relationship_Last_Name NVARCHAR(50)
+			, Relationship_Birth_Date DATE
+			, Relationship_Age INT
+			, Relationship_Middle_Name NVARCHAR(50)
+			, Relationship_Birth_Name NVARCHAR(100)
+			' -- Ext_Create_Fields
+		, 'ContactId
+			, Connection_Key
+			, Connection_Group_Key
+			, Contact_Name
+			, Relationship
+			, Relationship_ContactId  
+			, Relationship_LdspId
+			, Relationship_Name
+			, Relationship_Phone_Number
+			, Relationship_Email
+			, Relationship_First_Name
+			, Relationship_Last_Name
+			, Relationship_Birth_Date
+			, Relationship_Age
+			, Relationship_Middle_Name
+			, Relationship_Birth_Name
+			' -- Ext_Insert_Fields
+		, 'DISTINCT CONVERT(NVARCHAR(100),A.ContactId) AS ContactId
+			, ROW_NUMBER() OVER(ORDER BY A.ContactId,A.Contact_Name,A.Relationship,A.Relationship_ContactId,A.Relationship_Ldspid,A.Relationship_Name,B.New_Emails) AS Connection_Key
+			, E.Connection_Group_Key
+			, A.Contact_Name
+			, A.Relationship
+			, CONVERT(NVARCHAR(100),A.Relationship_ContactId) AS Relationship_ContactId
+			, A.Relationship_LdspId
+			, A.Relationship_Name
+			, C.New_PhoneNumber AS Relationship_Phone_Number
+			, B.New_Emails AS Relationship_Email
+			, A.Relationship_First_Name
+			, A.Relationship_Last_Name
+			, CASE WHEN SUBSTRING(Relationship_Birth_Date,1,2) IN ([N01],[N02],[N03],[N04],[N05],[N06],[N07],[N08],[N09],[N10],[N11],[N12])
+						AND SUBSTRING(Relationship_Birth_Date,4,2) IN ([N01],[N02],[N03],[N04],[N05],[N06],[N07],[N08],[N09],[N10],
+							[N11],[N12],[N13],[N14],[N15],[N16],[N17],[N18],[N19],[N20],
+							[N21],[N22],[N23],[N24],[N25],[N26],[N27],[N28],[N29],[N30],[N31]) 
+						AND SUBSTRING(Relationship_Birth_Date,7,2) IN ([N19],[N20])
+						THEN CONVERT(VARCHAR(10),A.Relationship_Birth_Date,101) ELSE NULL END AS Relationship_Birth_Date
+			, D.Relationship_Age
+			, A.Relationship_Middle_Name
+			, A.Relationship_Birth_Name										
+			' -- Ext_Select_Statement
+		, '(SELECT DISTINCT              
+					A.Record1Id AS ContactId
+					, COALESCE(D.fullname, F.Name,A.Plus_AlternateName) AS Contact_Name
+					, B.Name AS Relationship
+					, A.Record2Id AS Relationship_ContactId
+					, COALESCE(E.New_LdspId, G.New_LdspId) AS Relationship_LdspId
+					, COALESCE(E.FullName, G.Name,A.Plus_AlternateName) AS Relationship_Name
+					, E.FirstName AS Relationship_First_Name
+					, E.LastName AS Relationship_Last_Name
+					, E.New_BirthDate AS Relationship_Birth_Date
+					, NULL AS Relationship_Age
+					, E.MiddleName AS Relationship_Middle_Name
+					, E.New_BirthName AS Relationship_Birth_Name
+					, D.Number_Signs
+					, D.N00
+					, D.N01
+					, D.N02
+					, D.N03
+					, D.N04
+					, D.N05
+					, D.N06
+					, D.N07
+					, D.N08
+					, D.N09
+					, D.N10
+					, D.N11
+					, D.N12
+					, D.N13
+					, D.N14
+					, D.N15
+					, D.N16
+					, D.N17
+					, D.N18
+					, D.N19
+					, D.N20
+					, D.N21
+					, D.N22
+					, D.N23
+					, D.N24
+					, D.N25
+					, D.N26
+					, D.N27
+					, D.N28
+					, D.N29
+					, D.N30
+					, D.N31
+					FROM Ext_Connection A
+						INNER JOIN Ext_Connection_Role B ON A.Record2RoleId = B.ConnectionRoleId 
+						LEFT JOIN Ext_Contact D ON A.Record1Id = D.ContactId 
+						LEFT JOIN Ext_Contact E ON  A.Record2Id = E.ContactId
+						LEFT JOIN Ext_Account F ON  A.Record1Id = F.AccountId
+						LEFT JOIN Ext_Account G ON  A.Record2Id = G.AccountId
+					WHERE 1 = 1 
+						AND EXISTS
+							(SELECT *
+								FROM Ext_Connection H
+								WHERE 1 = 1 
+									AND A.ConnectionId = H.ConnectionId
+									AND (H.Record2ObjectTypeCode = 1 OR H.Record2ObjectTypeCode = 2)
+							)
+						AND A.Record1Id IS NOT NULL
+				UNION
+				SELECT DISTINCT              
+					A.Record2Id AS ContactId
+					, COALESCE(E.FullName, G.Name,A.Plus_AlternateName) AS Contact_Name
+					, C.Name AS Relationship
+					, A.Record1Id AS Relationship_ContactId
+					, COALESCE(D.New_LdspId, F.New_LdspId) AS Relationship_LdspId
+					, COALESCE(D.fullname, F.Name,A.Plus_AlternateName) AS Relationship_Name
+					, D.FirstName AS Relationship_First_Name
+					, D.LastName AS Relationship_Last_Name
+					, D.New_BirthDate AS Relationship_Birth_Date
+					, NULL AS Relationship_Age
+					, D.MiddleName AS Relationship_Middle_Name
+					, D.New_BirthName AS Relationship_Birth_Name
+					, D.Number_Signs
+					, D.N00
+					, D.N01
+					, D.N02
+					, D.N03
+					, D.N04
+					, D.N05
+					, D.N06
+					, D.N07
+					, D.N08
+					, D.N09
+					, D.N10
+					, D.N11
+					, D.N12
+					, D.N13
+					, D.N14
+					, D.N15
+					, D.N16
+					, D.N17
+					, D.N18
+					, D.N19
+					, D.N20
+					, D.N21
+					, D.N22
+					, D.N23
+					, D.N24
+					, D.N25
+					, D.N26
+					, D.N27
+					, D.N28
+					, D.N29
+					, D.N30
+					, D.N31
+					FROM Ext_Connection A
+						INNER JOIN Ext_Connection_Role C ON A.Record1RoleId = C.ConnectionRoleId
+						LEFT JOIN Ext_Contact D ON A.Record1Id = D.ContactId 
+						LEFT JOIN Ext_Contact E ON  A.Record2Id = E.ContactId
+						LEFT JOIN Ext_Account F ON  A.Record1Id = F.AccountId
+						LEFT JOIN Ext_Account G ON  A.Record2Id = G.AccountId
+					WHERE 1 = 1 
+						AND EXISTS
+							(SELECT *
+								FROM Ext_Connection H
+								WHERE 1 = 1 
+									AND A.ConnectionId = H.ConnectionId
+									AND (Record1ObjectTypeCode = 1 OR Record1ObjectTypeCode = 2)
+						AND A.Record1Id IS NOT NULL
+							)
+				) A LEFT JOIN 			
+			' -- Ext_From_Statement
+		, 'AND A.ContactId IS NOT NULL
+			' -- Ext_Where_Statement	
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, '(
+			SELECT New_ConstituentId
+				, New_Emails 
+				FROM Ext_Email
+				WHERE 1 = 1
+					AND New_Primary = 1
+			) B ON A.Relationship_ContactId = B.New_ConstituentId LEFT JOIN
+			(
+			SELECT New_NumberId
+				, New_PhoneNumber
+				FROM Ext_Phone
+				WHERE 1 = 1
+					AND New_Primary = 1
+			) C ON A.Relationship_ContactId = C.New_NumberId LEFT JOIN
+			(SELECT Donor_Key
+				, CASE WHEN DATEADD(YEAR, DATEDIFF (YEAR, Birthdate, GETDATE()), Birthdate) > GETDATE()
+					THEN DATEDIFF(YEAR, Birthdate, GETDATE()) - 1
+					ELSE DATEDIFF(YEAR, Birthdate, GETDATE()) END AS Relationship_Age
+				FROM
+					(SELECT CONVERT(NVARCHAR(100),ContactId) AS Donor_Key
+						, CONVERT(NVARCHAR(20),CAST(New_Birthdate AS DATETIME),110) AS Birthdate
+						FROM Ext_Contact
+						WHERE 1 = 1
+							AND SUBSTRING(New_Birthdate,4,2) <> [N00]
+							AND SUBSTRING(New_Birthdate,1,2) <> [N00]
+							AND SUBSTRING(New_Birthdate,4,2) <> [Number_Signs]
+							AND SUBSTRING(New_Birthdate,1,2) <> [Number_Signs]
+					) A
+			) D ON A.Relationship_ContactId = D.Donor_Key	
+			LEFT JOIN 
+				(
+				SELECT Record1Id AS ContactId
+					, ROW_NUMBER() OVER(ORDER BY Record1Id) AS Connection_Group_Key
+					FROM
+						(SELECT DISTINCT Record1Id    
+							FROM Ext_Connection) A
+				) E ON A.ContactId = E.ContactId 
+			' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
 		, ' ' -- Code_Block_9

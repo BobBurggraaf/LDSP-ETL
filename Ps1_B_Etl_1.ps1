@@ -281,6 +281,8 @@ FUNCTION Insert-Alpha_Table_1
 												, Tier_2_Stage_DateTime = NULL
 												, Tier_3_Stage = NULL
 												, Tier_3_Stage_DateTime = NULL
+												, Tier_4_Stage = NULL
+												, Tier_4_Stage_DateTime = NULL
 											WHERE 1 = 1
 											"
 			
@@ -1176,12 +1178,26 @@ FUNCTION Insert-Alpha_Table_1
 														  "                                                                                    
 								$Ext_Select_Statement = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Ext_Select_Statement_Qry).Ext_Select_Statement
 								
+						[STRING]$Ext_Select_Statement_2_Qry = "SELECT Ext_Select_Statement_2
+																FROM Oa_Extract.Extract_Tables
+																WHERE 1 = 1
+																	AND Extract_Tables_Key = $Processing_Key_Tier_2
+														  "                                                                                    
+								$Ext_Select_Statement_2 = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Ext_Select_Statement_2_Qry).Ext_Select_Statement_2
+								
 						[STRING]$Ext_From_Fields_Qry = "SELECT Ext_From_Statement
 																FROM Oa_Extract.Extract_Tables
 																WHERE 1 = 1
 																	AND Extract_Tables_Key = $Processing_Key_Tier_2
 														  "                                                                                    
 								$Ext_From_Statement = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Ext_From_Fields_Qry).Ext_From_Statement
+								
+						[STRING]$Ext_From_Statement_2_Qry = "SELECT Ext_From_Statement_2
+																FROM Oa_Extract.Extract_Tables
+																WHERE 1 = 1
+																	AND Extract_Tables_Key = $Processing_Key_Tier_2
+														  "                                                                                    
+								$Ext_From_Statement_2 = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Ext_From_Statement_2_Qry).Ext_From_Statement_2
 					
 						[STRING]$Ext_Where_Statement_Qry = "SELECT Ext_Where_Statement
 																FROM Oa_Extract.Extract_Tables
@@ -1224,7 +1240,7 @@ FUNCTION Insert-Alpha_Table_1
 								#---------------------------------------------
 								# Get Destination data
 								#---------------------------------------------
-								[STRING]$Sql = "SELECT $Ext_Select_Statement FROM $Ext_From_Statement WHERE 1 = 1 $Ext_Where_Statement"
+								[STRING]$Sql = "SELECT $Ext_Select_Statement $Ext_Select_Statement_2 FROM $Ext_From_Statement $Ext_From_Statement_2 WHERE 1 = 1 $Ext_Where_Statement"
                                 			    
 								Write-Host
 								Write-Host "~ Insert Query: $Sql"														   								
@@ -1428,8 +1444,8 @@ FUNCTION Insert-Alpha_Table_1
 		# If this is the first than create the Alpha_Table_1
 		#   Else sleep
 		#---------------------------------------------
-		Create-Alpha_Table_1                                                   #<----------------------------------------------------------
-		#Start-Sleep -s $Sleep_Time  
+		#Create-Alpha_Table_1                                                   #<----------------------------------------------------------
+		Start-Sleep -s $Sleep_Time  
 
 		#---------------------------------------------
 		# Log file
@@ -1557,6 +1573,23 @@ FUNCTION Insert-Alpha_Table_1
 				Write-Host
 				Write-Host $Tables_To_Process_Tier_3_Qry
 				Write-Host "~ Tables to Process: $Tables_To_Process_Tier_3"
+				
+				[STRING]$Tables_To_Process_Tier_4_Qry = "SELECT COUNT(Ext_Table) AS Tables_To_Process
+																		FROM Oa_Extract.Extract_Tables
+																		WHERE 1 = 1
+																			AND Tier = 4
+																			AND (Tier_4_Stage IS NULL 
+																				OR Tier_4_Stage = 'Incomplete'
+																				)
+																			AND Active = 1
+														"                                                                                   
+					$Tables_To_Process_Tier_4_var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Tables_To_Process_Tier_4_Qry).Tables_To_Process
+				
+					[Int]$Tables_To_Process_Tier_4 = [convert]::ToInt32($Tables_To_Process_Tier_4_var)
+				
+				Write-Host
+				Write-Host $Tables_To_Process_Tier_4_Qry
+				Write-Host "~ Tables to Process: $Tables_To_Process_Tier_4"
 
 				#---------------------------------------------
 				# Loop Begin Time
@@ -2650,8 +2683,220 @@ FUNCTION Insert-Alpha_Table_1
 								Write-Host 
 								Write-Host "~ Total Processing Time: $Total_Processing_Time"
 					}
+				
+				
+				
+				
+				ELSEIF ($Tables_To_Process_Tier_4 -gt 0)
+					{
+						
+						#---------------------------------------------
+						# Processing Key
+						#---------------------------------------------
+					
+						[STRING]$Processing_Key_Tier_4_Qry = "SELECT COALESCE(MIN(Extract_Tables_Key),0) AS Next_Table
+														FROM Oa_Extract.Extract_Tables
+														WHERE 1 = 1
+															AND Tier = 4															
+															AND (Tier_4_Stage IS NULL 
+																OR Tier_4_Stage = 'Incomplete'
+																)
+															AND 1 =
+																(SELECT COUNT(CASE WHEN Tier_3_Stage = 'Complete' THEN 1 ELSE NULL END) AS Cnt
+																	FROM Oa_Extract.Extract_Tables
+																	WHERE 1 = 1
+																		AND Ext_Table = '_Gift_Credit_'
+																)
+															AND 1 =
+																(SELECT COUNT(CASE WHEN Tier_3_Stage = 'Complete' THEN 1 ELSE NULL END) AS Cnt
+																	FROM Oa_Extract.Extract_Tables
+																	WHERE 1 = 1
+																		AND Ext_Table = '_Gift_'
+																)
+															AND 1 =
+																(SELECT COUNT(CASE WHEN Tier_3_Stage = 'Complete' THEN 1 ELSE NULL END) AS Cnt
+																	FROM Oa_Extract.Extract_Tables
+																	WHERE 1 = 1
+																		AND Ext_Table = '_Gift_Hist_'
+																)
+															AND Active = 1
+													"                                                                                   
+							$Processing_Key_Tier_4_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Processing_Key_Tier_4_Qry).Next_Table
+							
+							[Int]$Processing_Key_Tier_4 = [convert]::ToInt32($Processing_Key_Tier_4_Var)
+						
+						Write-Host
+						Write-Host $Processing_Key_Tier_4_Qry
+						Write-Host "~ Processing Key: $Processing_Key_Tier_4"
+						
+						#---------------------------------------------
+						# Extract_Tables Update
+						#---------------------------------------------				
+						$Update_DateTime = Get-Date
+					
+						$Update_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+											SET Tier_4_Stage = '$Job_Name'                   
+												, Tier_4_Stage_DateTime = '$Update_DateTime'
+											WHERE 1 = 1
+												AND Extract_Tables_Key = $Processing_Key_Tier_4
+												"
+						
+						Invoke-Sqlcmd `
+							-ServerInstance $Dest_Instance `
+							-Database $Dest_Db `
+							-Query $Update_Extract_Tables
+						
+						Write-Host $Update_Extract_Tables
+						
+						#---------------------------------------------
+						# Wait then recheck, if it is the same name then run, else end
+						#---------------------------------------------
+						
+						Start-Sleep -s $Sleep_Time 
+						
+						[STRING]$Processing_Key_Tier_4_Qry2 = "SELECT Tier_4_Stage
+																	FROM Oa_Extract.Extract_Tables
+																	WHERE 1 = 1 
+																		AND Extract_Tables_Key = $Processing_Key_Tier_4
+																"                                                                                   
+							$Tier_4_Stage = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Processing_Key_Tier_4_Qry2).Tier_4_Stage
+								
+						Write-Host
+						Write-Host $Processing_Key_Tier_4_Qry2
+						Write-Host "~ Job Name: $Job_Name"
+						Write-Host "~ Tier_4_Stage (2): $Tier_4_Stage"
+						
+						IF($Job_Name -eq $Tier_4_Stage) 
+							{
+						
+						
+								
+								#---------------------------------------------
+								# Ext Table
+								#---------------------------------------------
+								
+								[STRING]$Ext_Table_Qry = "SELECT Ext_Table
+														FROM Oa_Extract.Extract_Tables
+														WHERE 1 = 1
+															AND Extract_Tables_Key = $Processing_Key_Tier_4
+																		  "                                                                                   
+												$Ext_Table = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Ext_Table_Qry).Ext_Table
+								
+								Write-Host
+								Write-Host $Ext_Table
+								Write-Host "~ Destination Table: $Ext_Table"
+								
+								
+								#---------------------------------------------
+								# Extract Data
+								#---------------------------------------------
+								
+								Copy-Tier_2_Data -p1 $Ext_Table -p2 $Processing_Key_Tier_4
+								
+								
+								#---------------------------------------------
+								# Check If Extract was successful
+								#---------------------------------------------
+								
+								[STRING]$Extract_Success_Qry = "SELECT COUNT(CASE WHEN Alpha_Result = 1 THEN 1 ELSE NULL END) AS Count_Alpha_Result
+														FROM Oa_Extract.Alpha_Table_1
+														WHERE 1 = 1
+															AND Alpha_Stage = CONCAT('dbo.','$Ext_Table')
+															AND Alpha_Step_Name = 'Stats'
+																		  "                                                                                   
+									$Extract_Success_Var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Extract_Success_Qry).Count_Alpha_Result
+									
+									[Int]$Extract_Success = [convert]::ToInt32($Extract_Success_Var)
+								
+								Write-Host
+								Write-Host $Extract_Success_Qry
+								Write-Host "~ Extract Success: $Extract_Success"
+								
+								IF ($Extract_Success -gt 0)
+									{
+										#---------------------------------------------
+										# Extract_Tables Update
+										#---------------------------------------------
+										$Update_Complete_DateTime = Get-Date
+									
+										$Update_Complete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+															SET Tier_4_Stage = 'Complete'
+																, Tier_4_Stage_DateTime = '$Update_Complete_DateTime'
+															WHERE 1 = 1
+																AND Extract_Tables_Key = $Processing_Key_Tier_4"
+										
+										Invoke-Sqlcmd `
+											-ServerInstance $Dest_Instance `
+											-Database $Dest_Db `
+											-Query $Update_Complete_Extract_Tables
+										
+										Write-Host
+										Write-Host $Update_Complete_Extract_Tables
+										Write-Host "~ Ext_Tables updated to Complete."
+									}
+									ELSE
+									{
+										#---------------------------------------------
+										# Extract_Tables Update
+										#---------------------------------------------
+										$Update_Incomplete_DateTime = Get-Date
+									
+										$Update_Incomplete_Extract_Tables = "UPDATE Oa_Extract.Extract_Tables 
+																				SET Tier_4_Stage = 'Incomplete'
+																					, Tier_4_Stage_DateTime = '$Update_Complete_DateTime'
+																				WHERE 1 = 1
+																					AND Extract_Tables_Key = $Processing_Key_Tier_4
+																			"
+										
+										Invoke-Sqlcmd `
+											-ServerInstance $Dest_Instance `
+											-Database $Dest_Db `
+											-Query $Update_Incomplete_Extract_Tables
+										
+										Write-Host
+										Write-Host $Update_Incomplete_Extract_Tables
+										Write-Host "~ Ext_Tables updated to Incomplete."
+										
+									}
+							}	
+								
+								#---------------------------------------------
+								# Tables to Process
+								#---------------------------------------------
+								
+								[STRING]$Tables_To_Process_Tier_4_Qry = "SELECT COUNT(Ext_Table) AS Tables_To_Process
+														FROM Oa_Extract.Extract_Tables
+														WHERE 1 = 1
+															AND Tier = 4
+															AND (Tier_4_Stage IS NULL 
+																OR Tier_4_Stage = 'Incomplete'
+																)
+															AND Active = 1
+														"                                                                                   
+								$Tables_To_Process_Tier_4_var = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Tables_To_Process_Tier_4_Qry).Tables_To_Process
+							
+								[Int]$Tables_To_Process_Tier_4 = [convert]::ToInt32($Tables_To_Process_Tier_4_var)
+							
+								Write-Host
+								Write-Host $Tables_To_Process_Tier_4_Qry
+								Write-Host "~ Tables to Process: $Tables_To_Process_Tier_4"
+								
+								
+								#---------------------------------------------
+								# Current Process Time
+								#---------------------------------------------
+								$Current_Process_DateTime = Get-Date
+								
+								Write-Host 
+								Write-Host "~ Current Process Time: $Current_Process_DateTime"
+								
+								$Total_Processing_Time = New-TimeSpan -Start $Loop_Begin_DateTime -End $Current_Process_DateTime
+								
+								Write-Host 
+								Write-Host "~ Total Processing Time: $Total_Processing_Time"
+					}
 			
-			} UNTIL ($Tables_To_Process_Tier_3 -eq 0 -AND $Tables_To_Process_Tier_2B -eq 0 -OR $Total_Processing_Time -gt '00:30:00')
+			} UNTIL ($Tables_To_Process_Tier_4 -eq 0 -AND $Tables_To_Process_Tier_3 -eq 0 -AND $Tables_To_Process_Tier_2B -eq 0 -OR $Total_Processing_Time -gt '00:30:00')
 
 		#---------------------------------------------	 
 		# Return to standard error handling
