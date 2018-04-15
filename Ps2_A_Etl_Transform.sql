@@ -1834,7 +1834,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 			SET @SQL_1 = ''
 				IF OBJECT_ID('' + @SQL_2 + '') IS NOT NULL
 				DROP TABLE LDSPhilanthropiesDW.dbo.'' + @TABLE_NAME_B + ''                                               
-				CREATE TABLE LDSPhilanthropiesDW.dbo.'' + @TABLE_NAME_B + ''(Drop_Include_Key INT PRIMARY KEY, Drop_Include_Group_Key INT)''                                              
+				CREATE TABLE LDSPhilanthropiesDW.dbo.'' + @TABLE_NAME_B + ''(ContactId NVARCHAR(100), Drop_Include_Key INT PRIMARY KEY, Drop_Include_Group_Key INT)''                                              
 			EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = @TABLE_NAME_B, @Alpha_Step_Number = ''107E'', @Alpha_Step_Name = ''Bridge Table Creation - Query'', @Alpha_Query = @SQL_1, @Alpha_Result = 1;                                        
 			EXEC(@SQL_1)
 			EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = @TABLE_NAME_B, @Alpha_Step_Number = ''107E'', @Alpha_Step_Name = ''Bridge Table Creation - End'', @Alpha_Result = 1;
@@ -1870,10 +1870,12 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 				EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''_Drop_Include_Dim'', @Alpha_Step_Number = ''107G'', @Alpha_Step_Name = ''Dim Tables - Load - Begin'', @Alpha_Result = 1;                                           
 					
 					INSERT INTO _Drop_Include_Bridge --> HARD CODED <--
-						(Drop_Include_Key --> HARD CODED <--
+						(contactId
+						, Drop_Include_Key --> HARD CODED <--
 						, Drop_Include_Group_Key --> HARD CODED <--
 						)
-						SELECT Drop_Include_Key --> HARD CODED <--
+						SELECT ContactId
+							, Drop_Include_Key --> HARD CODED <--
 							, Drop_Include_Group_Key              --> HARD CODED <--       
 							FROM _Drop_Include_Dim                                           
 				SELECT @TABLE_CNT3 = (SELECT CONVERT(NVARCHAR(100),COUNT(*)) FROM _Drop_Include_Dim)
@@ -5810,6 +5812,8 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 						UNION
 						SELECT DISTINCT ContactId FROM _Award_Bridge
 						UNION
+						SELECT DISTINCT ContactId FROM _Drop_Include_Bridge
+						UNION
 						SELECT DISTINCT ContactId FROM _Email_Bridge
 						UNION
 						SELECT DISTINCT ContactId FROM _Employment_Bridge
@@ -5867,7 +5871,8 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 								, COALESCE(C.Address_Group_Key,0) AS Address_Group_Key
 								, COALESCE(D.Alumni_Group_Key,0) AS Alumni_Group_Key
 								, COALESCE(E.Association_Group_Key,0) AS Association_Group_Key
-								, COALESCE(F.Award_Group_Key,0) AS Award_Group_Key 
+								, COALESCE(F.Award_Group_Key,0) AS Award_Group_Key
+								, COALESCE(G.Drop_Include_Group_Key,0) AS Drop_Include_Group_Key 
 								, COALESCE(H.Affiliated_Key,0) AS Affiliated_Key
 								--, COALESCE(I.Wealth_Key,0) AS Wealth_Key
 								FROM #ContactId_Temp A
@@ -5876,6 +5881,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 									LEFT JOIN _Alumni_Bridge D ON A.ContactId = D.ContactId
 									LEFT JOIN _Association_Bridge E ON A.ContactId = E.ContactId
 									LEFT JOIN _Award_Bridge F ON A.ContactId = F.ContactId
+									LEFT JOIN _Drop_Include_Bridge G ON A.ContactId = G.ContactId
 									LEFT JOIN _Affiliated_Dim H ON A.ContactId = H.ContactId
 									-- LEFT JOIN _Wealth_Dim I ON A.ContactId = I.ContactId
 							) A

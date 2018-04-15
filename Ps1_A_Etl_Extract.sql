@@ -13701,6 +13701,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Campaign NVARCHAR(128)
 			, New_Inst NVARCHAR(100)
 			, Hier_Name NVARCHAR(100)
+			, ContactId NVARCHAR(100)
 			' -- Ext_Create_Fields
 		, 'Drop_Include_Key
 			, Drop_Include_Instit_Hierarchy 
@@ -13724,6 +13725,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Campaign
 			, New_Inst
 			, Hier_Name
+			, ContactId
 			' -- Ext_Insert_Fields
 		, 'ROW_NUMBER() OVER(ORDER BY A.New_DropIncludeId) AS Drop_Include_Key 
 			, CONVERT(NVARCHAR(100),A.New_InstitutionalHierarchy) AS Drop_Include_Instit_Hierarchy
@@ -13746,7 +13748,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, F.New_ShortName AS Association
 			, G.Name AS Campaign
 			, H.New_Inst
-			, H.New_Name AS Hier_Name							
+			, H.New_Name AS Hier_Name
+			, CONVERT(NVARCHAR(100),A.New_DropIncludesId) AS ContactId
 			' -- Ext_Select_Statement
 		, 'Ext_Drop_Include A
 				LEFT JOIN _Drop_Include_Type_ B ON A.New_Type = B.Column_Value
