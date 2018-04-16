@@ -185,6 +185,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Lds_IsQualified BIT
 			, Lds_QualifiedOn DATETIME
 			, Lds_QualifiedBy UNIQUEIDENTIFIER
+			, Zero NVARCHAR(1) DEFAULT ''0''
 			' -- Ext_Create_Fields
 		, 'AccountId
 			, New_LdspId
@@ -1286,6 +1287,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, N29 NVARCHAR(2) DEFAULT ''29''
 			, N30 NVARCHAR(2) DEFAULT ''30''
 			, N31 NVARCHAR(2) DEFAULT ''31''
+			, Zero NVARCHAR(1) DEFAULT ''0''
 			' -- Ext_Create_Fields
 		, 'ContactId
 			, New_Ldspid
@@ -2550,6 +2552,9 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, N NVARCHAR(1) DEFAULT ''N''
 			, Emp_Dash NVARCHAR(20) DEFAULT ''Employment - ''
 			, Blank NVARCHAR(1) DEFAULT NULL
+			, C NVARCHAR(1) DEFAULT ''C''
+			, F NVARCHAR(1) DEFAULT ''F''
+			, R NVARCHAR(1) DEFAULT ''R''
 			' -- Ext_Create_Fields
 		, 'New_EmploymentsId
 			, New_EmploymentId
@@ -2784,6 +2789,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Plus_ReportFrequency INT
 			, StatusCode INT
 			, New_AllowGifts BIT
+			, Y NVARCHAR(1) DEFAULT ''Y''
+			, N NVARCHAR(1) DEFAULT ''N''
 			' -- Ext_Create_Fields
 		, 'New_FundAccountId
 			, New_Name
@@ -3543,6 +3550,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Plus_LdsPosition INT 
 			, Plus_InstitutionalHierarchy UNIQUEIDENTIFIER 
 			, New_Country UNIQUEIDENTIFIER
+			, Y NVARCHAR(1) DEFAULT ''Y''
+			, N NVARCHAR(1) DEFAULT ''N''
 			' -- Ext_Create_Fields
 		, 'New_InternationalExperienceId
 			, New_InternationalExperiencesAId
@@ -5075,6 +5084,17 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, New_University UNIQUEIDENTIFIER
 			, New_Major UNIQUEIDENTIFIER
 			, Plus_Emphasis UNIQUEIDENTIFIER
+			, Y NVARCHAR(1) DEFAULT ''Y''
+			, N NVARCHAR(1) DEFAULT ''N''
+			, Dash NVARCHAR(1) DEFAULT ''-''
+			, N01 NVARCHAR(2) DEFAULT ''01''
+			, N04 NVARCHAR(2) DEFAULT ''04''
+			, N06 NVARCHAR(2) DEFAULT ''06''
+			, N09 NVARCHAR(2) DEFAULT ''09''
+			, Fall NVARCHAR(10) DEFAULT ''Fall''
+			, Winter NVARCHAR(10) DEFAULT ''Winter''
+			, Spring NVARCHAR(10) DEFAULT ''Spring''
+			, Summer NVARCHAR(10) DEFAULT ''Summer''
 			' -- Ext_Create_Fields
 		, 'New_StudentAttendanceId
 			, New_Term
@@ -5566,6 +5586,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Plus_Source UNIQUEIDENTIFIER
 			, Plus_Program UNIQUEIDENTIFIER
 			, Plus_Emphasis UNIQUEIDENTIFIER
+			, Y NVARCHAR(1) DEFAULT ''Y''
+			, N NVARCHAR(1) DEFAULT ''N''
 			' -- Ext_Create_Fields
 		, 'Plus_AlumniId 
 			, Plus_Name
@@ -12375,6 +12397,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, New_ReceiptDate DATETIME
 			, Plus_InstitutionalHieararchy UNIQUEIDENTIFIER
 			, StatusCode INT
+			, Dollar_Sign NVARCHAR(1) DEFAULT ''$''
+			, I_Colon NVARCHAR(5) DEFAULT ''(I):''
+			, M_Colon NVARCHAR(5) DEFAULT ''(M):''
+			, O_Colon NVARCHAR(5) DEFAULT ''(O):''
+			, H_Colon NVARCHAR(5) DEFAULT ''(H):''
+			, S_Colon NVARCHAR(5) DEFAULT ''(S):''
 			' -- Ext_Create_Fields
 		, 'New_RecognitionCreditId
 			, New_RelatedConstituent
@@ -14385,6 +14413,1181 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 						(SELECT DISTINCT Record1Id    
 							FROM Ext_Connection) A
 				) E ON A.ContactId = E.ContactId 
+			' -- Ext_From_Statement_2
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+,
+-- --------------------------
+-- _Id_Dim
+-- --------------------------
+	( 4 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Id_Dim' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'ContactId NVARCHAR(100)
+			, Id_Key INT  PRIMARY KEY
+			, Id_Group_Key INT
+			, New_Type NVARCHAR(400)
+			, Plus_Id NVARCHAR(100)
+			, ConstituentId NVARCHAR(100)
+			, AccountId NVARCHAR(100)
+			, New_Id NVARCHAR(100)
+			' -- Ext_Create_Fields
+		, 'ContactId 
+			, Id_Key 
+			, Id_Group_Key 
+			, New_Type
+			, Plus_Id
+			, ConstituentId
+			, AccountId
+			, New_Id
+			' -- Ext_Insert_Fields
+		, 'C.ContactId
+			, ROW_NUMBER() OVER(ORDER BY C.Id_Key) AS Id_Key
+			, D.Id_Group_Key
+			, C.New_Type
+			, C.Plus_Id
+			, CONVERT(NVARCHAR(100),C.ConstituentId) AS ConstituentId
+			, CONVERT(NVARCHAR(100),C.AccountId) AS AccountId
+			, C.New_Id						
+			' -- Ext_Select_Statement
+		, '(SELECT CONVERT(NVARCHAR(100),B.ContactId) AS ContactId
+					, B.Id_Key
+					, B.New_Type
+					, B.Plus_Id
+					, B.ConstituentId
+					, B.AccountId
+					, B.New_Id
+					, ROW_NUMBER() OVER(PARTITION BY B.ContactId, B.New_Type ORDER BY B.New_Type) AS RowNumber
+					FROM
+						(SELECT A.ContactId
+							, A.Id_Key
+							, A.New_Type
+							, MAX(A.Plus_Id) as Plus_Id
+							, A.ConstituentId
+							, A.AccountId
+							, A.New_Id
+							FROM
+								(SELECT COALESCE(C.ContactId,A.AccountId) AS ContactId
+									, O.New_OtherIdentifiersId AS Id_Key           
+									, T.Column_Label AS New_Type -- Picklist
+									, O.Plus_Id  -- Number   
+									, C.ContactId AS ConstituentId
+									, A.AccountId
+									, O.New_Id  -- Type
+									, MAX(ModifiedOn) AS ModifiedOn
+									FROM Ext_Other_Identifiers O
+										LEFT JOIN Ext_Contact C ON O.New_EmploymentId = C.ContactId
+										LEFT JOIN Ext_Account A ON O.New_OtherIdentifiers = A.AccountId
+										LEFT JOIN _New_OtherIdentifiers_New_Type_ T ON O.New_Type = T.Column_Value
+									GROUP BY COALESCE(C.ContactId,A.AccountId)
+										, O.New_OtherIdentifiersId        
+										, T.Column_Label
+										, O.Plus_Id
+										, C.ContactId
+										, A.AccountId
+										, O.New_Id
+								) A
+							GROUP BY A.ContactId
+								, A.Id_Key
+								, A.New_Type
+								, A.ConstituentId
+								, A.AccountId
+								, A.New_Id         
+						) B
+				) C 
+				LEFT JOIN 
+						(
+						SELECT ContactId
+							, ROW_NUMBER() OVER(ORDER BY ContactId) AS Id_Group_Key
+							FROM
+								(SELECT DISTINCT COALESCE(C.ContactId,A.AccountId) AS ContactId    
+									FROM Ext_Other_Identifiers O
+										LEFT JOIN Ext_Contact C ON O.New_EmploymentId = C.ContactId
+										LEFT JOIN Ext_Account A ON O.New_OtherIdentifiers = A.AccountId
+								) A
+						) D ON C.ContactId = D.ContactId
+			' -- Ext_From_Statement
+		, 'AND C.RowNumber = 1
+			' -- Ext_Where_Statement	
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, '	' -- Ext_From_Statement_2
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+,
+-- --------------------------
+-- _Interest_Dim
+-- --------------------------
+	( 4 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Interest_Dim' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Interest_Key INT PRIMARY KEY
+			, Interest_Group_Key INT
+			, ContactId NVARCHAR(100)
+			, Experience NVARCHAR(400)
+			, Emeritus NVARCHAR(1)
+			, Study_Abroad NVARCHAR(1)
+			, Source  NVARCHAR(100)
+			, New_StartDate DATE
+			, New_EndDate DATE
+			, Interest  NVARCHAR(100)
+			, Lds_Position  NVARCHAR(400)
+			, Institutional_Hierarchy  NVARCHAR(100)
+			, Country  NVARCHAR(100)
+			' -- Ext_Create_Fields
+		, 'Interest_Key
+			, Interest_Group_Key
+			, ContactId
+			, Experience
+			, Emeritus
+			, Study_Abroad
+			, Source
+			, New_StartDate
+			, New_EndDate
+			, Interest
+			, Lds_Position
+			, Institutional_Hierarchy
+			, Country
+			' -- Ext_Insert_Fields
+		, 'ROW_NUMBER() OVER(ORDER BY A.New_InternationalExperienceId) AS Interest_Key
+			, C.Interest_Group_Key
+			, CONVERT(NVARCHAR(100),A.New_InternationalExperiencesAId) AS ContactId
+			, NE.Column_Label AS Experience
+			, CASE WHEN A.Plus_Emeritus = 1 THEN A.[Y]
+				WHEN A.Plus_Emeritus = 0 THEN THEN A.[N] 
+				ELSE NULL END AS Emeritus
+			, CASE WHEN A.Plus_StudyAbroad = 1 THEN THEN A.[Y]
+				WHEN A.Plus_StudyAbroad = 0 THEN THEN A.[N] 
+				ELSE NULL END AS Study_Abroad
+			, NS.New_Source AS Source
+			, CONVERT(VARCHAR(10),A.New_StartDate,101) AS New_StartDate
+			, CONVERT(VARCHAR(10),A.New_EndDate,101) AS New_EndDate
+			, B.Plus_Name AS Interest  
+			, PL.Column_Label AS Lds_Position
+			, NI.New_Name AS Institutional_Hierarchy
+			, NCRY.New_Name AS Country  					
+			' -- Ext_Select_Statement
+		, 'Ext_International_Experience A 
+				LEFT JOIN Ext_Institution NI ON A.Plus_InstitutionalHierarchy = NI.New_InstitutionId
+				LEFT JOIN Ext_Source NS ON A.New_Source = NS.New_SourceId  
+				LEFT JOIN Ext_Interest B ON A.Plus_Interest = B.Plus_InterestId
+				LEFT JOIN Ext_Country NCRY ON A.New_Country = NCRY.New_CountryId
+				LEFT JOIN _New_Experience_ NE ON A.New_Experience = NE.Column_Value
+				LEFT JOIN _Plus_LdsPosition_ PL ON A.Plus_LdsPosition = PL.Column_Value
+				LEFT JOIN 
+						(
+						SELECT ContactId
+							, ROW_NUMBER() OVER(ORDER BY ContactId) AS Interest_Group_Key
+							FROM
+								(SELECT DISTINCT New_InternationalExperiencesAId AS ContactId    
+									FROM Ext_International_Experience 
+								) A
+						) C ON A.New_InternationalExperiencesAId = C.ContactId
+			' -- Ext_From_Statement
+		, ' ' -- Ext_Where_Statement	
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, '	' -- Ext_From_Statement_2
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+,
+-- --------------------------
+-- _Student_Dim
+-- --------------------------
+	( 4 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Student_Dim' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Student_Key INT PRIMARY KEY
+			, Student_Group_Key INT
+			, ContactId NVARCHAR(100)
+			, New_StudentAttendanceId UNIQUEIDENTIFIER
+			, New_University NVARCHAR(100)
+			, Plus_Year NVARCHAR(10)
+			, New_Term NVARCHAR(100)
+			, New_HoursCompleted INT
+			, New_ExpectedGraduationDate DATE
+			, New_Major NVARCHAR(100)
+			, Plus_Emphasis NVARCHAR(100)
+			, New_College NVARCHAR(100)
+			, Plus_Department NVARCHAR(100)
+			, Academic_Term_Date DATE
+			, Academic_Year INT
+			, Current_Academic_Year NVARCHAR(1)
+			, Graduated_In_Current_Academic_Year NVARCHAR(1)
+			, Current_Year_Plus_4_Student NVARCHAR(1)
+			, Current_Year_Plus_4_Graduate NVARCHAR(1)
+			' -- Ext_Create_Fields
+		, 'Student_Key
+			, Student_Group_Key
+			, ContactId
+			, New_StudentAttendanceId
+			, New_University
+			, Plus_Year
+			, New_Term
+			, New_HoursCompleted
+			, New_ExpectedGraduationDate
+			, New_Major
+			, Plus_Emphasis
+			, New_College
+			, Plus_Department
+			, Academic_Term_Date
+			, Academic_Year
+			, Current_Academic_Year
+			, Graduated_In_Current_Academic_Year
+			, Current_Year_Plus_4_Student
+			, Current_Year_Plus_4_Graduate
+			' -- Ext_Insert_Fields
+		, 'ROW_NUMBER() OVER(ORDER BY A.New_StudentAttendanceId) AS Student_Key
+			, B.Student_Group_Key
+			, CONVERT(NVARCHAR(100),A.New_StudentsAttendanceId) AS ContactId
+			, A.New_StudentAttendanceId
+			, U.New_University AS New_University
+			, A.Plus_Year
+			, A.New_Term
+			, A.New_HoursCompleted
+			, CONVERT(VARCHAR(10),A.New_ExpectedGraduationDate,101) AS New_ExpectedGraduationDate
+			, P.New_MajorName AS New_Major
+			, E.New_MajorName AS Plus_Emphasis
+			, C.New_Name AS New_College
+			, C.New_Name AS Plus_Department	
+			, D.Academic_Term_Date
+			, D.Academic_Year
+			, D.Current_Academic_Year
+			, CASE WHEN F.Graduated_In_Current_Academic_Year IS NULL THEN A.[N] ELSE F.Graduated_In_Current_Academic_Year END AS Graduated_In_Current_Academic_Year
+			, CASE WHEN G.Current_Year_Plus_4_Student IS NULL THEN A.[N] ELSE G.Current_Year_Plus_4_Student END AS Current_Year_Plus_4_Student
+			, CASE WHEN H.Current_Year_Plus_4_Graduate IS NULL THEN A.[N] ELSE H.Current_Year_Plus_4_Graduate END AS Current_Year_Plus_4_Graduate
+			' -- Ext_Select_Statement
+		, 'Ext_Student A 
+				LEFT JOIN Ext_College C ON A.New_College = C.New_CollegeId
+				LEFT JOIN Ext_University U ON A.New_University = U.New_UniversityId
+				LEFT JOIN Ext_Major P ON A.New_Major = P.New_MajorId
+				LEFT JOIN Ext_Major E ON A.Plus_Emphasis = E.New_MajorId
+				LEFT JOIN 
+					(
+					SELECT ContactId
+						, ROW_NUMBER() OVER(ORDER BY ContactId) AS Student_Group_Key
+						FROM
+							(SELECT DISTINCT New_StudentsAttendanceId AS ContactId    
+								FROM Ext_Student 
+							) A
+					) B ON A.New_StudentsAttendanceId = B.ContactId
+				LEFT JOIN
+					(SELECT New_StudentAttendanceId
+						, Academic_Date AS Academic_Term_Date
+						, Academic_Year
+						, CASE WHEN MONTH(GETDATE()) >= 9 AND Academic_Year >= (YEAR(GETDATE())+1) THEN [Y] 
+							WHEN MONTH(GETDATE()) < 9 AND Academic_Year = YEAR(GETDATE()) THEN [Y]
+							ELSE [N] END AS Current_Academic_Year
+						FROM 
+							(SELECT New_StudentAttendanceId
+								, Academic_Date
+								, CASE WHEN MONTH(Academic_Date) >= 9 THEN YEAR(DATEADD(YEAR,1,Academic_Date))
+									ELSE YEAR(Academic_Date) END AS Academic_Year
+								, [Y]
+								, [N]
+								FROM
+									(SELECT New_StudentAttendanceId
+										, CONVERT(DATE,CONCAT(Academic_Year,[Dash],Academic_Month,[Dash],Academic_Day)) AS Academic_Date
+										, [Y]
+										, [N]
+										FROM
+											(SELECT New_StudentAttendanceId
+												, New_StudentsAttendanceId AS ContactId 
+												, Plus_Year AS Academic_Year
+												, CASE WHEN New_Term = [Fall] THEN [N09]
+													WHEN New_Term = [Winter] THEN [N01]
+													WHEN New_Term = [Spring] THEN [N04]
+													WHEN New_Term = [Summer] THEN [N06]
+													WHEN New_StudentAttendanceId IS NULL THEN NULL
+													ELSE [N01] END AS Academic_Month
+												, CASE WHEN New_StudentAttendanceId IS NULL THEN NULL
+													ELSE [N01] END AS Academic_Day
+												, [Y]
+												, [N]
+												, [Dash]
+												FROM Ext_Student
+												WHERE 1 = 1
+													AND New_StudentAttendanceId IS NOT NULL
+													AND LEN(Plus_Year) = 4
+											) A
+									) B
+							) C
+					) D ON A.New_StudentAttendanceId = D.New_StudentAttendanceId
+				LEFT JOIN
+					(SELECT DISTINCT Plus_Constituent AS ContactId
+						, New_University
+						, [Y] AS Graduated_In_Current_Academic_Year
+						FROM
+							(SELECT Plus_Constituent
+								, New_University
+								, Plus_ActualGraduationDate
+								, Academic_Year
+								, Current_Academic_Year
+								, C.[Y]
+								, C.[N]
+								FROM
+									(SELECT Plus_Constituent
+										, New_University
+										, Plus_ActualGraduationDate
+										, Academic_Year
+										, CASE WHEN MONTH(GETDATE()) >= 9 AND Academic_Year >= (YEAR(GETDATE())+1) THEN [Y] 
+												WHEN MONTH(GETDATE()) < 9 AND Academic_Year = YEAR(GETDATE()) THEN [Y]
+												ELSE [N] END AS Current_Academic_Year
+										, B.[Y]
+										, B.[N]
+										FROM
+											(SELECT Plus_Constituent
+												, New_University
+												, Plus_ActualGraduationDate
+												, CASE WHEN MONTH(Plus_ActualGraduationDate) >= 9 THEN YEAR(DATEADD(YEAR,1,Plus_ActualGraduationDate))
+														ELSE YEAR(Plus_ActualGraduationDate) END AS Academic_Year
+												, A.[Y]
+												, A.[N]
+												FROM
+													(SELECT DISTINCT A.Plus_Constituent
+														, B.New_University
+														, A.Plus_ActualGraduationDate
+														, A.[Y]
+														, A.[N]
+														FROM Ext_Alumni A
+															LEFT JOIN Ext_University B ON A.Plus_University = B.New_UniversityId
+														WHERE 1 = 1
+															AND A.Plus_AlumniStatus = 100000000 --Graduated
+															AND A.Plus_ActualGraduationDate IS NOT NULL
+													) A
+											) B
+									) C
+								WHERE 1 = 1
+									AND Current_Academic_Year = [Y]
+							) A					
+					) F ON A.New_StudentsAttendanceId = F.ContactId  AND U.New_University = F.New_University
+			' -- Ext_From_Statement
+		, ' ' -- Ext_Where_Statement	
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, 'LEFT JOIN
+				(SELECT DISTINCT D.New_StudentAttendanceId
+					, [Y] AS Current_Year_Plus_4_Student
+					FROM Ext_Student A
+						LEFT JOIN
+							(SELECT New_StudentAttendanceId
+								, Academic_Date AS Academic_Term_Date
+								, Academic_Year
+								, CASE WHEN MONTH(GETDATE()) >= 9 AND Academic_Year >= (YEAR(GETDATE())+1) THEN [Y] 
+									WHEN MONTH(GETDATE()) < 9 AND Academic_Year = YEAR(GETDATE()) THEN [Y]
+									ELSE [N] END AS Current_Academic_Year
+								, [Y]
+								, [N]
+								FROM 
+									(SELECT New_StudentAttendanceId
+										, Academic_Date
+										, CASE WHEN MONTH(Academic_Date) >= 9 THEN YEAR(DATEADD(YEAR,1,Academic_Date))
+											ELSE YEAR(Academic_Date) END AS Academic_Year
+										, [Y]
+										, [N]
+										FROM
+											(SELECT New_StudentAttendanceId
+												, CONVERT(DATE,CONCAT(Academic_Year,[Dash],Academic_Month,[Dash],Academic_Day)) AS Academic_Date
+												, [Y]
+												, [N]
+												FROM
+													(SELECT New_StudentAttendanceId
+														, New_StudentsAttendanceId AS ContactId 
+														, Plus_Year AS Academic_Year
+														, CASE WHEN New_Term = [Fall] THEN [09]
+															WHEN New_Term = [Winter] THEN [01]
+															WHEN New_Term = [Spring] THEN [04]
+															WHEN New_Term = [Summer] THEN [06]
+															WHEN New_StudentAttendanceId IS NULL THEN NULL
+															ELSE [01] END AS Academic_Month
+														, CASE WHEN New_StudentAttendanceId IS NULL THEN NULL
+															ELSE [01] END AS Academic_Day
+														, [Y]
+														, [N]
+														FROM Ext_Student
+														WHERE 1 = 1
+															AND New_StudentAttendanceId IS NOT NULL
+															AND LEN(Plus_Year) = 4
+													) A
+											) B
+									) C
+							) D ON A.New_StudentAttendanceId = D.New_StudentAttendanceId
+					WHERE 1 = 1
+						AND D.Academic_Term_Date >= DATEADD(MONTH,-16,DATEADD(yy, DATEDIFF(yy, 0, GETDATE()) + 1, -1)) + 1 					
+				) G ON A.New_StudentAttendanceId = G.New_StudentAttendanceId
+			LEFT JOIN
+				(SELECT DISTINCT A.Plus_Constituent AS ContactId
+					, B.New_University
+					, A.[Y] AS Current_Year_Plus_4_Graduate
+					FROM Ext_Alumni A
+						LEFT JOIN Ext_University B ON A.Plus_University = B.New_UniversityId
+					WHERE 1 = 1
+						AND A.Plus_AlumniStatus = 100000000 --Graduated
+						AND A.Plus_ActualGraduationDate >= DATEADD(MONTH,-16,DATEADD(yy, DATEDIFF(yy, 0, GETDATE()) + 1, -1)) + 1
+				) H  ON A.New_StudentsAttendanceId = H.ContactId  AND U.New_University = H.New_University	
+			' -- Ext_From_Statement_2
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+,
+-- --------------------------
+-- _All_Employment
+-- --------------------------
+	( 4 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_All_Employment' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'All_Employment_Key INT PRIMARY KEY
+			, All_Employment_Group_Key INT
+			, ContactId NVARCHAR(100)
+			, StatusCode NVARCHAR(1)
+			, Organization_Name NVARCHAR(160)
+			, Institutional_Hierarchy NVARCHAR(100)
+			, New_Title NVARCHAR(100)
+			, New_JobCode NVARCHAR(100)
+			, New_DateStarted DATE
+			, Plus_AlternateOrganizationName NVARCHAR(100)
+			' -- Ext_Create_Fields
+		, 'All_Employment_Key
+			, All_Employment_Group_Key
+			, ContactId
+			, StatusCode
+			, Organization_Name
+			, Institutional_Hierarchy
+			, New_Title
+			, New_JobCode
+			, New_DateStarted
+			, Plus_AlternateOrganizationName
+			' -- Ext_Insert_Fields
+		, 'ROW_NUMBER() OVER(ORDER BY A.New_EmploymentsId,A.StatusCode) AS All_Employment_Key
+			, E.All_Employment_Group_Key
+			, CONVERT(NVARCHAR(100),A.New_EmploymentsId) AS ContactId
+			, CASE WHEN A.StatusCode = 100000002 THEN A.[C]
+				WHEN A.StatusCode = 100000003 THEN A.[F]
+				WHEN A.StatusCode = 100000004 THEN A.[R]
+				ELSE NULL END AS StatusCode 
+			, B.Name AS Organization_Name
+			, C.New_Name AS Institutional_Hierarchy
+			, A.New_Title
+			, D.New_Name AS New_JobCode
+			, CONVERT(VARCHAR(10),A.New_DateStarted,101) AS New_DateStarted
+			, A.Plus_AlternateOrganizationName
+			' -- Ext_Select_Statement
+		, 'Ext_Employment A
+				LEFT JOIN Ext_Account B ON A.New_Company = B.AccountId
+				LEFT JOIN Ext_Institution C ON A.New_InstitutionalHierarchyId = C.New_InstitutionId
+				LEFT JOIN Ext_Job_Code D ON A.New_JobCode = D.New_JobCodeId
+				LEFT JOIN 
+					(
+					SELECT ContactId
+						, ROW_NUMBER() OVER(ORDER BY ContactId) AS All_Employment_Group_Key
+						FROM
+							(SELECT DISTINCT New_EmploymentsId AS ContactId    
+								FROM Ext_Employment 
+							) A
+					) E ON A.New_EmploymentsId = E.ContactId
+			' -- Ext_From_Statement
+		, 'AND A.New_Type = 100000000 
+			' -- Ext_Where_Statement	
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, '	
+			' -- Ext_From_Statement_2
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+,
+-- --------------------------
+-- _Soft_Credit
+-- --------------------------
+	( 4 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Soft_Credit' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'New_RelatedGift NVARCHAR(100)
+			, New_CreditAmount MONEY
+			, Plus_Type INT
+			, Plus_SharedCreditType NVARCHAR(10)
+			, FullName NVARCHAR(160)
+			, New_LdspId NVARCHAR(100)
+			, Row_Num INT
+			' -- Ext_Create_Fields
+		, 'New_RelatedGift
+			, New_CreditAmount
+			, Plus_Type
+			, Plus_SharedCreditType
+			, FullName
+			, New_LdspId
+			, Row_Num
+			' -- Ext_Insert_Fields
+		, 'CONVERT(NVARCHAR(100),New_RelatedGift) AS New_RelatedGift
+			, New_CreditAmount
+			, Plus_Type
+			, Plus_SharedCreditType
+			, FullName
+			, New_LdspId
+			, ROW_NUMBER() OVER(ORDER BY New_RelatedGift) AS Row_Num
+			' -- Ext_Select_Statement
+		, '(SELECT A.New_RelatedGift
+				, CONCAT(A.[Dollar_Sign],CONVERT(NVARCHAR(50),A.New_CreditAmount)) AS New_CreditAmount
+				, A.Plus_Type     
+				, CASE WHEN A.Plus_SubType = 100000004 THEN A.[I_Colon]
+				WHEN A.Plus_SubType = 100000007 THEN A.[I_Colon]
+				WHEN A.Plus_SubType = 100000002 THEN A.[M_Colon]
+				WHEN A.Plus_SubType = 100000003 THEN A.[O_Colon]
+				WHEN A.Plus_SubType = 100000005 THEN A.[I_Colon]
+				WHEN A.Plus_SubType = 100000006 THEN A.[I_Colon]
+				WHEN A.Plus_SubType = 100000000 THEN A.[H_Colon]
+				WHEN A.Plus_SubType = 100000001 THEN A.[S_Colon]
+				ELSE NULL END AS Plus_SharedCreditType 
+				, B.FullName
+				, B.New_LdspId
+				FROM dbo._Gift_Credit_ A
+					LEFT JOIN Ext_Contact B ON A.New_RelatedConstituent = B.ContactId
+				WHERE 1 = 1
+					AND B.New_LdspId IS NOT NULL
+					AND A.Plus_Type = 100000002
+			) A
+			' -- Ext_From_Statement
+		, '
+			' -- Ext_Where_Statement	
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, '	
+			' -- Ext_From_Statement_2
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+,
+-- --------------------------
+-- _Fund_Dim
+-- --------------------------
+	( 4 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Fund_Dim' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Fund_Key  NVARCHAR(100)  PRIMARY KEY
+			, Fund_Name  NVARCHAR(100) 
+			, Fund_Institution_Name  NVARCHAR(100) 
+			, Fund_Account_Number  NVARCHAR(100)
+			, Plus_GiftPurposeSubtype NVARCHAR(400)
+			, Plus_GiftPurposeType NVARCHAR(400)
+			, Plus_LdspAccountNumberInt INT
+			, New_FormalAccountName NVARCHAR(100)
+			, New_InstitutionalHierarchy NVARCHAR(100)
+			, New_InstitutionAccountNumber NVARCHAR(100)
+			, Plus_Unrestricted NVARCHAR(1)
+			, Plus_Scholarship NVARCHAR(1)
+			, New_Endowment NVARCHAR(1)
+			, Plus_EffectiveFrom DATE
+			, Plus_EffectiveTo DATE
+			, New_CaePurpose NVARCHAR(400)
+			, Plus_SubClassAccountNumber NVARCHAR(100)
+			, New_Description NVARCHAR(300)
+			, Plus_Notes NVARCHAR(200)
+			, Plus_AwardRestrictionGender NVARCHAR(400)
+			, Plus_AwardRestrictionClassYear NVARCHAR(400)
+			, Plus_AwardRestrictionCollege NVARCHAR(100)
+			, Plus_AwardRestrictionEthnicity NVARCHAR(400)
+			, Plus_AwardRestrictionGPA DECIMAL
+			, Plus_AwardRestrictionMajor NVARCHAR(100)
+			, Plus_GeographicArea NVARCHAR(100)
+			, Plus_AwardRestrictionSeminaryGraduate NVARCHAR(1)
+			, Plus_NeedBased NVARCHAR(1)
+			, Plus_AwardRestrictionSingleParent NVARCHAR(1)
+			, Plus_AwardRestrictionReturnedMissionary NVARCHAR(1)
+			, Plus_PayItForward NVARCHAR(1)
+			, Plus_AwardRestrictionNotes NVARCHAR(4000)
+			, Plus_Athletics NVARCHAR(1)
+			, Plus_FourYear NVARCHAR(1)
+			, Plus_GraduateProfessional NVARCHAR(1)
+			, Plus_TvRadio NVARCHAR(1)
+			, Plus_TechnologySpec NVARCHAR(1)
+			, Plus_AlumniAssociation NVARCHAR(1)
+			, Plus_MatchingGiftText NVARCHAR(4000)
+			, Plus_PrincipalAccountNumber NVARCHAR(100)
+			, Plus_Spendable NVARCHAR(25)
+			, Plus_ProposedEndowment NVARCHAR(400)
+			, Plus_ReportFrequency NVARCHAR(400)
+			, StatusCode NVARCHAR(400)
+			, Hier_New_Inst NVARCHAR(100)
+			, New_AllowGifts NVARCHAR(1)
+			' -- Ext_Create_Fields
+		, 'Fund_Key
+			, Fund_Name 
+			, Fund_Institution_Name
+			, Fund_Account_Number
+			, Plus_GiftPurposeSubtype
+			, Plus_GiftPurposeType
+			, Plus_LdspAccountNumberInt
+			, New_FormalAccountName
+			, New_InstitutionalHierarchy
+			, New_InstitutionAccountNumber
+			, Plus_Unrestricted
+			, Plus_Scholarship
+			, New_Endowment
+			, Plus_EffectiveFrom
+			, Plus_EffectiveTo
+			, New_CaePurpose
+			, Plus_SubClassAccountNumber
+			, New_Description
+			, Plus_Notes
+			, Plus_AwardRestrictionGender
+			, Plus_AwardRestrictionClassYear
+			, Plus_AwardRestrictionCollege
+			, Plus_AwardRestrictionEthnicity
+			, Plus_AwardRestrictionGPA
+			, Plus_AwardRestrictionMajor
+			, Plus_GeographicArea
+			, Plus_AwardRestrictionSeminaryGraduate
+			, Plus_NeedBased
+			, Plus_AwardRestrictionSingleParent
+			, Plus_AwardRestrictionReturnedMissionary
+			, Plus_PayItForward
+			, Plus_AwardRestrictionNotes
+			, Plus_Athletics
+			, Plus_FourYear
+			, Plus_GraduateProfessional
+			, Plus_TvRadio
+			, Plus_TechnologySpec
+			, Plus_AlumniAssociation
+			, Plus_MatchingGiftText
+			, Plus_PrincipalAccountNumber
+			, Plus_Spendable
+			, Plus_ProposedEndowment
+			, Plus_ReportFrequency
+			, StatusCode
+			, Hier_New_Inst
+			, New_AllowGifts
+			' -- Ext_Insert_Fields
+		, 'DISTINCT CONVERT(NVARCHAR(100),A.New_FundAccountId) AS Fund_Key
+			, A.New_Name AS Fund_Name
+			, A.New_FundName AS Fund_Institution_Name
+			, A.New_AccountNumber AS Fund_Account_Number
+			, C.Column_Label AS Plus_GiftPurposeSubtype
+			, B.Column_Label AS Plus_GiftPurposeType
+			, A.Plus_LdspAccountNumberInt
+			, A.New_FormalAccountName
+			, CONVERT(NVARCHAR(100),A.New_InstitutionalHierarchy) AS New_InstitutionalHierarchy
+			, A.New_InstitutionAccountNumber
+			, CASE WHEN A.Plus_Unrestricted = 0 THEN A.[N] 
+				WHEN A.Plus_Unrestricted = 1 THEN A.[Y] 
+				ELSE NULL END AS Plus_Unrestricted
+			, CASE WHEN A.Plus_Scholarship = 0 THEN A.[N] 
+				WHEN A.Plus_Scholarship = 1 THEN A.[Y] 
+				ELSE NULL END AS Plus_Scholarship
+			, CASE WHEN A.New_Endowment = 0 THEN A.[N] 
+				WHEN A.New_Endowment = 1 THEN A.[Y] 
+				ELSE NULL END AS New_Endowment
+			, CONVERT(VARCHAR(10),A.Plus_EffectiveFrom,101) AS Plus_EffectiveFrom
+			, CONVERT(VARCHAR(10),A.Plus_EffectiveTo,101) AS Plus_EffectiveTo
+			, D.Column_Label AS New_CaePurpose
+			, A.Plus_SubClassAccountNumber
+			, A.New_Description
+			, A.Plus_Notes
+			, E.Column_Label AS Plus_AwardRestrictionGender
+			, F.Column_Label AS Plus_AwardRestrictionClassYear
+			, CONVERT(NVARCHAR(100),A.Plus_AwardRestrictionCollege) AS Plus_AwardRestrictionCollege
+			, G.Column_Label AS Plus_AwardRestrictionEthnicity
+			, A.Plus_AwardRestrictionGPA
+			, CONVERT(NVARCHAR(100),A.Plus_AwardRestrictionMajor) AS Plus_AwardRestrictionMajor
+			, CONVERT(NVARCHAR(100),A.Plus_GeographicArea) AS Plus_GeographicArea
+			, CASE WHEN A.Plus_AwardRestrictionSeminaryGraduate = 0 THEN A.[N] 
+				WHEN A.Plus_AwardRestrictionSeminaryGraduate = 1 THEN A.[Y] 
+				ELSE NULL END AS Plus_AwardRestrictionSeminaryGraduate
+			, CASE WHEN A.Plus_NeedBased = 0 THEN A.[N]
+				WHEN A.Plus_NeedBased = 1 THEN A.[Y] 
+				ELSE NULL END AS Plus_NeedBased
+			, CASE WHEN A.Plus_AwardRestrictionSingleParent = 0 THEN A.[N] 
+				WHEN A.Plus_AwardRestrictionSingleParent = 1 THEN A.[Y] 
+				ELSE NULL END AS Plus_AwardRestrictionSingleParent
+			, CASE WHEN A.Plus_AwardRestrictionReturnedMissionary = 0 THEN A.[N] 
+				WHEN A.Plus_AwardRestrictionReturnedMissionary = 1 THEN A.[Y]
+				ELSE NULL END AS Plus_AwardRestrictionReturnedMissionary
+			, CASE WHEN A.Plus_PayItForward = 0 THEN A.[N] 
+				WHEN A.Plus_PayItForward = 1 THEN A.[Y] 
+				ELSE NULL END AS Plus_PayItForward
+			, A.Plus_AwardRestrictionNotes
+			, CASE WHEN A.Plus_Athletics = 0 THEN A.[N] 
+				WHEN A.Plus_Athletics = 1 THEN A.[Y] 
+				ELSE NULL END AS Plus_Athletics
+			, CASE WHEN A.Plus_FourYear = 0 THEN A.[N] 
+				WHEN A.Plus_FourYear = 1 THEN A.[Y] 
+				ELSE NULL END AS Plus_FourYear
+			, CASE WHEN A.Plus_GraduateProfessional = 0 THEN A.[N]
+				WHEN A.Plus_GraduateProfessional = 1 THEN A.[Y] 
+				ELSE NULL END AS Plus_GraduateProfessional
+			, CASE WHEN A.Plus_TvRadio = 0 THEN A.[N] 
+				WHEN A.Plus_TvRadio = 1 THEN A.[Y] 
+				ELSE NULL END AS Plus_TvRadio
+			, CASE WHEN A.Plus_TechnologySpec = 0 THEN A.[N]
+				WHEN A.Plus_TechnologySpec = 1 THEN A.[Y] 
+				ELSE NULL END AS Plus_TechnologySpec
+			, CASE WHEN A.Plus_AlumniAssociation = 0 THEN A.[N] 
+				WHEN A.Plus_AlumniAssociation = 1 THEN A.[Y] 
+				ELSE NULL END AS Plus_AlumniAssociation
+			, A.Plus_MatchingGiftText
+			, A.Plus_PrincipalAccountNumber
+			, A.Plus_Spendable
+			, H.Column_Label AS Plus_ProposedEndowment
+			, I.Column_Label AS Plus_ReportFrequency
+			, J.Column_Label AS StatusCode
+			, NULL AS Hier_New_Inst
+			, CASE WHEN A.New_AllowGifts = 0 THEN A.[N] 
+				WHEN A.New_AllowGifts = 1 THEN A.[Y]
+				ELSE NULL END AS New_AllowGifts
+			' -- Ext_Select_Statement
+		, 'Ext_Fund_Account A
+			LEFT JOIN _Fund_GiftPurposeType_ B ON A.Plus_GiftPurposeType = B.Column_Value
+			LEFT JOIN _Fund_GiftPurposeSubType_ C ON A.Plus_GiftPurposeSubtype = C.Column_Value
+			LEFT JOIN _Fund_CaePurpose_ D ON A.New_CaePurpose = D.Column_Value
+			LEFT JOIN _Fund_AwardRestrictionGender_ E ON A.Plus_AwardRestrictionGender = E.Column_Value
+			LEFT JOIN _Fund_AwardRestrictionClassYear_ F ON A.Plus_AwardRestrictionClassYear = F.Column_Value
+			LEFT JOIN _Fund_AwardRestrictionEthnicity_ G ON A.Plus_AwardRestrictionEthnicity = G.Column_Value
+			LEFT JOIN _FundAccount_Plus_ProposedEndowment_ H ON A.Plus_ProposedEndowment = H.Column_Value
+			LEFT JOIN _FundAccount_Plus_ReportFrequency_ I ON A.Plus_ReportFrequency = I.Column_Value
+			LEFT JOIN _FundAccount_StatusCode_ J ON A.StatusCode = J.Column_Value
+			' -- Ext_From_Statement
+		, '
+			' -- Ext_Where_Statement	
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, '	
+			' -- Ext_From_Statement_2
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+,
+-- --------------------------
+-- _User_Coordinating_Liaison_Dim
+-- --------------------------
+	( 4 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_User_Coordinating_Liaison_Dim' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'User_Coordinating_Liaison_Key NVARCHAR(100) PRIMARY KEY
+			, User_Full_Name NVARCHAR(200)
+			, User_First_Name NVARCHAR(64)
+			, User_Last_Name NVARCHAR(64)
+			, User_Personal_Email NVARCHAR(100)
+			, User_Title NVARCHAR(128)
+			, User_Internal_Email NVARCHAR(100)
+			, User_Mobile_Phone NVARCHAR(64)
+			, User_Domain_Name NVARCHAR(1024)
+			' -- Ext_Create_Fields
+		, 'User_Coordinating_Liaison_Key
+			, User_Full_Name
+			, User_First_Name
+			, User_Last_Name
+			, User_Personal_Email
+			, User_Title
+			, User_Internal_Email
+			, User_Mobile_Phone
+			, User_Domain_Name
+			' -- Ext_Insert_Fields
+		, 'DISTINCT CONVERT(NVARCHAR(100),A.SystemUserId) AS User_Coordinating_Liaison_Key
+			, A.FullName AS User_Full_Name
+			, A.FirstName AS User_First_Name
+			, A.LastName AS User_Last_Name
+			, A.PersonalEmailAddress AS User_Personal_Email
+			, A.Title AS User_Title
+			, A.InternalEmailAddress AS User_Internal_Email
+			, A.MobilePhone AS User_Mobile_Phone
+			, A.DomainName AS User_Domain_Name
+			' -- Ext_Select_Statement
+		, 'LDSPhilanthropiesDW.dbo.Ext_System_User A  
+				INNER JOIN 
+						(SELECT ContactId AS Donor_Key
+							, COALESCE(CONVERT(NVARCHAR(100),Plus_CoordinatingLiaison),[Zero]) AS User_Coordinating_Liaison_Key
+							FROM Ext_Contact
+							WHERE 1 = 1
+								AND Plus_CoordinatingLiaison IS NOT NULL
+						UNION
+						SELECT AccountId AS Donor_Key
+							, COALESCE(CONVERT(NVARCHAR(100),Plus_CoordinatingLiaison),[Zero]) AS User_Coordinating_Liaison_Key
+							FROM Ext_Account
+							WHERE 1 = 1
+								AND Plus_CoordinatingLiaison IS NOT NULL										
+						) B ON A.SystemUserId = B.User_Coordinating_Liaison_Key
+			' -- Ext_From_Statement
+		, '
+			' -- Ext_Where_Statement	
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, '	
+			' -- Ext_From_Statement_2
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+,
+-- --------------------------
+-- _User_Pending_Liaison_Dim
+-- --------------------------
+	( 4 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_User_Pending_Liaison_Dim' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'User_Pending_Liaison_Key NVARCHAR(100) PRIMARY KEY
+			, User_Full_Name NVARCHAR(200)
+			, User_First_Name NVARCHAR(64)
+			, User_Last_Name NVARCHAR(64)
+			, User_Personal_Email NVARCHAR(100)
+			, User_Title NVARCHAR(128)
+			, User_Internal_Email NVARCHAR(100)
+			, User_Mobile_Phone NVARCHAR(64)
+			, User_Domain_Name NVARCHAR(1024)
+			' -- Ext_Create_Fields
+		, 'User_Pending_Liaison_Key
+			, User_Full_Name
+			, User_First_Name
+			, User_Last_Name
+			, User_Personal_Email
+			, User_Title
+			, User_Internal_Email
+			, User_Mobile_Phone
+			, User_Domain_Name
+			' -- Ext_Insert_Fields
+		, 'DISTINCT CONVERT(NVARCHAR(100),A.SystemUserId) AS User_Pending_Liaison_Key
+			, A.FullName AS User_Full_Name
+			, A.FirstName AS User_First_Name
+			, A.LastName AS User_Last_Name
+			, A.PersonalEmailAddress AS User_Personal_Email
+			, A.Title AS User_Title
+			, A.InternalEmailAddress AS User_Internal_Email
+			, A.MobilePhone AS User_Mobile_Phone
+			, A.DomainName AS User_Domain_Name
+			' -- Ext_Select_Statement
+		, 'LDSPhilanthropiesDW.dbo.Ext_System_User A 
+				INNER JOIN
+						(SELECT ContactId AS Donor_Key
+							, COALESCE(CONVERT(NVARCHAR(100),Plus_PendingLiaison),[Zero]) AS User_Pending_Liaison_Key
+							FROM Ext_Contact
+							WHERE 1 = 1
+								AND Plus_PendingLiaison IS NOT NULL
+						UNION
+						SELECT AccountId AS Donor_Key
+							, COALESCE(CONVERT(NVARCHAR(100),Plus_PendingLiaison),[Zero]) AS User_Pending_Liaison_Key
+							FROM Ext_Account
+							WHERE 1 = 1
+								AND Plus_PendingLiaison IS NOT NULL										
+						) B ON A.SystemUserId = B.User_Pending_Liaison_Key
+			' -- Ext_From_Statement
+		, '
+			' -- Ext_Where_Statement	
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, '	
+			' -- Ext_From_Statement_2
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+,
+-- --------------------------
+-- _User_Connected_Liaison_Dim
+-- --------------------------
+	( 4 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_User_Connected_Liaison_Dim' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'User_Connected_Liaison_Key NVARCHAR(100) PRIMARY KEY
+			, User_Full_Name NVARCHAR(200)
+			, User_First_Name NVARCHAR(64)
+			, User_Last_Name NVARCHAR(64)
+			, User_Personal_Email NVARCHAR(100)
+			, User_Title NVARCHAR(128)
+			, User_Internal_Email NVARCHAR(100)
+			, User_Mobile_Phone NVARCHAR(64)
+			, User_Domain_Name NVARCHAR(1024)
+			' -- Ext_Create_Fields
+		, 'User_Connected_Liaison_Key
+			, User_Full_Name
+			, User_First_Name
+			, User_Last_Name
+			, User_Personal_Email
+			, User_Title
+			, User_Internal_Email
+			, User_Mobile_Phone
+			, User_Domain_Name
+			' -- Ext_Insert_Fields
+		, 'DISTINCT CONVERT(NVARCHAR(100),A.SystemUserId) AS User_Connected_Liaison_Key
+			, A.FullName AS User_Full_Name
+			, A.FirstName AS User_First_Name
+			, A.LastName AS User_Last_Name
+			, A.PersonalEmailAddress AS User_Personal_Email
+			, A.Title AS User_Title
+			, A.InternalEmailAddress AS User_Internal_Email
+			, A.MobilePhone AS User_Mobile_Phone
+			, A.DomainName AS User_Domain_Name
+			' -- Ext_Select_Statement
+		, 'LDSPhilanthropiesDW.dbo.Ext_System_User A 
+				INNER JOIN
+						(SELECT ContactId AS Donor_Key
+							, COALESCE(CONVERT(NVARCHAR(100),Plus_ConnectedLiaison),[Zero]) AS User_Connected_Liaison_Key
+							FROM Ext_Contact
+							WHERE 1 = 1
+								AND Plus_ConnectedLiaison IS NOT NULL
+						UNION
+						SELECT AccountId AS Donor_Key
+							, COALESCE(CONVERT(NVARCHAR(100),Plus_ConnectedLiaison),[Zero]) AS User_Connected_Liaison_Key
+							FROM Ext_Account
+							WHERE 1 = 1
+								AND Plus_ConnectedLiaison IS NOT NULL
+						) B ON A.SystemUserId = B.User_Connected_Liaison_Key
+			' -- Ext_From_Statement
+		, '
+			' -- Ext_Where_Statement	
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, '	
 			' -- Ext_From_Statement_2
 		, ' ' -- Code_Block_7
 		, ' ' -- Code_Block_8
