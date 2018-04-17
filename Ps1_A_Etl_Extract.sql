@@ -14391,18 +14391,18 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 					AND New_Primary = 1
 			) C ON A.Relationship_ContactId = C.New_NumberId LEFT JOIN
 			(SELECT Donor_Key
-				, CASE WHEN DATEADD(YEAR, DATEDIFF (YEAR, Birthdate, GETDATE()), Birthdate) > GETDATE()
-					THEN DATEDIFF(YEAR, Birthdate, GETDATE()) - 1
-					ELSE DATEDIFF(YEAR, Birthdate, GETDATE()) END AS Relationship_Age
+				, CASE WHEN DATEADD(YEAR, DATEDIFF (YEAR, New_BirthDate, GETDATE()), New_BirthDate) > GETDATE()
+					THEN DATEDIFF(YEAR, New_BirthDate, GETDATE()) - 1
+					ELSE DATEDIFF(YEAR, New_BirthDate, GETDATE()) END AS Relationship_Age
 				FROM
 					(SELECT CONVERT(NVARCHAR(100),ContactId) AS Donor_Key
-						, CONVERT(NVARCHAR(20),CAST(New_Birthdate AS DATETIME),110) AS Birthdate
+						, CASE WHEN SUBSTRING(New_BirthDate,1,2) IN ([N01],[N02],[N03],[N04],[N05],[N06],[N07],[N08],[N09],[N10],[N11],[N12])
+								AND SUBSTRING(New_BirthDate,4,2) IN ([N01],[N02],[N03],[N04],[N05],[N06],[N07],[N08],[N09],[N10],
+									[N11],[N12],[N13],[N14],[N15],[N16],[N17],[N18],[N19],[N20],
+									[N21],[N22],[N23],[N24],[N25],[N26],[N27],[N28],[N29],[N30],[N31]) 
+								AND SUBSTRING(New_BirthDate,7,2) IN ([N19],[N20])
+							THEN CONVERT(VARCHAR(10),New_BirthDate,101) ELSE NULL END AS New_BirthDate
 						FROM Ext_Contact
-						WHERE 1 = 1
-							AND SUBSTRING(New_Birthdate,4,2) <> [N00]
-							AND SUBSTRING(New_Birthdate,1,2) <> [N00]
-							AND SUBSTRING(New_Birthdate,4,2) <> [Number_Signs]
-							AND SUBSTRING(New_Birthdate,1,2) <> [Number_Signs]
 					) A
 			) D ON A.Relationship_ContactId = D.Donor_Key	
 			LEFT JOIN 
@@ -14609,10 +14609,10 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, CONVERT(NVARCHAR(100),A.New_InternationalExperiencesAId) AS ContactId
 			, NE.Column_Label AS Experience
 			, CASE WHEN A.Plus_Emeritus = 1 THEN A.[Y]
-				WHEN A.Plus_Emeritus = 0 THEN THEN A.[N] 
+				WHEN A.Plus_Emeritus = 0 THEN A.[N] 
 				ELSE NULL END AS Emeritus
-			, CASE WHEN A.Plus_StudyAbroad = 1 THEN THEN A.[Y]
-				WHEN A.Plus_StudyAbroad = 0 THEN THEN A.[N] 
+			, CASE WHEN A.Plus_StudyAbroad = 1 THEN A.[Y]
+				WHEN A.Plus_StudyAbroad = 0 THEN A.[N] 
 				ELSE NULL END AS Study_Abroad
 			, NS.New_Source AS Source
 			, CONVERT(VARCHAR(10),A.New_StartDate,101) AS New_StartDate
@@ -14827,7 +14827,15 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 														ELSE YEAR(Plus_ActualGraduationDate) END AS Academic_Year
 												, A.[Y]
 												, A.[N]
-												FROM
+												
+			' -- Ext_From_Statement
+		, ' ' -- Ext_Where_Statement	
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, '										FROM
 													(SELECT DISTINCT A.Plus_Constituent
 														, B.New_University
 														, A.Plus_ActualGraduationDate
@@ -14845,16 +14853,9 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 									AND Current_Academic_Year = [Y]
 							) A					
 					) F ON A.New_StudentsAttendanceId = F.ContactId  AND U.New_University = F.New_University
-			' -- Ext_From_Statement
-		, ' ' -- Ext_Where_Statement	
-		, NULL -- Tier_3_Stage
-		, NULL -- Tier_3_Stage_DateTime
-		, NULL -- Tier_4_Stage
-		, NULL -- Tier_4_Stage_DateTime
-		, ' ' -- Ext_Select_Statement_2
-		, 'LEFT JOIN
+			LEFT JOIN
 				(SELECT DISTINCT D.New_StudentAttendanceId
-					, [Y] AS Current_Year_Plus_4_Student
+					, D.[Y] AS Current_Year_Plus_4_Student
 					FROM Ext_Student A
 						LEFT JOIN
 							(SELECT New_StudentAttendanceId
@@ -14881,16 +14882,17 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 													(SELECT New_StudentAttendanceId
 														, New_StudentsAttendanceId AS ContactId 
 														, Plus_Year AS Academic_Year
-														, CASE WHEN New_Term = [Fall] THEN [09]
-															WHEN New_Term = [Winter] THEN [01]
-															WHEN New_Term = [Spring] THEN [04]
-															WHEN New_Term = [Summer] THEN [06]
+														, CASE WHEN New_Term = [Fall] THEN [N09]
+															WHEN New_Term = [Winter] THEN [N01]
+															WHEN New_Term = [Spring] THEN [N04]
+															WHEN New_Term = [Summer] THEN [N06]
 															WHEN New_StudentAttendanceId IS NULL THEN NULL
-															ELSE [01] END AS Academic_Month
+															ELSE [N01] END AS Academic_Month
 														, CASE WHEN New_StudentAttendanceId IS NULL THEN NULL
-															ELSE [01] END AS Academic_Day
+															ELSE [N01] END AS Academic_Day
 														, [Y]
 														, [N]
+														, [Dash]
 														FROM Ext_Student
 														WHERE 1 = 1
 															AND New_StudentAttendanceId IS NOT NULL
