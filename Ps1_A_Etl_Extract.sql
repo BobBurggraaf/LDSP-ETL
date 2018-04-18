@@ -506,6 +506,18 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, StateCode INT
 			, StatusCode INT
 			, ModifiedOn DATETIME
+			, Other NVARCHAR(5) DEFAULT ''Other''
+			, General NVARCHAR(10) DEFAULT ''General''
+			, In_Person NVARCHAR(10) DEFAULT ''In Person''
+			, Face_To_Face NVARCHAR(15) DEFAULT ''Face-To-Face''
+			, Mail NVARCHAR(10) DEFAULT ''Mail''
+			, Direct_Mail NVARCHAR(15) DEFAULT ''Direct Mail''
+			, Phone NVARCHAR(10) DEFAULT ''Phone''
+			, Telefund NVARCHAR(10) DEFAULT ''Telefund''
+			, Email NVARCHAR(10) DEFAULT ''Email''
+			, Web NVARCHAR(10) DEFAULT ''Web''
+			, N100000000 NVARCHAR(15) DEFAULT ''100000000''
+			, N100000001 NVARCHAR(15) DEFAULT ''100000001''
 			' -- Ext_Create_Fields
 		, 'ActivityId
 			, ActivityTypeCode
@@ -1510,12 +1522,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 	)
 	,
 -- --------------------------
--- New_AddressBase (Ext_Address)
+-- New_AddressBase (Ext_Address_Base)
 -- --------------------------
 	( 1 -- Tier
 		, 'dbo.New_AddressBase' -- Source_Table
 		, 'Oa_Extract.New_AddressBase' -- Destination_Table
-		, 'Ext_Address' -- Ext_Table
+		, 'Ext_Address_Base' -- Ext_Table
 		, 'Plus_RelatedContact UNIQUEIDENTIFIER
 			, Plus_RelatedAccount UNIQUEIDENTIFIER
 			, New_Primary BIT
@@ -1596,6 +1608,117 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Lds_StateProvince NVARCHAR(100)
 			, Lds_County NVARCHAR(100)
 			, Lds_City NVARCHAR(100)
+			, Ofallon NVARCHAR(50) DEFAULT ''Ofallon''
+			, Saint_Charles NVARCHAR(50) DEFAULT ''Saint Charles''
+			, Saint_Clair NVARCHAR(50) DEFAULT ''Saint Clair''
+			, MO NVARCHAR(50) DEFAULT ''MO''
+			, IL NVARCHAR(50) DEFAULT ''IL''
+			, O_Appos_Fallon NVARCHAR(50) DEFAULT ''O''''Fallon''
+			, O_Fallon NVARCHAR(50) DEFAULT ''O Fallon''
+			, Mexico_D_Per_F_Per NVARCHAR(50) DEFAULT ''Mexico D.F.''
+			, Mexico NVARCHAR(50) DEFAULT ''Mexico''
+			, Mexico_comma_D_Per_F_Per NVARCHAR(50) DEFAULT ''Mexico, D.F.''
+			, Mexico_DF NVARCHAR(50) DEFAULT ''Mexico DF''
+			, Mexico_City_D_Per_F_Per NVARCHAR(50) DEFAULT ''Mexico City D.F.''
+			, Mexico_City_DF NVARCHAR(50) DEFAULT ''Mexico City DF''
+			, Calgary_Comma_AB NVARCHAR(50) DEFAULT ''Calgary, AB''
+			, Canada NVARCHAR(50) DEFAULT ''Canada''
+			, Calgary_AB NVARCHAR(50) DEFAULT ''Calgary AB''
+			, Calgary__AB NVARCHAR(50) DEFAULT ''Calgary  AB''
+			, Calgary NVARCHAR(50) DEFAULT ''Calgary''
+			, Calgary_AI NVARCHAR(50) DEFAULT ''Calgary AI''
+			, Calgary_Al NVARCHAR(50) DEFAULT ''Calgary Al''
+			, Calgary_Alberta NVARCHAR(50) DEFAULT ''Calgary Alberta''
+			, Calgary_BC NVARCHAR(50) DEFAULT ''Calgary BC''
+			, Calgary_Comma_Alberta NVARCHAR(50) DEFAULT ''Calgary, Alberta''
+			, Shore_View NVARCHAR(50) DEFAULT ''Shore View''
+			, Ramsey NVARCHAR(50) DEFAULT ''Ramsey''
+			, MN NVARCHAR(50) DEFAULT ''MN''
+			, Shoreview NVARCHAR(50) DEFAULT ''Shoreview''
+			, Hamilton_Comma_ON NVARCHAR(50) DEFAULT ''Hamilton, ON''
+			, Hamilton_ON NVARCHAR(50) DEFAULT ''Hamilton ON''
+			, Hamilton_Ontario NVARCHAR(50) DEFAULT ''Hamilton Ontario''
+			, Ducklake_SK NVARCHAR(50) DEFAULT ''Ducklake SK''
+			, Duck_Lake_SK NVARCHAR(50) DEFAULT ''Duck Lake SK''
+			, Pachuca_HGO NVARCHAR(50) DEFAULT ''Pachuca HGO''
+			, Pachuca_Comma_HGO NVARCHAR(50) DEFAULT ''Pachuca, HGO''
+			, Pachuca NVARCHAR(50) DEFAULT ''Pachuca''
+			, Pachuca_Hidalgo NVARCHAR(50) DEFAULT ''Pachuca Hidalgo''
+			, Pachuca_De_Soto_Hida NVARCHAR(50) DEFAULT ''Pachuca De Soto Hida''
+			, Pachuca_HI NVARCHAR(50) DEFAULT ''Pachuca HI''
+			, Pachuca_HG NVARCHAR(50) DEFAULT ''Pachuca HG''
+			, Ottawa_Comma_ON NVARCHAR(50) DEFAULT ''Ottawa, ON''
+			, Ottawa_ON NVARCHAR(50) DEFAULT ''Ottawa ON''
+			, Ottawa NVARCHAR(50) DEFAULT ''Ottawa''
+			, Ottawa_Ontario NVARCHAR(50) DEFAULT ''Ottawa Ontario''
+			, Ottawa_AB NVARCHAR(50) DEFAULT ''Ottawa AB''
+			, Weston_Dash_Cap_Super_Dash_Mare NVARCHAR(50) DEFAULT ''Weston-Super-Mare''
+			, England NVARCHAR(50) DEFAULT ''England''
+			, Weston_Dash_super_Dash_Mare NVARCHAR(50) DEFAULT ''Weston-super-Mare''
+			, United_Kingdom NVARCHAR(50) DEFAULT ''United Kingdom''
+			, Weston_Super_Mare NVARCHAR(50) DEFAULT ''Weston Super Mare''
+			, Weston_Dash_Super_Mare_B NVARCHAR(50) DEFAULT ''Weston-Super-Mare B''
+			, Risingsun NVARCHAR(50) DEFAULT ''Risingsun''
+			, OH NVARCHAR(50) DEFAULT ''OH''
+			, Rising_Sun NVARCHAR(50) DEFAULT ''Rising Sun''
+			, Nuku_Appo_Cap_Alofa NVARCHAR(50) DEFAULT ''Nuku''''Alofa''
+			, Tonga NVARCHAR(50) DEFAULT ''Tonga''
+			, Nuku_Appo_alofa NVARCHAR(50) DEFAULT ''Nuku''''alofa''
+			, Nuku_Alofa NVARCHAR(50) DEFAULT ''Nuku Alofa''
+			, Nuku_Tick_alofa_Tongatapu NVARCHAR(50) DEFAULT ''Nuku`alofa Tongatapu''
+			, Nukuaiofa NVARCHAR(50) DEFAULT ''Nukuaiofa''
+			, Nukualofa NVARCHAR(50) DEFAULT ''Nukualofa''
+			, Nukualofa_Tongatapu NVARCHAR(50) DEFAULT ''Nukualofa Tongatapu''
+			, Nuku_Appo_Alofa_Tongatapu NVARCHAR(50) DEFAULT ''Nuku''''Alofa Tongatapu''
+			, Nukualofa_Comma_Tongatapu NVARCHAR(50) DEFAULT ''Nukualofa, Tongatapu''
+			, Willow_Brook NVARCHAR(50) DEFAULT ''Willow Brook''
+			, Du_Page NVARCHAR(50) DEFAULT ''Du Page''
+			, Willowbrook NVARCHAR(50) DEFAULT ''Willowbrook''
+			, Puebla NVARCHAR(50) DEFAULT ''Puebla''
+			, Puebla_Comma_PUE NVARCHAR(50) DEFAULT ''Puebla, PUE''
+			, Puebla_CP NVARCHAR(50) DEFAULT ''Puebla CP''
+			, Puebla_ME NVARCHAR(50) DEFAULT ''Puebla ME''
+			, Puebla_PUE NVARCHAR(50) DEFAULT ''Puebla PUE''
+			, Puebla_Puebla NVARCHAR(50) DEFAULT ''Puebla Puebla''
+			, Charlestown NVARCHAR(50) DEFAULT ''Charlestown''
+			, Jefferson NVARCHAR(50) DEFAULT ''Jefferson''
+			, WV NVARCHAR(50) DEFAULT ''WV''
+			, Charles_Town NVARCHAR(50) DEFAULT ''Charles Town''
+			, Xian NVARCHAR(50) DEFAULT ''Xian''
+			, China NVARCHAR(50) DEFAULT ''China''
+			, CHINA_PEOPLES_REP_OF NVARCHAR(50) DEFAULT ''CHINA, PEOPLE''''S REP OF''
+			, Xi_Appo_an NVARCHAR(50) DEFAULT ''Xi''''an''
+			, Coaldale NVARCHAR(50) DEFAULT ''Coaldale''
+			, Coaldale_AB NVARCHAR(50) DEFAULT ''Coaldale AB''
+			, Coaldale_Alberta NVARCHAR(50) DEFAULT ''Coaldale Alberta''
+			, Coaldale_Comma_AB NVARCHAR(50) DEFAULT ''Coaldale, AB''
+			, De_Lancey NVARCHAR(50) DEFAULT ''De Lancey''
+			, Delaware NVARCHAR(50) DEFAULT ''Delaware''
+			, NY NVARCHAR(50) DEFAULT ''NY''
+			, Cardston NVARCHAR(50) DEFAULT ''Cardston''
+			, Cardston_AB NVARCHAR(50) DEFAULT ''Cardston AB''
+			, Cardston_Comma_AB NVARCHAR(50) DEFAULT ''Cardston, AB''
+			, Salt_Lake_Cty NVARCHAR(50) DEFAULT ''Salt Lake Cty''
+			, UT NVARCHAR(50) DEFAULT ''UT''
+			, Salt_Lake_City NVARCHAR(50) DEFAULT ''Salt Lake City''
+			, St_Per_George NVARCHAR(50) DEFAULT ''St. George''
+			, Saint_George NVARCHAR(50) DEFAULT ''Saint George''
+			, W_Valley_City NVARCHAR(50) DEFAULT ''W Valley City''
+			, West_Valley_City NVARCHAR(50) DEFAULT ''West Valley City''
+			, West_Valley NVARCHAR(50) DEFAULT ''West Valley''
+			, Saratoga_Spgs NVARCHAR(50) DEFAULT ''Saratoga Spgs''
+			, Saratoga_Springs NVARCHAR(50) DEFAULT ''Saratoga Springs''
+			, Vancouver NVARCHAR(50) DEFAULT ''Vancouver''
+			, Vancouver_BC NVARCHAR(50) DEFAULT ''Vancouver BC''
+			, Vancouver_AB NVARCHAR(50) DEFAULT ''Vancouver AB''
+			, Vancover_BC NVARCHAR(50) DEFAULT ''Vancover BC''
+			, Eagle_Mtn NVARCHAR(50) DEFAULT ''Eagle Mtn''
+			, Eagle_Mountain NVARCHAR(50) DEFAULT ''Eagle Mountain''
+			, N_Salt_Lake NVARCHAR(50) DEFAULT ''N Salt Lake''
+			, North_Salt_Lake NVARCHAR(50) DEFAULT ''North Salt Lake''
+			, St_Anthony NVARCHAR(50) DEFAULT ''St Anthony''
+			, ID NVARCHAR(50) DEFAULT ''ID''
+			, Saint_Anthony NVARCHAR(50) DEFAULT ''Saint Anthony''
 			' -- Ext_Create_Fields
 		, 'Plus_RelatedContact
 			, New_Primary
@@ -12377,6 +12500,323 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 	)
 	,
 -- --------------------------
+-- Ext_Address
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, 'Ext_Address' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Plus_RelatedContact UNIQUEIDENTIFIER
+			, New_Primary BIT
+			, New_Street1 NVARCHAR(100)
+			, New_Street2 NVARCHAR(100)
+			, New_Street3 NVARCHAR(100)
+			, New_Zip4 NVARCHAR(15)
+			, Plus_AddressDisplay NVARCHAR(300)
+			, Plus_Longitude FLOAT
+			, Plus_Latitude FLOAT
+			, StateCode INT
+			, New_Confidential BIT
+			, New_CityLookUp UNIQUEIDENTIFIER
+			, New_CountyId UNIQUEIDENTIFIER
+			, New_StatesProvinces UNIQUEIDENTIFIER
+			, New_CountryRegions UNIQUEIDENTIFIER
+			, New_PostalCodes UNIQUEIDENTIFIER
+			, Plus_OneAccordQuality INT
+			, New_AddressType INT
+			, New_AddressId UNIQUEIDENTIFIER
+			, New_ConfirmedDate DATETIME
+			, Plus_ForeignPostalCode NVARCHAR(100)
+			, Lds_PostalCode NVARCHAR(100)
+			, Lds_StateProvince NVARCHAR(100)
+			, Lds_County NVARCHAR(100)
+			, Lds_City NVARCHAR(100)
+			, Ofallon NVARCHAR(50) DEFAULT ''Ofallon''
+			, Saint_Charles NVARCHAR(50) DEFAULT ''Saint Charles''
+			, Saint_Clair NVARCHAR(50) DEFAULT ''Saint Clair''
+			, MO NVARCHAR(50) DEFAULT ''MO''
+			, IL NVARCHAR(50) DEFAULT ''IL''
+			, O_Appos_Fallon NVARCHAR(50) DEFAULT ''O''''Fallon''
+			, O_Fallon NVARCHAR(50) DEFAULT ''O Fallon''
+			, Mexico_D_Per_F_Per NVARCHAR(50) DEFAULT ''Mexico D.F.''
+			, Mexico NVARCHAR(50) DEFAULT ''Mexico''
+			, Mexico_comma_D_Per_F_Per NVARCHAR(50) DEFAULT ''Mexico, D.F.''
+			, Mexico_DF NVARCHAR(50) DEFAULT ''Mexico DF''
+			, Mexico_City_D_Per_F_Per NVARCHAR(50) DEFAULT ''Mexico City D.F.''
+			, Mexico_City_DF NVARCHAR(50) DEFAULT ''Mexico City DF''
+			, Calgary_Comma_AB NVARCHAR(50) DEFAULT ''Calgary, AB''
+			, Canada NVARCHAR(50) DEFAULT ''Canada''
+			, Calgary_AB NVARCHAR(50) DEFAULT ''Calgary AB''
+			, Calgary__AB NVARCHAR(50) DEFAULT ''Calgary  AB''
+			, Calgary NVARCHAR(50) DEFAULT ''Calgary''
+			, Calgary_AI NVARCHAR(50) DEFAULT ''Calgary AI''
+			, Calgary_Al NVARCHAR(50) DEFAULT ''Calgary Al''
+			, Calgary_Alberta NVARCHAR(50) DEFAULT ''Calgary Alberta''
+			, Calgary_BC NVARCHAR(50) DEFAULT ''Calgary BC''
+			, Calgary_Comma_Alberta NVARCHAR(50) DEFAULT ''Calgary, Alberta''
+			, Shore_View NVARCHAR(50) DEFAULT ''Shore View''
+			, Ramsey NVARCHAR(50) DEFAULT ''Ramsey''
+			, MN NVARCHAR(50) DEFAULT ''MN''
+			, Shoreview NVARCHAR(50) DEFAULT ''Shoreview''
+			, Hamilton_Comma_ON NVARCHAR(50) DEFAULT ''Hamilton, ON''
+			, Hamilton_ON NVARCHAR(50) DEFAULT ''Hamilton ON''
+			, Hamilton_Ontario NVARCHAR(50) DEFAULT ''Hamilton Ontario''
+			, Ducklake_SK NVARCHAR(50) DEFAULT ''Ducklake SK''
+			, Duck_Lake_SK NVARCHAR(50) DEFAULT ''Duck Lake SK''
+			, Pachuca_HGO NVARCHAR(50) DEFAULT ''Pachuca HGO''
+			, Pachuca_Comma_HGO NVARCHAR(50) DEFAULT ''Pachuca, HGO''
+			, Pachuca NVARCHAR(50) DEFAULT ''Pachuca''
+			, Pachuca_Hidalgo NVARCHAR(50) DEFAULT ''Pachuca Hidalgo''
+			, Pachuca_De_Soto_Hida NVARCHAR(50) DEFAULT ''Pachuca De Soto Hida''
+			, Pachuca_HI NVARCHAR(50) DEFAULT ''Pachuca HI''
+			, Pachuca_HG NVARCHAR(50) DEFAULT ''Pachuca HG''
+			, Ottawa_Comma_ON NVARCHAR(50) DEFAULT ''Ottawa, ON''
+			, Ottawa_ON NVARCHAR(50) DEFAULT ''Ottawa ON''
+			, Ottawa NVARCHAR(50) DEFAULT ''Ottawa''
+			, Ottawa_Ontario NVARCHAR(50) DEFAULT ''Ottawa Ontario''
+			, Ottawa_AB NVARCHAR(50) DEFAULT ''Ottawa AB''
+			, Weston_Dash_Cap_Super_Dash_Mare NVARCHAR(50) DEFAULT ''Weston-Super-Mare''
+			, England NVARCHAR(50) DEFAULT ''England''
+			, Weston_Dash_super_Dash_Mare NVARCHAR(50) DEFAULT ''Weston-super-Mare''
+			, United_Kingdom NVARCHAR(50) DEFAULT ''United Kingdom''
+			, Weston_Super_Mare NVARCHAR(50) DEFAULT ''Weston Super Mare''
+			, Weston_Dash_Super_Mare_B NVARCHAR(50) DEFAULT ''Weston-Super-Mare B''
+			, Risingsun NVARCHAR(50) DEFAULT ''Risingsun''
+			, OH NVARCHAR(50) DEFAULT ''OH''
+			, Rising_Sun NVARCHAR(50) DEFAULT ''Rising Sun''
+			, Nuku_Appo_Cap_Alofa NVARCHAR(50) DEFAULT ''Nuku''''Alofa''
+			, Tonga NVARCHAR(50) DEFAULT ''Tonga''
+			, Nuku_Appo_alofa NVARCHAR(50) DEFAULT ''Nuku''''alofa''
+			, Nuku_Alofa NVARCHAR(50) DEFAULT ''Nuku Alofa''
+			, Nuku_Tick_alofa_Tongatapu NVARCHAR(50) DEFAULT ''Nuku`alofa Tongatapu''
+			, Nukuaiofa NVARCHAR(50) DEFAULT ''Nukuaiofa''
+			, Nukualofa NVARCHAR(50) DEFAULT ''Nukualofa''
+			, Nukualofa_Tongatapu NVARCHAR(50) DEFAULT ''Nukualofa Tongatapu''
+			, Nuku_Appo_Alofa_Tongatapu NVARCHAR(50) DEFAULT ''Nuku''''Alofa Tongatapu''
+			, Nukualofa_Comma_Tongatapu NVARCHAR(50) DEFAULT ''Nukualofa, Tongatapu''
+			, Willow_Brook NVARCHAR(50) DEFAULT ''Willow Brook''
+			, Du_Page NVARCHAR(50) DEFAULT ''Du Page''
+			, Willowbrook NVARCHAR(50) DEFAULT ''Willowbrook''
+			, Puebla NVARCHAR(50) DEFAULT ''Puebla''
+			, Puebla_Comma_PUE NVARCHAR(50) DEFAULT ''Puebla, PUE''
+			, Puebla_CP NVARCHAR(50) DEFAULT ''Puebla CP''
+			, Puebla_ME NVARCHAR(50) DEFAULT ''Puebla ME''
+			, Puebla_PUE NVARCHAR(50) DEFAULT ''Puebla PUE''
+			, Puebla_Puebla NVARCHAR(50) DEFAULT ''Puebla Puebla''
+			, Charlestown NVARCHAR(50) DEFAULT ''Charlestown''
+			, Jefferson NVARCHAR(50) DEFAULT ''Jefferson''
+			, WV NVARCHAR(50) DEFAULT ''WV''
+			, Charles_Town NVARCHAR(50) DEFAULT ''Charles Town''
+			, Xian NVARCHAR(50) DEFAULT ''Xian''
+			, China NVARCHAR(50) DEFAULT ''China''
+			, CHINA_PEOPLES_REP_OF NVARCHAR(50) DEFAULT ''CHINA, PEOPLE''''S REP OF''
+			, Xi_Appo_an NVARCHAR(50) DEFAULT ''Xi''''an''
+			, Coaldale NVARCHAR(50) DEFAULT ''Coaldale''
+			, Coaldale_AB NVARCHAR(50) DEFAULT ''Coaldale AB''
+			, Coaldale_Alberta NVARCHAR(50) DEFAULT ''Coaldale Alberta''
+			, Coaldale_Comma_AB NVARCHAR(50) DEFAULT ''Coaldale, AB''
+			, De_Lancey NVARCHAR(50) DEFAULT ''De Lancey''
+			, Delaware NVARCHAR(50) DEFAULT ''Delaware''
+			, NY NVARCHAR(50) DEFAULT ''NY''
+			, Cardston NVARCHAR(50) DEFAULT ''Cardston''
+			, Cardston_AB NVARCHAR(50) DEFAULT ''Cardston AB''
+			, Cardston_Comma_AB NVARCHAR(50) DEFAULT ''Cardston, AB''
+			, Salt_Lake_Cty NVARCHAR(50) DEFAULT ''Salt Lake Cty''
+			, UT NVARCHAR(50) DEFAULT ''UT''
+			, Salt_Lake_City NVARCHAR(50) DEFAULT ''Salt Lake City''
+			, St_Per_George NVARCHAR(50) DEFAULT ''St. George''
+			, Saint_George NVARCHAR(50) DEFAULT ''Saint George''
+			, W_Valley_City NVARCHAR(50) DEFAULT ''W Valley City''
+			, West_Valley_City NVARCHAR(50) DEFAULT ''West Valley City''
+			, West_Valley NVARCHAR(50) DEFAULT ''West Valley''
+			, Saratoga_Spgs NVARCHAR(50) DEFAULT ''Saratoga Spgs''
+			, Saratoga_Springs NVARCHAR(50) DEFAULT ''Saratoga Springs''
+			, Vancouver NVARCHAR(50) DEFAULT ''Vancouver''
+			, Vancouver_BC NVARCHAR(50) DEFAULT ''Vancouver BC''
+			, Vancouver_AB NVARCHAR(50) DEFAULT ''Vancouver AB''
+			, Vancover_BC NVARCHAR(50) DEFAULT ''Vancover BC''
+			, Eagle_Mtn NVARCHAR(50) DEFAULT ''Eagle Mtn''
+			, Eagle_Mountain NVARCHAR(50) DEFAULT ''Eagle Mountain''
+			, N_Salt_Lake NVARCHAR(50) DEFAULT ''N Salt Lake''
+			, North_Salt_Lake NVARCHAR(50) DEFAULT ''North Salt Lake''
+			, St_Anthony NVARCHAR(50) DEFAULT ''St Anthony''
+			, ID NVARCHAR(50) DEFAULT ''ID''
+			, Saint_Anthony NVARCHAR(50) DEFAULT ''Saint Anthony''
+			, Y NVARCHAR(1) DEFAULT ''Y''
+			, N NVARCHAR(1) DEFAULT ''N''
+			, Dash NVARCHAR(1) DEFAULT ''-''
+			, Space NVARCHAR(1) DEFAULT '' ''
+			, ProperCase NVARCHAR(4000) DEFAULT ''|Act|Air|Al|am|an|Ana|and|And|Ann|Arm|as|au|Ave|ba|Bad|Bar|Bay|Bch|Bee|bei|Bei|Bel|Big|Bow|Box|Br|Bud|Buk|By|
+													|Cd|Chi|cho|Chu|Cle|Col|Ctr|Cty|Cut|Cyn|Dam|Dan|De|de|Del|Den|Des|DeWinton|di|Do|do|Dos|Dry|du|
+													|Eau|Edo|Egg|El|Elk|Ell|Elm|Ely|Emu|en|Et|Eup|Ewa|Eye|Fe|Fox|Foy|Ft|Fu|Gan|Gap|Gi|Gig|Gro|Gto|gu|Gu|Gun|Gye|
+													|Hae|Ham|Hat|Hls|Ho|Hof|Hot|Hts|Hu|Ile|im|in|In|Inn|Is|Jal|Jay|Jct|Jet|Jim|Jin|Joe|Joo|Joy|Ju|
+													|Kan|Ken|ken|Key|Ki|Ku|Kus|La|Lam|Las|Le|le|Lea|Lee|Les|Lin|Loa|Los|
+													|Mai|Mar|Mc|Med|Mer|Mex|Mi|Mie|Min|Mnt|Mor|Mt|Mtn|Mun|Na|Nam|Nan|Nat|New|Nos|Nye|Oak|of|Oil|Ola|Old|Ord|Oro|
+													|Pak|Paw|Paz|Pe|Pea|Pen|po|Pok|Pos|Pri|Red|Rex|Rey|Rio|Roi|Roy|Rue|Run|Rye|
+													|Sac|Sai|Sam|San|Sao|Sea|Shi|shi|si|Siu|Six|Ski|So|St|Sta|Ste|Sul|Sun|Sur|
+													|Ta|Tai|Tan|Tao|Tel|Ten|The|Tin|Top|Tow|Two|Twp|Usk|USSCA|Uul|Van|Vi|Vlg|Vly|voa|
+													|Wai|Wan|Way|Wuk|Xi|Yan|Yi|Yuc|Zug|''
+			, Comma_Space NVARCHAR(5) DEFAULT '', ''
+			' -- Ext_Create_Fields
+		, 'Plus_RelatedContact
+			, New_Primary
+			, New_Street1
+			, New_Street2
+			, New_Street3
+			, New_Zip4
+			, Plus_AddressDisplay
+			, Plus_Longitude
+			, Plus_Latitude
+			, StateCode
+			, New_Confidential
+			, New_CityLookUp
+			, New_CountyId
+			, New_StatesProvinces
+			, New_CountryRegions
+			, New_PostalCodes
+			, Plus_OneAccordQuality
+			, New_AddressType
+			, New_AddressId
+			, New_ConfirmedDate
+			, Plus_ForeignPostalCode
+			, Lds_PostalCode
+			, Lds_StateProvince
+			, Lds_County
+			, Lds_City
+			' -- Ext_Insert_Fields
+		, 'Plus_RelatedContact
+			, New_Primary
+			, New_Street1
+			, New_Street2
+			, New_Street3
+			, New_Zip4
+			, Plus_AddressDisplay
+			, Plus_Longitude
+			, Plus_Latitude
+			, StateCode
+			, New_Confidential
+			, New_CityLookUp
+			, New_CountyId
+			, New_StatesProvinces
+			, New_CountryRegions
+			, New_PostalCodes
+			, Plus_OneAccordQuality
+			, New_AddressType
+			, New_AddressId
+			, New_ConfirmedDate
+			, Plus_ForeignPostalCode
+			, Lds_PostalCode
+			, Lds_StateProvince
+			, Lds_County
+			, RTRIM(LTRIM(CASE WHEN Lds_City = [Ofallon] AND OA.Lds_County IN ([Saint_Charles],[Saint_Clair]) AND OA.Lds_StateProvince IN ([MO],[IL]) THEN [O_Appos_Fallon]
+										WHEN Lds_City = [O_Fallon] AND OA.Lds_County IN ([Saint_Charles],[Saint_Clair]) AND OA.Lds_StateProvince IN ([MO],[IL]) THEN [O_Appos_Fallon]
+										WHEN Lds_City = [Mexico_D_Per_F_Per] AND NCRY.New_Name = [Mexico] THEN [Mexico_comma_D_Per_F_Per]
+										WHEN Lds_City = [Mexico_DF] AND NCRY.New_Name = [Mexico] THEN [Mexico_comma_D_Per_F_Per]
+										WHEN Lds_City = [Mexico_City_D_Per_F_Per] AND NCRY.New_Name = [Mexico] THEN [Mexico_comma_D_Per_F_Per]
+										WHEN Lds_City = [Mexico_City_DF] AND NCRY.New_Name = [Mexico] THEN [Mexico_comma_D_Per_F_Per]
+										WHEN Lds_City = [Calgary_Comma_AB] AND NCRY.New_Name = [Canada] THEN [Calgary_AB]
+										WHEN Lds_City = [Calgary__AB] AND NCRY.New_Name = [Canada] THEN [Calgary_AB]
+										WHEN Lds_City = [Calgary] AND NCRY.New_Name = [Canada] THEN [Calgary_AB]
+										WHEN Lds_City = [Calgary_AI] AND NCRY.New_Name = [Canada] THEN [Calgary_AB]
+										WHEN Lds_City = [Calgary_Al] AND NCRY.New_Name = [Canada] THEN [Calgary_AB]
+										WHEN Lds_City = [Calgary_Alberta] AND NCRY.New_Name = [Canada] THEN [Calgary_AB]
+										WHEN Lds_City = [Calgary_BC] AND NCRY.New_Name = [Canada] THEN [Calgary_AB]
+										WHEN Lds_City = [Calgary_Comma_Alberta] AND NCRY.New_Name = [Canada] THEN [Calgary_AB]
+										WHEN Lds_City = [Shore_View] AND OA.Lds_County IN ([Ramsey]) AND OA.Lds_StateProvince IN ([MN]) THEN [Shoreview]
+										WHEN Lds_City = [Hamilton_Comma_ON] AND NCRY.New_Name = [Canada] THEN [Hamilton_ON]
+										WHEN Lds_City = [Hamilton_Ontario] AND NCRY.New_Name = [Canada] THEN [Hamilton_ON]
+										WHEN Lds_City = [Ducklake_SK] AND NCRY.New_Name = [Canada] THEN [Duck_Lake_SK]
+										WHEN Lds_City = [Pachuca_HGO] AND NCRY.New_Name = [Mexico] THEN [Pachuca_Comma_HGO]
+										WHEN Lds_City = [Pachuca] AND NCRY.New_Name = [Mexico] THEN [Pachuca_Comma_HGO]
+										WHEN Lds_City = [Pachuca_Hidalgo] AND NCRY.New_Name = [Mexico] THEN [Pachuca_Comma_HGO]
+										WHEN Lds_City = [Pachuca_De_Soto_Hida] AND NCRY.New_Name = [Mexico] THEN [Pachuca_Comma_HGO]
+										WHEN Lds_City = [Pachuca_HI] AND NCRY.New_Name = [Mexico] THEN [Pachuca_Comma_HGO]
+										WHEN Lds_City = [Pachuca_HG] AND NCRY.New_Name = [Mexico] THEN [Pachuca_Comma_HGO]
+										WHEN Lds_City = [Ottawa_Comma_ON] AND NCRY.New_Name = [Canada] THEN [Ottawa_ON]
+										WHEN Lds_City = [Ottawa] AND NCRY.New_Name = [Canada] THEN [Ottawa_ON]
+										WHEN Lds_City = [Ottawa_Ontario] AND NCRY.New_Name = [Canada] THEN [Ottawa_ON]
+										WHEN Lds_City = [Ottawa_AB] AND NCRY.New_Name = [Canada] THEN [Ottawa_ON]
+										WHEN Lds_City = [Weston_Dash_Cap_Super_Dash_Mare] AND NCRY.New_Name = [England] THEN [Weston_Dash_super_Dash_Mare]
+										WHEN Lds_City = [Weston_Dash_Cap_Super_Dash_Mare] AND NCRY.New_Name = [United_Kingdom] THEN [Weston_Dash_super_Dash_Mare]
+										WHEN Lds_City = [Weston_Super_Mare] AND NCRY.New_Name = [United_Kingdom] THEN [Weston_Dash_super_Dash_Mare]
+										WHEN Lds_City = [Weston_Dash_Super_Mare_B] AND NCRY.New_Name = [England] THEN [Weston_Dash_super_Dash_Mare]
+										WHEN Lds_City = [Risingsun] AND OA.Lds_StateProvince IN ([OH]) THEN [Rising_Sun]
+										WHEN Lds_City = [Nuku_Appo_alofa] AND NCRY.New_Name = [Tonga] THEN [Nuku_Appo_alofa]
+										WHEN Lds_City = [Nuku_Alofa] AND NCRY.New_Name = [Tonga] THEN [Nuku_Appo_alofa]
+										WHEN Lds_City = [Nuku_Appo_Cap_Alofa] AND NCRY.New_Name = [Tonga] THEN [Nuku_Appo_alofa]
+										WHEN Lds_City = [Nuku_Tick_alofa_Tongatapu] AND NCRY.New_Name = [Tonga] THEN [Nuku_Appo_alofa]
+										WHEN Lds_City = [Nukuaiofa] AND NCRY.New_Name = [Tonga] THEN [Nuku_Appo_alofa]
+										WHEN Lds_City = [Nukualofa] AND NCRY.New_Name = [Tonga] THEN [Nuku_Appo_alofa]
+										WHEN Lds_City = [Nukualofa_Tongatapu] AND NCRY.New_Name = [Tonga] THEN [Nuku_Appo_alofa]
+										WHEN Lds_City = [Nuku_Appo_Alofa_Tongatapu] AND NCRY.New_Name = [Tonga] THEN [Nuku_Appo_alofa]
+										WHEN Lds_City = [Nukualofa_Comma_Tongatapu] AND NCRY.New_Name = [Tonga] THEN [Nuku_Appo_alofa]
+										WHEN Lds_City = [Willow_Brook] AND OA.Lds_County IN ([Du_Page) AND OA.Lds_StateProvince IN ([IL]) THEN [Willowbrook]
+										WHEN Lds_City = [Puebla] AND NCRY.New_Name = [Mexico] THEN [Puebla_Comma_PUE]
+										WHEN Lds_City = [Puebla_CP] AND NCRY.New_Name = [Mexico] THEN [Puebla_Comma_PUE]
+										WHEN Lds_City = [Puebla_ME] AND NCRY.New_Name = [Mexico] THEN [Puebla_Comma_PUE]
+										WHEN Lds_City = [Puebla_PUE] AND NCRY.New_Name = [Mexico] THEN [Puebla_Comma_PUE]
+										WHEN Lds_City = [Puebla_Puebla] AND NCRY.New_Name = [Mexico] THEN [Puebla_Comma_PUE]
+										WHEN Lds_City = [Charlestown] AND OA.Lds_County IN ([Jefferson]) AND OA.Lds_StateProvince IN ([WV]) THEN [Charles_Town]
+										WHEN Lds_City = [Xian] AND NCRY.New_Name IN ([China],[CHINA_PEOPLES_REP_OF]) THEN [Xi_Appo_an]
+										WHEN Lds_City = [Coaldale] AND NCRY.New_Name = [Canada] THEN [Coaldale_AB]
+										WHEN Lds_City = [Coaldale_Alberta] AND NCRY.New_Name = [Canada] THEN [Coaldale_AB]
+										WHEN Lds_City = [Coaldale_Comma_AB] AND NCRY.New_Name = [Canada] THEN [Coaldale_AB]
+										WHEN Lds_City = [De_Lancey] AND OA.Lds_County IN ([Delaware]) AND OA.Lds_StateProvince IN ([NY]) THEN [Delancey]
+										WHEN Lds_City = [Cardston] AND NCRY.New_Name = [Canada] THEN [Cardston_AB]
+										WHEN Lds_City = [Cardston_Comma_AB] AND NCRY.New_Name = [Canada] THEN [Cardston_AB]
+										WHEN Lds_City = [Salt_Lake_Cty] AND OA.Lds_StateProvince IN ([UT]) THEN [Salt_Lake_City]
+										WHEN Lds_City = [St_Per_George] AND OA.Lds_StateProvince IN ([UT]) THEN [Saint_George]
+										WHEN Lds_City = [W_Valley_City] AND OA.Lds_StateProvince IN ([UT]) THEN [West_Valley_City]
+										WHEN Lds_City = [West_Valley] AND OA.Lds_StateProvince IN ([UT]) THEN [West_Valley_City]
+										WHEN Lds_City = [Saratoga_Spgs] AND OA.Lds_StateProvince IN ([UT]) THEN [Saratoga_Springs]
+										WHEN Lds_City = [Vancouver] AND NCRY.New_Name = [Canada] THEN [Vancouver_BC]
+										WHEN Lds_City = [Vancouver_AB] AND NCRY.New_Name = [Canada] THEN [Vancouver_BC]
+										WHEN Lds_City = [Vancover_BC] AND NCRY.New_Name = [Canada] THEN [Vancouver_BC]
+										WHEN Lds_City = [Eagle_Mtn] AND OA.Lds_StateProvince IN ([UT]) THEN [Eagle_Mountain]
+										WHEN Lds_City = [N_Salt_Lake] AND OA.Lds_StateProvince IN ([UT]) THEN [North_Salt_Lake]
+										WHEN Lds_City = [St_Anthony] AND OA.Lds_StateProvince IN ([ID]) THEN [Saint_Anthony]
+									ELSE Lds_City END)) AS Lds_City
+			' -- Ext_Select_Statement
+		, 'LDSPhilanthropiesDW.dbo.Ext_Address_Base OA 
+				LEFT JOIN LDSPhilanthropiesDW.dbo.Ext_Country NCRY ON OA.New_CountryRegions = NCRY.New_CountryId
+			' -- Ext_From_Statement
+		, '
+			' -- Ext_Where_Statement	
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
 -- Gift Rules - _Gift_Credit_
 -- --------------------------
 	( 3 -- Tier
@@ -15581,6 +16021,915 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 							WHERE 1 = 1
 								AND Plus_ConnectedLiaison IS NOT NULL
 						) B ON A.SystemUserId = B.User_Connected_Liaison_Key
+			' -- Ext_From_Statement
+		, '
+			' -- Ext_Where_Statement	
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, '	
+			' -- Ext_From_Statement_2
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+,
+-- --------------------------
+-- _Appeal_Dim
+-- --------------------------
+	( 4 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Appeal_Dim' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Appeal_Key NVARCHAR(100) PRIMARY KEY
+			, Appeal_Name NVARCHAR(100)
+			, Appeal_Code NVARCHAR(20)
+			, Campaign_Institutional_Hierarchy NVARCHAR(100)
+			, Campaign_Name NVARCHAR(128)
+			, Delivery_Type NVARCHAR(400)
+			, Communication_Type NVARCHAR(400)
+			, Scheduled_Start DATE
+			, Scheduled_End DATE
+			, Actual_Start DATE
+			, Actual_End DATE
+			, Appeal_Format INT
+			, Campaign_Type NVARCHAR(400)
+			, Campaign_Status INT
+			, Scope NVARCHAR(400)
+			, Requester NVARCHAR(100)
+			, Representing NVARCHAR(100)
+			, Department_Owner NVARCHAR(400)   
+			, Cause INT        
+			, Campaign_Notes NVARCHAR(4000)
+			, Budget_Allocated NVARCHAR(50)
+			, Estimated_Revenue NVARCHAR(50)
+			, Miscellaneous_Cost NVARCHAR(50)
+			, Total_Cost_Of_Campaign_Activity NVARCHAR(50)
+			, Total_Cost_Of_Campaign NVARCHAR(50)
+			, Cost_To_Raise_1_Dollar NVARCHAR(50)
+			, Total_Gift_Revenue_From_Campaign NVARCHAR(50)
+			, Campaign_Profit NVARCHAR(50)
+			, Appeal_Delivery_Type_Sort_Value INT
+			, Appeal_Long_Name NVARCHAR(200)
+			, Appeal_Reporting_Status NVARCHAR(100)
+			' -- Ext_Create_Fields
+		, 'Appeal_Key
+			, Appeal_Name
+			, Appeal_Code
+			, Campaign_Institutional_Hierarchy
+			, Campaign_Name
+			, Delivery_Type
+			, Communication_Type
+			, Scheduled_Start
+			, Scheduled_End
+			, Actual_Start
+			, Actual_End
+			, Appeal_Format
+			, Campaign_Type
+			, Campaign_Status
+			, Scope
+			, Requester
+			, Representing
+			, Department_Owner    
+			, Cause 
+			, Campaign_Notes
+			, Budget_Allocated
+			, Estimated_Revenue
+			, Miscellaneous_Cost
+			, Total_Cost_Of_Campaign_Activity
+			, Total_Cost_Of_Campaign
+			, Cost_To_Raise_1_Dollar
+			, Total_Gift_Revenue_From_Campaign
+			, Campaign_Profit
+			, Appeal_Delivery_Type_Sort_Value
+			, Appeal_Long_Name
+			, Appeal_Reporting_Status
+			' -- Ext_Insert_Fields
+		, 'DISTINCT CONVERT(NVARCHAR(100),A.ActivityId) AS Appeal_Key
+			, A.Subject AS Appeal_Name
+			, B.Plus_AppealCode AS Appeal_Code
+			, C.New_Name AS Campaign_Institutional_Hierarchy
+			, D.Name AS Campaign_Name
+			, CASE WHEN H.Column_Label = A.[Other] THEN A.[General]
+					WHEN H.Column_Label = A.[In_Person] THEN A.[Face_To_Face] 
+					WHEN H.Column_Label = A.[Mail] THEN A.[Direct_Mail]
+					WHEN H.Column_Label = A.[Phone] THEN A.[Telefund]
+					ELSE H.Column_Label END AS Delivery_Type
+			, E.Column_Label AS Communication_Type
+			, CONVERT(VARCHAR(10),A.ScheduledStart,101) AS Scheduled_Start
+			, CONVERT(VARCHAR(10),A.ScheduledEnd,101) AS Scheduled_End
+			, CONVERT(VARCHAR(10),A.ActualStart,101) AS Actual_Start
+			, CONVERT(VARCHAR(10),A.ActualEnd,101) AS Actual_End
+			, B.Plus_Format AS Appeal_Format                                                     
+			, H.Column_Label AS Campaign_Type
+			, D.StatusCode AS Campaign_Status
+			, F.Column_Label AS Scope
+			, NULL AS Requester
+			, CASE WHEN CONVERT(NVARCHAR(100),D.Plus_Affiliate) = A.[N100000000] THEN CONVERT(NVARCHAR(100),I.New_Name)
+				WHEN CONVERT(NVARCHAR(100),D.Plus_Affiliate) = A.[N100000001] THEN CONVERT(NVARCHAR(100),C.New_Name) END AS Representing
+			, G.Column_Label AS Department_Owner             
+			, D.Plus_Cause AS Cause                            
+			, D.Description AS Campaign_Notes
+			, D.BudgetedCost_Base AS Budget_Allocated
+			, D.ExpectedRevenue AS Estimated_Revenue
+			, D.OtherCost AS Miscellaneous_Cost
+			, D.TotalCampaignActivityActualCost AS Total_Cost_Of_Campaign_Activity
+			, D.TotalActualCost AS Total_Cost_Of_Campaign
+			, D.Plus_CostToRaise1_Base AS Cost_To_Raise_1_Dollar
+			, D.Plus_TotalGiftRevenueFromCampaign AS Total_Gift_Revenue_From_Campaign
+			, D.Plus_CampaignProfit_Base AS Campaign_Profit  
+			, CASE WHEN H.Column_Label = A.[Mail] THEN 1
+					WHEN H.Column_Label = A.[Email] THEN 2
+					WHEN H.Column_Label = A.[In_Person] THEN 3
+					WHEN H.Column_Label = A.[Phone] THEN 4
+					WHEN H.Column_Label = A.[Other] THEN 5
+					WHEN H.Column_Label = A.[Web] THEN 6
+					ELSE 7 END AS Appeal_Delivery_Type_Sort_Value
+			, J.Appeal_Name AS Appeal_Long_Name
+			, J.Keep_Remove_Delete AS Appeal_Reporting_Status			
+			' -- Ext_Select_Statement
+		, 'Ext_Activity_Pointer A
+				INNER JOIN 
+						(SELECT DISTINCT C.ActivityId AS Appeal_Key
+								FROM dbo._Gift_ A
+									LEFT JOIN dbo._Gift_Hist_ B ON A.New_GiftId = B.New_RelatedGift
+									LEFT JOIN Ext_Campaign_Activity C ON A.Plus_Appeal = C.ActivityId
+						) K ON A.ActivityId = K.Appeal_Key 
+				LEFT JOIN Ext_Campaign_Activity B ON A.ActivityId = B.ActivityId
+				LEFT JOIN Ext_Institution C ON B.Plus_InstitutionalHierarchy = C.New_InstitutionId
+				LEFT JOIN Ext_Campaign D ON A.RegardingObjectId = D.CampaignId
+				LEFT JOIN _Campaign_Activity_ E ON B.Plus_CommunicationType = E.Column_Value                               
+				LEFT JOIN _Affiliate_ F ON B.Plus_CommunicationType = F.Column_Value
+				LEFT JOIN _Department_Function_ G ON B.Plus_CommunicationType = G.Column_Value
+				LEFT JOIN _Channel_Type_Code_ H ON A.CampactChannelTypeCode = H.Column_Value
+				LEFT JOIN Ext_Association I ON D.Plus_Association = I.New_AssociationId
+				LEFT JOIN 
+					(SELECT A.Appeal_Code
+						, A.Appeal_Name
+						, B.Keep_Remove_Delete
+						FROM 
+							(SELECT DISTINCT Appeal_Code
+								, Appeal_Name
+								FROM LDSP_All_Appeals 
+							)A
+							LEFT JOIN 
+								(SELECT DISTINCT Appeal_Code
+									, Keep_Remove_Delete
+									FROM LDSP_All_Appeals
+									WHERE 1 = 1
+										AND Keep_Remove_Delete IS NOT NULL
+								) B ON A.Appeal_Code = B.Appeal_Code
+					) J ON B.Plus_AppealCode = J.Appeal_Code
+			' -- Ext_From_Statement
+		, 'AND A.RegardingObjectTypeCode = 4400
+			' -- Ext_Where_Statement	
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, '	
+			' -- Ext_From_Statement_2
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+,
+-- --------------------------
+-- _Expectancy_Dim
+-- --------------------------
+	( 4 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Expectancy_Dim' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Expectancy_Key NVARCHAR(100) PRIMARY KEY
+			, Plus_Kind NVARCHAR(400)
+			, Plus_TenderType NVARCHAR(400)
+			, Plus_GiftSource NVARCHAR(400)
+			, Plus_PlannedGift NVARCHAR(400)
+			, Plus_CheckNumber NVARCHAR(50)
+			, New_Confidential NVARCHAR(400)
+			, Plus_AcknowledgementInstructions NVARCHAR(4000)
+			, Plus_NewAccountInstructions NVARCHAR(4000)
+			, Plus_SpecialGiftInstructions NVARCHAR(4000)
+			, Plus_TelefundRep NVARCHAR(100)
+			, Plus_PlannedGivingPaymentFrequency NVARCHAR(400)
+			, New_Bookable NVARCHAR(400)
+			, Plus_MatchExpected NVARCHAR(400)
+			, Plus_GiftRevocability NVARCHAR(400)
+			, Plus_RemainderBeneficiary NVARCHAR(400)
+			, New_Documentation NVARCHAR(400)
+			, Plus_Designation NVARCHAR(4000)
+			, Plus_NameOfTrust  NVARCHAR(200)
+			, plus_PlannedGivingType NVARCHAR(400)
+			, Plus_VehicleType NVARCHAR(400)
+			, Plus_VehicleSubType NVARCHAR(400)
+			, Plus_PayoutRate DECIMAL
+			, Plus_Duration NVARCHAR(400)
+			, Plus_LivesType NVARCHAR(400)
+			, Plus_Years INT
+			, Plus_Lives DECIMAL
+			, Plus_TermBeneficiaryLives DECIMAL
+			, Plus_TermBeneficiaryYears INT
+			, Plus_Cri DECIMAL
+			, Plus_GpsNotes NVARCHAR(4000)
+			, New_PledgeNumber NVARCHAR(100)
+			, Status INT
+			, Status_Reason NVARCHAR(400)
+			, New_TotalPledged MONEY
+			, New_BalanceDue_Base MONEY
+			, New_TotalPaid_Base MONEY
+			, New_PaymentsToMake INT
+			, New_PaymentsReceived INT
+			, New_InstallmentAmount_Base MONEY
+			, Plus_FairMarketValue_Base MONEY
+			, Plus_PresentValue_Base MONEY
+			, Plus_PaymentAmount_Base MONEY
+			, Plus_AnnualAmount_Base MONEY
+			, New_BeginDate DATE
+			, New_EndDate DATE
+			, Plus_InstallmentDate DATE
+			, New_SignatureDate DATE
+			, New_NotificationDate DATE
+			, Plus_FundingDate DATE
+			, Plus_EstimatedMaturityDate DATE
+			, Plus_PaymentStartDate DATE
+			, Lds_ExpectancyType NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, 'Expectancy_Key
+			, Plus_Kind
+			, Plus_TenderType
+			, Plus_GiftSource
+			, Plus_PlannedGift
+			, Plus_CheckNumber
+			, New_Confidential
+			, Plus_AcknowledgementInstructions
+			, Plus_NewAccountInstructions
+			, Plus_SpecialGiftInstructions
+			, Plus_TelefundRep
+			, Plus_PlannedGivingPaymentFrequency
+			, New_Bookable
+			, Plus_MatchExpected
+			, Plus_GiftRevocability
+			, Plus_RemainderBeneficiary
+			, New_Documentation
+			, Plus_Designation
+			, Plus_NameOfTrust
+			, plus_PlannedGivingType
+			, Plus_VehicleType
+			, Plus_VehicleSubType
+			, Plus_PayoutRate
+			, Plus_Duration
+			, Plus_LivesType
+			, Plus_Years
+			, Plus_Lives
+			, Plus_TermBeneficiaryLives
+			, Plus_TermBeneficiaryYears
+			, Plus_Cri
+			, Plus_GpsNotes
+			, New_PledgeNumber
+			, Status
+			, Status_Reason
+			, New_TotalPledged
+			, New_BalanceDue_Base
+			, New_TotalPaid_Base
+			, New_PaymentsToMake
+			, New_PaymentsReceived
+			, New_InstallmentAmount_Base
+			, Plus_FairMarketValue_Base
+			, Plus_PresentValue_Base
+			, Plus_PaymentAmount_Base
+			, Plus_AnnualAmount_Base
+			, New_BeginDate
+			, New_EndDate
+			, Plus_InstallmentDate
+			, New_SignatureDate
+			, New_NotificationDate
+			, Plus_FundingDate
+			, Plus_EstimatedMaturityDate
+			, Plus_PaymentStartDate
+			, Lds_ExpectancyType
+			' -- Ext_Insert_Fields
+		, 'DISTINCT CONVERT(NVARCHAR(100),A.New_PledgeId) AS Expectancy_Key
+			, B.Column_Label AS Plus_Kind
+			, C.Column_Label AS Plus_TenderType
+			, D.Column_Label AS Plus_GiftSource
+			, E.Column_Label AS Plus_PlannedGift
+			, A.Plus_CheckNumber
+			, F.Column_Label AS New_Confidential
+			, A.Plus_AcknowledgementInstructions
+			, A.Plus_NewAccountInstructions
+			, A.Plus_SpecialGiftInstructions
+			, CONVERT(NVARCHAR(100),A.Plus_TelefundRep) AS Plus_TelefundRep
+			, G.Column_Label AS Plus_PlannedGivingPaymentFrequency
+			, H.Column_Label AS New_Bookable
+			, I.Column_Label AS Plus_MatchExpected
+			, J.Column_Label AS Plus_GiftRevocability
+			, K.Column_Label AS Plus_RemainderBeneficiary
+			, L.Column_Label AS New_Documentation
+			, A.Plus_Designation
+			, A.Plus_NameOfTrust
+			, M.Column_Label AS plus_PlannedGivingType
+			, N.Column_Label AS Plus_VehicleType
+			, O.Column_Label AS Plus_VehicleSubType
+			, A.Plus_PayoutRate
+			, P.Column_Label AS Plus_Duration
+			, Q.Column_Label AS Plus_LivesType
+			, A.Plus_Years
+			, A.Plus_Lives
+			, A.Plus_TermBeneficiaryLives
+			, A.Plus_TermBeneficiaryYears
+			, A.Plus_Cri
+			, A.Plus_GpsNotes
+			, A.New_PledgeNumber
+			, R.Column_Value AS Status
+			, R.Column_Label AS Status_Reason
+			, A.New_TotalPledged
+			, A.New_BalanceDue_Base
+			, A.New_TotalPaid_Base
+			, A.New_PaymentsToMake
+			, A.New_PaymentsReceived
+			, A.New_InstallmentAmount_Base
+			, A.Plus_FairMarketValue_Base
+			, A.Plus_PresentValue_Base
+			, A.Plus_PaymentAmount_Base
+			, A.Plus_AnnualAmount_Base
+			, CONVERT(VARCHAR(10),A.New_BeginDate,101) AS New_BeginDate
+			, CONVERT(VARCHAR(10),A.New_EndDate,101) AS New_EndDate
+			, CONVERT(VARCHAR(10),A.Plus_InstallmentDate,101) AS Plus_InstallmentDate
+			, CONVERT(VARCHAR(10),A.New_SignatureDate,101) AS New_SignatureDate
+			, CONVERT(VARCHAR(10),A.New_NotificationDate,101) AS New_NotificationDate
+			, CONVERT(VARCHAR(10),A.Plus_FundingDate,101) AS Plus_FundingDate
+			, CONVERT(VARCHAR(10),A.Plus_EstimatedMaturityDate,101) AS Plus_EstimatedMaturityDate
+			, CONVERT(VARCHAR(10),A.Plus_PaymentStartDate,101) AS Plus_PaymentStartDate
+			, S.Column_Label AS Lds_ExpectancyType										
+			' -- Ext_Select_Statement
+		, 'Ext_Pledge A
+			LEFT JOIN _Plus_Kind_ B ON A.Plus_Kind = B.Column_Value
+			LEFT JOIN _Plus_Tender_Type_ C ON A.Plus_TenderType = C.Column_Value
+			LEFT JOIN _Plus_Gift_Source_ D ON A.Plus_GiftSource = D.Column_Value
+			LEFT JOIN _Plus_Planned_Gift_ E ON A.Plus_PlannedGift = E.Column_Value
+			LEFT JOIN _New_Confidential_ F ON A.New_Confidential = F.Column_Value
+			LEFT JOIN _Plus_PlannedGivingPaymentFrequency_ G ON A.Plus_PlannedGivingPaymentFrequency = G.Column_Value
+			LEFT JOIN _New_Bookable_ H ON A.New_Bookable = H.Column_Value
+			LEFT JOIN _Plus_MatchExpected_ I ON A.Plus_MatchExpected = I.Column_Value
+			LEFT JOIN _Plus_GiftRevocability_ J ON A.Plus_GiftRevocability = J.Column_Value
+			LEFT JOIN _Plus_RemainderBeneficiary_ K ON A.Plus_RemainderBeneficiary = K.Column_Value
+			LEFT JOIN _New_Documentation_ L ON A.New_Documentation = L.Column_Value
+			LEFT JOIN _Plus_PlannedGivingType_ M ON A.plus_PlannedGivingType = M.Column_Value
+			LEFT JOIN _Plus_VehicleType_ N ON A.Plus_VehicleType = N.Column_Value
+			LEFT JOIN _Plus_VehicleSubType_ O ON A.Plus_VehicleSubType = O.Column_Value
+			LEFT JOIN _Plus_Duration_ P ON A.Plus_Duration = P.Column_Value
+			LEFT JOIN _Plus_LivesType_ Q ON A.Plus_LivesType = Q.Column_Value
+			LEFT JOIN _Pledge_Status_ R ON A.StatusCode = R.Column_Value
+			LEFT JOIN _Lds_ExpectancyType_ S ON A.Lds_ExpectancyType = S.Column_Value
+			' -- Ext_From_Statement
+		, '
+			' -- Ext_Where_Statement	
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, '	
+			' -- Ext_From_Statement_2
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+,
+-- --------------------------
+-- _Address_Dim
+-- --------------------------
+	( 4 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Address_Dim' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'ContactId NVARCHAR(100)
+			, Address_Key INT  PRIMARY KEY
+			, Address_Group_Key INT
+			, Address_Primary_Yn NVARCHAR(1)
+			, Address_Street_1 NVARCHAR(100)
+			, Address_Street_2 NVARCHAR(100)
+			, Address_Street_3 NVARCHAR(100)
+			, Address_City NVARCHAR(100)
+			, Address_County NVARCHAR(100)
+			, Address_County_Code NVARCHAR(10)
+			, Address_County_Id NVARCHAR(100)
+			, Address_State_Province NVARCHAR(50)
+			, Address_State_Code NVARCHAR(100)
+			, Address_Country NVARCHAR(100)
+			, Address_Post_Code_Full NVARCHAR(100)
+			, Address_Post_Code_Last_4 NVARCHAR(15)
+			, Address_Printing_Line_1 NVARCHAR(606)
+			, Address_Printing_Line_2 NVARCHAR(406)
+			, Address_Display NVARCHAR(300)
+			, Address_Quality_Status NVARCHAR(400)
+			, Address_Quality_Status_Value INT
+			, Address_Longitude FLOAT
+			, Address_Latitude FLOAT
+			, Address_Active_Yn NVARCHAR(1)
+			, Address_Confirmed_Yn NVARCHAR(1)
+			, Address_Confidential_Yn NVARCHAR(1)
+			, Address_Type NVARCHAR(400)
+			, Address_Type_Value INT
+			, Address_Printing_Line_3 NVARCHAR(100)
+			, Address_Printing_Line_4 NVARCHAR(100)
+			' -- Ext_Create_Fields
+		, 'ContactId
+			, Address_Key
+			, Address_Group_Key
+			, Address_Primary_Yn
+			, Address_Street_1
+			, Address_Street_2
+			, Address_Street_3
+			, Address_City
+			, Address_County
+			, Address_County_Code
+			, Address_County_Id
+			, Address_State_Province
+			, Address_State_Code
+			, Address_Country
+			, Address_Post_Code_Full
+			, Address_Post_Code_Last_4
+			, Address_Printing_Line_1
+			, Address_Printing_Line_2
+			, Address_Display
+			, Address_Quality_Status
+			, Address_Quality_Status_Value
+			, Address_Longitude
+			, Address_Latitude
+			, Address_Active_Yn
+			, Address_Confirmed_Yn
+			, Address_Confidential_Yn
+			, Address_Type
+			, Address_Type_Value
+			, Address_Printing_Line_3
+			, Address_Printing_Line_4
+			' -- Ext_Insert_Fields
+		, 'DISTINCT CONVERT(NVARCHAR(100),F.ContactId) AS ContactId
+			, ROW_NUMBER() OVER(ORDER BY F.New_AddressId) AS Address_Key
+			, C.Address_Group_Key
+			, F.Address_Primary_Yn
+			, F.Address_Street_1
+			, F.Address_Street_2
+			, F.Address_Street_3
+			, F.Address_City
+			, F.Address_County
+			, F.Address_County_Code
+			, CONVERT(NVARCHAR(100),F.Address_County_Id) AS Address_County_Id
+			, F.Address_State_Province
+			, F.Address_State_Code
+			, F.Address_Country
+			, F.Address_Post_Code_Full
+			, F.Address_Printing_Line_1
+			, F.Address_Printing_Line_2
+			, F.Address_Display
+			, F.Address_Quality_Status
+			, F.Address_Quality_Status_Value
+			, F.Address_Post_Code_Last_4
+			, F.Address_Longitude
+			, F.Address_Latitude
+			, F.Address_Active_Yn
+			, F.Address_Confirmed_Yn
+			, F.Address_Confidential_Yn
+			, F.Address_Type
+			, F.Address_Type_Value
+			, F.Address_Printing_Line_3
+			, F.Address_Printing_Line_4									
+			' -- Ext_Select_Statement
+		, '(SELECT A.ContactId
+				, A.New_AddressId
+				, B.Address_Primary_Yn
+				, A.Address_Street_1
+				, A.Address_Street_2
+				, A.Address_Street_3
+				, C.Address_City
+				, C.Address_County
+				, C.Address_County_Code
+				, C.Address_County_Id
+				, C.Address_State_Province
+				, C.Address_State_Code
+				, C.Address_Country
+				, C.Address_Post_Code_Full
+				, B.Address_Printing_Line_1
+				, D.Address_Printing_Line_2
+				, A.Address_Display
+				, E.Address_Quality_Status
+				, E.Address_Quality_Status_Value
+				, A.Address_Post_Code_Last_4
+				, A.Address_Longitude
+				, A.Address_Latitude
+				, B.Address_Active_Yn
+				, B.Address_Confirmed_Yn
+				, B.Address_Confidential_Yn
+				, E.Address_Type
+				, E.Address_Type_Value
+				, C.Address_Printing_Line_3
+				, C.Address_Printing_Line_4
+				FROM
+					(SELECT DISTINCT OA.Plus_RelatedContact AS ContactId
+						, OA.New_AddressId
+						, OA.New_Street1 AS Address_Street_1
+						, OA.New_Street2 AS Address_Street_2
+						, OA.New_Street3 AS Address_Street_3
+						, OA.New_Zip4 AS Address_Post_Code_Last_4
+						, CONVERT(NVARCHAR(300),OA.Plus_AddressDisplay) AS Address_Display
+						, OA.Plus_Longitude AS Address_Longitude
+						, OA.Plus_Latitude AS Address_Latitude
+						FROM LDSPhilanthropiesDW.dbo.Ext_Address OA
+					) A LEFT JOIN
+					(SELECT DISTINCT OA.New_AddressId
+						, CASE WHEN OA.New_Primary = 1 THEN [Y] 
+							WHEN OA.New_Primary = 0 THEN [N]
+							ELSE [Dash] END AS Address_Primary_Yn
+						, COALESCE(OA.New_Street1,[Space]) + COALESCE(OA.New_Street2,[Space]) + COALESCE(OA.New_Street3,[Space]) AS Address_Printing_Line_1 
+						, CASE WHEN OA.StateCode = 0 THEN [Y] ELSE [N] END AS Address_Active_Yn
+						, CASE WHEN OA.New_ConfirmedDate IS NULL THEN [N] ELSE [Y] END AS Address_Confirmed_Yn
+						, CASE WHEN OA.New_Confidential = 0 THEN [N] ELSE [Y] END AS Address_Confidential_Yn
+						, [Y]
+						FROM LDSPhilanthropiesDW.dbo.Ext_Address OA
+					) B ON A.New_AddressId = B.New_AddressId LEFT JOIN
+					(SELECT DISTINCT OA.New_AddressId
+						, RTRIM(LTRIM(dbo.ufProperCase(OA.Lds_City,[ProperCase],3))) AS Address_City
+						, OA.Lds_County AS Address_County
+						, NCTY.Plus_CountyCode AS Address_County_Code
+						, NCTY.New_CountyId AS Address_County_Id
+						, OA.Lds_StateProvince AS Address_State_Province
+						, OA.Lds_StateProvince AS Address_State_Code
+						, NCRY.New_Name AS Address_Country
+						, OA.Lds_PostalCode AS Address_Post_Code_Full
+						, OA.Lds_PostalCode AS Address_Printing_Line_3
+						, NCRY.New_Name AS Address_Printing_Line_4
+						FROM LDSPhilanthropiesDW.dbo.Ext_Address OA
+							LEFT JOIN LDSPhilanthropiesDW.dbo.Ext_City NC ON OA.New_CityLookUp = NC.New_CityId
+							LEFT JOIN LDSPhilanthropiesDW.dbo.Ext_County NCTY ON OA.New_CountyId = NCTY.New_CountyId 
+							LEFT JOIN LDSPhilanthropiesDW.dbo.Ext_State NST ON OA.New_StatesProvinces = NST.New_StateId
+							LEFT JOIN LDSPhilanthropiesDW.dbo.Ext_Country NCRY ON OA.New_CountryRegions = NCRY.New_CountryId
+							LEFT JOIN LDSPhilanthropiesDW.dbo.Ext_Postal PC ON OA.New_PostalCodes = PC.New_PostalCodeId 
+					) C ON A.New_AddressId = C.New_AddressId LEFT JOIN
+					(SELECT DISTINCT OA.New_AddressId
+						, CASE WHEN AF.New_UseStateAbreviation = 1 THEN COALESCE(OA.Lds_City,[Space]) + [Comma_Space] + COALESCE(OA.Lds_StateProvince,[Space]) 
+							ELSE COALESCE(OA.Lds_City,[Space]) + [Comma_Space] + COALESCE(OA.Lds_StateProvince,[Space]) END AS Address_Printing_Line_2
+						FROM LDSPhilanthropiesDW.dbo.Ext_Address OA
+							LEFT JOIN LDSPhilanthropiesDW.dbo.Ext_City NC ON OA.New_CityLookUp = NC.New_CityId
+							LEFT JOIN LDSPhilanthropiesDW.dbo.Ext_County NCTY ON OA.New_CountyId = NCTY.New_CountyId 
+							LEFT JOIN LDSPhilanthropiesDW.dbo.Ext_State NST ON OA.New_StatesProvinces = NST.New_StateId
+							LEFT JOIN LDSPhilanthropiesDW.dbo.Ext_Country NCRY ON OA.New_CountryRegions = NCRY.New_CountryId
+							LEFT JOIN LDSPhilanthropiesDW.dbo.Ext_Postal PC ON OA.New_PostalCodes = PC.New_PostalCodeId 
+							LEFT JOIN LDSPhilanthropiesDW.dbo.Ext_Address_Format AF ON NCRY.Plus_AdderessFormat = AF.Plus_AddressFormatId
+					) D ON A.New_AddressId = D.New_AddressId LEFT JOIN
+					(SELECT DISTINCT OA.New_AddressId
+						, Q.Column_Label AS Address_Quality_Status
+						, Q.Column_Value AS Address_Quality_Status_Value
+						, A.Column_Label AS Address_Type
+						, A.Column_Value AS Address_Type_Value
+						FROM LDSPhilanthropiesDW.dbo.Ext_Address OA
+							LEFT JOIN LDSPhilanthropiesDW.dbo._Address_Quality_ Q ON OA.Plus_OneAccordQuality = Q.Column_Value 
+							LEFT JOIN LDSPhilanthropiesDW.dbo._Address_Type_ A ON OA.New_AddressType = A.Column_Value
+					) E ON A.New_AddressId = E.New_AddressId
+				WHERE 1 = 1
+					AND B.Address_Active_Yn = [Y]
+			) F	
+			LEFT JOIN 
+				(
+				SELECT ContactId
+					, ROW_NUMBER() OVER(ORDER BY ContactId) AS Address_Group_Key
+					FROM
+						(SELECT DISTINCT Plus_RelatedContact AS ContactId    
+							FROM Ext_Address 
+						) A
+				) C ON F.ContactId = C.ContactId
+			' -- Ext_From_Statement
+		, '
+			' -- Ext_Where_Statement	
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, '	
+			' -- Ext_From_Statement_2
+		, ' ' -- Code_Block_7
+		, ' ' -- Code_Block_8
+		, ' ' -- Code_Block_9
+		, ' ' -- Code_Block_10
+		, ' ' -- Code_Block_11
+		, ' ' -- Code_Block_12
+		, ' ' -- Code_Block_13
+		, ' ' -- Code_Block_14
+		, ' ' -- Code_Block_15
+		, ' ' -- Code_Block_16
+		, ' ' -- Code_Block_17
+		, ' ' -- Code_Block_18
+		, ' ' -- Code_Block_19
+		, ' ' -- Code_Block_20
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+,
+-- --------------------------
+-- _Activity_Dim
+-- --------------------------
+	( 4 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Activity_Dim' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Activity_Key INT PRIMARY KEY
+			, Activity_Group_Key INT
+			, Activity_Id NVARCHAR(100)
+			, ContactId NVARCHAR(100)
+			, ContactName NVARCHAR(4000)
+			, Party_Object_Type NVARCHAR(100)
+			, Participation_Type NVARCHAR(100)
+			, Type NVARCHAR(100)
+			, Subject NVARCHAR(200)
+			, Regarding NVARCHAR(4000)
+			, Face_To_Face NVARCHAR(1)
+			, Scheduled_Start DATE
+			, Scheduled_Start_Date_Key NUMERIC(10,0)
+			, Scheduled_End DATE
+			, Scheduled_End_Date_Key NUMERIC(10,0)
+			, Completed DATE
+			, Completed_Date_Key NUMERIC(10,0)
+			, Description NVARCHAR(4000)
+			, Attendees NVARCHAR(4000)
+			, Owner NVARCHAR(200)
+			, Owner_Id NVARCHAR(100)
+			, Source NVARCHAR(100)
+			, Plus_M11ActivityType NVARCHAR(400)
+			, Plus_MllMessageType NVARCHAR(400)
+			, StateCode NVARCHAR(400)
+			, StatusCode NVARCHAR(400)
+			, CreatedOn DATE
+			, ModifiedOn DATE
+			, DomainName NVARCHAR(1024)
+			' -- Ext_Create_Fields
+		, 'Activity_Key
+			, Activity_Group_Key
+			, Activity_Id
+			, ContactId
+			, ContactName
+			, Party_Object_Type
+			, Participation_Type
+			, Type
+			, Subject
+			, Regarding
+			, Face_To_Face
+			, Scheduled_Start
+			, Scheduled_Start_Date_Key
+			, Scheduled_End
+			, Scheduled_End_Date_Key
+			, Completed
+			, Completed_Date_Key
+			, Description
+			, Attendees
+			, Owner
+			, Owner_Id
+			, Source
+			, Plus_M11ActivityType
+			, Plus_MllMessageType
+			, StateCode
+			, StatusCode
+			, CreatedOn
+			, ModifiedOn
+			, DomainName
+			' -- Ext_Insert_Fields
+		, 'ROW_NUMBER() OVER(ORDER BY Activity_Key) AS Activity_Key
+			, Activity_Group_Key
+			, Activity_Id
+			, ContactId
+			, ContactName
+			, Party_Object_Type
+			, Participation_Type
+			, Type    
+			, Subject
+			, Regarding
+			, Face_To_Face
+			, Scheduled_Start
+			, Scheduled_End 
+			, Completed 
+			, Description
+			, Attendees
+			, Owner
+			, Owner_Id         
+			, Source
+			, Plus_M11ActivityType
+			, Plus_MllMessageType
+			, StateCode
+			, StatusCode
+			, CreatedOn
+			, ModifiedOn
+			, DomainName								
+			' -- Ext_Select_Statement
+		, '(SELECT DISTINCT A.Activity_Key
+				, A.ActivityId AS Activity_Id
+				, A.ContactId
+				, A.ContactName
+				, A.Party_Object_Type
+				, A.Participation_Type
+				, A.Type              
+				, A.Subject
+				, A.Regarding
+				, A.Face_To_Face
+				, A.Scheduled_Start
+				, A.Scheduled_End 
+				, A.Completed 
+				, A.Description
+				, A.Attendees
+				, A.Owner
+				, A.Owner_Id     
+				, S.New_Source AS Source
+				, MT.Column_Label AS Plus_MllMessageType
+				, MAT.Column_Label AS Plus_M11ActivityType
+				, STATE.Column_Label AS StateCode
+				, STATUS.Column_Label AS StatusCode
+				, A.CreatedOn
+				, A.ModifiedOn
+				, A.DomainName
+				FROM
+					(SELECT  A.ActivityPartyId AS Activity_Key -- (Unique to all records)
+						, A.ActivityId -- Distinct Activity
+						, CASE WHEN A.PartyObjectTypeCode IN (1,2) THEN A.PartyId 
+							ELSE NULL END AS ContactId -- (ContactId[2]\AccountId[1]\UserId[8])
+						, CASE WHEN A.PartyObjectTypeCode IN (1,2) THEN A.PartyIdName 
+							ELSE NULL END AS ContactName
+						, CASE WHEN A.PartyObjectTypeCode = 1 THEN ''Organization''
+							WHEN A.PartyObjectTypeCode = 2 THEN ''Constituent''
+							ELSE NULL END AS Party_Object_Type
+						, CASE WHEN A.ParticipationTypeMask = 1 THEN ''Sender''
+							WHEN A.ParticipationTypeMask = 2 THEN ''To Recipient''
+							WHEN A.ParticipationTypeMask = 3 THEN ''Cc Recipient''
+							WHEN A.ParticipationTypeMask = 4 THEN ''Bcc Recipient''
+							WHEN A.ParticipationTypeMask = 5 THEN ''Required Attendee''
+							WHEN A.ParticipationTypeMask = 6 THEN ''Optional Attendee''
+							WHEN A.ParticipationTypeMask = 7 THEN ''Organizer''
+							WHEN A.ParticipationTypeMask = 8 THEN ''Regarding''
+							WHEN A.ParticipationTypeMask = 9 THEN ''Owner''
+							WHEN A.ParticipationTypeMask = 10 THEN ''Resource''
+							WHEN A.ParticipationTypeMask = 11 THEN ''Customer''
+							ELSE CONVERT(VARCHAR(100),A.ParticipationTypeMask) END AS Participation_Type
+						, CASE WHEN B.ActivityTypeCode = ''4201'' THEN ''Appointment''
+							WHEN B.ActivityTypeCode = ''4202'' THEN ''Email''
+							WHEN B.ActivityTypeCode = ''4204'' THEN ''Fax''
+							WHEN B.ActivityTypeCode = ''4206'' THEN ''Case Resolution''
+							WHEN B.ActivityTypeCode = ''4207'' THEN ''Letter''
+							WHEN B.ActivityTypeCode = ''4208'' THEN ''Initiative Close''
+							WHEN B.ActivityTypeCode = ''4209'' THEN ''Order Close''
+							WHEN B.ActivityTypeCode = ''4210'' THEN ''Phone Call''
+							WHEN B.ActivityTypeCode = ''4211'' THEN ''Quote Close''
+							WHEN B.ActivityTypeCode = ''4212'' THEN ''Task''
+							WHEN B.ActivityTypeCode = ''4214'' THEN ''Service Activity''
+							WHEN B.ActivityTypeCode = ''4251'' THEN ''Recurring Appointment''
+							WHEN B.ActivityTypeCode = ''4401'' THEN ''Campaign Response''
+							WHEN B.ActivityTypeCode = ''4402'' THEN ''Campaign Activity''
+							WHEN B.ActivityTypeCode = ''10145'' THEN ''Legacy M11''
+							ELSE ''-'' END AS Type 
+						, CASE WHEN A.PartyObjectTypeCode IN (1,2) THEN B.Subject 
+							ELSE NULL END AS Subject
+						, CASE WHEN A.PartyObjectTypeCode IN (1,2) THEN B.RegardingObjectIdName 
+							ELSE NULL END AS Regarding -- AS Regarding (Campaign type name)
+						, CASE WHEN C.Plus_FaceToFace = 0 THEN ''N''
+							WHEN C.Plus_FaceToFace = 1 THEN ''Y''
+							ELSE NULL END AS Face_To_Face
+						, B.ScheduledStart AS Scheduled_Start -- Date/Time
+						, B.ScheduledEnd AS Scheduled_End -- Date/Time
+						, B.ActualEnd AS Completed -- Date/Time (Best for a date)
+						, CASE WHEN A.PartyObjectTypeCode IN (1,2) THEN B.Description 
+							ELSE NULL END AS Description
+						, E.Attendees AS Attendees
+						, D.FullName AS Owner
+						, D.SystemUserId AS Owner_Id
+						, B.StateCode
+						, B.StatusCode
+						, B.CreatedOn
+						, B.ModifiedOn
+						, D.DomainName
+						FROM Ext_Activity A -- People
+							LEFT JOIN Ext_Activity_Pointer B ON A.ActivityId = B.ActivityId  -- Activities
+							LEFT JOIN Ext_Appointment C ON A.ActivityId = C.ActivityId
+							LEFT JOIN Ext_System_User D ON B.OwnerId = D.SystemUserId
+							LEFT JOIN 
+								(SELECT ActivityId
+									, STUFF(( SELECT  '' | '' + Attendees 
+												FROM 
+													(SELECT DISTINCT A.ActivityId
+														, COALESCE(C.FullName,D.Name) + '': ('' + COALESCE(RTRIM(CONVERT(NVARCHAR(50),COALESCE(C.New_LdspId,D.New_LdspId))),'' '') + '') '' AS Attendees
+														FROM Ext_Activity A -- People 
+															LEFT JOIN Ext_Activity_Pointer B ON A.ActivityId = B.ActivityId  -- Activities 
+															LEFT JOIN Ext_Contact C ON A.PartyId = C.ContactId
+															LEFT JOIN Ext_Account D ON A.PartyId = D.AccountId
+													) A
+												WHERE B.ActivityId = A.ActivityId FOR XML PATH('''')),1 ,3, ''''
+									)  Attendees
+									FROM 
+										(SELECT DISTINCT ActivityId
+											FROM Ext_Activity
+											WHERE 1 = 1
+												AND ParticipationTypeMask IN (5,6))  B
+									WHERE 1 = 1
+										AND ActivityId IS NOT NULL
+									GROUP BY ActivityId
+								) E ON A.ActivityId = E.ActivityId
+					) A
+					LEFT JOIN Ext_Plus_LegacyM11Base B ON A.ActivityId = B.ActivityId
+					LEFT JOIN Ext_Source S ON B.Plus_Source = S.New_SourceId
+					LEFT JOIN _Plus_M11MessageType_ MT ON B.Plus_M11MessageType = MT.Column_Value
+					LEFT JOIN _Plus_M11ActivityType_ MAT ON B.Plus_M11ActivityType = MAT.Column_Value
+					LEFT JOIN _ActivityPointer_StateCode_ STATE ON A.StateCode = STATE.Column_Value
+					LEFT JOIN _ActivityPointer_StatusCode_ STATUS ON A.StatusCode = STATUS.Column_Value
+				) A
+			LEFT JOIN 
+				(
+				SELECT ContactId
+					, ROW_NUMBER() OVER(ORDER BY ContactId) AS Activity_Group_Key
+					FROM
+						(SELECT DISTINCT CASE WHEN A.PartyObjectTypeCode IN (1,2) THEN A.PartyId 
+												ELSE NULL END AS ContactId    
+							FROM Ext_Activity A 
+						) A
+				) C ON A.ContactId = C.ContactId
 			' -- Ext_From_Statement
 		, '
 			' -- Ext_Where_Statement	
