@@ -802,6 +802,20 @@ FUNCTION Insert-Alpha_Table_1
 																	AND Extract_Tables_Key = $Processing_Key_Coupler
 														  "                                                                                    
 								$Ext_Create_Fields = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Ext_Create_Fields_Qry).Ext_Create_Fields
+								
+						[STRING]$Ext_Create_Fields_2_Qry = "SELECT Ext_Create_Fields_2
+																FROM Oa_Extract.Extract_Tables
+																WHERE 1 = 1
+																	AND Extract_Tables_Key = $Processing_Key_Coupler
+														  "                                                                                    
+								$Ext_Create_Fields_2 = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Ext_Create_Fields_2_Qry).Ext_Create_Fields_2
+								
+						[STRING]$Ext_Create_Fields_3_Qry = "SELECT Ext_Create_Fields_3
+																FROM Oa_Extract.Extract_Tables
+																WHERE 1 = 1
+																	AND Extract_Tables_Key = $Processing_Key_Coupler
+														  "                                                                                    
+								$Ext_Create_Fields_3 = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Ext_Create_Fields_3_Qry).Ext_Create_Fields_3
 						
 						[STRING]$Ext_Insert_Fields_Qry = "SELECT Ext_Insert_Fields
 																FROM Oa_Extract.Extract_Tables
@@ -830,6 +844,20 @@ FUNCTION Insert-Alpha_Table_1
 																	AND Extract_Tables_Key = $Processing_Key_Coupler
 														  "                                                                                    
 								$Ext_Where_Statement = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Ext_Where_Statement_Qry).Ext_Where_Statement
+								
+						[STRING]$Ext_Where_Statement_2_Qry = "SELECT Ext_Where_Statement_2
+																FROM Oa_Extract.Extract_Tables
+																WHERE 1 = 1
+																	AND Extract_Tables_Key = $Processing_Key_Coupler
+														  "                                                                                    
+								$Ext_Where_Statement_2 = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Ext_Where_Statement_2_Qry).Ext_Where_Statement_2
+								
+						[STRING]$Ext_Where_Statement_3_Qry = "SELECT Ext_Where_Statement_3
+																FROM Oa_Extract.Extract_Tables
+																WHERE 1 = 1
+																	AND Extract_Tables_Key = $Processing_Key_Coupler
+														  "                                                                                    
+								$Ext_Where_Statement_3 = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Ext_Where_Statement_3_Qry).Ext_Where_Statement_3
 
 						Write-Host
 						Write-Host "~ Processing Key: $Processing_Key_Coupler"
@@ -865,7 +893,7 @@ FUNCTION Insert-Alpha_Table_1
 								#---------------------------------------------
 								# Get Destination data
 								#---------------------------------------------
-								$Sql = "SELECT $Ext_Select_Statement FROM $Ext_From_Statement WHERE 1 = 1 $Ext_Where_Statement"
+								$Sql = "SELECT $Ext_Select_Statement FROM $Ext_From_Statement WHERE 1 = 1 $Ext_Where_Statement $Ext_Where_Statement_2 $Ext_Where_Statement_3"
 														    
 								
 								
@@ -888,6 +916,8 @@ FUNCTION Insert-Alpha_Table_1
 								#---------------------------------------------
 								$Create_Table = "CREATE TABLE $Ext_Table_Name (
 													$Ext_Create_Fields
+													$Ext_Create_Fields_2
+													$Ext_Create_Fields_3
 													)"
 								 
 								Invoke-Sqlcmd `
@@ -1164,6 +1194,20 @@ FUNCTION Insert-Alpha_Table_1
 														  "                                                                                    
 								$Ext_Create_Fields = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Ext_Create_Fields_Qry).Ext_Create_Fields
 						
+						[STRING]$Ext_Create_Fields_2_Qry = "SELECT Ext_Create_Fields_2
+																FROM Oa_Extract.Extract_Tables
+																WHERE 1 = 1
+																	AND Extract_Tables_Key = $Processing_Key_Tier_2
+														  "                                                                                    
+								$Ext_Create_Fields_2 = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Ext_Create_Fields_2_Qry).Ext_Create_Fields_2
+						
+						[STRING]$Ext_Create_Fields_3_Qry = "SELECT Ext_Create_Fields_3
+																FROM Oa_Extract.Extract_Tables
+																WHERE 1 = 1
+																	AND Extract_Tables_Key = $Processing_Key_Tier_2
+														  "                                                                                    
+								$Ext_Create_Fields_3 = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Ext_Create_Fields_3_Qry).Ext_Create_Fields_3
+								
 						[STRING]$Ext_Insert_Fields_Qry = "SELECT Ext_Insert_Fields
 																FROM Oa_Extract.Extract_Tables
 																WHERE 1 = 1
@@ -1205,11 +1249,27 @@ FUNCTION Insert-Alpha_Table_1
 																	AND Extract_Tables_Key = $Processing_Key_Tier_2
 														  "                                                                                    
 								$Ext_Where_Statement = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Ext_Where_Statement_Qry).Ext_Where_Statement
+						
+						[STRING]$Ext_Where_Statement_2_Qry = "SELECT Ext_Where_Statement_2
+																FROM Oa_Extract.Extract_Tables
+																WHERE 1 = 1
+																	AND Extract_Tables_Key = $Processing_Key_Tier_2
+														  "                                                                                    
+								$Ext_Where_Statement_2 = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Ext_Where_Statement_2_Qry).Ext_Where_Statement_2
+								
+						[STRING]$Ext_Where_Statement_3_Qry = "SELECT Ext_Where_Statement_3
+																FROM Oa_Extract.Extract_Tables
+																WHERE 1 = 1
+																	AND Extract_Tables_Key = $Processing_Key_Tier_2
+														  "                                                                                    
+								$Ext_Where_Statement_3 = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Ext_Where_Statement_3_Qry).Ext_Where_Statement_3
 
 						Write-Host
 						Write-Host "~ Processing Key: $Processing_Key_Tier_2"
 						Write-Host "~ Ext_Table_Name: $Ext_Table_Name"
 						Write-Host "~ Ext_Create_Fields: $Ext_Create_Fields"
+						Write-Host "~ Ext_Create_Fields 2: $Ext_Create_Fields_2"
+						Write-Host "~ Ext_Create_Fields 3: $Ext_Create_Fields_3"
 						Write-Host "~ Ext_Insert_Fields: $Ext_Insert_Fields"
 						Write-Host "~ Ext_Select_Statement: $Ext_Select_Statement"
 						Write-Host "~ Ext_From_Statement: $Ext_From_Statement"
@@ -1240,7 +1300,7 @@ FUNCTION Insert-Alpha_Table_1
 								#---------------------------------------------
 								# Get Destination data
 								#---------------------------------------------
-								[STRING]$Sql = "SELECT $Ext_Select_Statement $Ext_Select_Statement_2 FROM $Ext_From_Statement $Ext_From_Statement_2 WHERE 1 = 1 $Ext_Where_Statement"
+								[STRING]$Sql = "SELECT $Ext_Select_Statement $Ext_Select_Statement_2 FROM $Ext_From_Statement $Ext_From_Statement_2 WHERE 1 = 1 $Ext_Where_Statement $Ext_Where_Statement_2 $Ext_Where_Statement_3"
                                 			    
 								Write-Host
 								Write-Host "~ Insert Query: $Sql"														   								
@@ -1264,6 +1324,8 @@ FUNCTION Insert-Alpha_Table_1
 								#---------------------------------------------
 								[STRING]$Create_Table = "CREATE TABLE $Ext_Table_Name (
 													$Ext_Create_Fields
+													$Ext_Create_Fields_2
+													$Ext_Create_Fields_3
 													)"
 								 
 								Invoke-Sqlcmd `
@@ -1984,6 +2046,7 @@ FUNCTION Insert-Alpha_Table_1
 																AND Tier = 1
 																AND (Coupler_Stage IS NULL 
 																	OR Coupler_Stage = 'Incomplete'
+																	OR Coupler_Stage LIKE 'Job%'
 																	)
 																AND Active = 1
 														"                                                                                   
@@ -2009,7 +2072,7 @@ FUNCTION Insert-Alpha_Table_1
 								Write-Host 
 								Write-Host "~ Total Processing Time: $Total_Processing_Time"
 					}
-				ELSEIF ($Tables_To_Process_Tier_2A -gt 0)
+				ELSEIF ($Tables_To_Process_Tier_2A -gt 0 -AND $Tables_To_Process_Coupler -eq 0)
 					{
 						
 						#---------------------------------------------
@@ -2214,7 +2277,7 @@ FUNCTION Insert-Alpha_Table_1
 								Write-Host 
 								Write-Host "~ Total Processing Time: $Total_Processing_Time"
 					}	
-				ELSEIF ($Tables_To_Process_Tier_2B -gt 0 -AND $Tables_To_Process_Tier_2A -eq 0)
+				ELSEIF ($Tables_To_Process_Tier_2B -gt 0 -AND $Tables_To_Process_Tier_2A -eq 0 -AND $Tables_To_Process_Coupler -eq 0)
 					{
 						
 						#---------------------------------------------
@@ -2426,7 +2489,7 @@ FUNCTION Insert-Alpha_Table_1
 								Write-Host "~ Tables to Process: $Tables_To_Process_Tier_3"
 								
 					}
-				ELSEIF ($Tables_To_Process_Tier_3 -gt 0)
+				ELSEIF ($Tables_To_Process_Tier_3 -gt 0 -AND $Tables_To_Process_Coupler -eq 0)
 					{
 						
 						#---------------------------------------------
@@ -2687,7 +2750,7 @@ FUNCTION Insert-Alpha_Table_1
 				
 				
 				
-				ELSEIF ($Tables_To_Process_Tier_4 -gt 0)
+				ELSEIF ($Tables_To_Process_Tier_4 -gt 0 -AND $Tables_To_Process_Coupler -eq 0)
 					{
 						
 						#---------------------------------------------
