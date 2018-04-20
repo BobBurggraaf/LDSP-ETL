@@ -37,16 +37,16 @@ CREATE TABLE LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 	, Ext_Create_Fields_3 NVARCHAR(4000)
 	, Ext_Where_Statement_2 NVARCHAR(4000)
 	, Ext_Where_Statement_3 NVARCHAR(4000)
-	, Code_Block_11 NVARCHAR(4000)
-	, Code_Block_12 NVARCHAR(4000)
-	, Code_Block_13 NVARCHAR(4000)
-	, Code_Block_14 NVARCHAR(4000)
-	, Code_Block_15 NVARCHAR(4000)
-	, Code_Block_16 NVARCHAR(4000)
-	, Code_Block_17 NVARCHAR(4000)
-	, Code_Block_18 NVARCHAR(4000)
-	, Code_Block_19 NVARCHAR(4000)
-	, Code_Block_20 NVARCHAR(MAX)
+	, Tier_5_Stage NVARCHAR(50)
+	, Tier_5_Stage_DateTime DATETIME
+	, Tier_6_Stage NVARCHAR(50)
+	, Tier_6_Stage_DateTime DATETIME
+	, Tier_7_Stage NVARCHAR(50)
+	, Tier_7_Stage_DateTime DATETIME
+	, Tier_8_Stage NVARCHAR(50)
+	, Tier_8_Stage_DateTime DATETIME
+	, Tier_9_Stage NVARCHAR(50)
+	, Tier_9_Stage_DateTime DATETIME
 	, Active BIT
 	, Extract_Stage NVARCHAR(50)
 	, Extract_Stage_DateTime DATETIME
@@ -82,16 +82,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 	, Ext_Create_Fields_3
 	, Ext_Where_Statement_2
 	, Ext_Where_Statement_3
-	, Code_Block_11
-	, Code_Block_12
-	, Code_Block_13
-	, Code_Block_14
-	, Code_Block_15
-	, Code_Block_16
-	, Code_Block_17
-	, Code_Block_18
-	, Code_Block_19
-	, Code_Block_20
+	, Tier_5_Stage
+	, Tier_5_Stage_DateTime
+	, Tier_6_Stage
+	, Tier_6_Stage_DateTime
+	, Tier_7_Stage
+	, Tier_7_Stage_DateTime
+	, Tier_8_Stage
+	, Tier_8_Stage_DateTime
+	, Tier_9_Stage
+	, Tier_9_Stage_DateTime
 	, Active
 	, Extract_Stage
 	, Extract_Stage_DateTime
@@ -252,16 +252,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -340,16 +340,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -424,16 +424,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -580,16 +580,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -637,16 +637,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -709,16 +709,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -841,16 +841,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -898,16 +898,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -995,16 +995,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -1058,16 +1058,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -1438,16 +1438,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -1500,16 +1500,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -1607,7 +1607,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Lds_PostalCode NVARCHAR(100)
 			, Lds_StateProvince NVARCHAR(100)
 			, Lds_County NVARCHAR(100)
-			, Lds_City NVARCHAR(100)						
+			, Lds_City NVARCHAR(100)
+			, Row_Num BIGINT
 			' -- Ext_Create_Fields
 		, 'Plus_RelatedContact
 			, New_Primary
@@ -1634,6 +1635,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Lds_StateProvince
 			, Lds_County
 			, Lds_City
+			, Row_Num
 			' -- Ext_Insert_Fields
 		, 'COALESCE(Plus_RelatedContact,Plus_RelatedAccount) AS Plus_RelatedContact
 			, New_Primary
@@ -1660,57 +1662,11 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Lds_StateProvince
 			, Lds_County
 			, Lds_City
+			, ROW_NUMBER() OVER(ORDER BY New_AddressId) AS Row_Num
 			' -- Ext_Select_Statement
 		, 'Oa_Extract.New_AddressBase
 			' -- Ext_From_Statement
-		, ' 
-			ALTER TABLE Ext_Address_Base 
-				ADD 
-				Ofallon NVARCHAR(50) DEFAULT ''Ofallon''
-				, Saint_Charles NVARCHAR(50) DEFAULT ''Saint Charles''
-				, Saint_Clair NVARCHAR(50) DEFAULT ''Saint Clair''
-				, MO NVARCHAR(50) DEFAULT ''MO''
-				, IL NVARCHAR(50) DEFAULT ''IL''
-				, O_Appos_Fallon NVARCHAR(50) DEFAULT ''O''''Fallon''
-				, O_Fallon NVARCHAR(50) DEFAULT ''O Fallon''
-				, Mexico_D_Per_F_Per NVARCHAR(50) DEFAULT ''Mexico D.F.''
-				, Mexico NVARCHAR(50) DEFAULT ''Mexico''
-				, Mexico_comma_D_Per_F_Per NVARCHAR(50) DEFAULT ''Mexico, D.F.''
-				, Mexico_DF NVARCHAR(50) DEFAULT ''Mexico DF''
-				, Mexico_City_D_Per_F_Per NVARCHAR(50) DEFAULT ''Mexico City D.F.''
-				, Mexico_City_DF NVARCHAR(50) DEFAULT ''Mexico City DF''
-				, Calgary_Comma_AB NVARCHAR(50) DEFAULT ''Calgary, AB''
-				, Canada NVARCHAR(50) DEFAULT ''Canada''
-				, Calgary_AB NVARCHAR(50) DEFAULT ''Calgary AB''
-				, Calgary__AB NVARCHAR(50) DEFAULT ''Calgary  AB''
-				, Calgary NVARCHAR(50) DEFAULT ''Calgary''
-				, Calgary_AI NVARCHAR(50) DEFAULT ''Calgary AI''
-				, Calgary_Al NVARCHAR(50) DEFAULT ''Calgary Al''
-				, Calgary_Alberta NVARCHAR(50) DEFAULT ''Calgary Alberta''
-				, Calgary_BC NVARCHAR(50) DEFAULT ''Calgary BC''
-				, Calgary_Comma_Alberta NVARCHAR(50) DEFAULT ''Calgary, Alberta''
-				, Shore_View NVARCHAR(50) DEFAULT ''Shore View''
-				, Ramsey NVARCHAR(50) DEFAULT ''Ramsey''
-				, MN NVARCHAR(50) DEFAULT ''MN''
-				, Shoreview NVARCHAR(50) DEFAULT ''Shoreview''
-				, Hamilton_Comma_ON NVARCHAR(50) DEFAULT ''Hamilton, ON''
-				, Hamilton_ON NVARCHAR(50) DEFAULT ''Hamilton ON''
-				, Hamilton_Ontario NVARCHAR(50) DEFAULT ''Hamilton Ontario''
-				, Ducklake_SK NVARCHAR(50) DEFAULT ''Ducklake SK''
-				, Duck_Lake_SK NVARCHAR(50) DEFAULT ''Duck Lake SK''
-				, Pachuca_HGO NVARCHAR(50) DEFAULT ''Pachuca HGO''
-				, Pachuca_Comma_HGO NVARCHAR(50) DEFAULT ''Pachuca, HGO''
-				, Pachuca NVARCHAR(50) DEFAULT ''Pachuca''
-				, Pachuca_Hidalgo NVARCHAR(50) DEFAULT ''Pachuca Hidalgo''
-				, Pachuca_De_Soto_Hida NVARCHAR(50) DEFAULT ''Pachuca De Soto Hida''
-				, Pachuca_HI NVARCHAR(50) DEFAULT ''Pachuca HI''
-				, Pachuca_HG NVARCHAR(50) DEFAULT ''Pachuca HG''
-				, Ottawa_Comma_ON NVARCHAR(50) DEFAULT ''Ottawa, ON''
-				, Ottawa_ON NVARCHAR(50) DEFAULT ''Ottawa ON''
-				, Ottawa NVARCHAR(50) DEFAULT ''Ottawa''
-				, Ottawa_Ontario NVARCHAR(50) DEFAULT ''Ottawa Ontario''
-				, Ottawa_AB NVARCHAR(50) DEFAULT ''Ottawa AB''
-				, Weston_Dash_Cap_Super_Dash_Mare NVARCHAR(50) DEFAULT ''Weston-Super-Mare''
+		, '
 			' -- Ext_Where_Statement
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
@@ -1721,100 +1677,20 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' 
 			' -- Ext_Create_Fields_2
 		, ' ' -- Ext_Create_Fields_3
-		, '		, England NVARCHAR(50) DEFAULT ''England''
-				, Weston_Dash_super_Dash_Mare NVARCHAR(50) DEFAULT ''Weston-super-Mare''
-				, United_Kingdom NVARCHAR(50) DEFAULT ''United Kingdom''
-				, Weston_Super_Mare NVARCHAR(50) DEFAULT ''Weston Super Mare''
-				, Weston_Dash_Super_Mare_B NVARCHAR(50) DEFAULT ''Weston-Super-Mare B''
-				, Risingsun NVARCHAR(50) DEFAULT ''Risingsun''
-				, OH NVARCHAR(50) DEFAULT ''OH''
-				, Rising_Sun NVARCHAR(50) DEFAULT ''Rising Sun''
-				, Nuku_Appo_Cap_Alofa NVARCHAR(50) DEFAULT ''Nuku''''Alofa''
-				, Tonga NVARCHAR(50) DEFAULT ''Tonga''
-				, Nuku_Appo_alofa NVARCHAR(50) DEFAULT ''Nuku''''alofa''
-				, Nuku_Alofa NVARCHAR(50) DEFAULT ''Nuku Alofa''
-				, Nuku_Tick_alofa_Tongatapu NVARCHAR(50) DEFAULT ''Nuku`alofa Tongatapu''
-				, Nukuaiofa NVARCHAR(50) DEFAULT ''Nukuaiofa''
-				, Nukualofa NVARCHAR(50) DEFAULT ''Nukualofa''
-				, Nukualofa_Tongatapu NVARCHAR(50) DEFAULT ''Nukualofa Tongatapu''
-				, Nuku_Appo_Alofa_Tongatapu NVARCHAR(50) DEFAULT ''Nuku''''Alofa Tongatapu''
-				, Nukualofa_Comma_Tongatapu NVARCHAR(50) DEFAULT ''Nukualofa, Tongatapu''
-				, Willow_Brook NVARCHAR(50) DEFAULT ''Willow Brook''
-				, Du_Page NVARCHAR(50) DEFAULT ''Du Page''
-				, Willowbrook NVARCHAR(50) DEFAULT ''Willowbrook''
-				, Puebla NVARCHAR(50) DEFAULT ''Puebla''
-				, Puebla_Comma_PUE NVARCHAR(50) DEFAULT ''Puebla, PUE''
-				, Puebla_CP NVARCHAR(50) DEFAULT ''Puebla CP''
-				, Puebla_ME NVARCHAR(50) DEFAULT ''Puebla ME''
-				, Puebla_PUE NVARCHAR(50) DEFAULT ''Puebla PUE''
-				, Puebla_Puebla NVARCHAR(50) DEFAULT ''Puebla Puebla''
-				, Charlestown NVARCHAR(50) DEFAULT ''Charlestown''
-				, Jefferson NVARCHAR(50) DEFAULT ''Jefferson''
-				, WV NVARCHAR(50) DEFAULT ''WV''
-				, Charles_Town NVARCHAR(50) DEFAULT ''Charles Town''
-				, Xian NVARCHAR(50) DEFAULT ''Xian''
-				, China NVARCHAR(50) DEFAULT ''China''
-				, CHINA_PEOPLES_REP_OF NVARCHAR(50) DEFAULT ''CHINA, PEOPLE''''S REP OF''
-				, Xi_Appo_an NVARCHAR(50) DEFAULT ''Xi''''an''
-				, Coaldale NVARCHAR(50) DEFAULT ''Coaldale''
-				, Coaldale_AB NVARCHAR(50) DEFAULT ''Coaldale AB''
-				, Coaldale_Alberta NVARCHAR(50) DEFAULT ''Coaldale Alberta''
-				, Coaldale_Comma_AB NVARCHAR(50) DEFAULT ''Coaldale, AB''
-				, De_Lancey NVARCHAR(50) DEFAULT ''De Lancey''
-				, Delaware NVARCHAR(50) DEFAULT ''Delaware''
-				, NY NVARCHAR(50) DEFAULT ''NY''
-				, Cardston NVARCHAR(50) DEFAULT ''Cardston''
-				, Cardston_AB NVARCHAR(50) DEFAULT ''Cardston AB''
-				, Cardston_Comma_AB NVARCHAR(50) DEFAULT ''Cardston, AB''
-				, Salt_Lake_Cty NVARCHAR(50) DEFAULT ''Salt Lake Cty''
-				, UT NVARCHAR(50) DEFAULT ''UT''
-				, Salt_Lake_City NVARCHAR(50) DEFAULT ''Salt Lake City''
-				, St_Per_George NVARCHAR(50) DEFAULT ''St. George''
-				, Saint_George NVARCHAR(50) DEFAULT ''Saint George''
-				, W_Valley_City NVARCHAR(50) DEFAULT ''W Valley City''
-				, West_Valley_City NVARCHAR(50) DEFAULT ''West Valley City''
-				, West_Valley NVARCHAR(50) DEFAULT ''West Valley''
-				, Saratoga_Spgs NVARCHAR(50) DEFAULT ''Saratoga Spgs''
-				, Saratoga_Springs NVARCHAR(50) DEFAULT ''Saratoga Springs''
-				, Vancouver NVARCHAR(50) DEFAULT ''Vancouver''
-				, Vancouver_BC NVARCHAR(50) DEFAULT ''Vancouver BC''
-				, Vancouver_AB NVARCHAR(50) DEFAULT ''Vancouver AB''
-				, Vancover_BC NVARCHAR(50) DEFAULT ''Vancover BC'' 
+		, '	
 			' -- Ext_Where_Statement_2
-		, '		,Eagle_Mtn NVARCHAR(50) DEFAULT ''Eagle Mtn''
-				, Eagle_Mountain NVARCHAR(50) DEFAULT ''Eagle Mountain''
-				, N_Salt_Lake NVARCHAR(50) DEFAULT ''N Salt Lake''
-				, North_Salt_Lake NVARCHAR(50) DEFAULT ''North Salt Lake''
-				, St_Anthony NVARCHAR(50) DEFAULT ''St Anthony''
-				, ID NVARCHAR(50) DEFAULT ''ID''
-				, Saint_Anthony NVARCHAR(50) DEFAULT ''Saint Anthony''
-				, Y NVARCHAR(1) DEFAULT ''Y''
-				, N NVARCHAR(1) DEFAULT ''N''
-				, Dash NVARCHAR(1) DEFAULT ''-''
-				, Space NVARCHAR(1) DEFAULT '' ''
-				, ProperCase NVARCHAR(4000) DEFAULT ''|Act|Air|Al|am|an|Ana|and|And|Ann|Arm|as|au|Ave|ba|Bad|Bar|Bay|Bch|Bee|bei|Bei|Bel|Big|Bow|Box|Br|Bud|Buk|By|
-														|Cd|Chi|cho|Chu|Cle|Col|Ctr|Cty|Cut|Cyn|Dam|Dan|De|de|Del|Den|Des|DeWinton|di|Do|do|Dos|Dry|du|
-														|Eau|Edo|Egg|El|Elk|Ell|Elm|Ely|Emu|en|Et|Eup|Ewa|Eye|Fe|Fox|Foy|Ft|Fu|Gan|Gap|Gi|Gig|Gro|Gto|gu|Gu|Gun|Gye|
-														|Hae|Ham|Hat|Hls|Ho|Hof|Hot|Hts|Hu|Ile|im|in|In|Inn|Is|Jal|Jay|Jct|Jet|Jim|Jin|Joe|Joo|Joy|Ju|
-														|Kan|Ken|ken|Key|Ki|Ku|Kus|La|Lam|Las|Le|le|Lea|Lee|Les|Lin|Loa|Los|
-														|Mai|Mar|Mc|Med|Mer|Mex|Mi|Mie|Min|Mnt|Mor|Mt|Mtn|Mun|Na|Nam|Nan|Nat|New|Nos|Nye|Oak|of|Oil|Ola|Old|Ord|Oro|
-														|Pak|Paw|Paz|Pe|Pea|Pen|po|Pok|Pos|Pri|Red|Rex|Rey|Rio|Roi|Roy|Rue|Run|Rye|
-														|Sac|Sai|Sam|San|Sao|Sea|Shi|shi|si|Siu|Six|Ski|So|St|Sta|Ste|Sul|Sun|Sur|
-														|Ta|Tai|Tan|Tao|Tel|Ten|The|Tin|Top|Tow|Two|Twp|Usk|USSCA|Uul|Van|Vi|Vlg|Vly|voa|
-														|Wai|Wan|Way|Wuk|Xi|Yan|Yi|Yuc|Zug|''
-				, Comma_Space NVARCHAR(5) DEFAULT '', '' 				
-			; 
+		, '	 
 			' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -1899,16 +1775,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -1985,16 +1861,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -2047,16 +1923,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -2104,16 +1980,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -2166,16 +2042,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -2228,16 +2104,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -2290,16 +2166,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -2357,16 +2233,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -2500,16 +2376,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -2591,16 +2467,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -2766,16 +2642,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -3044,16 +2920,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -3307,16 +3183,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -3455,16 +3331,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -3512,16 +3388,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -3626,16 +3502,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -3739,16 +3615,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -3796,16 +3672,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -3915,16 +3791,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -3992,16 +3868,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -4086,16 +3962,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -4220,16 +4096,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -4604,16 +4480,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -4661,16 +4537,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -4718,16 +4594,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -4821,16 +4697,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -4932,16 +4808,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -5036,16 +4912,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -5098,16 +4974,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -5160,16 +5036,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -5280,16 +5156,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -5337,16 +5213,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -5404,16 +5280,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -5599,16 +5475,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -5656,16 +5532,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -5779,16 +5655,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -5861,16 +5737,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -5918,16 +5794,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -5985,16 +5861,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -6090,16 +5966,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -6152,16 +6028,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -6281,16 +6157,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -6368,16 +6244,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -6460,16 +6336,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -6575,16 +6451,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -6668,16 +6544,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -6774,16 +6650,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -6796,12 +6672,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 	)
 	,
 -- --------------------------
--- Ext_Address
+-- Ext_Address_1
 -- --------------------------
 	( 2 -- Tier
 		, ' ' -- Source_Table
 		, ' ' -- Destination_Table
-		, 'Ext_Address' -- Ext_Table
+		, 'Ext_Address_1' -- Ext_Table
 		, ' ' -- Dest_Create_Fields
 		, ' ' -- Dest_Insert_Fields
 		, ' ' -- Dest_Where_Statement
@@ -6925,84 +6801,18 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Lds_PostalCode
 			, Lds_StateProvince
 			, Lds_County
-			, RTRIM(LTRIM(CASE WHEN Lds_City = [Ofallon] AND OA.Lds_County IN ([Saint_Charles],[Saint_Clair]) AND OA.Lds_StateProvince IN ([MO],[IL]) THEN [O_Appos_Fallon]
-					WHEN Lds_City = [O_Fallon] AND OA.Lds_County IN ([Saint_Charles],[Saint_Clair]) AND OA.Lds_StateProvince IN ([MO],[IL]) THEN [O_Appos_Fallon]
-					WHEN Lds_City = [Mexico_D_Per_F_Per] AND NCRY.New_Name = [Mexico] THEN [Mexico_comma_D_Per_F_Per]
-					WHEN Lds_City = [Mexico_DF] AND NCRY.New_Name = [Mexico] THEN [Mexico_comma_D_Per_F_Per]
-					WHEN Lds_City = [Mexico_City_D_Per_F_Per] AND NCRY.New_Name = [Mexico] THEN [Mexico_comma_D_Per_F_Per]
-					WHEN Lds_City = [Mexico_City_DF] AND NCRY.New_Name = [Mexico] THEN [Mexico_comma_D_Per_F_Per]
-					WHEN Lds_City = [Calgary_Comma_AB] AND NCRY.New_Name = [Canada] THEN [Calgary_AB]
-					WHEN Lds_City = [Calgary__AB] AND NCRY.New_Name = [Canada] THEN [Calgary_AB]
-					WHEN Lds_City = [Calgary] AND NCRY.New_Name = [Canada] THEN [Calgary_AB]
-					WHEN Lds_City = [Calgary_AI] AND NCRY.New_Name = [Canada] THEN [Calgary_AB]
-					WHEN Lds_City = [Calgary_Al] AND NCRY.New_Name = [Canada] THEN [Calgary_AB]
-					WHEN Lds_City = [Calgary_Alberta] AND NCRY.New_Name = [Canada] THEN [Calgary_AB]
-					WHEN Lds_City = [Calgary_BC] AND NCRY.New_Name = [Canada] THEN [Calgary_AB]
-					WHEN Lds_City = [Calgary_Comma_Alberta] AND NCRY.New_Name = [Canada] THEN [Calgary_AB]
-					WHEN Lds_City = [Shore_View] AND OA.Lds_County IN ([Ramsey]) AND OA.Lds_StateProvince IN ([MN]) THEN [Shoreview]
-					WHEN Lds_City = [Hamilton_Comma_ON] AND NCRY.New_Name = [Canada] THEN [Hamilton_ON]
-					WHEN Lds_City = [Hamilton_Ontario] AND NCRY.New_Name = [Canada] THEN [Hamilton_ON]
-					WHEN Lds_City = [Ducklake_SK] AND NCRY.New_Name = [Canada] THEN [Duck_Lake_SK]
-					WHEN Lds_City = [Pachuca_HGO] AND NCRY.New_Name = [Mexico] THEN [Pachuca_Comma_HGO]
-					WHEN Lds_City = [Pachuca] AND NCRY.New_Name = [Mexico] THEN [Pachuca_Comma_HGO]
-					WHEN Lds_City = [Pachuca_Hidalgo] AND NCRY.New_Name = [Mexico] THEN [Pachuca_Comma_HGO]
-					WHEN Lds_City = [Pachuca_De_Soto_Hida] AND NCRY.New_Name = [Mexico] THEN [Pachuca_Comma_HGO]
-					WHEN Lds_City = [Pachuca_HI] AND NCRY.New_Name = [Mexico] THEN [Pachuca_Comma_HGO]
-					WHEN Lds_City = [Pachuca_HG] AND NCRY.New_Name = [Mexico] THEN [Pachuca_Comma_HGO]
-					WHEN Lds_City = [Ottawa_Comma_ON] AND NCRY.New_Name = [Canada] THEN [Ottawa_ON]
-					WHEN Lds_City = [Ottawa] AND NCRY.New_Name = [Canada] THEN [Ottawa_ON]
-					WHEN Lds_City = [Ottawa_Ontario] AND NCRY.New_Name = [Canada] THEN [Ottawa_ON]
-					WHEN Lds_City = [Ottawa_AB] AND NCRY.New_Name = [Canada] THEN [Ottawa_ON]
-					WHEN Lds_City = [Weston_Dash_Cap_Super_Dash_Mare] AND NCRY.New_Name = [England] THEN [Weston_Dash_super_Dash_Mare]
-					WHEN Lds_City = [Weston_Dash_Cap_Super_Dash_Mare] AND NCRY.New_Name = [United_Kingdom] THEN [Weston_Dash_super_Dash_Mare]
-					WHEN Lds_City = [Weston_Super_Mare] AND NCRY.New_Name = [United_Kingdom] THEN [Weston_Dash_super_Dash_Mare]
-					WHEN Lds_City = [Weston_Dash_Super_Mare_B] AND NCRY.New_Name = [England] THEN [Weston_Dash_super_Dash_Mare]
-					WHEN Lds_City = [Risingsun] AND OA.Lds_StateProvince IN ([OH]) THEN [Rising_Sun]																				
+			, Lds_City																				
 			' -- Ext_Select_Statement
 		, 'LDSPhilanthropiesDW.dbo.Ext_Address_Base OA 
 				LEFT JOIN LDSPhilanthropiesDW.dbo.Ext_Country NCRY ON OA.New_CountryRegions = NCRY.New_CountryId
 			' -- Ext_From_Statement
-		, '
+		, 'AND Row_Num <= 1000000
 			' -- Ext_Where_Statement	
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
 		, NULL -- Tier_4_Stage
 		, NULL -- Tier_4_Stage_DateTime
-, '					WHEN Lds_City = [Nuku_Appo_alofa] AND NCRY.New_Name = [Tonga] THEN [Nuku_Appo_alofa]
-					WHEN Lds_City = [Nuku_Alofa] AND NCRY.New_Name = [Tonga] THEN [Nuku_Appo_alofa]
-					WHEN Lds_City = [Nuku_Appo_Cap_Alofa] AND NCRY.New_Name = [Tonga] THEN [Nuku_Appo_alofa]
-					WHEN Lds_City = [Nuku_Tick_alofa_Tongatapu] AND NCRY.New_Name = [Tonga] THEN [Nuku_Appo_alofa]
-					WHEN Lds_City = [Nukuaiofa] AND NCRY.New_Name = [Tonga] THEN [Nuku_Appo_alofa]
-					WHEN Lds_City = [Nukualofa] AND NCRY.New_Name = [Tonga] THEN [Nuku_Appo_alofa]
-					WHEN Lds_City = [Nukualofa_Tongatapu] AND NCRY.New_Name = [Tonga] THEN [Nuku_Appo_alofa]
-					WHEN Lds_City = [Nuku_Appo_Alofa_Tongatapu] AND NCRY.New_Name = [Tonga] THEN [Nuku_Appo_alofa]
-					WHEN Lds_City = [Nukualofa_Comma_Tongatapu] AND NCRY.New_Name = [Tonga] THEN [Nuku_Appo_alofa]
-					WHEN Lds_City = [Willow_Brook] AND OA.Lds_County IN ([Du_Page]) AND OA.Lds_StateProvince IN ([IL]) THEN [Willowbrook]
-					WHEN Lds_City = [Puebla] AND NCRY.New_Name = [Mexico] THEN [Puebla_Comma_PUE]
-					WHEN Lds_City = [Puebla_CP] AND NCRY.New_Name = [Mexico] THEN [Puebla_Comma_PUE]
-					WHEN Lds_City = [Puebla_ME] AND NCRY.New_Name = [Mexico] THEN [Puebla_Comma_PUE]
-					WHEN Lds_City = [Puebla_PUE] AND NCRY.New_Name = [Mexico] THEN [Puebla_Comma_PUE]
-					WHEN Lds_City = [Puebla_Puebla] AND NCRY.New_Name = [Mexico] THEN [Puebla_Comma_PUE]
-					WHEN Lds_City = [Charlestown] AND OA.Lds_County IN ([Jefferson]) AND OA.Lds_StateProvince IN ([WV]) THEN [Charles_Town]
-					WHEN Lds_City = [Xian] AND NCRY.New_Name IN ([China],[CHINA_PEOPLES_REP_OF]) THEN [Xi_Appo_an]
-					WHEN Lds_City = [Coaldale] AND NCRY.New_Name = [Canada] THEN [Coaldale_AB]
-					WHEN Lds_City = [Coaldale_Alberta] AND NCRY.New_Name = [Canada] THEN [Coaldale_AB]
-					WHEN Lds_City = [Coaldale_Comma_AB] AND NCRY.New_Name = [Canada] THEN [Coaldale_AB]
-					WHEN Lds_City = [De_Lancey] AND OA.Lds_County IN ([Delaware]) AND OA.Lds_StateProvince IN ([NY]) THEN [Delancey]
-					WHEN Lds_City = [Cardston] AND NCRY.New_Name = [Canada] THEN [Cardston_AB]
-					WHEN Lds_City = [Cardston_Comma_AB] AND NCRY.New_Name = [Canada] THEN [Cardston_AB]
-					WHEN Lds_City = [Salt_Lake_Cty] AND OA.Lds_StateProvince IN ([UT]) THEN [Salt_Lake_City]
-					WHEN Lds_City = [St_Per_George] AND OA.Lds_StateProvince IN ([UT]) THEN [Saint_George]
-					WHEN Lds_City = [W_Valley_City] AND OA.Lds_StateProvince IN ([UT]) THEN [West_Valley_City]
-					WHEN Lds_City = [West_Valley] AND OA.Lds_StateProvince IN ([UT]) THEN [West_Valley_City]
-					WHEN Lds_City = [Saratoga_Spgs] AND OA.Lds_StateProvince IN ([UT]) THEN [Saratoga_Springs]
-					WHEN Lds_City = [Vancouver] AND NCRY.New_Name = [Canada] THEN [Vancouver_BC]
-					WHEN Lds_City = [Vancouver_AB] AND NCRY.New_Name = [Canada] THEN [Vancouver_BC]
-					WHEN Lds_City = [Vancover_BC] AND NCRY.New_Name = [Canada] THEN [Vancouver_BC]
-					WHEN Lds_City = [Eagle_Mtn] AND OA.Lds_StateProvince IN ([UT]) THEN [Eagle_Mountain]
-					WHEN Lds_City = [N_Salt_Lake] AND OA.Lds_StateProvince IN ([UT]) THEN [North_Salt_Lake]
-					WHEN Lds_City = [St_Anthony] AND OA.Lds_StateProvince IN ([ID]) THEN [Saint_Anthony]
-				ELSE Lds_City END)) AS Lds_City 
+		, '	
 			' -- Ext_Select_Statement_2
 		, ' ' -- Ext_From_Statement_2
 		, ', Weston_Dash_Cap_Super_Dash_Mare NVARCHAR(50) DEFAULT ''Weston-Super-Mare''
@@ -7091,16 +6901,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -7145,16 +6955,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -7199,16 +7009,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -7253,16 +7063,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -7307,16 +7117,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -7361,16 +7171,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -7415,16 +7225,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -7469,16 +7279,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -7523,16 +7333,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -7577,16 +7387,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -7631,16 +7441,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -7685,16 +7495,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -7739,16 +7549,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -7793,16 +7603,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -7847,16 +7657,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -7901,16 +7711,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -7955,16 +7765,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -8009,16 +7819,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -8063,16 +7873,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -8117,16 +7927,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -8171,16 +7981,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -8225,16 +8035,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -8279,16 +8089,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -8333,16 +8143,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -8387,16 +8197,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -8441,16 +8251,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -8495,16 +8305,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -8549,16 +8359,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -8603,16 +8413,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -8657,16 +8467,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -8711,16 +8521,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -8765,16 +8575,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -8819,16 +8629,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -8873,16 +8683,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -8927,16 +8737,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -8981,16 +8791,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -9035,16 +8845,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -9089,16 +8899,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -9143,16 +8953,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -9197,16 +9007,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -9251,16 +9061,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -9305,16 +9115,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -9359,16 +9169,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -9413,16 +9223,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -9467,16 +9277,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -9521,16 +9331,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -9575,16 +9385,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -9629,16 +9439,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -9683,16 +9493,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -9737,16 +9547,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -9791,16 +9601,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -9845,16 +9655,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -9899,16 +9709,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -9953,16 +9763,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -10007,16 +9817,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -10061,16 +9871,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -10115,16 +9925,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -10169,16 +9979,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -10223,16 +10033,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -10277,16 +10087,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -10331,16 +10141,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -10385,16 +10195,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -10439,16 +10249,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -10493,16 +10303,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -10547,16 +10357,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -10601,16 +10411,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -10655,16 +10465,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -10709,16 +10519,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -10763,16 +10573,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -10817,16 +10627,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -10871,16 +10681,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -10925,16 +10735,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -10979,16 +10789,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -11033,16 +10843,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -11087,16 +10897,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -11141,16 +10951,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -11195,16 +11005,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -11249,16 +11059,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -11303,16 +11113,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -11357,16 +11167,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -11411,16 +11221,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -11465,16 +11275,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -11519,16 +11329,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -11573,16 +11383,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -11627,16 +11437,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -11681,16 +11491,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -11735,16 +11545,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -11789,16 +11599,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -11843,16 +11653,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -11897,16 +11707,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -11951,16 +11761,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -12005,16 +11815,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -12059,16 +11869,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -12113,16 +11923,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -12167,16 +11977,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -12221,16 +12031,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -12275,16 +12085,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -12329,16 +12139,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -12383,16 +12193,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -12437,16 +12247,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -12491,16 +12301,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -12545,16 +12355,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -12599,16 +12409,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -12653,16 +12463,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -12707,16 +12517,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -12761,16 +12571,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -12815,16 +12625,267 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- Ext_Address_2
+-- --------------------------
+	( 3 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, 'Ext_Address_2' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Plus_RelatedContact UNIQUEIDENTIFIER
+			, New_Primary BIT
+			, New_Street1 NVARCHAR(100)
+			, New_Street2 NVARCHAR(100)
+			, New_Street3 NVARCHAR(100)
+			, New_Zip4 NVARCHAR(15)
+			, Plus_AddressDisplay NVARCHAR(300)
+			, Plus_Longitude FLOAT
+			, Plus_Latitude FLOAT
+			, StateCode INT
+			, New_Confidential BIT
+			, New_CityLookUp UNIQUEIDENTIFIER
+			, New_CountyId UNIQUEIDENTIFIER
+			, New_StatesProvinces UNIQUEIDENTIFIER
+			, New_CountryRegions UNIQUEIDENTIFIER
+			, New_PostalCodes UNIQUEIDENTIFIER
+			, Plus_OneAccordQuality INT
+			, New_AddressType INT
+			, New_AddressId UNIQUEIDENTIFIER
+			, New_ConfirmedDate DATETIME
+			, Plus_ForeignPostalCode NVARCHAR(100)
+			, Lds_PostalCode NVARCHAR(100)
+			, Lds_StateProvince NVARCHAR(100)
+			, Lds_County NVARCHAR(100)
+			, Lds_City NVARCHAR(100)
+			, Ofallon NVARCHAR(50) DEFAULT ''Ofallon''
+			, Saint_Charles NVARCHAR(50) DEFAULT ''Saint Charles''
+			, Saint_Clair NVARCHAR(50) DEFAULT ''Saint Clair''
+			, MO NVARCHAR(50) DEFAULT ''MO''
+			, IL NVARCHAR(50) DEFAULT ''IL''
+			, O_Appos_Fallon NVARCHAR(50) DEFAULT ''O''''Fallon''
+			, O_Fallon NVARCHAR(50) DEFAULT ''O Fallon''
+			, Mexico_D_Per_F_Per NVARCHAR(50) DEFAULT ''Mexico D.F.''
+			, Mexico NVARCHAR(50) DEFAULT ''Mexico''
+			, Mexico_comma_D_Per_F_Per NVARCHAR(50) DEFAULT ''Mexico, D.F.''
+			, Mexico_DF NVARCHAR(50) DEFAULT ''Mexico DF''
+			, Mexico_City_D_Per_F_Per NVARCHAR(50) DEFAULT ''Mexico City D.F.''
+			, Mexico_City_DF NVARCHAR(50) DEFAULT ''Mexico City DF''
+			, Calgary_Comma_AB NVARCHAR(50) DEFAULT ''Calgary, AB''
+			, Canada NVARCHAR(50) DEFAULT ''Canada''
+			, Calgary_AB NVARCHAR(50) DEFAULT ''Calgary AB''
+			, Calgary__AB NVARCHAR(50) DEFAULT ''Calgary  AB''
+			, Calgary NVARCHAR(50) DEFAULT ''Calgary''
+			, Calgary_AI NVARCHAR(50) DEFAULT ''Calgary AI''
+			, Calgary_Al NVARCHAR(50) DEFAULT ''Calgary Al''
+			, Calgary_Alberta NVARCHAR(50) DEFAULT ''Calgary Alberta''
+			, Calgary_BC NVARCHAR(50) DEFAULT ''Calgary BC''
+			, Calgary_Comma_Alberta NVARCHAR(50) DEFAULT ''Calgary, Alberta''
+			, Shore_View NVARCHAR(50) DEFAULT ''Shore View''
+			, Ramsey NVARCHAR(50) DEFAULT ''Ramsey''
+			, MN NVARCHAR(50) DEFAULT ''MN''
+			, Shoreview NVARCHAR(50) DEFAULT ''Shoreview''
+			, Hamilton_Comma_ON NVARCHAR(50) DEFAULT ''Hamilton, ON''
+			, Hamilton_ON NVARCHAR(50) DEFAULT ''Hamilton ON''
+			, Hamilton_Ontario NVARCHAR(50) DEFAULT ''Hamilton Ontario''
+			, Ducklake_SK NVARCHAR(50) DEFAULT ''Ducklake SK''
+			, Duck_Lake_SK NVARCHAR(50) DEFAULT ''Duck Lake SK''
+			, Pachuca_HGO NVARCHAR(50) DEFAULT ''Pachuca HGO''
+			, Pachuca_Comma_HGO NVARCHAR(50) DEFAULT ''Pachuca, HGO''
+			, Pachuca NVARCHAR(50) DEFAULT ''Pachuca''
+			, Pachuca_Hidalgo NVARCHAR(50) DEFAULT ''Pachuca Hidalgo''
+			, Pachuca_De_Soto_Hida NVARCHAR(50) DEFAULT ''Pachuca De Soto Hida''
+			, Pachuca_HI NVARCHAR(50) DEFAULT ''Pachuca HI''
+			, Pachuca_HG NVARCHAR(50) DEFAULT ''Pachuca HG''
+			, Ottawa_Comma_ON NVARCHAR(50) DEFAULT ''Ottawa, ON''
+			, Ottawa_ON NVARCHAR(50) DEFAULT ''Ottawa ON''
+			, Ottawa NVARCHAR(50) DEFAULT ''Ottawa''
+			, Ottawa_Ontario NVARCHAR(50) DEFAULT ''Ottawa Ontario''
+			, Ottawa_AB NVARCHAR(50) DEFAULT ''Ottawa AB''			
+			' -- Ext_Create_Fields
+		, 'Plus_RelatedContact
+			, New_Primary
+			, New_Street1
+			, New_Street2
+			, New_Street3
+			, New_Zip4
+			, Plus_AddressDisplay
+			, Plus_Longitude
+			, Plus_Latitude
+			, StateCode
+			, New_Confidential
+			, New_CityLookUp
+			, New_CountyId
+			, New_StatesProvinces
+			, New_CountryRegions
+			, New_PostalCodes
+			, Plus_OneAccordQuality
+			, New_AddressType
+			, New_AddressId
+			, New_ConfirmedDate
+			, Plus_ForeignPostalCode
+			, Lds_PostalCode
+			, Lds_StateProvince
+			, Lds_County
+			, Lds_City
+			' -- Ext_Insert_Fields
+		, 'Plus_RelatedContact
+			, New_Primary
+			, New_Street1
+			, New_Street2
+			, New_Street3
+			, New_Zip4
+			, Plus_AddressDisplay
+			, Plus_Longitude
+			, Plus_Latitude
+			, StateCode
+			, New_Confidential
+			, New_CityLookUp
+			, New_CountyId
+			, New_StatesProvinces
+			, New_CountryRegions
+			, New_PostalCodes
+			, Plus_OneAccordQuality
+			, New_AddressType
+			, New_AddressId
+			, New_ConfirmedDate
+			, Plus_ForeignPostalCode
+			, Lds_PostalCode
+			, Lds_StateProvince
+			, Lds_County
+			, Lds_City																				
+			' -- Ext_Select_Statement
+		, 'LDSPhilanthropiesDW.dbo.Ext_Address_Base OA 
+				LEFT JOIN LDSPhilanthropiesDW.dbo.Ext_Country NCRY ON OA.New_CountryRegions = NCRY.New_CountryId
+			' -- Ext_From_Statement
+		, 'AND Row_Num BETWEEN 1000001 AND 2000000
+			' -- Ext_Where_Statement	
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, '	
+			' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
+		, ', Weston_Dash_Cap_Super_Dash_Mare NVARCHAR(50) DEFAULT ''Weston-Super-Mare''
+			, England NVARCHAR(50) DEFAULT ''England''
+			, Weston_Dash_super_Dash_Mare NVARCHAR(50) DEFAULT ''Weston-super-Mare''
+			, United_Kingdom NVARCHAR(50) DEFAULT ''United Kingdom''
+			, Weston_Super_Mare NVARCHAR(50) DEFAULT ''Weston Super Mare''
+			, Weston_Dash_Super_Mare_B NVARCHAR(50) DEFAULT ''Weston-Super-Mare B''
+			, Risingsun NVARCHAR(50) DEFAULT ''Risingsun''
+			, OH NVARCHAR(50) DEFAULT ''OH''
+			, Rising_Sun NVARCHAR(50) DEFAULT ''Rising Sun''
+			, Nuku_Appo_Cap_Alofa NVARCHAR(50) DEFAULT ''Nuku''''Alofa''
+			, Tonga NVARCHAR(50) DEFAULT ''Tonga''
+			, Nuku_Appo_alofa NVARCHAR(50) DEFAULT ''Nuku''''alofa''
+			, Nuku_Alofa NVARCHAR(50) DEFAULT ''Nuku Alofa''
+			, Nuku_Tick_alofa_Tongatapu NVARCHAR(50) DEFAULT ''Nuku`alofa Tongatapu''
+			, Nukuaiofa NVARCHAR(50) DEFAULT ''Nukuaiofa''
+			, Nukualofa NVARCHAR(50) DEFAULT ''Nukualofa''
+			, Nukualofa_Tongatapu NVARCHAR(50) DEFAULT ''Nukualofa Tongatapu''
+			, Nuku_Appo_Alofa_Tongatapu NVARCHAR(50) DEFAULT ''Nuku''''Alofa Tongatapu''
+			, Nukualofa_Comma_Tongatapu NVARCHAR(50) DEFAULT ''Nukualofa, Tongatapu''
+			, Willow_Brook NVARCHAR(50) DEFAULT ''Willow Brook''
+			, Du_Page NVARCHAR(50) DEFAULT ''Du Page''
+			, Willowbrook NVARCHAR(50) DEFAULT ''Willowbrook''
+			, Puebla NVARCHAR(50) DEFAULT ''Puebla''
+			, Puebla_Comma_PUE NVARCHAR(50) DEFAULT ''Puebla, PUE''
+			, Puebla_CP NVARCHAR(50) DEFAULT ''Puebla CP''
+			, Puebla_ME NVARCHAR(50) DEFAULT ''Puebla ME''
+			, Puebla_PUE NVARCHAR(50) DEFAULT ''Puebla PUE''
+			, Puebla_Puebla NVARCHAR(50) DEFAULT ''Puebla Puebla''
+			, Charlestown NVARCHAR(50) DEFAULT ''Charlestown''
+			, Jefferson NVARCHAR(50) DEFAULT ''Jefferson''
+			, WV NVARCHAR(50) DEFAULT ''WV''
+			, Charles_Town NVARCHAR(50) DEFAULT ''Charles Town''
+			, Xian NVARCHAR(50) DEFAULT ''Xian''
+			, China NVARCHAR(50) DEFAULT ''China''
+			, CHINA_PEOPLES_REP_OF NVARCHAR(50) DEFAULT ''CHINA, PEOPLE''''S REP OF''
+			, Xi_Appo_an NVARCHAR(50) DEFAULT ''Xi''''an''
+			, Coaldale NVARCHAR(50) DEFAULT ''Coaldale''
+			, Coaldale_AB NVARCHAR(50) DEFAULT ''Coaldale AB''
+			, Coaldale_Alberta NVARCHAR(50) DEFAULT ''Coaldale Alberta''
+			, Coaldale_Comma_AB NVARCHAR(50) DEFAULT ''Coaldale, AB''
+			, De_Lancey NVARCHAR(50) DEFAULT ''De Lancey''
+			, Delaware NVARCHAR(50) DEFAULT ''Delaware''
+			, NY NVARCHAR(50) DEFAULT ''NY''
+			, Cardston NVARCHAR(50) DEFAULT ''Cardston''
+			, Cardston_AB NVARCHAR(50) DEFAULT ''Cardston AB''
+			, Cardston_Comma_AB NVARCHAR(50) DEFAULT ''Cardston, AB''
+			, Salt_Lake_Cty NVARCHAR(50) DEFAULT ''Salt Lake Cty''
+			, UT NVARCHAR(50) DEFAULT ''UT''
+			, Salt_Lake_City NVARCHAR(50) DEFAULT ''Salt Lake City''
+			, St_Per_George NVARCHAR(50) DEFAULT ''St. George''
+			, Saint_George NVARCHAR(50) DEFAULT ''Saint George''
+			, W_Valley_City NVARCHAR(50) DEFAULT ''W Valley City''
+			, West_Valley_City NVARCHAR(50) DEFAULT ''West Valley City''
+			, West_Valley NVARCHAR(50) DEFAULT ''West Valley''
+			, Saratoga_Spgs NVARCHAR(50) DEFAULT ''Saratoga Spgs''
+			, Saratoga_Springs NVARCHAR(50) DEFAULT ''Saratoga Springs''
+			, Vancouver NVARCHAR(50) DEFAULT ''Vancouver''
+			, Vancouver_BC NVARCHAR(50) DEFAULT ''Vancouver BC''
+			, Vancouver_AB NVARCHAR(50) DEFAULT ''Vancouver AB''
+			, Vancover_BC NVARCHAR(50) DEFAULT ''Vancover BC'' 
+			' -- Ext_Create_Fields_2
+		, ', Eagle_Mtn NVARCHAR(50) DEFAULT ''Eagle Mtn''
+			, Eagle_Mountain NVARCHAR(50) DEFAULT ''Eagle Mountain''
+			, N_Salt_Lake NVARCHAR(50) DEFAULT ''N Salt Lake''
+			, North_Salt_Lake NVARCHAR(50) DEFAULT ''North Salt Lake''
+			, St_Anthony NVARCHAR(50) DEFAULT ''St Anthony''
+			, ID NVARCHAR(50) DEFAULT ''ID''
+			, Saint_Anthony NVARCHAR(50) DEFAULT ''Saint Anthony''
+			, Y NVARCHAR(1) DEFAULT ''Y''
+			, N NVARCHAR(1) DEFAULT ''N''
+			, Dash NVARCHAR(1) DEFAULT ''-''
+			, Space NVARCHAR(1) DEFAULT '' ''
+			, ProperCase NVARCHAR(4000) DEFAULT ''|Act|Air|Al|am|an|Ana|and|And|Ann|Arm|as|au|Ave|ba|Bad|Bar|Bay|Bch|Bee|bei|Bei|Bel|Big|Bow|Box|Br|Bud|Buk|By|
+													|Cd|Chi|cho|Chu|Cle|Col|Ctr|Cty|Cut|Cyn|Dam|Dan|De|de|Del|Den|Des|DeWinton|di|Do|do|Dos|Dry|du|
+													|Eau|Edo|Egg|El|Elk|Ell|Elm|Ely|Emu|en|Et|Eup|Ewa|Eye|Fe|Fox|Foy|Ft|Fu|Gan|Gap|Gi|Gig|Gro|Gto|gu|Gu|Gun|Gye|
+													|Hae|Ham|Hat|Hls|Ho|Hof|Hot|Hts|Hu|Ile|im|in|In|Inn|Is|Jal|Jay|Jct|Jet|Jim|Jin|Joe|Joo|Joy|Ju|
+													|Kan|Ken|ken|Key|Ki|Ku|Kus|La|Lam|Las|Le|le|Lea|Lee|Les|Lin|Loa|Los|
+													|Mai|Mar|Mc|Med|Mer|Mex|Mi|Mie|Min|Mnt|Mor|Mt|Mtn|Mun|Na|Nam|Nan|Nat|New|Nos|Nye|Oak|of|Oil|Ola|Old|Ord|Oro|
+													|Pak|Paw|Paz|Pe|Pea|Pen|po|Pok|Pos|Pri|Red|Rex|Rey|Rio|Roi|Roy|Rue|Run|Rye|
+													|Sac|Sai|Sam|San|Sao|Sea|Shi|shi|si|Siu|Six|Ski|So|St|Sta|Ste|Sul|Sun|Sur|
+													|Ta|Tai|Tan|Tao|Tel|Ten|The|Tin|Top|Tow|Two|Twp|Usk|USSCA|Uul|Van|Vi|Vlg|Vly|voa|
+													|Wai|Wan|Way|Wuk|Xi|Yan|Yi|Yuc|Zug|''
+			, Comma_Space NVARCHAR(5) DEFAULT '', '' 
+			' -- Ext_Create_Fields_3
+		, ' ' -- Ext_Where_Statement_2
+		, ' ' -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -12944,16 +13005,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -13153,16 +13214,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -13278,16 +13339,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -13366,16 +13427,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -13455,16 +13516,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -13554,16 +13615,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -13629,16 +13690,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -13704,16 +13765,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -13854,16 +13915,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -13920,16 +13981,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -13941,6 +14002,257 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL
 	)
 ,
+-- --------------------------
+-- Ext_Address_3
+-- --------------------------
+	( 4 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, 'Ext_Address_3' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Plus_RelatedContact UNIQUEIDENTIFIER
+			, New_Primary BIT
+			, New_Street1 NVARCHAR(100)
+			, New_Street2 NVARCHAR(100)
+			, New_Street3 NVARCHAR(100)
+			, New_Zip4 NVARCHAR(15)
+			, Plus_AddressDisplay NVARCHAR(300)
+			, Plus_Longitude FLOAT
+			, Plus_Latitude FLOAT
+			, StateCode INT
+			, New_Confidential BIT
+			, New_CityLookUp UNIQUEIDENTIFIER
+			, New_CountyId UNIQUEIDENTIFIER
+			, New_StatesProvinces UNIQUEIDENTIFIER
+			, New_CountryRegions UNIQUEIDENTIFIER
+			, New_PostalCodes UNIQUEIDENTIFIER
+			, Plus_OneAccordQuality INT
+			, New_AddressType INT
+			, New_AddressId UNIQUEIDENTIFIER
+			, New_ConfirmedDate DATETIME
+			, Plus_ForeignPostalCode NVARCHAR(100)
+			, Lds_PostalCode NVARCHAR(100)
+			, Lds_StateProvince NVARCHAR(100)
+			, Lds_County NVARCHAR(100)
+			, Lds_City NVARCHAR(100)
+			, Ofallon NVARCHAR(50) DEFAULT ''Ofallon''
+			, Saint_Charles NVARCHAR(50) DEFAULT ''Saint Charles''
+			, Saint_Clair NVARCHAR(50) DEFAULT ''Saint Clair''
+			, MO NVARCHAR(50) DEFAULT ''MO''
+			, IL NVARCHAR(50) DEFAULT ''IL''
+			, O_Appos_Fallon NVARCHAR(50) DEFAULT ''O''''Fallon''
+			, O_Fallon NVARCHAR(50) DEFAULT ''O Fallon''
+			, Mexico_D_Per_F_Per NVARCHAR(50) DEFAULT ''Mexico D.F.''
+			, Mexico NVARCHAR(50) DEFAULT ''Mexico''
+			, Mexico_comma_D_Per_F_Per NVARCHAR(50) DEFAULT ''Mexico, D.F.''
+			, Mexico_DF NVARCHAR(50) DEFAULT ''Mexico DF''
+			, Mexico_City_D_Per_F_Per NVARCHAR(50) DEFAULT ''Mexico City D.F.''
+			, Mexico_City_DF NVARCHAR(50) DEFAULT ''Mexico City DF''
+			, Calgary_Comma_AB NVARCHAR(50) DEFAULT ''Calgary, AB''
+			, Canada NVARCHAR(50) DEFAULT ''Canada''
+			, Calgary_AB NVARCHAR(50) DEFAULT ''Calgary AB''
+			, Calgary__AB NVARCHAR(50) DEFAULT ''Calgary  AB''
+			, Calgary NVARCHAR(50) DEFAULT ''Calgary''
+			, Calgary_AI NVARCHAR(50) DEFAULT ''Calgary AI''
+			, Calgary_Al NVARCHAR(50) DEFAULT ''Calgary Al''
+			, Calgary_Alberta NVARCHAR(50) DEFAULT ''Calgary Alberta''
+			, Calgary_BC NVARCHAR(50) DEFAULT ''Calgary BC''
+			, Calgary_Comma_Alberta NVARCHAR(50) DEFAULT ''Calgary, Alberta''
+			, Shore_View NVARCHAR(50) DEFAULT ''Shore View''
+			, Ramsey NVARCHAR(50) DEFAULT ''Ramsey''
+			, MN NVARCHAR(50) DEFAULT ''MN''
+			, Shoreview NVARCHAR(50) DEFAULT ''Shoreview''
+			, Hamilton_Comma_ON NVARCHAR(50) DEFAULT ''Hamilton, ON''
+			, Hamilton_ON NVARCHAR(50) DEFAULT ''Hamilton ON''
+			, Hamilton_Ontario NVARCHAR(50) DEFAULT ''Hamilton Ontario''
+			, Ducklake_SK NVARCHAR(50) DEFAULT ''Ducklake SK''
+			, Duck_Lake_SK NVARCHAR(50) DEFAULT ''Duck Lake SK''
+			, Pachuca_HGO NVARCHAR(50) DEFAULT ''Pachuca HGO''
+			, Pachuca_Comma_HGO NVARCHAR(50) DEFAULT ''Pachuca, HGO''
+			, Pachuca NVARCHAR(50) DEFAULT ''Pachuca''
+			, Pachuca_Hidalgo NVARCHAR(50) DEFAULT ''Pachuca Hidalgo''
+			, Pachuca_De_Soto_Hida NVARCHAR(50) DEFAULT ''Pachuca De Soto Hida''
+			, Pachuca_HI NVARCHAR(50) DEFAULT ''Pachuca HI''
+			, Pachuca_HG NVARCHAR(50) DEFAULT ''Pachuca HG''
+			, Ottawa_Comma_ON NVARCHAR(50) DEFAULT ''Ottawa, ON''
+			, Ottawa_ON NVARCHAR(50) DEFAULT ''Ottawa ON''
+			, Ottawa NVARCHAR(50) DEFAULT ''Ottawa''
+			, Ottawa_Ontario NVARCHAR(50) DEFAULT ''Ottawa Ontario''
+			, Ottawa_AB NVARCHAR(50) DEFAULT ''Ottawa AB''			
+			' -- Ext_Create_Fields
+		, 'Plus_RelatedContact
+			, New_Primary
+			, New_Street1
+			, New_Street2
+			, New_Street3
+			, New_Zip4
+			, Plus_AddressDisplay
+			, Plus_Longitude
+			, Plus_Latitude
+			, StateCode
+			, New_Confidential
+			, New_CityLookUp
+			, New_CountyId
+			, New_StatesProvinces
+			, New_CountryRegions
+			, New_PostalCodes
+			, Plus_OneAccordQuality
+			, New_AddressType
+			, New_AddressId
+			, New_ConfirmedDate
+			, Plus_ForeignPostalCode
+			, Lds_PostalCode
+			, Lds_StateProvince
+			, Lds_County
+			, Lds_City
+			' -- Ext_Insert_Fields
+		, 'Plus_RelatedContact
+			, New_Primary
+			, New_Street1
+			, New_Street2
+			, New_Street3
+			, New_Zip4
+			, Plus_AddressDisplay
+			, Plus_Longitude
+			, Plus_Latitude
+			, StateCode
+			, New_Confidential
+			, New_CityLookUp
+			, New_CountyId
+			, New_StatesProvinces
+			, New_CountryRegions
+			, New_PostalCodes
+			, Plus_OneAccordQuality
+			, New_AddressType
+			, New_AddressId
+			, New_ConfirmedDate
+			, Plus_ForeignPostalCode
+			, Lds_PostalCode
+			, Lds_StateProvince
+			, Lds_County
+			, Lds_City																				
+			' -- Ext_Select_Statement
+		, 'LDSPhilanthropiesDW.dbo.Ext_Address_Base OA 
+				LEFT JOIN LDSPhilanthropiesDW.dbo.Ext_Country NCRY ON OA.New_CountryRegions = NCRY.New_CountryId
+			' -- Ext_From_Statement
+		, 'AND Row_Num BETWEEN 2000001 AND 3000000
+			' -- Ext_Where_Statement	
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, '	
+			' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
+		, ', Weston_Dash_Cap_Super_Dash_Mare NVARCHAR(50) DEFAULT ''Weston-Super-Mare''
+			, England NVARCHAR(50) DEFAULT ''England''
+			, Weston_Dash_super_Dash_Mare NVARCHAR(50) DEFAULT ''Weston-super-Mare''
+			, United_Kingdom NVARCHAR(50) DEFAULT ''United Kingdom''
+			, Weston_Super_Mare NVARCHAR(50) DEFAULT ''Weston Super Mare''
+			, Weston_Dash_Super_Mare_B NVARCHAR(50) DEFAULT ''Weston-Super-Mare B''
+			, Risingsun NVARCHAR(50) DEFAULT ''Risingsun''
+			, OH NVARCHAR(50) DEFAULT ''OH''
+			, Rising_Sun NVARCHAR(50) DEFAULT ''Rising Sun''
+			, Nuku_Appo_Cap_Alofa NVARCHAR(50) DEFAULT ''Nuku''''Alofa''
+			, Tonga NVARCHAR(50) DEFAULT ''Tonga''
+			, Nuku_Appo_alofa NVARCHAR(50) DEFAULT ''Nuku''''alofa''
+			, Nuku_Alofa NVARCHAR(50) DEFAULT ''Nuku Alofa''
+			, Nuku_Tick_alofa_Tongatapu NVARCHAR(50) DEFAULT ''Nuku`alofa Tongatapu''
+			, Nukuaiofa NVARCHAR(50) DEFAULT ''Nukuaiofa''
+			, Nukualofa NVARCHAR(50) DEFAULT ''Nukualofa''
+			, Nukualofa_Tongatapu NVARCHAR(50) DEFAULT ''Nukualofa Tongatapu''
+			, Nuku_Appo_Alofa_Tongatapu NVARCHAR(50) DEFAULT ''Nuku''''Alofa Tongatapu''
+			, Nukualofa_Comma_Tongatapu NVARCHAR(50) DEFAULT ''Nukualofa, Tongatapu''
+			, Willow_Brook NVARCHAR(50) DEFAULT ''Willow Brook''
+			, Du_Page NVARCHAR(50) DEFAULT ''Du Page''
+			, Willowbrook NVARCHAR(50) DEFAULT ''Willowbrook''
+			, Puebla NVARCHAR(50) DEFAULT ''Puebla''
+			, Puebla_Comma_PUE NVARCHAR(50) DEFAULT ''Puebla, PUE''
+			, Puebla_CP NVARCHAR(50) DEFAULT ''Puebla CP''
+			, Puebla_ME NVARCHAR(50) DEFAULT ''Puebla ME''
+			, Puebla_PUE NVARCHAR(50) DEFAULT ''Puebla PUE''
+			, Puebla_Puebla NVARCHAR(50) DEFAULT ''Puebla Puebla''
+			, Charlestown NVARCHAR(50) DEFAULT ''Charlestown''
+			, Jefferson NVARCHAR(50) DEFAULT ''Jefferson''
+			, WV NVARCHAR(50) DEFAULT ''WV''
+			, Charles_Town NVARCHAR(50) DEFAULT ''Charles Town''
+			, Xian NVARCHAR(50) DEFAULT ''Xian''
+			, China NVARCHAR(50) DEFAULT ''China''
+			, CHINA_PEOPLES_REP_OF NVARCHAR(50) DEFAULT ''CHINA, PEOPLE''''S REP OF''
+			, Xi_Appo_an NVARCHAR(50) DEFAULT ''Xi''''an''
+			, Coaldale NVARCHAR(50) DEFAULT ''Coaldale''
+			, Coaldale_AB NVARCHAR(50) DEFAULT ''Coaldale AB''
+			, Coaldale_Alberta NVARCHAR(50) DEFAULT ''Coaldale Alberta''
+			, Coaldale_Comma_AB NVARCHAR(50) DEFAULT ''Coaldale, AB''
+			, De_Lancey NVARCHAR(50) DEFAULT ''De Lancey''
+			, Delaware NVARCHAR(50) DEFAULT ''Delaware''
+			, NY NVARCHAR(50) DEFAULT ''NY''
+			, Cardston NVARCHAR(50) DEFAULT ''Cardston''
+			, Cardston_AB NVARCHAR(50) DEFAULT ''Cardston AB''
+			, Cardston_Comma_AB NVARCHAR(50) DEFAULT ''Cardston, AB''
+			, Salt_Lake_Cty NVARCHAR(50) DEFAULT ''Salt Lake Cty''
+			, UT NVARCHAR(50) DEFAULT ''UT''
+			, Salt_Lake_City NVARCHAR(50) DEFAULT ''Salt Lake City''
+			, St_Per_George NVARCHAR(50) DEFAULT ''St. George''
+			, Saint_George NVARCHAR(50) DEFAULT ''Saint George''
+			, W_Valley_City NVARCHAR(50) DEFAULT ''W Valley City''
+			, West_Valley_City NVARCHAR(50) DEFAULT ''West Valley City''
+			, West_Valley NVARCHAR(50) DEFAULT ''West Valley''
+			, Saratoga_Spgs NVARCHAR(50) DEFAULT ''Saratoga Spgs''
+			, Saratoga_Springs NVARCHAR(50) DEFAULT ''Saratoga Springs''
+			, Vancouver NVARCHAR(50) DEFAULT ''Vancouver''
+			, Vancouver_BC NVARCHAR(50) DEFAULT ''Vancouver BC''
+			, Vancouver_AB NVARCHAR(50) DEFAULT ''Vancouver AB''
+			, Vancover_BC NVARCHAR(50) DEFAULT ''Vancover BC'' 
+			' -- Ext_Create_Fields_2
+		, ', Eagle_Mtn NVARCHAR(50) DEFAULT ''Eagle Mtn''
+			, Eagle_Mountain NVARCHAR(50) DEFAULT ''Eagle Mountain''
+			, N_Salt_Lake NVARCHAR(50) DEFAULT ''N Salt Lake''
+			, North_Salt_Lake NVARCHAR(50) DEFAULT ''North Salt Lake''
+			, St_Anthony NVARCHAR(50) DEFAULT ''St Anthony''
+			, ID NVARCHAR(50) DEFAULT ''ID''
+			, Saint_Anthony NVARCHAR(50) DEFAULT ''Saint Anthony''
+			, Y NVARCHAR(1) DEFAULT ''Y''
+			, N NVARCHAR(1) DEFAULT ''N''
+			, Dash NVARCHAR(1) DEFAULT ''-''
+			, Space NVARCHAR(1) DEFAULT '' ''
+			, ProperCase NVARCHAR(4000) DEFAULT ''|Act|Air|Al|am|an|Ana|and|And|Ann|Arm|as|au|Ave|ba|Bad|Bar|Bay|Bch|Bee|bei|Bei|Bel|Big|Bow|Box|Br|Bud|Buk|By|
+													|Cd|Chi|cho|Chu|Cle|Col|Ctr|Cty|Cut|Cyn|Dam|Dan|De|de|Del|Den|Des|DeWinton|di|Do|do|Dos|Dry|du|
+													|Eau|Edo|Egg|El|Elk|Ell|Elm|Ely|Emu|en|Et|Eup|Ewa|Eye|Fe|Fox|Foy|Ft|Fu|Gan|Gap|Gi|Gig|Gro|Gto|gu|Gu|Gun|Gye|
+													|Hae|Ham|Hat|Hls|Ho|Hof|Hot|Hts|Hu|Ile|im|in|In|Inn|Is|Jal|Jay|Jct|Jet|Jim|Jin|Joe|Joo|Joy|Ju|
+													|Kan|Ken|ken|Key|Ki|Ku|Kus|La|Lam|Las|Le|le|Lea|Lee|Les|Lin|Loa|Los|
+													|Mai|Mar|Mc|Med|Mer|Mex|Mi|Mie|Min|Mnt|Mor|Mt|Mtn|Mun|Na|Nam|Nan|Nat|New|Nos|Nye|Oak|of|Oil|Ola|Old|Ord|Oro|
+													|Pak|Paw|Paz|Pe|Pea|Pen|po|Pok|Pos|Pri|Red|Rex|Rey|Rio|Roi|Roy|Rue|Run|Rye|
+													|Sac|Sai|Sam|San|Sao|Sea|Shi|shi|si|Siu|Six|Ski|So|St|Sta|Ste|Sul|Sun|Sur|
+													|Ta|Tai|Tan|Tao|Tel|Ten|The|Tin|Top|Tow|Two|Twp|Usk|USSCA|Uul|Van|Vi|Vlg|Vly|voa|
+													|Wai|Wan|Way|Wuk|Xi|Yan|Yi|Yuc|Zug|''
+			, Comma_Space NVARCHAR(5) DEFAULT '', '' 
+			' -- Ext_Create_Fields_3
+		, ' ' -- Ext_Where_Statement_2
+		, ' ' -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
 -- --------------------------
 -- _Award_Dim
 -- --------------------------
@@ -14018,16 +14330,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -14136,16 +14448,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -14268,16 +14580,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -14377,16 +14689,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -14482,16 +14794,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -14617,16 +14929,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -14878,16 +15190,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -15005,16 +15317,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -15110,16 +15422,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -15379,16 +15691,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -15473,16 +15785,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -15562,16 +15874,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -15788,16 +16100,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -15877,16 +16189,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -15966,16 +16278,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -16055,16 +16367,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -16239,16 +16551,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -16465,16 +16777,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -16487,9 +16799,1174 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 	)
 ,
 -- --------------------------
+-- Ext_Address_4
+-- --------------------------
+	( 5 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, 'Ext_Address_4' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Plus_RelatedContact UNIQUEIDENTIFIER
+			, New_Primary BIT
+			, New_Street1 NVARCHAR(100)
+			, New_Street2 NVARCHAR(100)
+			, New_Street3 NVARCHAR(100)
+			, New_Zip4 NVARCHAR(15)
+			, Plus_AddressDisplay NVARCHAR(300)
+			, Plus_Longitude FLOAT
+			, Plus_Latitude FLOAT
+			, StateCode INT
+			, New_Confidential BIT
+			, New_CityLookUp UNIQUEIDENTIFIER
+			, New_CountyId UNIQUEIDENTIFIER
+			, New_StatesProvinces UNIQUEIDENTIFIER
+			, New_CountryRegions UNIQUEIDENTIFIER
+			, New_PostalCodes UNIQUEIDENTIFIER
+			, Plus_OneAccordQuality INT
+			, New_AddressType INT
+			, New_AddressId UNIQUEIDENTIFIER
+			, New_ConfirmedDate DATETIME
+			, Plus_ForeignPostalCode NVARCHAR(100)
+			, Lds_PostalCode NVARCHAR(100)
+			, Lds_StateProvince NVARCHAR(100)
+			, Lds_County NVARCHAR(100)
+			, Lds_City NVARCHAR(100)
+			, Ofallon NVARCHAR(50) DEFAULT ''Ofallon''
+			, Saint_Charles NVARCHAR(50) DEFAULT ''Saint Charles''
+			, Saint_Clair NVARCHAR(50) DEFAULT ''Saint Clair''
+			, MO NVARCHAR(50) DEFAULT ''MO''
+			, IL NVARCHAR(50) DEFAULT ''IL''
+			, O_Appos_Fallon NVARCHAR(50) DEFAULT ''O''''Fallon''
+			, O_Fallon NVARCHAR(50) DEFAULT ''O Fallon''
+			, Mexico_D_Per_F_Per NVARCHAR(50) DEFAULT ''Mexico D.F.''
+			, Mexico NVARCHAR(50) DEFAULT ''Mexico''
+			, Mexico_comma_D_Per_F_Per NVARCHAR(50) DEFAULT ''Mexico, D.F.''
+			, Mexico_DF NVARCHAR(50) DEFAULT ''Mexico DF''
+			, Mexico_City_D_Per_F_Per NVARCHAR(50) DEFAULT ''Mexico City D.F.''
+			, Mexico_City_DF NVARCHAR(50) DEFAULT ''Mexico City DF''
+			, Calgary_Comma_AB NVARCHAR(50) DEFAULT ''Calgary, AB''
+			, Canada NVARCHAR(50) DEFAULT ''Canada''
+			, Calgary_AB NVARCHAR(50) DEFAULT ''Calgary AB''
+			, Calgary__AB NVARCHAR(50) DEFAULT ''Calgary  AB''
+			, Calgary NVARCHAR(50) DEFAULT ''Calgary''
+			, Calgary_AI NVARCHAR(50) DEFAULT ''Calgary AI''
+			, Calgary_Al NVARCHAR(50) DEFAULT ''Calgary Al''
+			, Calgary_Alberta NVARCHAR(50) DEFAULT ''Calgary Alberta''
+			, Calgary_BC NVARCHAR(50) DEFAULT ''Calgary BC''
+			, Calgary_Comma_Alberta NVARCHAR(50) DEFAULT ''Calgary, Alberta''
+			, Shore_View NVARCHAR(50) DEFAULT ''Shore View''
+			, Ramsey NVARCHAR(50) DEFAULT ''Ramsey''
+			, MN NVARCHAR(50) DEFAULT ''MN''
+			, Shoreview NVARCHAR(50) DEFAULT ''Shoreview''
+			, Hamilton_Comma_ON NVARCHAR(50) DEFAULT ''Hamilton, ON''
+			, Hamilton_ON NVARCHAR(50) DEFAULT ''Hamilton ON''
+			, Hamilton_Ontario NVARCHAR(50) DEFAULT ''Hamilton Ontario''
+			, Ducklake_SK NVARCHAR(50) DEFAULT ''Ducklake SK''
+			, Duck_Lake_SK NVARCHAR(50) DEFAULT ''Duck Lake SK''
+			, Pachuca_HGO NVARCHAR(50) DEFAULT ''Pachuca HGO''
+			, Pachuca_Comma_HGO NVARCHAR(50) DEFAULT ''Pachuca, HGO''
+			, Pachuca NVARCHAR(50) DEFAULT ''Pachuca''
+			, Pachuca_Hidalgo NVARCHAR(50) DEFAULT ''Pachuca Hidalgo''
+			, Pachuca_De_Soto_Hida NVARCHAR(50) DEFAULT ''Pachuca De Soto Hida''
+			, Pachuca_HI NVARCHAR(50) DEFAULT ''Pachuca HI''
+			, Pachuca_HG NVARCHAR(50) DEFAULT ''Pachuca HG''
+			, Ottawa_Comma_ON NVARCHAR(50) DEFAULT ''Ottawa, ON''
+			, Ottawa_ON NVARCHAR(50) DEFAULT ''Ottawa ON''
+			, Ottawa NVARCHAR(50) DEFAULT ''Ottawa''
+			, Ottawa_Ontario NVARCHAR(50) DEFAULT ''Ottawa Ontario''
+			, Ottawa_AB NVARCHAR(50) DEFAULT ''Ottawa AB''			
+			' -- Ext_Create_Fields
+		, 'Plus_RelatedContact
+			, New_Primary
+			, New_Street1
+			, New_Street2
+			, New_Street3
+			, New_Zip4
+			, Plus_AddressDisplay
+			, Plus_Longitude
+			, Plus_Latitude
+			, StateCode
+			, New_Confidential
+			, New_CityLookUp
+			, New_CountyId
+			, New_StatesProvinces
+			, New_CountryRegions
+			, New_PostalCodes
+			, Plus_OneAccordQuality
+			, New_AddressType
+			, New_AddressId
+			, New_ConfirmedDate
+			, Plus_ForeignPostalCode
+			, Lds_PostalCode
+			, Lds_StateProvince
+			, Lds_County
+			, Lds_City
+			' -- Ext_Insert_Fields
+		, 'Plus_RelatedContact
+			, New_Primary
+			, New_Street1
+			, New_Street2
+			, New_Street3
+			, New_Zip4
+			, Plus_AddressDisplay
+			, Plus_Longitude
+			, Plus_Latitude
+			, StateCode
+			, New_Confidential
+			, New_CityLookUp
+			, New_CountyId
+			, New_StatesProvinces
+			, New_CountryRegions
+			, New_PostalCodes
+			, Plus_OneAccordQuality
+			, New_AddressType
+			, New_AddressId
+			, New_ConfirmedDate
+			, Plus_ForeignPostalCode
+			, Lds_PostalCode
+			, Lds_StateProvince
+			, Lds_County
+			, Lds_City																				
+			' -- Ext_Select_Statement
+		, 'LDSPhilanthropiesDW.dbo.Ext_Address_Base OA 
+				LEFT JOIN LDSPhilanthropiesDW.dbo.Ext_Country NCRY ON OA.New_CountryRegions = NCRY.New_CountryId
+			' -- Ext_From_Statement
+		, 'AND Row_Num BETWEEN 3000001 AND 4000000
+			' -- Ext_Where_Statement	
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, '	
+			' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
+		, ', Weston_Dash_Cap_Super_Dash_Mare NVARCHAR(50) DEFAULT ''Weston-Super-Mare''
+			, England NVARCHAR(50) DEFAULT ''England''
+			, Weston_Dash_super_Dash_Mare NVARCHAR(50) DEFAULT ''Weston-super-Mare''
+			, United_Kingdom NVARCHAR(50) DEFAULT ''United Kingdom''
+			, Weston_Super_Mare NVARCHAR(50) DEFAULT ''Weston Super Mare''
+			, Weston_Dash_Super_Mare_B NVARCHAR(50) DEFAULT ''Weston-Super-Mare B''
+			, Risingsun NVARCHAR(50) DEFAULT ''Risingsun''
+			, OH NVARCHAR(50) DEFAULT ''OH''
+			, Rising_Sun NVARCHAR(50) DEFAULT ''Rising Sun''
+			, Nuku_Appo_Cap_Alofa NVARCHAR(50) DEFAULT ''Nuku''''Alofa''
+			, Tonga NVARCHAR(50) DEFAULT ''Tonga''
+			, Nuku_Appo_alofa NVARCHAR(50) DEFAULT ''Nuku''''alofa''
+			, Nuku_Alofa NVARCHAR(50) DEFAULT ''Nuku Alofa''
+			, Nuku_Tick_alofa_Tongatapu NVARCHAR(50) DEFAULT ''Nuku`alofa Tongatapu''
+			, Nukuaiofa NVARCHAR(50) DEFAULT ''Nukuaiofa''
+			, Nukualofa NVARCHAR(50) DEFAULT ''Nukualofa''
+			, Nukualofa_Tongatapu NVARCHAR(50) DEFAULT ''Nukualofa Tongatapu''
+			, Nuku_Appo_Alofa_Tongatapu NVARCHAR(50) DEFAULT ''Nuku''''Alofa Tongatapu''
+			, Nukualofa_Comma_Tongatapu NVARCHAR(50) DEFAULT ''Nukualofa, Tongatapu''
+			, Willow_Brook NVARCHAR(50) DEFAULT ''Willow Brook''
+			, Du_Page NVARCHAR(50) DEFAULT ''Du Page''
+			, Willowbrook NVARCHAR(50) DEFAULT ''Willowbrook''
+			, Puebla NVARCHAR(50) DEFAULT ''Puebla''
+			, Puebla_Comma_PUE NVARCHAR(50) DEFAULT ''Puebla, PUE''
+			, Puebla_CP NVARCHAR(50) DEFAULT ''Puebla CP''
+			, Puebla_ME NVARCHAR(50) DEFAULT ''Puebla ME''
+			, Puebla_PUE NVARCHAR(50) DEFAULT ''Puebla PUE''
+			, Puebla_Puebla NVARCHAR(50) DEFAULT ''Puebla Puebla''
+			, Charlestown NVARCHAR(50) DEFAULT ''Charlestown''
+			, Jefferson NVARCHAR(50) DEFAULT ''Jefferson''
+			, WV NVARCHAR(50) DEFAULT ''WV''
+			, Charles_Town NVARCHAR(50) DEFAULT ''Charles Town''
+			, Xian NVARCHAR(50) DEFAULT ''Xian''
+			, China NVARCHAR(50) DEFAULT ''China''
+			, CHINA_PEOPLES_REP_OF NVARCHAR(50) DEFAULT ''CHINA, PEOPLE''''S REP OF''
+			, Xi_Appo_an NVARCHAR(50) DEFAULT ''Xi''''an''
+			, Coaldale NVARCHAR(50) DEFAULT ''Coaldale''
+			, Coaldale_AB NVARCHAR(50) DEFAULT ''Coaldale AB''
+			, Coaldale_Alberta NVARCHAR(50) DEFAULT ''Coaldale Alberta''
+			, Coaldale_Comma_AB NVARCHAR(50) DEFAULT ''Coaldale, AB''
+			, De_Lancey NVARCHAR(50) DEFAULT ''De Lancey''
+			, Delaware NVARCHAR(50) DEFAULT ''Delaware''
+			, NY NVARCHAR(50) DEFAULT ''NY''
+			, Cardston NVARCHAR(50) DEFAULT ''Cardston''
+			, Cardston_AB NVARCHAR(50) DEFAULT ''Cardston AB''
+			, Cardston_Comma_AB NVARCHAR(50) DEFAULT ''Cardston, AB''
+			, Salt_Lake_Cty NVARCHAR(50) DEFAULT ''Salt Lake Cty''
+			, UT NVARCHAR(50) DEFAULT ''UT''
+			, Salt_Lake_City NVARCHAR(50) DEFAULT ''Salt Lake City''
+			, St_Per_George NVARCHAR(50) DEFAULT ''St. George''
+			, Saint_George NVARCHAR(50) DEFAULT ''Saint George''
+			, W_Valley_City NVARCHAR(50) DEFAULT ''W Valley City''
+			, West_Valley_City NVARCHAR(50) DEFAULT ''West Valley City''
+			, West_Valley NVARCHAR(50) DEFAULT ''West Valley''
+			, Saratoga_Spgs NVARCHAR(50) DEFAULT ''Saratoga Spgs''
+			, Saratoga_Springs NVARCHAR(50) DEFAULT ''Saratoga Springs''
+			, Vancouver NVARCHAR(50) DEFAULT ''Vancouver''
+			, Vancouver_BC NVARCHAR(50) DEFAULT ''Vancouver BC''
+			, Vancouver_AB NVARCHAR(50) DEFAULT ''Vancouver AB''
+			, Vancover_BC NVARCHAR(50) DEFAULT ''Vancover BC'' 
+			' -- Ext_Create_Fields_2
+		, ', Eagle_Mtn NVARCHAR(50) DEFAULT ''Eagle Mtn''
+			, Eagle_Mountain NVARCHAR(50) DEFAULT ''Eagle Mountain''
+			, N_Salt_Lake NVARCHAR(50) DEFAULT ''N Salt Lake''
+			, North_Salt_Lake NVARCHAR(50) DEFAULT ''North Salt Lake''
+			, St_Anthony NVARCHAR(50) DEFAULT ''St Anthony''
+			, ID NVARCHAR(50) DEFAULT ''ID''
+			, Saint_Anthony NVARCHAR(50) DEFAULT ''Saint Anthony''
+			, Y NVARCHAR(1) DEFAULT ''Y''
+			, N NVARCHAR(1) DEFAULT ''N''
+			, Dash NVARCHAR(1) DEFAULT ''-''
+			, Space NVARCHAR(1) DEFAULT '' ''
+			, ProperCase NVARCHAR(4000) DEFAULT ''|Act|Air|Al|am|an|Ana|and|And|Ann|Arm|as|au|Ave|ba|Bad|Bar|Bay|Bch|Bee|bei|Bei|Bel|Big|Bow|Box|Br|Bud|Buk|By|
+													|Cd|Chi|cho|Chu|Cle|Col|Ctr|Cty|Cut|Cyn|Dam|Dan|De|de|Del|Den|Des|DeWinton|di|Do|do|Dos|Dry|du|
+													|Eau|Edo|Egg|El|Elk|Ell|Elm|Ely|Emu|en|Et|Eup|Ewa|Eye|Fe|Fox|Foy|Ft|Fu|Gan|Gap|Gi|Gig|Gro|Gto|gu|Gu|Gun|Gye|
+													|Hae|Ham|Hat|Hls|Ho|Hof|Hot|Hts|Hu|Ile|im|in|In|Inn|Is|Jal|Jay|Jct|Jet|Jim|Jin|Joe|Joo|Joy|Ju|
+													|Kan|Ken|ken|Key|Ki|Ku|Kus|La|Lam|Las|Le|le|Lea|Lee|Les|Lin|Loa|Los|
+													|Mai|Mar|Mc|Med|Mer|Mex|Mi|Mie|Min|Mnt|Mor|Mt|Mtn|Mun|Na|Nam|Nan|Nat|New|Nos|Nye|Oak|of|Oil|Ola|Old|Ord|Oro|
+													|Pak|Paw|Paz|Pe|Pea|Pen|po|Pok|Pos|Pri|Red|Rex|Rey|Rio|Roi|Roy|Rue|Run|Rye|
+													|Sac|Sai|Sam|San|Sao|Sea|Shi|shi|si|Siu|Six|Ski|So|St|Sta|Ste|Sul|Sun|Sur|
+													|Ta|Tai|Tan|Tao|Tel|Ten|The|Tin|Top|Tow|Two|Twp|Usk|USSCA|Uul|Van|Vi|Vlg|Vly|voa|
+													|Wai|Wan|Way|Wuk|Xi|Yan|Yi|Yuc|Zug|''
+			, Comma_Space NVARCHAR(5) DEFAULT '', '' 
+			' -- Ext_Create_Fields_3
+		, ' ' -- Ext_Where_Statement_2
+		, ' ' -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- Ext_Address_5
+-- --------------------------
+	( 6 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, 'Ext_Address_5' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Plus_RelatedContact UNIQUEIDENTIFIER
+			, New_Primary BIT
+			, New_Street1 NVARCHAR(100)
+			, New_Street2 NVARCHAR(100)
+			, New_Street3 NVARCHAR(100)
+			, New_Zip4 NVARCHAR(15)
+			, Plus_AddressDisplay NVARCHAR(300)
+			, Plus_Longitude FLOAT
+			, Plus_Latitude FLOAT
+			, StateCode INT
+			, New_Confidential BIT
+			, New_CityLookUp UNIQUEIDENTIFIER
+			, New_CountyId UNIQUEIDENTIFIER
+			, New_StatesProvinces UNIQUEIDENTIFIER
+			, New_CountryRegions UNIQUEIDENTIFIER
+			, New_PostalCodes UNIQUEIDENTIFIER
+			, Plus_OneAccordQuality INT
+			, New_AddressType INT
+			, New_AddressId UNIQUEIDENTIFIER
+			, New_ConfirmedDate DATETIME
+			, Plus_ForeignPostalCode NVARCHAR(100)
+			, Lds_PostalCode NVARCHAR(100)
+			, Lds_StateProvince NVARCHAR(100)
+			, Lds_County NVARCHAR(100)
+			, Lds_City NVARCHAR(100)
+			, Ofallon NVARCHAR(50) DEFAULT ''Ofallon''
+			, Saint_Charles NVARCHAR(50) DEFAULT ''Saint Charles''
+			, Saint_Clair NVARCHAR(50) DEFAULT ''Saint Clair''
+			, MO NVARCHAR(50) DEFAULT ''MO''
+			, IL NVARCHAR(50) DEFAULT ''IL''
+			, O_Appos_Fallon NVARCHAR(50) DEFAULT ''O''''Fallon''
+			, O_Fallon NVARCHAR(50) DEFAULT ''O Fallon''
+			, Mexico_D_Per_F_Per NVARCHAR(50) DEFAULT ''Mexico D.F.''
+			, Mexico NVARCHAR(50) DEFAULT ''Mexico''
+			, Mexico_comma_D_Per_F_Per NVARCHAR(50) DEFAULT ''Mexico, D.F.''
+			, Mexico_DF NVARCHAR(50) DEFAULT ''Mexico DF''
+			, Mexico_City_D_Per_F_Per NVARCHAR(50) DEFAULT ''Mexico City D.F.''
+			, Mexico_City_DF NVARCHAR(50) DEFAULT ''Mexico City DF''
+			, Calgary_Comma_AB NVARCHAR(50) DEFAULT ''Calgary, AB''
+			, Canada NVARCHAR(50) DEFAULT ''Canada''
+			, Calgary_AB NVARCHAR(50) DEFAULT ''Calgary AB''
+			, Calgary__AB NVARCHAR(50) DEFAULT ''Calgary  AB''
+			, Calgary NVARCHAR(50) DEFAULT ''Calgary''
+			, Calgary_AI NVARCHAR(50) DEFAULT ''Calgary AI''
+			, Calgary_Al NVARCHAR(50) DEFAULT ''Calgary Al''
+			, Calgary_Alberta NVARCHAR(50) DEFAULT ''Calgary Alberta''
+			, Calgary_BC NVARCHAR(50) DEFAULT ''Calgary BC''
+			, Calgary_Comma_Alberta NVARCHAR(50) DEFAULT ''Calgary, Alberta''
+			, Shore_View NVARCHAR(50) DEFAULT ''Shore View''
+			, Ramsey NVARCHAR(50) DEFAULT ''Ramsey''
+			, MN NVARCHAR(50) DEFAULT ''MN''
+			, Shoreview NVARCHAR(50) DEFAULT ''Shoreview''
+			, Hamilton_Comma_ON NVARCHAR(50) DEFAULT ''Hamilton, ON''
+			, Hamilton_ON NVARCHAR(50) DEFAULT ''Hamilton ON''
+			, Hamilton_Ontario NVARCHAR(50) DEFAULT ''Hamilton Ontario''
+			, Ducklake_SK NVARCHAR(50) DEFAULT ''Ducklake SK''
+			, Duck_Lake_SK NVARCHAR(50) DEFAULT ''Duck Lake SK''
+			, Pachuca_HGO NVARCHAR(50) DEFAULT ''Pachuca HGO''
+			, Pachuca_Comma_HGO NVARCHAR(50) DEFAULT ''Pachuca, HGO''
+			, Pachuca NVARCHAR(50) DEFAULT ''Pachuca''
+			, Pachuca_Hidalgo NVARCHAR(50) DEFAULT ''Pachuca Hidalgo''
+			, Pachuca_De_Soto_Hida NVARCHAR(50) DEFAULT ''Pachuca De Soto Hida''
+			, Pachuca_HI NVARCHAR(50) DEFAULT ''Pachuca HI''
+			, Pachuca_HG NVARCHAR(50) DEFAULT ''Pachuca HG''
+			, Ottawa_Comma_ON NVARCHAR(50) DEFAULT ''Ottawa, ON''
+			, Ottawa_ON NVARCHAR(50) DEFAULT ''Ottawa ON''
+			, Ottawa NVARCHAR(50) DEFAULT ''Ottawa''
+			, Ottawa_Ontario NVARCHAR(50) DEFAULT ''Ottawa Ontario''
+			, Ottawa_AB NVARCHAR(50) DEFAULT ''Ottawa AB''			
+			' -- Ext_Create_Fields
+		, 'Plus_RelatedContact
+			, New_Primary
+			, New_Street1
+			, New_Street2
+			, New_Street3
+			, New_Zip4
+			, Plus_AddressDisplay
+			, Plus_Longitude
+			, Plus_Latitude
+			, StateCode
+			, New_Confidential
+			, New_CityLookUp
+			, New_CountyId
+			, New_StatesProvinces
+			, New_CountryRegions
+			, New_PostalCodes
+			, Plus_OneAccordQuality
+			, New_AddressType
+			, New_AddressId
+			, New_ConfirmedDate
+			, Plus_ForeignPostalCode
+			, Lds_PostalCode
+			, Lds_StateProvince
+			, Lds_County
+			, Lds_City
+			' -- Ext_Insert_Fields
+		, 'Plus_RelatedContact
+			, New_Primary
+			, New_Street1
+			, New_Street2
+			, New_Street3
+			, New_Zip4
+			, Plus_AddressDisplay
+			, Plus_Longitude
+			, Plus_Latitude
+			, StateCode
+			, New_Confidential
+			, New_CityLookUp
+			, New_CountyId
+			, New_StatesProvinces
+			, New_CountryRegions
+			, New_PostalCodes
+			, Plus_OneAccordQuality
+			, New_AddressType
+			, New_AddressId
+			, New_ConfirmedDate
+			, Plus_ForeignPostalCode
+			, Lds_PostalCode
+			, Lds_StateProvince
+			, Lds_County
+			, Lds_City																				
+			' -- Ext_Select_Statement
+		, 'LDSPhilanthropiesDW.dbo.Ext_Address_Base OA 
+				LEFT JOIN LDSPhilanthropiesDW.dbo.Ext_Country NCRY ON OA.New_CountryRegions = NCRY.New_CountryId
+			' -- Ext_From_Statement
+		, 'AND Row_Num BETWEEN 4000001 AND 5000000
+			' -- Ext_Where_Statement	
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, '	
+			' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
+		, ', Weston_Dash_Cap_Super_Dash_Mare NVARCHAR(50) DEFAULT ''Weston-Super-Mare''
+			, England NVARCHAR(50) DEFAULT ''England''
+			, Weston_Dash_super_Dash_Mare NVARCHAR(50) DEFAULT ''Weston-super-Mare''
+			, United_Kingdom NVARCHAR(50) DEFAULT ''United Kingdom''
+			, Weston_Super_Mare NVARCHAR(50) DEFAULT ''Weston Super Mare''
+			, Weston_Dash_Super_Mare_B NVARCHAR(50) DEFAULT ''Weston-Super-Mare B''
+			, Risingsun NVARCHAR(50) DEFAULT ''Risingsun''
+			, OH NVARCHAR(50) DEFAULT ''OH''
+			, Rising_Sun NVARCHAR(50) DEFAULT ''Rising Sun''
+			, Nuku_Appo_Cap_Alofa NVARCHAR(50) DEFAULT ''Nuku''''Alofa''
+			, Tonga NVARCHAR(50) DEFAULT ''Tonga''
+			, Nuku_Appo_alofa NVARCHAR(50) DEFAULT ''Nuku''''alofa''
+			, Nuku_Alofa NVARCHAR(50) DEFAULT ''Nuku Alofa''
+			, Nuku_Tick_alofa_Tongatapu NVARCHAR(50) DEFAULT ''Nuku`alofa Tongatapu''
+			, Nukuaiofa NVARCHAR(50) DEFAULT ''Nukuaiofa''
+			, Nukualofa NVARCHAR(50) DEFAULT ''Nukualofa''
+			, Nukualofa_Tongatapu NVARCHAR(50) DEFAULT ''Nukualofa Tongatapu''
+			, Nuku_Appo_Alofa_Tongatapu NVARCHAR(50) DEFAULT ''Nuku''''Alofa Tongatapu''
+			, Nukualofa_Comma_Tongatapu NVARCHAR(50) DEFAULT ''Nukualofa, Tongatapu''
+			, Willow_Brook NVARCHAR(50) DEFAULT ''Willow Brook''
+			, Du_Page NVARCHAR(50) DEFAULT ''Du Page''
+			, Willowbrook NVARCHAR(50) DEFAULT ''Willowbrook''
+			, Puebla NVARCHAR(50) DEFAULT ''Puebla''
+			, Puebla_Comma_PUE NVARCHAR(50) DEFAULT ''Puebla, PUE''
+			, Puebla_CP NVARCHAR(50) DEFAULT ''Puebla CP''
+			, Puebla_ME NVARCHAR(50) DEFAULT ''Puebla ME''
+			, Puebla_PUE NVARCHAR(50) DEFAULT ''Puebla PUE''
+			, Puebla_Puebla NVARCHAR(50) DEFAULT ''Puebla Puebla''
+			, Charlestown NVARCHAR(50) DEFAULT ''Charlestown''
+			, Jefferson NVARCHAR(50) DEFAULT ''Jefferson''
+			, WV NVARCHAR(50) DEFAULT ''WV''
+			, Charles_Town NVARCHAR(50) DEFAULT ''Charles Town''
+			, Xian NVARCHAR(50) DEFAULT ''Xian''
+			, China NVARCHAR(50) DEFAULT ''China''
+			, CHINA_PEOPLES_REP_OF NVARCHAR(50) DEFAULT ''CHINA, PEOPLE''''S REP OF''
+			, Xi_Appo_an NVARCHAR(50) DEFAULT ''Xi''''an''
+			, Coaldale NVARCHAR(50) DEFAULT ''Coaldale''
+			, Coaldale_AB NVARCHAR(50) DEFAULT ''Coaldale AB''
+			, Coaldale_Alberta NVARCHAR(50) DEFAULT ''Coaldale Alberta''
+			, Coaldale_Comma_AB NVARCHAR(50) DEFAULT ''Coaldale, AB''
+			, De_Lancey NVARCHAR(50) DEFAULT ''De Lancey''
+			, Delaware NVARCHAR(50) DEFAULT ''Delaware''
+			, NY NVARCHAR(50) DEFAULT ''NY''
+			, Cardston NVARCHAR(50) DEFAULT ''Cardston''
+			, Cardston_AB NVARCHAR(50) DEFAULT ''Cardston AB''
+			, Cardston_Comma_AB NVARCHAR(50) DEFAULT ''Cardston, AB''
+			, Salt_Lake_Cty NVARCHAR(50) DEFAULT ''Salt Lake Cty''
+			, UT NVARCHAR(50) DEFAULT ''UT''
+			, Salt_Lake_City NVARCHAR(50) DEFAULT ''Salt Lake City''
+			, St_Per_George NVARCHAR(50) DEFAULT ''St. George''
+			, Saint_George NVARCHAR(50) DEFAULT ''Saint George''
+			, W_Valley_City NVARCHAR(50) DEFAULT ''W Valley City''
+			, West_Valley_City NVARCHAR(50) DEFAULT ''West Valley City''
+			, West_Valley NVARCHAR(50) DEFAULT ''West Valley''
+			, Saratoga_Spgs NVARCHAR(50) DEFAULT ''Saratoga Spgs''
+			, Saratoga_Springs NVARCHAR(50) DEFAULT ''Saratoga Springs''
+			, Vancouver NVARCHAR(50) DEFAULT ''Vancouver''
+			, Vancouver_BC NVARCHAR(50) DEFAULT ''Vancouver BC''
+			, Vancouver_AB NVARCHAR(50) DEFAULT ''Vancouver AB''
+			, Vancover_BC NVARCHAR(50) DEFAULT ''Vancover BC'' 
+			' -- Ext_Create_Fields_2
+		, ', Eagle_Mtn NVARCHAR(50) DEFAULT ''Eagle Mtn''
+			, Eagle_Mountain NVARCHAR(50) DEFAULT ''Eagle Mountain''
+			, N_Salt_Lake NVARCHAR(50) DEFAULT ''N Salt Lake''
+			, North_Salt_Lake NVARCHAR(50) DEFAULT ''North Salt Lake''
+			, St_Anthony NVARCHAR(50) DEFAULT ''St Anthony''
+			, ID NVARCHAR(50) DEFAULT ''ID''
+			, Saint_Anthony NVARCHAR(50) DEFAULT ''Saint Anthony''
+			, Y NVARCHAR(1) DEFAULT ''Y''
+			, N NVARCHAR(1) DEFAULT ''N''
+			, Dash NVARCHAR(1) DEFAULT ''-''
+			, Space NVARCHAR(1) DEFAULT '' ''
+			, ProperCase NVARCHAR(4000) DEFAULT ''|Act|Air|Al|am|an|Ana|and|And|Ann|Arm|as|au|Ave|ba|Bad|Bar|Bay|Bch|Bee|bei|Bei|Bel|Big|Bow|Box|Br|Bud|Buk|By|
+													|Cd|Chi|cho|Chu|Cle|Col|Ctr|Cty|Cut|Cyn|Dam|Dan|De|de|Del|Den|Des|DeWinton|di|Do|do|Dos|Dry|du|
+													|Eau|Edo|Egg|El|Elk|Ell|Elm|Ely|Emu|en|Et|Eup|Ewa|Eye|Fe|Fox|Foy|Ft|Fu|Gan|Gap|Gi|Gig|Gro|Gto|gu|Gu|Gun|Gye|
+													|Hae|Ham|Hat|Hls|Ho|Hof|Hot|Hts|Hu|Ile|im|in|In|Inn|Is|Jal|Jay|Jct|Jet|Jim|Jin|Joe|Joo|Joy|Ju|
+													|Kan|Ken|ken|Key|Ki|Ku|Kus|La|Lam|Las|Le|le|Lea|Lee|Les|Lin|Loa|Los|
+													|Mai|Mar|Mc|Med|Mer|Mex|Mi|Mie|Min|Mnt|Mor|Mt|Mtn|Mun|Na|Nam|Nan|Nat|New|Nos|Nye|Oak|of|Oil|Ola|Old|Ord|Oro|
+													|Pak|Paw|Paz|Pe|Pea|Pen|po|Pok|Pos|Pri|Red|Rex|Rey|Rio|Roi|Roy|Rue|Run|Rye|
+													|Sac|Sai|Sam|San|Sao|Sea|Shi|shi|si|Siu|Six|Ski|So|St|Sta|Ste|Sul|Sun|Sur|
+													|Ta|Tai|Tan|Tao|Tel|Ten|The|Tin|Top|Tow|Two|Twp|Usk|USSCA|Uul|Van|Vi|Vlg|Vly|voa|
+													|Wai|Wan|Way|Wuk|Xi|Yan|Yi|Yuc|Zug|''
+			, Comma_Space NVARCHAR(5) DEFAULT '', '' 
+			' -- Ext_Create_Fields_3
+		, ' ' -- Ext_Where_Statement_2
+		, ' ' -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- Ext_Address_6
+-- --------------------------
+	( 7 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, 'Ext_Address_6' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Plus_RelatedContact UNIQUEIDENTIFIER
+			, New_Primary BIT
+			, New_Street1 NVARCHAR(100)
+			, New_Street2 NVARCHAR(100)
+			, New_Street3 NVARCHAR(100)
+			, New_Zip4 NVARCHAR(15)
+			, Plus_AddressDisplay NVARCHAR(300)
+			, Plus_Longitude FLOAT
+			, Plus_Latitude FLOAT
+			, StateCode INT
+			, New_Confidential BIT
+			, New_CityLookUp UNIQUEIDENTIFIER
+			, New_CountyId UNIQUEIDENTIFIER
+			, New_StatesProvinces UNIQUEIDENTIFIER
+			, New_CountryRegions UNIQUEIDENTIFIER
+			, New_PostalCodes UNIQUEIDENTIFIER
+			, Plus_OneAccordQuality INT
+			, New_AddressType INT
+			, New_AddressId UNIQUEIDENTIFIER
+			, New_ConfirmedDate DATETIME
+			, Plus_ForeignPostalCode NVARCHAR(100)
+			, Lds_PostalCode NVARCHAR(100)
+			, Lds_StateProvince NVARCHAR(100)
+			, Lds_County NVARCHAR(100)
+			, Lds_City NVARCHAR(100)
+			, Ofallon NVARCHAR(50) DEFAULT ''Ofallon''
+			, Saint_Charles NVARCHAR(50) DEFAULT ''Saint Charles''
+			, Saint_Clair NVARCHAR(50) DEFAULT ''Saint Clair''
+			, MO NVARCHAR(50) DEFAULT ''MO''
+			, IL NVARCHAR(50) DEFAULT ''IL''
+			, O_Appos_Fallon NVARCHAR(50) DEFAULT ''O''''Fallon''
+			, O_Fallon NVARCHAR(50) DEFAULT ''O Fallon''
+			, Mexico_D_Per_F_Per NVARCHAR(50) DEFAULT ''Mexico D.F.''
+			, Mexico NVARCHAR(50) DEFAULT ''Mexico''
+			, Mexico_comma_D_Per_F_Per NVARCHAR(50) DEFAULT ''Mexico, D.F.''
+			, Mexico_DF NVARCHAR(50) DEFAULT ''Mexico DF''
+			, Mexico_City_D_Per_F_Per NVARCHAR(50) DEFAULT ''Mexico City D.F.''
+			, Mexico_City_DF NVARCHAR(50) DEFAULT ''Mexico City DF''
+			, Calgary_Comma_AB NVARCHAR(50) DEFAULT ''Calgary, AB''
+			, Canada NVARCHAR(50) DEFAULT ''Canada''
+			, Calgary_AB NVARCHAR(50) DEFAULT ''Calgary AB''
+			, Calgary__AB NVARCHAR(50) DEFAULT ''Calgary  AB''
+			, Calgary NVARCHAR(50) DEFAULT ''Calgary''
+			, Calgary_AI NVARCHAR(50) DEFAULT ''Calgary AI''
+			, Calgary_Al NVARCHAR(50) DEFAULT ''Calgary Al''
+			, Calgary_Alberta NVARCHAR(50) DEFAULT ''Calgary Alberta''
+			, Calgary_BC NVARCHAR(50) DEFAULT ''Calgary BC''
+			, Calgary_Comma_Alberta NVARCHAR(50) DEFAULT ''Calgary, Alberta''
+			, Shore_View NVARCHAR(50) DEFAULT ''Shore View''
+			, Ramsey NVARCHAR(50) DEFAULT ''Ramsey''
+			, MN NVARCHAR(50) DEFAULT ''MN''
+			, Shoreview NVARCHAR(50) DEFAULT ''Shoreview''
+			, Hamilton_Comma_ON NVARCHAR(50) DEFAULT ''Hamilton, ON''
+			, Hamilton_ON NVARCHAR(50) DEFAULT ''Hamilton ON''
+			, Hamilton_Ontario NVARCHAR(50) DEFAULT ''Hamilton Ontario''
+			, Ducklake_SK NVARCHAR(50) DEFAULT ''Ducklake SK''
+			, Duck_Lake_SK NVARCHAR(50) DEFAULT ''Duck Lake SK''
+			, Pachuca_HGO NVARCHAR(50) DEFAULT ''Pachuca HGO''
+			, Pachuca_Comma_HGO NVARCHAR(50) DEFAULT ''Pachuca, HGO''
+			, Pachuca NVARCHAR(50) DEFAULT ''Pachuca''
+			, Pachuca_Hidalgo NVARCHAR(50) DEFAULT ''Pachuca Hidalgo''
+			, Pachuca_De_Soto_Hida NVARCHAR(50) DEFAULT ''Pachuca De Soto Hida''
+			, Pachuca_HI NVARCHAR(50) DEFAULT ''Pachuca HI''
+			, Pachuca_HG NVARCHAR(50) DEFAULT ''Pachuca HG''
+			, Ottawa_Comma_ON NVARCHAR(50) DEFAULT ''Ottawa, ON''
+			, Ottawa_ON NVARCHAR(50) DEFAULT ''Ottawa ON''
+			, Ottawa NVARCHAR(50) DEFAULT ''Ottawa''
+			, Ottawa_Ontario NVARCHAR(50) DEFAULT ''Ottawa Ontario''
+			, Ottawa_AB NVARCHAR(50) DEFAULT ''Ottawa AB''			
+			' -- Ext_Create_Fields
+		, 'Plus_RelatedContact
+			, New_Primary
+			, New_Street1
+			, New_Street2
+			, New_Street3
+			, New_Zip4
+			, Plus_AddressDisplay
+			, Plus_Longitude
+			, Plus_Latitude
+			, StateCode
+			, New_Confidential
+			, New_CityLookUp
+			, New_CountyId
+			, New_StatesProvinces
+			, New_CountryRegions
+			, New_PostalCodes
+			, Plus_OneAccordQuality
+			, New_AddressType
+			, New_AddressId
+			, New_ConfirmedDate
+			, Plus_ForeignPostalCode
+			, Lds_PostalCode
+			, Lds_StateProvince
+			, Lds_County
+			, Lds_City
+			' -- Ext_Insert_Fields
+		, 'Plus_RelatedContact
+			, New_Primary
+			, New_Street1
+			, New_Street2
+			, New_Street3
+			, New_Zip4
+			, Plus_AddressDisplay
+			, Plus_Longitude
+			, Plus_Latitude
+			, StateCode
+			, New_Confidential
+			, New_CityLookUp
+			, New_CountyId
+			, New_StatesProvinces
+			, New_CountryRegions
+			, New_PostalCodes
+			, Plus_OneAccordQuality
+			, New_AddressType
+			, New_AddressId
+			, New_ConfirmedDate
+			, Plus_ForeignPostalCode
+			, Lds_PostalCode
+			, Lds_StateProvince
+			, Lds_County
+			, Lds_City																				
+			' -- Ext_Select_Statement
+		, 'LDSPhilanthropiesDW.dbo.Ext_Address_Base OA 
+				LEFT JOIN LDSPhilanthropiesDW.dbo.Ext_Country NCRY ON OA.New_CountryRegions = NCRY.New_CountryId
+			' -- Ext_From_Statement
+		, 'AND Row_Num > 5000000
+			' -- Ext_Where_Statement	
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, '	
+			' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
+		, ', Weston_Dash_Cap_Super_Dash_Mare NVARCHAR(50) DEFAULT ''Weston-Super-Mare''
+			, England NVARCHAR(50) DEFAULT ''England''
+			, Weston_Dash_super_Dash_Mare NVARCHAR(50) DEFAULT ''Weston-super-Mare''
+			, United_Kingdom NVARCHAR(50) DEFAULT ''United Kingdom''
+			, Weston_Super_Mare NVARCHAR(50) DEFAULT ''Weston Super Mare''
+			, Weston_Dash_Super_Mare_B NVARCHAR(50) DEFAULT ''Weston-Super-Mare B''
+			, Risingsun NVARCHAR(50) DEFAULT ''Risingsun''
+			, OH NVARCHAR(50) DEFAULT ''OH''
+			, Rising_Sun NVARCHAR(50) DEFAULT ''Rising Sun''
+			, Nuku_Appo_Cap_Alofa NVARCHAR(50) DEFAULT ''Nuku''''Alofa''
+			, Tonga NVARCHAR(50) DEFAULT ''Tonga''
+			, Nuku_Appo_alofa NVARCHAR(50) DEFAULT ''Nuku''''alofa''
+			, Nuku_Alofa NVARCHAR(50) DEFAULT ''Nuku Alofa''
+			, Nuku_Tick_alofa_Tongatapu NVARCHAR(50) DEFAULT ''Nuku`alofa Tongatapu''
+			, Nukuaiofa NVARCHAR(50) DEFAULT ''Nukuaiofa''
+			, Nukualofa NVARCHAR(50) DEFAULT ''Nukualofa''
+			, Nukualofa_Tongatapu NVARCHAR(50) DEFAULT ''Nukualofa Tongatapu''
+			, Nuku_Appo_Alofa_Tongatapu NVARCHAR(50) DEFAULT ''Nuku''''Alofa Tongatapu''
+			, Nukualofa_Comma_Tongatapu NVARCHAR(50) DEFAULT ''Nukualofa, Tongatapu''
+			, Willow_Brook NVARCHAR(50) DEFAULT ''Willow Brook''
+			, Du_Page NVARCHAR(50) DEFAULT ''Du Page''
+			, Willowbrook NVARCHAR(50) DEFAULT ''Willowbrook''
+			, Puebla NVARCHAR(50) DEFAULT ''Puebla''
+			, Puebla_Comma_PUE NVARCHAR(50) DEFAULT ''Puebla, PUE''
+			, Puebla_CP NVARCHAR(50) DEFAULT ''Puebla CP''
+			, Puebla_ME NVARCHAR(50) DEFAULT ''Puebla ME''
+			, Puebla_PUE NVARCHAR(50) DEFAULT ''Puebla PUE''
+			, Puebla_Puebla NVARCHAR(50) DEFAULT ''Puebla Puebla''
+			, Charlestown NVARCHAR(50) DEFAULT ''Charlestown''
+			, Jefferson NVARCHAR(50) DEFAULT ''Jefferson''
+			, WV NVARCHAR(50) DEFAULT ''WV''
+			, Charles_Town NVARCHAR(50) DEFAULT ''Charles Town''
+			, Xian NVARCHAR(50) DEFAULT ''Xian''
+			, China NVARCHAR(50) DEFAULT ''China''
+			, CHINA_PEOPLES_REP_OF NVARCHAR(50) DEFAULT ''CHINA, PEOPLE''''S REP OF''
+			, Xi_Appo_an NVARCHAR(50) DEFAULT ''Xi''''an''
+			, Coaldale NVARCHAR(50) DEFAULT ''Coaldale''
+			, Coaldale_AB NVARCHAR(50) DEFAULT ''Coaldale AB''
+			, Coaldale_Alberta NVARCHAR(50) DEFAULT ''Coaldale Alberta''
+			, Coaldale_Comma_AB NVARCHAR(50) DEFAULT ''Coaldale, AB''
+			, De_Lancey NVARCHAR(50) DEFAULT ''De Lancey''
+			, Delaware NVARCHAR(50) DEFAULT ''Delaware''
+			, NY NVARCHAR(50) DEFAULT ''NY''
+			, Cardston NVARCHAR(50) DEFAULT ''Cardston''
+			, Cardston_AB NVARCHAR(50) DEFAULT ''Cardston AB''
+			, Cardston_Comma_AB NVARCHAR(50) DEFAULT ''Cardston, AB''
+			, Salt_Lake_Cty NVARCHAR(50) DEFAULT ''Salt Lake Cty''
+			, UT NVARCHAR(50) DEFAULT ''UT''
+			, Salt_Lake_City NVARCHAR(50) DEFAULT ''Salt Lake City''
+			, St_Per_George NVARCHAR(50) DEFAULT ''St. George''
+			, Saint_George NVARCHAR(50) DEFAULT ''Saint George''
+			, W_Valley_City NVARCHAR(50) DEFAULT ''W Valley City''
+			, West_Valley_City NVARCHAR(50) DEFAULT ''West Valley City''
+			, West_Valley NVARCHAR(50) DEFAULT ''West Valley''
+			, Saratoga_Spgs NVARCHAR(50) DEFAULT ''Saratoga Spgs''
+			, Saratoga_Springs NVARCHAR(50) DEFAULT ''Saratoga Springs''
+			, Vancouver NVARCHAR(50) DEFAULT ''Vancouver''
+			, Vancouver_BC NVARCHAR(50) DEFAULT ''Vancouver BC''
+			, Vancouver_AB NVARCHAR(50) DEFAULT ''Vancouver AB''
+			, Vancover_BC NVARCHAR(50) DEFAULT ''Vancover BC'' 
+			' -- Ext_Create_Fields_2
+		, ', Eagle_Mtn NVARCHAR(50) DEFAULT ''Eagle Mtn''
+			, Eagle_Mountain NVARCHAR(50) DEFAULT ''Eagle Mountain''
+			, N_Salt_Lake NVARCHAR(50) DEFAULT ''N Salt Lake''
+			, North_Salt_Lake NVARCHAR(50) DEFAULT ''North Salt Lake''
+			, St_Anthony NVARCHAR(50) DEFAULT ''St Anthony''
+			, ID NVARCHAR(50) DEFAULT ''ID''
+			, Saint_Anthony NVARCHAR(50) DEFAULT ''Saint Anthony''
+			, Y NVARCHAR(1) DEFAULT ''Y''
+			, N NVARCHAR(1) DEFAULT ''N''
+			, Dash NVARCHAR(1) DEFAULT ''-''
+			, Space NVARCHAR(1) DEFAULT '' ''
+			, ProperCase NVARCHAR(4000) DEFAULT ''|Act|Air|Al|am|an|Ana|and|And|Ann|Arm|as|au|Ave|ba|Bad|Bar|Bay|Bch|Bee|bei|Bei|Bel|Big|Bow|Box|Br|Bud|Buk|By|
+													|Cd|Chi|cho|Chu|Cle|Col|Ctr|Cty|Cut|Cyn|Dam|Dan|De|de|Del|Den|Des|DeWinton|di|Do|do|Dos|Dry|du|
+													|Eau|Edo|Egg|El|Elk|Ell|Elm|Ely|Emu|en|Et|Eup|Ewa|Eye|Fe|Fox|Foy|Ft|Fu|Gan|Gap|Gi|Gig|Gro|Gto|gu|Gu|Gun|Gye|
+													|Hae|Ham|Hat|Hls|Ho|Hof|Hot|Hts|Hu|Ile|im|in|In|Inn|Is|Jal|Jay|Jct|Jet|Jim|Jin|Joe|Joo|Joy|Ju|
+													|Kan|Ken|ken|Key|Ki|Ku|Kus|La|Lam|Las|Le|le|Lea|Lee|Les|Lin|Loa|Los|
+													|Mai|Mar|Mc|Med|Mer|Mex|Mi|Mie|Min|Mnt|Mor|Mt|Mtn|Mun|Na|Nam|Nan|Nat|New|Nos|Nye|Oak|of|Oil|Ola|Old|Ord|Oro|
+													|Pak|Paw|Paz|Pe|Pea|Pen|po|Pok|Pos|Pri|Red|Rex|Rey|Rio|Roi|Roy|Rue|Run|Rye|
+													|Sac|Sai|Sam|San|Sao|Sea|Shi|shi|si|Siu|Six|Ski|So|St|Sta|Ste|Sul|Sun|Sur|
+													|Ta|Tai|Tan|Tao|Tel|Ten|The|Tin|Top|Tow|Two|Twp|Usk|USSCA|Uul|Van|Vi|Vlg|Vly|voa|
+													|Wai|Wan|Way|Wuk|Xi|Yan|Yi|Yuc|Zug|''
+			, Comma_Space NVARCHAR(5) DEFAULT '', '' 
+			' -- Ext_Create_Fields_3
+		, ' ' -- Ext_Where_Statement_2
+		, ' ' -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- Ext_Address
+-- --------------------------
+	( 8 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, 'Ext_Address' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Plus_RelatedContact UNIQUEIDENTIFIER
+			, New_Primary BIT
+			, New_Street1 NVARCHAR(100)
+			, New_Street2 NVARCHAR(100)
+			, New_Street3 NVARCHAR(100)
+			, New_Zip4 NVARCHAR(15)
+			, Plus_AddressDisplay NVARCHAR(300)
+			, Plus_Longitude FLOAT
+			, Plus_Latitude FLOAT
+			, StateCode INT
+			, New_Confidential BIT
+			, New_CityLookUp UNIQUEIDENTIFIER
+			, New_CountyId UNIQUEIDENTIFIER
+			, New_StatesProvinces UNIQUEIDENTIFIER
+			, New_CountryRegions UNIQUEIDENTIFIER
+			, New_PostalCodes UNIQUEIDENTIFIER
+			, Plus_OneAccordQuality INT
+			, New_AddressType INT
+			, New_AddressId UNIQUEIDENTIFIER
+			, New_ConfirmedDate DATETIME
+			, Plus_ForeignPostalCode NVARCHAR(100)
+			, Lds_PostalCode NVARCHAR(100)
+			, Lds_StateProvince NVARCHAR(100)
+			, Lds_County NVARCHAR(100)
+			, Lds_City NVARCHAR(100)
+			, Ofallon NVARCHAR(50) DEFAULT ''Ofallon''
+			, Saint_Charles NVARCHAR(50) DEFAULT ''Saint Charles''
+			, Saint_Clair NVARCHAR(50) DEFAULT ''Saint Clair''
+			, MO NVARCHAR(50) DEFAULT ''MO''
+			, IL NVARCHAR(50) DEFAULT ''IL''
+			, O_Appos_Fallon NVARCHAR(50) DEFAULT ''O''''Fallon''
+			, O_Fallon NVARCHAR(50) DEFAULT ''O Fallon''
+			, Mexico_D_Per_F_Per NVARCHAR(50) DEFAULT ''Mexico D.F.''
+			, Mexico NVARCHAR(50) DEFAULT ''Mexico''
+			, Mexico_comma_D_Per_F_Per NVARCHAR(50) DEFAULT ''Mexico, D.F.''
+			, Mexico_DF NVARCHAR(50) DEFAULT ''Mexico DF''
+			, Mexico_City_D_Per_F_Per NVARCHAR(50) DEFAULT ''Mexico City D.F.''
+			, Mexico_City_DF NVARCHAR(50) DEFAULT ''Mexico City DF''
+			, Calgary_Comma_AB NVARCHAR(50) DEFAULT ''Calgary, AB''
+			, Canada NVARCHAR(50) DEFAULT ''Canada''
+			, Calgary_AB NVARCHAR(50) DEFAULT ''Calgary AB''
+			, Calgary__AB NVARCHAR(50) DEFAULT ''Calgary  AB''
+			, Calgary NVARCHAR(50) DEFAULT ''Calgary''
+			, Calgary_AI NVARCHAR(50) DEFAULT ''Calgary AI''
+			, Calgary_Al NVARCHAR(50) DEFAULT ''Calgary Al''
+			, Calgary_Alberta NVARCHAR(50) DEFAULT ''Calgary Alberta''
+			, Calgary_BC NVARCHAR(50) DEFAULT ''Calgary BC''
+			, Calgary_Comma_Alberta NVARCHAR(50) DEFAULT ''Calgary, Alberta''
+			, Shore_View NVARCHAR(50) DEFAULT ''Shore View''
+			, Ramsey NVARCHAR(50) DEFAULT ''Ramsey''
+			, MN NVARCHAR(50) DEFAULT ''MN''
+			, Shoreview NVARCHAR(50) DEFAULT ''Shoreview''
+			, Hamilton_Comma_ON NVARCHAR(50) DEFAULT ''Hamilton, ON''
+			, Hamilton_ON NVARCHAR(50) DEFAULT ''Hamilton ON''
+			, Hamilton_Ontario NVARCHAR(50) DEFAULT ''Hamilton Ontario''
+			, Ducklake_SK NVARCHAR(50) DEFAULT ''Ducklake SK''
+			, Duck_Lake_SK NVARCHAR(50) DEFAULT ''Duck Lake SK''
+			, Pachuca_HGO NVARCHAR(50) DEFAULT ''Pachuca HGO''
+			, Pachuca_Comma_HGO NVARCHAR(50) DEFAULT ''Pachuca, HGO''
+			, Pachuca NVARCHAR(50) DEFAULT ''Pachuca''
+			, Pachuca_Hidalgo NVARCHAR(50) DEFAULT ''Pachuca Hidalgo''
+			, Pachuca_De_Soto_Hida NVARCHAR(50) DEFAULT ''Pachuca De Soto Hida''
+			, Pachuca_HI NVARCHAR(50) DEFAULT ''Pachuca HI''
+			, Pachuca_HG NVARCHAR(50) DEFAULT ''Pachuca HG''
+			, Ottawa_Comma_ON NVARCHAR(50) DEFAULT ''Ottawa, ON''
+			, Ottawa_ON NVARCHAR(50) DEFAULT ''Ottawa ON''
+			, Ottawa NVARCHAR(50) DEFAULT ''Ottawa''
+			, Ottawa_Ontario NVARCHAR(50) DEFAULT ''Ottawa Ontario''
+			, Ottawa_AB NVARCHAR(50) DEFAULT ''Ottawa AB''			
+			' -- Ext_Create_Fields
+		, 'Plus_RelatedContact
+			, New_Primary
+			, New_Street1
+			, New_Street2
+			, New_Street3
+			, New_Zip4
+			, Plus_AddressDisplay
+			, Plus_Longitude
+			, Plus_Latitude
+			, StateCode
+			, New_Confidential
+			, New_CityLookUp
+			, New_CountyId
+			, New_StatesProvinces
+			, New_CountryRegions
+			, New_PostalCodes
+			, Plus_OneAccordQuality
+			, New_AddressType
+			, New_AddressId
+			, New_ConfirmedDate
+			, Plus_ForeignPostalCode
+			, Lds_PostalCode
+			, Lds_StateProvince
+			, Lds_County
+			, Lds_City
+			' -- Ext_Insert_Fields
+		, 'Plus_RelatedContact
+			, New_Primary
+			, New_Street1
+			, New_Street2
+			, New_Street3
+			, New_Zip4
+			, Plus_AddressDisplay
+			, Plus_Longitude
+			, Plus_Latitude
+			, StateCode
+			, New_Confidential
+			, New_CityLookUp
+			, New_CountyId
+			, New_StatesProvinces
+			, New_CountryRegions
+			, New_PostalCodes
+			, Plus_OneAccordQuality
+			, New_AddressType
+			, New_AddressId
+			, New_ConfirmedDate
+			, Plus_ForeignPostalCode
+			, Lds_PostalCode
+			, Lds_StateProvince
+			, Lds_County
+			, Lds_City																				
+			' -- Ext_Select_Statement
+		, '(
+			SELECT Plus_RelatedContact
+				, New_Primary
+				, New_Street1
+				, New_Street2
+				, New_Street3
+				, New_Zip4
+				, Plus_AddressDisplay
+				, Plus_Longitude
+				, Plus_Latitude
+				, StateCode
+				, New_Confidential
+				, New_CityLookUp
+				, New_CountyId
+				, New_StatesProvinces
+				, New_CountryRegions
+				, New_PostalCodes
+				, Plus_OneAccordQuality
+				, New_AddressType
+				, New_AddressId
+				, New_ConfirmedDate
+				, Plus_ForeignPostalCode
+				, Lds_PostalCode
+				, Lds_StateProvince
+				, Lds_County
+				, Lds_City
+				FROM LDSPhilanthropiesDW.dbo.Ext_Address_1
+				UNION ALL
+				SELECT Plus_RelatedContact
+				, New_Primary
+				, New_Street1
+				, New_Street2
+				, New_Street3
+				, New_Zip4
+				, Plus_AddressDisplay
+				, Plus_Longitude
+				, Plus_Latitude
+				, StateCode
+				, New_Confidential
+				, New_CityLookUp
+				, New_CountyId
+				, New_StatesProvinces
+				, New_CountryRegions
+				, New_PostalCodes
+				, Plus_OneAccordQuality
+				, New_AddressType
+				, New_AddressId
+				, New_ConfirmedDate
+				, Plus_ForeignPostalCode
+				, Lds_PostalCode
+				, Lds_StateProvince
+				, Lds_County
+				, Lds_City
+				FROM LDSPhilanthropiesDW.dbo.Ext_Address_2
+				UNION ALL
+				SELECT Plus_RelatedContact
+				, New_Primary
+				, New_Street1
+				, New_Street2
+				, New_Street3
+				, New_Zip4
+				, Plus_AddressDisplay
+				, Plus_Longitude
+				, Plus_Latitude
+				, StateCode
+				, New_Confidential
+				, New_CityLookUp
+				, New_CountyId
+				, New_StatesProvinces
+				, New_CountryRegions
+				, New_PostalCodes
+				, Plus_OneAccordQuality
+				, New_AddressType
+				, New_AddressId
+				, New_ConfirmedDate
+				, Plus_ForeignPostalCode
+				, Lds_PostalCode
+				, Lds_StateProvince
+				, Lds_County
+				, Lds_City
+				FROM LDSPhilanthropiesDW.dbo.Ext_Address_3
+				UNION ALL
+				SELECT Plus_RelatedContact
+				, New_Primary
+				, New_Street1
+				, New_Street2
+				, New_Street3
+				, New_Zip4
+				, Plus_AddressDisplay
+				, Plus_Longitude
+				, Plus_Latitude
+				, StateCode
+				, New_Confidential
+				, New_CityLookUp
+				, New_CountyId
+				, New_StatesProvinces
+				, New_CountryRegions
+				, New_PostalCodes
+				, Plus_OneAccordQuality
+				, New_AddressType
+				, New_AddressId
+				, New_ConfirmedDate
+				, Plus_ForeignPostalCode
+				, Lds_PostalCode
+				, Lds_StateProvince
+				, Lds_County
+				, Lds_City
+				FROM LDSPhilanthropiesDW.dbo.Ext_Address_4
+				UNION ALL
+				SELECT Plus_RelatedContact
+				, New_Primary
+				, New_Street1
+				, New_Street2
+				, New_Street3
+				, New_Zip4
+				, Plus_AddressDisplay
+				, Plus_Longitude
+				, Plus_Latitude
+				, StateCode
+				, New_Confidential
+				, New_CityLookUp
+				, New_CountyId
+				, New_StatesProvinces
+				, New_CountryRegions
+				, New_PostalCodes
+				, Plus_OneAccordQuality
+				, New_AddressType
+				, New_AddressId
+				, New_ConfirmedDate
+				, Plus_ForeignPostalCode
+				, Lds_PostalCode
+				, Lds_StateProvince
+				, Lds_County
+				, Lds_City
+				FROM LDSPhilanthropiesDW.dbo.Ext_Address_5
+				UNION ALL
+				SELECT Plus_RelatedContact
+				, New_Primary
+				, New_Street1
+				, New_Street2
+				, New_Street3
+				, New_Zip4
+				, Plus_AddressDisplay
+				, Plus_Longitude
+				, Plus_Latitude
+				, StateCode
+				, New_Confidential
+				, New_CityLookUp
+				, New_CountyId
+				, New_StatesProvinces
+				, New_CountryRegions
+				, New_PostalCodes
+				, Plus_OneAccordQuality
+				, New_AddressType
+				, New_AddressId
+				, New_ConfirmedDate
+				, Plus_ForeignPostalCode
+				, Lds_PostalCode
+				, Lds_StateProvince
+				, Lds_County
+				, Lds_City
+				FROM LDSPhilanthropiesDW.dbo.Ext_Address_6
+			) A
+			' -- Ext_From_Statement
+		, '
+			' -- Ext_Where_Statement	
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, '	
+			' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
+		, ', Weston_Dash_Cap_Super_Dash_Mare NVARCHAR(50) DEFAULT ''Weston-Super-Mare''
+			, England NVARCHAR(50) DEFAULT ''England''
+			, Weston_Dash_super_Dash_Mare NVARCHAR(50) DEFAULT ''Weston-super-Mare''
+			, United_Kingdom NVARCHAR(50) DEFAULT ''United Kingdom''
+			, Weston_Super_Mare NVARCHAR(50) DEFAULT ''Weston Super Mare''
+			, Weston_Dash_Super_Mare_B NVARCHAR(50) DEFAULT ''Weston-Super-Mare B''
+			, Risingsun NVARCHAR(50) DEFAULT ''Risingsun''
+			, OH NVARCHAR(50) DEFAULT ''OH''
+			, Rising_Sun NVARCHAR(50) DEFAULT ''Rising Sun''
+			, Nuku_Appo_Cap_Alofa NVARCHAR(50) DEFAULT ''Nuku''''Alofa''
+			, Tonga NVARCHAR(50) DEFAULT ''Tonga''
+			, Nuku_Appo_alofa NVARCHAR(50) DEFAULT ''Nuku''''alofa''
+			, Nuku_Alofa NVARCHAR(50) DEFAULT ''Nuku Alofa''
+			, Nuku_Tick_alofa_Tongatapu NVARCHAR(50) DEFAULT ''Nuku`alofa Tongatapu''
+			, Nukuaiofa NVARCHAR(50) DEFAULT ''Nukuaiofa''
+			, Nukualofa NVARCHAR(50) DEFAULT ''Nukualofa''
+			, Nukualofa_Tongatapu NVARCHAR(50) DEFAULT ''Nukualofa Tongatapu''
+			, Nuku_Appo_Alofa_Tongatapu NVARCHAR(50) DEFAULT ''Nuku''''Alofa Tongatapu''
+			, Nukualofa_Comma_Tongatapu NVARCHAR(50) DEFAULT ''Nukualofa, Tongatapu''
+			, Willow_Brook NVARCHAR(50) DEFAULT ''Willow Brook''
+			, Du_Page NVARCHAR(50) DEFAULT ''Du Page''
+			, Willowbrook NVARCHAR(50) DEFAULT ''Willowbrook''
+			, Puebla NVARCHAR(50) DEFAULT ''Puebla''
+			, Puebla_Comma_PUE NVARCHAR(50) DEFAULT ''Puebla, PUE''
+			, Puebla_CP NVARCHAR(50) DEFAULT ''Puebla CP''
+			, Puebla_ME NVARCHAR(50) DEFAULT ''Puebla ME''
+			, Puebla_PUE NVARCHAR(50) DEFAULT ''Puebla PUE''
+			, Puebla_Puebla NVARCHAR(50) DEFAULT ''Puebla Puebla''
+			, Charlestown NVARCHAR(50) DEFAULT ''Charlestown''
+			, Jefferson NVARCHAR(50) DEFAULT ''Jefferson''
+			, WV NVARCHAR(50) DEFAULT ''WV''
+			, Charles_Town NVARCHAR(50) DEFAULT ''Charles Town''
+			, Xian NVARCHAR(50) DEFAULT ''Xian''
+			, China NVARCHAR(50) DEFAULT ''China''
+			, CHINA_PEOPLES_REP_OF NVARCHAR(50) DEFAULT ''CHINA, PEOPLE''''S REP OF''
+			, Xi_Appo_an NVARCHAR(50) DEFAULT ''Xi''''an''
+			, Coaldale NVARCHAR(50) DEFAULT ''Coaldale''
+			, Coaldale_AB NVARCHAR(50) DEFAULT ''Coaldale AB''
+			, Coaldale_Alberta NVARCHAR(50) DEFAULT ''Coaldale Alberta''
+			, Coaldale_Comma_AB NVARCHAR(50) DEFAULT ''Coaldale, AB''
+			, De_Lancey NVARCHAR(50) DEFAULT ''De Lancey''
+			, Delaware NVARCHAR(50) DEFAULT ''Delaware''
+			, NY NVARCHAR(50) DEFAULT ''NY''
+			, Cardston NVARCHAR(50) DEFAULT ''Cardston''
+			, Cardston_AB NVARCHAR(50) DEFAULT ''Cardston AB''
+			, Cardston_Comma_AB NVARCHAR(50) DEFAULT ''Cardston, AB''
+			, Salt_Lake_Cty NVARCHAR(50) DEFAULT ''Salt Lake Cty''
+			, UT NVARCHAR(50) DEFAULT ''UT''
+			, Salt_Lake_City NVARCHAR(50) DEFAULT ''Salt Lake City''
+			, St_Per_George NVARCHAR(50) DEFAULT ''St. George''
+			, Saint_George NVARCHAR(50) DEFAULT ''Saint George''
+			, W_Valley_City NVARCHAR(50) DEFAULT ''W Valley City''
+			, West_Valley_City NVARCHAR(50) DEFAULT ''West Valley City''
+			, West_Valley NVARCHAR(50) DEFAULT ''West Valley''
+			, Saratoga_Spgs NVARCHAR(50) DEFAULT ''Saratoga Spgs''
+			, Saratoga_Springs NVARCHAR(50) DEFAULT ''Saratoga Springs''
+			, Vancouver NVARCHAR(50) DEFAULT ''Vancouver''
+			, Vancouver_BC NVARCHAR(50) DEFAULT ''Vancouver BC''
+			, Vancouver_AB NVARCHAR(50) DEFAULT ''Vancouver AB''
+			, Vancover_BC NVARCHAR(50) DEFAULT ''Vancover BC'' 
+			' -- Ext_Create_Fields_2
+		, ', Eagle_Mtn NVARCHAR(50) DEFAULT ''Eagle Mtn''
+			, Eagle_Mountain NVARCHAR(50) DEFAULT ''Eagle Mountain''
+			, N_Salt_Lake NVARCHAR(50) DEFAULT ''N Salt Lake''
+			, North_Salt_Lake NVARCHAR(50) DEFAULT ''North Salt Lake''
+			, St_Anthony NVARCHAR(50) DEFAULT ''St Anthony''
+			, ID NVARCHAR(50) DEFAULT ''ID''
+			, Saint_Anthony NVARCHAR(50) DEFAULT ''Saint Anthony''
+			, Y NVARCHAR(1) DEFAULT ''Y''
+			, N NVARCHAR(1) DEFAULT ''N''
+			, Dash NVARCHAR(1) DEFAULT ''-''
+			, Space NVARCHAR(1) DEFAULT '' ''
+			, ProperCase NVARCHAR(4000) DEFAULT ''|Act|Air|Al|am|an|Ana|and|And|Ann|Arm|as|au|Ave|ba|Bad|Bar|Bay|Bch|Bee|bei|Bei|Bel|Big|Bow|Box|Br|Bud|Buk|By|
+													|Cd|Chi|cho|Chu|Cle|Col|Ctr|Cty|Cut|Cyn|Dam|Dan|De|de|Del|Den|Des|DeWinton|di|Do|do|Dos|Dry|du|
+													|Eau|Edo|Egg|El|Elk|Ell|Elm|Ely|Emu|en|Et|Eup|Ewa|Eye|Fe|Fox|Foy|Ft|Fu|Gan|Gap|Gi|Gig|Gro|Gto|gu|Gu|Gun|Gye|
+													|Hae|Ham|Hat|Hls|Ho|Hof|Hot|Hts|Hu|Ile|im|in|In|Inn|Is|Jal|Jay|Jct|Jet|Jim|Jin|Joe|Joo|Joy|Ju|
+													|Kan|Ken|ken|Key|Ki|Ku|Kus|La|Lam|Las|Le|le|Lea|Lee|Les|Lin|Loa|Los|
+													|Mai|Mar|Mc|Med|Mer|Mex|Mi|Mie|Min|Mnt|Mor|Mt|Mtn|Mun|Na|Nam|Nan|Nat|New|Nos|Nye|Oak|of|Oil|Ola|Old|Ord|Oro|
+													|Pak|Paw|Paz|Pe|Pea|Pen|po|Pok|Pos|Pri|Red|Rex|Rey|Rio|Roi|Roy|Rue|Run|Rye|
+													|Sac|Sai|Sam|San|Sao|Sea|Shi|shi|si|Siu|Six|Ski|So|St|Sta|Ste|Sul|Sun|Sur|
+													|Ta|Tai|Tan|Tao|Tel|Ten|The|Tin|Top|Tow|Two|Twp|Usk|USSCA|Uul|Van|Vi|Vlg|Vly|voa|
+													|Wai|Wan|Way|Wuk|Xi|Yan|Yi|Yuc|Zug|''
+			, Comma_Space NVARCHAR(5) DEFAULT '', '' 
+			' -- Ext_Create_Fields_3
+		, ' ' -- Ext_Where_Statement_2
+		, ' ' -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
 -- _Address_Dim
 -- --------------------------
-	( 4 -- Tier
+	( 9 -- Tier
 		, ' ' -- Source_Table
 		, ' ' -- Destination_Table
 		, '_Address_Dim' -- Ext_Table
@@ -16704,16 +18181,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
 		, 1
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
@@ -16728,7 +18205,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 -- --------------------------
 -- _Activity_Dim
 -- --------------------------
-	( 4 -- Tier
+	( 9 -- Tier
 		, ' ' -- Source_Table
 		, ' ' -- Destination_Table
 		, '_Activity_Dim' -- Ext_Table
@@ -16963,17 +18440,17 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
-		, ' ' -- Code_Block_11
-		, ' ' -- Code_Block_12
-		, ' ' -- Code_Block_13
-		, ' ' -- Code_Block_14
-		, ' ' -- Code_Block_15
-		, ' ' -- Code_Block_16
-		, ' ' -- Code_Block_17
-		, ' ' -- Code_Block_18
-		, ' ' -- Code_Block_19
-		, ' ' -- Code_Block_20
-		, 1
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 0
 		, NULL -- Extract_Stage
 		, NULL -- Extract_Stage_DateTime
 		, NULL -- Coupler_Stage
