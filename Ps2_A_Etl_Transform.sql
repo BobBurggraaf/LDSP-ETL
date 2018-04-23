@@ -893,6 +893,535 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 	)
 	,
 -- --------------------------
+-- _Address_Dim Table
+-- --------------------------
+	('Dim' -- Dim_Object
+		, '_Address_Dim' -- Table_Name
+		, 'ContactId NVARCHAR(100)
+			, Address_Key INT  PRIMARY KEY
+			, Address_Group_Key INT
+			, Address_Primary_Yn NVARCHAR(1)
+			, Address_Street_1 NVARCHAR(100)
+			, Address_Street_2 NVARCHAR(100)
+			, Address_Street_3 NVARCHAR(100)
+			, Address_City NVARCHAR(100)
+			, Address_County NVARCHAR(100)
+			, Address_County_Code NVARCHAR(10)
+			, Address_County_Id NVARCHAR(100)
+			, Address_State_Province NVARCHAR(50)
+			, Address_State_Code NVARCHAR(100)
+			, Address_Country NVARCHAR(100)
+			, Address_Post_Code_Full NVARCHAR(100)
+			, Address_Post_Code_Last_4 NVARCHAR(15)
+			, Address_Printing_Line_1 NVARCHAR(606)
+			, Address_Printing_Line_2 NVARCHAR(406)
+			, Address_Display NVARCHAR(300)
+			, Address_Quality_Status NVARCHAR(400)
+			, Address_Quality_Status_Value INT
+			, Address_Longitude FLOAT
+			, Address_Latitude FLOAT
+			, Address_Active_Yn NVARCHAR(1)
+			, Address_Confirmed_Yn NVARCHAR(1)
+			--, Address_Undeliverable_Yn NVARCHAR(1)  /*Delete from source 5/15/17*/
+			, Address_Confidential_Yn NVARCHAR(1)
+			--, Address_Confidential_Reason NVARCHAR(400)  /*Delete from source 5/15/17*/
+			, Address_Type NVARCHAR(400)
+			, Address_Type_Value INT
+			, Address_Printing_Line_3 NVARCHAR(100)
+			, Address_Printing_Line_4 NVARCHAR(100)
+			' -- Create_Table
+		, 'ContactId
+			, Address_Key
+			, Address_Group_Key
+			, Address_Primary_Yn
+			, Address_Street_1
+			, Address_Street_2
+			, Address_Street_3
+			, Address_City
+			, Address_County
+			, Address_County_Code
+			, Address_County_Id
+			, Address_State_Province
+			, Address_State_Code
+			, Address_Country
+			, Address_Post_Code_Full
+			, Address_Post_Code_Last_4
+			, Address_Printing_Line_1
+			, Address_Printing_Line_2
+			, Address_Display
+			, Address_Quality_Status
+			, Address_Quality_Status_Value
+			, Address_Longitude
+			, Address_Latitude
+			, Address_Active_Yn
+			, Address_Confirmed_Yn
+			--, Address_Undeliverable_Yn  /*Delete from source 5/15/17*/
+			, Address_Confidential_Yn
+			--, Address_Confidential_Reason  /*Delete from source 5/15/17*/
+			, Address_Type
+			, Address_Type_Value
+			, Address_Printing_Line_3
+			, Address_Printing_Line_4
+			' -- Insert_Fields
+		, ' ' -- From_Statement
+		, ' ' -- Where_Statement
+		, 'DECLARE @TABLE_NAME NVARCHAR(100)
+			SET @TABLE_NAME = ''_Address_Dim'' ; ------> HARDCODE <------
+			EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = @TABLE_NAME, @Alpha_Step_Number = ''113D'', @Alpha_Step_Name = ''Remove Indexes - Begin'', @Alpha_Result = 1;                               
+			EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = @TABLE_NAME, @Alpha_Step_Number = ''113D'', @Alpha_Step_Name = ''Remove Indexes - End'', @Alpha_Result = 1;
+			' -- Attribute_1
+		, 'DECLARE @SQL_1 NVARCHAR(MAX)
+			DECLARE @SQL_2 NVARCHAR(MAX)
+			DECLARE @TABLE_NAME_B NVARCHAR(100)
+			SET @TABLE_NAME_B = ''_Address_Bridge''
+			EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = @TABLE_NAME_B, @Alpha_Step_Number = ''113E'', @Alpha_Step_Name = ''Bridge Table Creation - Begin'', @Alpha_Result = 1;
+			SET @SQL_2 = '' ''''LDSPhilanthropiesDW.dbo.'' + @TABLE_NAME_B + '''''', ''''U'''' ''
+			SET @SQL_1 = ''
+			IF OBJECT_ID('' + @SQL_2 + '') IS NOT NULL
+			DROP TABLE LDSPhilanthropiesDW.dbo.'' + @TABLE_NAME_B + ''                                               
+			CREATE TABLE LDSPhilanthropiesDW.dbo.'' + @TABLE_NAME_B + ''(ContactId NVARCHAR(100), Address_Key INT PRIMARY KEY, Address_Group_Key INT)''                                                        
+			EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = @TABLE_NAME_B, @Alpha_Step_Number = ''113E'', @Alpha_Step_Name = ''Bridge Table Creation - Query'', @Alpha_Query = @SQL_1, @Alpha_Result = 1;                                        
+			EXEC(@SQL_1)
+			EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = @TABLE_NAME_B, @Alpha_Step_Number = ''113E'', @Alpha_Step_Name = ''Bridge Table Creation - End'', @Alpha_Result = 1;
+			' -- Attribute_2
+		, 'EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = @TABLE_NAME, @Alpha_Step_Number = ''113F'', @Alpha_Step_Name = ''Create Indexes - Begin'', @Alpha_Result = 1;                                                                             
+			EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = @TABLE_NAME, @Alpha_Step_Number = ''113F'', @Alpha_Step_Name = ''Create Indexes - End'', @Alpha_Result = 1;
+			' -- Attribute_3
+		, 'IF OBJECT_ID(''tempdb..#Address_Temp_1'') IS NOT NULL
+					DROP TABLE #Address_Temp_1
+					IF OBJECT_ID(''tempdb..#Address_Temp_2'') IS NOT NULL
+					DROP TABLE #Address_Temp_2
+			BEGIN TRY
+				DECLARE @TABLE_CNT1 AS VARCHAR(100)
+				DECLARE @TABLE_CNT2 AS VARCHAR(100)
+				EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''_Address_Dim'', @Alpha_Step_Number = ''113G'', @Alpha_Step_Name = ''Dim Tables - Transform - Begin'', @Alpha_Result = 1;
+					SELECT * INTO #Address_Temp_1
+						FROM 
+							(
+							SELECT F.ContactId
+								, ROW_NUMBER() OVER(ORDER BY F.New_AddressId) AS Address_Key
+								, F.New_AddressId
+								, F.Address_Primary_Yn
+								, F.Address_Street_1
+								, F.Address_Street_2
+								, F.Address_Street_3
+								, F.Address_City
+								, F.Address_County
+								, F.Address_County_Code
+								, F.Address_County_Id
+								, F.Address_State_Province
+								, F.Address_State_Code
+								, F.Address_Country
+								, F.Address_Post_Code_Full
+								, F.Address_Printing_Line_1
+								, F.Address_Printing_Line_2
+								, F.Address_Display
+								, F.Address_Quality_Status
+								, F.Address_Quality_Status_Value
+								, F.Address_Post_Code_Last_4
+								, F.Address_Longitude
+								, F.Address_Latitude
+								, F.Address_Active_Yn
+								, F.Address_Confirmed_Yn
+								--, F.Address_Undeliverable_Yn  /*Delete from source 5/15/17*/
+								, F.Address_Confidential_Yn
+								--, F.Address_Confidential_Reason  /*Delete from source 5/15/17*/
+								, F.Address_Type
+								, F.Address_Type_Value
+								, F.Address_Printing_Line_3
+								, F.Address_Printing_Line_4
+								FROM
+									(SELECT A.ContactId
+										, A.New_AddressId
+										, B.Address_Primary_Yn
+										, A.Address_Street_1
+										, A.Address_Street_2
+										, A.Address_Street_3
+										, C.Address_City
+										, C.Address_County
+										, C.Address_County_Code
+										, C.Address_County_Id
+										, C.Address_State_Province
+										, C.Address_State_Code
+										, C.Address_Country
+										, C.Address_Post_Code_Full
+										, B.Address_Printing_Line_1
+										, D.Address_Printing_Line_2
+										, A.Address_Display
+										, E.Address_Quality_Status
+										, E.Address_Quality_Status_Value
+										, A.Address_Post_Code_Last_4
+										, A.Address_Longitude
+										, A.Address_Latitude
+										, B.Address_Active_Yn
+										, B.Address_Confirmed_Yn
+										--, B.Address_Undeliverable_Yn  /*Delete from source 5/15/17*/
+										, B.Address_Confidential_Yn
+										--, E.Address_Confidential_Reason  /*Delete from source 5/15/17*/
+										, E.Address_Type
+										, E.Address_Type_Value
+										, C.Address_Printing_Line_3
+										, C.Address_Printing_Line_4
+										FROM
+											(SELECT DISTINCT OA.Plus_RelatedContact AS ContactId
+												, OA.New_AddressId
+												, OA.New_Street1 AS Address_Street_1
+												, OA.New_Street2 AS Address_Street_2
+												, OA.New_Street3 AS Address_Street_3
+												, OA.New_Zip4 AS Address_Post_Code_Last_4
+												, CONVERT(NVARCHAR(300),OA.Plus_AddressDisplay) AS Address_Display
+												, OA.Plus_Longitude AS Address_Longitude
+												, OA.Plus_Latitude AS Address_Latitude
+												FROM LDSPhilanthropiesDW.dbo.Ext_Address OA
+											) A LEFT JOIN
+											(SELECT DISTINCT OA.New_AddressId
+												, CASE WHEN OA.New_Primary = 1 THEN ''Y'' 
+													WHEN OA.New_Primary = 0 THEN ''N''
+													ELSE ''-'' END AS Address_Primary_Yn
+												, COALESCE(OA.New_Street1,'' '') + COALESCE(OA.New_Street2,'' '') + COALESCE(OA.New_Street3,'' '') AS Address_Printing_Line_1 
+												, CASE WHEN OA.StateCode = 0 THEN ''Y'' ELSE ''N'' END AS Address_Active_Yn
+												--, CASE WHEN OA.New_Confirmed = 0 THEN ''N'' ELSE ''Y'' END AS Address_Confirmed_Yn /*Delete from source 5/15/17*/
+												, CASE WHEN OA.New_ConfirmedDate IS NULL THEN ''N'' ELSE ''Y'' END AS Address_Confirmed_Yn
+												--, CASE WHEN OA.New_Undeliverable = 0 THEN ''N'' ELSE ''Y'' END AS Address_Undeliverable_Yn  /*Delete from source 5/15/17*/
+												, CASE WHEN OA.New_Confidential = 0 THEN ''N'' ELSE ''Y'' END AS Address_Confidential_Yn
+												FROM LDSPhilanthropiesDW.dbo.Ext_Address OA
+											) B ON A.New_AddressId = B.New_AddressId LEFT JOIN
+											(SELECT DISTINCT OA.New_AddressId
+												--, NC.New_Name AS Address_City
+												, RTRIM(LTRIM(dbo.ufProperCase(OA.Lds_City,''|Act|Air|Al|am|an|Ana|and|And|Ann|Arm|as|au|Ave|ba|Bad|Bar|Bay|Bch|Bee|bei|Bei|Bel|Big|Bow|Box|Br|Bud|Buk|By|
+																	|Cd|Chi|cho|Chu|Cle|Col|Ctr|Cty|Cut|Cyn|Dam|Dan|De|de|Del|Den|Des|DeWinton|di|Do|do|Dos|Dry|du|
+																	|Eau|Edo|Egg|El|Elk|Ell|Elm|Ely|Emu|en|Et|Eup|Ewa|Eye|Fe|Fox|Foy|Ft|Fu|Gan|Gap|Gi|Gig|Gro|Gto|gu|Gu|Gun|Gye|
+																	|Hae|Ham|Hat|Hls|Ho|Hof|Hot|Hts|Hu|Ile|im|in|In|Inn|Is|Jal|Jay|Jct|Jet|Jim|Jin|Joe|Joo|Joy|Ju|
+																	|Kan|Ken|ken|Key|Ki|Ku|Kus|La|Lam|Las|Le|le|Lea|Lee|Les|Lin|Loa|Los|
+																	|Mai|Mar|Mc|Med|Mer|Mex|Mi|Mie|Min|Mnt|Mor|Mt|Mtn|Mun|Na|Nam|Nan|Nat|New|Nos|Nye|Oak|of|Oil|Ola|Old|Ord|Oro|
+																	|Pak|Paw|Paz|Pe|Pea|Pen|po|Pok|Pos|Pri|Red|Rex|Rey|Rio|Roi|Roy|Rue|Run|Rye|
+																	|Sac|Sai|Sam|San|Sao|Sea|Shi|shi|si|Siu|Six|Ski|So|St|Sta|Ste|Sul|Sun|Sur|
+																	|Ta|Tai|Tan|Tao|Tel|Ten|The|Tin|Top|Tow|Two|Twp|Usk|USSCA|Uul|Van|Vi|Vlg|Vly|voa|
+																	|Wai|Wan|Way|Wuk|Xi|Yan|Yi|Yuc|Zug|'',3
+																	))) AS Address_City
+												--, NCTY.New_Name AS Address_County
+												, OA.Lds_County AS Address_County
+												, NCTY.Plus_CountyCode AS Address_County_Code
+												, NCTY.New_CountyId AS Address_County_Id
+												--, NST.Plus_Abbreviation AS Address_State_Province
+												, OA.Lds_StateProvince AS Address_State_Province
+												--, NST.New_Name AS Address_State_Code
+												, OA.Lds_StateProvince AS Address_State_Code
+												, NCRY.New_Name AS Address_Country
+												--, CASE WHEN NCRY.New_Name  != ''United States'' THEN OA.Plus_ForeignPostalCode 
+												--	ELSE  PC.New_Name END AS Address_Post_Code_Full
+												, OA.Lds_PostalCode AS Address_Post_Code_Full
+												--, CASE WHEN NCRY.New_Name  != ''United States'' THEN OA.Plus_ForeignPostalCode 
+												--	ELSE  PC.New_Name END As Address_Printing_Line_3
+												, OA.Lds_PostalCode AS Address_Printing_Line_3
+												, NCRY.New_Name AS Address_Printing_Line_4
+												FROM LDSPhilanthropiesDW.dbo.Ext_Address OA
+													LEFT JOIN LDSPhilanthropiesDW.dbo.Ext_City NC ON OA.New_CityLookUp = NC.New_CityId
+													LEFT JOIN LDSPhilanthropiesDW.dbo.Ext_County NCTY ON OA.New_CountyId = NCTY.New_CountyId 
+													LEFT JOIN LDSPhilanthropiesDW.dbo.Ext_State NST ON OA.New_StatesProvinces = NST.New_StateId
+													LEFT JOIN LDSPhilanthropiesDW.dbo.Ext_Country NCRY ON OA.New_CountryRegions = NCRY.New_CountryId
+													LEFT JOIN LDSPhilanthropiesDW.dbo.Ext_Postal PC ON OA.New_PostalCodes = PC.New_PostalCodeId 
+											) C ON A.New_AddressId = C.New_AddressId LEFT JOIN
+											(SELECT DISTINCT OA.New_AddressId
+												, CASE WHEN AF.New_UseStateAbreviation = 1 THEN COALESCE(OA.Lds_City,'' '') + '', '' + COALESCE(OA.Lds_StateProvince,'' '') 
+													ELSE COALESCE(OA.Lds_City,'' '') + '', '' + COALESCE(OA.Lds_StateProvince,'' '') END AS Address_Printing_Line_2
+												FROM LDSPhilanthropiesDW.dbo.Ext_Address OA
+													LEFT JOIN LDSPhilanthropiesDW.dbo.Ext_City NC ON OA.New_CityLookUp = NC.New_CityId
+													LEFT JOIN LDSPhilanthropiesDW.dbo.Ext_County NCTY ON OA.New_CountyId = NCTY.New_CountyId 
+													LEFT JOIN LDSPhilanthropiesDW.dbo.Ext_State NST ON OA.New_StatesProvinces = NST.New_StateId
+													LEFT JOIN LDSPhilanthropiesDW.dbo.Ext_Country NCRY ON OA.New_CountryRegions = NCRY.New_CountryId
+													LEFT JOIN LDSPhilanthropiesDW.dbo.Ext_Postal PC ON OA.New_PostalCodes = PC.New_PostalCodeId 
+													LEFT JOIN LDSPhilanthropiesDW.dbo.Ext_Address_Format AF ON NCRY.Plus_AdderessFormat = AF.Plus_AddressFormatId
+											) D ON A.New_AddressId = D.New_AddressId LEFT JOIN
+											(SELECT DISTINCT OA.New_AddressId
+												, Q.Column_Label AS Address_Quality_Status
+												, Q.Column_Value AS Address_Quality_Status_Value
+												--, C.Column_Label AS Address_Confidential_Reason  /*Delete from source 5/15/17*/
+												, A.Column_Label AS Address_Type
+												, A.Column_Value AS Address_Type_Value
+												FROM LDSPhilanthropiesDW.dbo.Ext_Address OA
+													LEFT JOIN LDSPhilanthropiesDW.dbo._Address_Quality_ Q ON OA.Plus_OneAccordQuality = Q.Column_Value 
+													--LEFT JOIN LDSPhilanthropiesDW.dbo._Address_Confidential_ C ON OA.Plus_ConfidentialInstruction = C.Column_Value  /*Delete from source 5/15/17*/ 
+													LEFT JOIN LDSPhilanthropiesDW.dbo._Address_Type_ A ON OA.New_AddressType = A.Column_Value
+											) E ON A.New_AddressId = E.New_AddressId
+										WHERE 1 = 1
+											AND B.Address_Active_Yn = ''Y''
+									) F
+							) A  
+						OPTION(MAXDOP 4)
+					SELECT * INTO #Address_Temp_2
+						FROM 
+							(
+							SELECT ContactId
+								, ROW_NUMBER() OVER(ORDER BY ContactId) AS Address_Group_Key --> HARD CODED <--
+								FROM
+									(SELECT DISTINCT ContactId   
+										FROM #Address_Temp_1) A
+							) A
+				SELECT @TABLE_CNT1 = (SELECT CONVERT(NVARCHAR(100),COUNT(*)) FROM #Address_Temp_1)
+				SELECT @TABLE_CNT2 = (SELECT CONVERT(NVARCHAR(100),COUNT(*)) FROM #Address_Temp_2)
+				EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''_Address_Dim'', @Alpha_Step_Number = ''113G'', @Alpha_Step_Name = ''Dim Temp Table - Count'', @Alpha_Count = @TABLE_CNT1, @Alpha_Result = 1;
+				EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''_Address_Dim'', @Alpha_Step_Number = ''113G'', @Alpha_Step_Name = ''Bridge Temp Table - Count'', @Alpha_Count = @TABLE_CNT2, @Alpha_Result = 1;
+				EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''_Address_Dim'', @Alpha_Step_Number = ''113G'', @Alpha_Step_Name = ''Dim Table - Transform - End'', @Alpha_Result = 1;
+			END TRY 
+			BEGIN CATCH
+				DECLARE @ERROR_NUMBER INT
+				DECLARE @ERROR_SEVERITY INT
+				DECLARE @ERROR_STATE INT
+				DECLARE @ERROR_PROCEDURE NVARCHAR(500)
+				DECLARE @ERROR_LINE INT
+				DECLARE @ERROR_MESSAGE NVARCHAR(MAX)
+				SELECT @ERROR_NUMBER = (SELECT ERROR_NUMBER())
+				SELECT @ERROR_SEVERITY = (SELECT ERROR_SEVERITY())
+				SELECT @ERROR_STATE = (SELECT ERROR_STATE())
+				SELECT @ERROR_PROCEDURE = (SELECT ERROR_PROCEDURE())
+				SELECT @ERROR_LINE = (SELECT ERROR_LINE())
+				SELECT @ERROR_MESSAGE = (SELECT ERROR_MESSAGE())
+				EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''_Address_Dim'', @Alpha_Step_Number = ''113X'', @Alpha_Step_Name = ''Dim Table - Transform - Error'', @Alpha_Result = 0
+				, @ErrorNumber = @ERROR_NUMBER, @ErrorSeverity = @ERROR_SEVERITY, @ErrorState = @ERROR_STATE, @ErrorProcedure = @ERROR_PROCEDURE, @ErrorLine = @ERROR_LINE, @ErrorMessage = @ERROR_MESSAGE;  
+			END CATCH
+			BEGIN TRY 
+				DECLARE @TABLE_CNT3 AS VARCHAR(100)
+				DECLARE @TABLE_CNT4 AS VARCHAR(100)
+				EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''_Address_Dim'', @Alpha_Step_Number = ''113G'', @Alpha_Step_Name = ''Dim Tables - Load - Begin'', @Alpha_Result = 1;
+					INSERT INTO _Address_Dim --> HARD CODED <--
+						(ContactId
+						, Address_Key
+						, Address_Group_Key
+						, Address_Primary_Yn
+						, Address_Street_1
+						, Address_Street_2
+						, Address_Street_3
+						, Address_City
+						, Address_County
+						, Address_County_Code
+						, Address_County_Id
+						, Address_State_Province
+						, Address_State_Code
+						, Address_Country
+						, Address_Post_Code_Full
+						, Address_Post_Code_Last_4
+						, Address_Printing_Line_1
+						, Address_Printing_Line_2
+						, Address_Display
+						, Address_Quality_Status
+						, Address_Quality_Status_Value
+						, Address_Longitude
+						, Address_Latitude
+						, Address_Active_Yn
+						, Address_Confirmed_Yn
+						--, Address_Undeliverable_Yn  /*Delete from source 5/15/17*/
+						, Address_Confidential_Yn
+						--, Address_Confidential_Reason  /*Delete from source 5/15/17*/
+						, Address_Type
+						, Address_Type_Value
+						, Address_Printing_Line_3
+						, Address_Printing_Line_4
+						)
+						SELECT DISTINCT CONVERT(NVARCHAR(100),A.ContactId) AS ContactId
+							, A.Address_Key
+							, B.Address_Group_Key
+							, A.Address_Primary_Yn
+							, A.Address_Street_1
+							, A.Address_Street_2
+							, A.Address_Street_3
+							, A.Address_City
+							, A.Address_County
+							, A.Address_County_Code
+							, CONVERT(NVARCHAR(100),A.Address_County_Id) AS Address_County_Id
+							, A.Address_State_Province
+							, A.Address_State_Code
+							, A.Address_Country
+							, A.Address_Post_Code_Full
+							, A.Address_Post_Code_Last_4
+							, A.Address_Printing_Line_1
+							, A.Address_Printing_Line_2
+							, A.Address_Display
+							, A.Address_Quality_Status
+							, A.Address_Quality_Status_Value
+							, A.Address_Longitude
+							, A.Address_Latitude
+							, A.Address_Active_Yn
+							, A.Address_Confirmed_Yn
+							--, A.Address_Undeliverable_Yn  /*Delete from source 5/15/17*/
+							, A.Address_Confidential_Yn
+							--, A.Address_Confidential_Reason   /*Delete from source 5/15/17*/
+							, A.Address_Type
+							, A.Address_Type_Value
+							, A.Address_Printing_Line_3
+							, A.Address_Printing_Line_4   
+							FROM #Address_Temp_1 A
+								LEFT JOIN #Address_Temp_2 B ON A.ContactId = B.ContactId
+					INSERT INTO _Address_Bridge --> HARD CODED <--
+						(ContactId
+						, Address_Key --> HARD CODED <--
+						, Address_Group_Key --> HARD CODED <--
+						)
+						SELECT DISTINCT ContactId
+							, Address_Key --> HARD CODED <--
+							, Address_Group_Key --> HARD CODED <--  
+							FROM _Address_Dim  --> HARD CODED <--              
+				SELECT @TABLE_CNT3 = (SELECT CONVERT(NVARCHAR(100),COUNT(*)) FROM _Address_Dim)
+				SELECT @TABLE_CNT4 = (SELECT CONVERT(NVARCHAR(100),COUNT(*)) FROM _Address_Bridge)
+				EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''_Address_Dim'', @Alpha_Step_Number = ''113G'', @Alpha_Step_Name = ''Dim Table - Count'', @Alpha_Count = @TABLE_CNT3, @Alpha_Result = 1;
+				EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''_Address_Dim'', @Alpha_Step_Number = ''113G'', @Alpha_Step_Name = ''Bridge Table - Count'', @Alpha_Count = @TABLE_CNT4, @Alpha_Result = 1;
+				IF @TABLE_CNT3 != @TABLE_CNT4 
+				EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''_Address_Dim'', @Alpha_Step_Number = ''113G'', @Alpha_Step_Name = ''Dim Table - Load - COUNT Error'', @Alpha_Result = 0;
+				EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''_Address_Dim'', @Alpha_Step_Number = ''113G'', @Alpha_Step_Name = ''Dim Tables - Load - End'', @Alpha_Result = 1;  
+			END TRY 
+			BEGIN CATCH
+				SELECT @ERROR_NUMBER = (SELECT ERROR_NUMBER())
+				SELECT @ERROR_SEVERITY = (SELECT ERROR_SEVERITY())
+				SELECT @ERROR_STATE = (SELECT ERROR_STATE())
+				SELECT @ERROR_PROCEDURE = (SELECT ERROR_PROCEDURE())
+				SELECT @ERROR_LINE = (SELECT ERROR_LINE())
+				SELECT @ERROR_MESSAGE = (SELECT ERROR_MESSAGE())
+				EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''_Address_Dim'', @Alpha_Step_Number = ''113X'', @Alpha_Step_Name = ''Dim Table - Load - Error'', @Alpha_Result = 0
+				, @ErrorNumber = @ERROR_NUMBER, @ErrorSeverity = @ERROR_SEVERITY, @ErrorState = @ERROR_STATE, @ErrorProcedure = @ERROR_PROCEDURE, @ErrorLine = @ERROR_LINE, @ErrorMessage = @ERROR_MESSAGE;                                             
+			END CATCH
+			' -- Attribute_4
+		, 'BEGIN TRY
+				MERGE INTO _Address_Dim T
+					USING (
+							SELECT Address_Key
+								, RTRIM(LTRIM(CASE WHEN Address_City = ''Ofallon'' AND Address_County IN (''Saint Charles'',''Saint Clair'') AND Address_State_Province IN (''MO'',''IL'') THEN ''O''''Fallon''
+										WHEN Address_City = ''O Fallon'' AND Address_County IN (''Saint Charles'',''Saint Clair'') AND Address_State_Province IN (''MO'',''IL'') THEN ''O''''Fallon''
+										WHEN Address_City = ''Mexico D.F.'' AND Address_Country = ''Mexico'' THEN ''Mexico, D.F.''
+										WHEN Address_City = ''Mexico DF'' AND Address_Country = ''Mexico'' THEN ''Mexico, D.F.''
+										WHEN Address_City = ''Mexico City D.F.'' AND Address_Country = ''Mexico'' THEN ''Mexico, D.F.''
+										WHEN Address_City = ''Mexico City DF'' AND Address_Country = ''Mexico'' THEN ''Mexico, D.F.''
+										WHEN Address_City = ''Calgary, AB'' AND Address_Country = ''Canada'' THEN ''Calgary AB''
+										WHEN Address_City = ''Calgary  AB'' AND Address_Country = ''Canada'' THEN ''Calgary AB''
+										WHEN Address_City = ''Calgary'' AND Address_Country = ''Canada'' THEN ''Calgary AB''
+										WHEN Address_City = ''Calgary AI'' AND Address_Country = ''Canada'' THEN ''Calgary AB''
+										WHEN Address_City = ''Calgary Al'' AND Address_Country = ''Canada'' THEN ''Calgary AB''
+										WHEN Address_City = ''Calgary Alberta'' AND Address_Country = ''Canada'' THEN ''Calgary AB''
+										WHEN Address_City = ''Calgary BC'' AND Address_Country = ''Canada'' THEN ''Calgary AB''
+										WHEN Address_City = ''Calgary, Alberta'' AND Address_Country = ''Canada'' THEN ''Calgary AB''
+										WHEN Address_City = ''Shore View'' AND Address_County IN (''Ramsey'') AND Address_State_Province IN (''MN'') THEN ''Shoreview''
+										WHEN Address_City = ''Hamilton, ON'' AND Address_Country = ''Canada'' THEN ''Hamilton ON''
+										WHEN Address_City = ''Hamilton Ontario'' AND Address_Country = ''Canada'' THEN ''Hamilton ON''
+										WHEN Address_City = ''Ducklake SK'' AND Address_Country = ''Canada'' THEN ''Duck Lake SK''
+										WHEN Address_City = ''Pachuca HGO'' AND Address_Country = ''Mexico'' THEN ''Pachuca, HGO''
+										WHEN Address_City = ''Pachuca'' AND Address_Country = ''Mexico'' THEN ''Pachuca, HGO''
+										WHEN Address_City = ''Pachuca Hidalgo'' AND Address_Country = ''Mexico'' THEN ''Pachuca, HGO''
+										WHEN Address_City = ''Pachuca De Soto Hida'' AND Address_Country = ''Mexico'' THEN ''Pachuca, HGO''
+										WHEN Address_City = ''Pachuca HI'' AND Address_Country = ''Mexico'' THEN ''Pachuca, HGO''
+										WHEN Address_City = ''Pachuca HG'' AND Address_Country = ''Mexico'' THEN ''Pachuca, HGO''
+										WHEN Address_City = ''Ottawa, ON'' AND Address_Country = ''Canada'' THEN ''Ottawa ON''
+										WHEN Address_City = ''Ottawa'' AND Address_Country = ''Canada'' THEN ''Ottawa ON''
+										WHEN Address_City = ''Ottawa Ontario'' AND Address_Country = ''Canada'' THEN ''Ottawa ON''
+										WHEN Address_City = ''Ottawa AB'' AND Address_Country = ''Canada'' THEN ''Ottawa ON''
+										WHEN Address_City = ''Weston-Super-Mare'' AND Address_Country = ''England'' THEN ''Weston-super-Mare''
+										WHEN Address_City = ''Weston-Super-Mare'' AND Address_Country = ''United Kingdom'' THEN ''Weston-super-Mare''
+										WHEN Address_City = ''Weston Super Mare'' AND Address_Country = ''United Kingdom'' THEN ''Weston-super-Mare''
+										WHEN Address_City = ''Weston-Super-Mare B'' AND Address_Country = ''England'' THEN ''Weston-super-Mare''
+										WHEN Address_City = ''Risingsun'' AND Address_State_Province IN (''OH'') THEN ''Rising Sun''
+										WHEN Address_City = ''Nuku''''Alofa'' AND Address_Country = ''Tonga'' THEN ''Nuku''''alofa''
+										WHEN Address_City = ''Nuku Alofa'' AND Address_Country = ''Tonga'' THEN ''Nuku''''alofa''
+										WHEN Address_City = ''Nuku'''' Alofa'' AND Address_Country = ''Tonga'' THEN ''Nuku''''alofa''
+										WHEN Address_City = ''Nuku`alofa Tongatapu'' AND Address_Country = ''Tonga'' THEN ''Nuku''''alofa''
+										WHEN Address_City = ''Nukuaiofa'' AND Address_Country = ''Tonga'' THEN ''Nuku''''alofa''
+										WHEN Address_City = ''Nukualofa'' AND Address_Country = ''Tonga'' THEN ''Nuku''''alofa''
+										WHEN Address_City = ''Nukualofa Tongatapu'' AND Address_Country = ''Tonga'' THEN ''Nuku''''alofa''
+										WHEN Address_City = ''Nuku''''Alofa Tongatapu'' AND Address_Country = ''Tonga'' THEN ''Nuku''''alofa''
+										WHEN Address_City = ''Nukualofa, Tongatapu'' AND Address_Country = ''Tonga'' THEN ''Nuku''''alofa''
+										WHEN Address_City = ''Willow Brook'' AND Address_County IN (''Du Page'') AND Address_State_Province IN (''IL'') THEN ''Willowbrook''
+										WHEN Address_City = ''Puebla'' AND Address_Country = ''Mexico'' THEN ''Puebla, PUE''
+										WHEN Address_City = ''Puebla CP'' AND Address_Country = ''Mexico'' THEN ''Puebla, PUE''
+										WHEN Address_City = ''Puebla ME'' AND Address_Country = ''Mexico'' THEN ''Puebla, PUE''
+										WHEN Address_City = ''Puebla PUE'' AND Address_Country = ''Mexico'' THEN ''Puebla, PUE''
+										WHEN Address_City = ''Puebla Puebla'' AND Address_Country = ''Mexico'' THEN ''Puebla, PUE''
+										WHEN Address_City = ''Charlestown'' AND Address_County IN (''Jefferson'') AND Address_State_Province IN (''WV'') THEN ''Charles Town''
+										WHEN Address_City = ''Xian'' AND Address_Country IN (''China'',''CHINA, PEOPLE''''S REP OF'') THEN ''Xi''''an''
+										WHEN Address_City = ''Coaldale'' AND Address_Country = ''Canada'' THEN ''Coaldale AB''
+										WHEN Address_City = ''Coaldale Alberta'' AND Address_Country = ''Canada'' THEN ''Coaldale AB''
+										WHEN Address_City = ''Coaldale, AB'' AND Address_Country = ''Canada'' THEN ''Coaldale AB''
+										WHEN Address_City = ''De Lancey'' AND Address_County IN (''Delaware'') AND Address_State_Province IN (''NY'') THEN ''Delancey''
+										WHEN Address_City = ''Cardston'' AND Address_Country = ''Canada'' THEN ''Cardston AB''
+										WHEN Address_City = ''Cardston, AB'' AND Address_Country = ''Canada'' THEN ''Cardston AB''
+										WHEN Address_City = ''Salt Lake Cty'' AND Address_State_Province IN (''UT'') THEN ''Salt Lake City''
+										WHEN Address_City = ''St. George'' AND Address_State_Province IN (''UT'') THEN ''Saint George''
+										WHEN Address_City = ''W Valley City'' AND Address_State_Province IN (''UT'') THEN ''West Valley City''
+										WHEN Address_City = ''West Valley'' AND Address_State_Province IN (''UT'') THEN ''West Valley City''
+										WHEN Address_City = ''Saratoga Spgs'' AND Address_State_Province IN (''UT'') THEN ''Saratoga Springs''
+										WHEN Address_City = ''Vancouver'' AND Address_Country = ''Canada'' THEN ''Vancouver BC''
+										WHEN Address_City = ''Vancouver AB'' AND Address_Country = ''Canada'' THEN ''Vancouver BC''
+										WHEN Address_City = ''Vancover BC'' AND Address_Country = ''Canada'' THEN ''Vancouver BC''
+										WHEN Address_City = ''Eagle Mtn'' AND Address_State_Province IN (''UT'') THEN ''Eagle Mountain''
+										WHEN Address_City = ''N Salt Lake'' AND Address_State_Province IN (''UT'') THEN ''North Salt Lake''
+										WHEN Address_City = ''St Anthony'' AND Address_State_Province IN (''ID'') THEN ''Saint Anthony''
+									ELSE Address_City END)) AS Address_City
+								FROM _Address_Dim
+								WHERE 1 = 1
+									AND Address_City IN (''Ofallon'',''O Fallon''
+															,''Mexico D.F.'',''Mexico DF'',''Mexico City D.F.'',''Mexico City DF''
+															,''Calgary, AB'',''Calgary  AB'',''Calgary'',''Calgary AI'',''Calgary Al'',''Calgary Alberta'',''Calgary BC'',''Calgary, Alberta''
+															,''Shore View''
+															,''Hamilton, ON'',''Hamilton Ontario''
+															,''Ducklake SK''
+															,''Pachuca HGO'',''Pachuca'',''Pachuca Hidalgo'',''Pachuca De Soto Hida'',''Pachuca HI'',''Pachuca HG''
+															,''Ottawa, ON'',''Ottawa'',''Ottawa Ontario'',''Ottawa AB''
+															,''Weston-Super-Mare'',''Weston Super Mare'',''Weston-Super-Mare B''
+															,''Risingsun''
+															,''Nuku''''Alofa'',''Nuku Alofa'',''Nuku'''' Alofa'',''Nuku`alofa Tongatapu'',''Nukuaiofa'',''Nukualofa'',''Nukualofa Tongatapu'',''Nuku''''Alofa Tongatapu'',''Nukualofa, Tongatapu''
+															,''Willow Brook''
+															,''Puebla'',''Puebla CP'',''Puebla ME'',''Puebla PUE'',''Puebla Puebla''
+															,''Charlestown''
+															,''Xian''
+															,''Coaldale'',''Coaldale Alberta'',''Coaldale, AB''
+															,''De Lancey''
+															,''Cardston'',''Cardston, AB''
+															,''Salt Lake Cty''
+															,''St. George''
+															,''W Valley City'',''West Valley''
+															,''Saratoga Spgs''
+															,''Vancouver'',''Vancouver AB'',''Vancover BC''
+															,''Eagle Mtn''
+															,''N Salt Lake''
+															,''St Anthony''
+														)
+						) S ON T.Address_Key = S.Address_Key
+					WHEN MATCHED THEN 
+						UPDATE
+							SET T.Address_City = S.Address_City
+					;
+			END TRY 
+			BEGIN CATCH
+				SELECT @ERROR_NUMBER = (SELECT ERROR_NUMBER())
+				SELECT @ERROR_SEVERITY = (SELECT ERROR_SEVERITY())
+				SELECT @ERROR_STATE = (SELECT ERROR_STATE())
+				SELECT @ERROR_PROCEDURE = (SELECT ERROR_PROCEDURE())
+				SELECT @ERROR_LINE = (SELECT ERROR_LINE())
+				SELECT @ERROR_MESSAGE = (SELECT ERROR_MESSAGE())
+				EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''Data Integrity City Corrections'', @Alpha_Step_Number = ''113X'', @Alpha_Step_Name = ''Data Integrity City Corrections - Error'', @Alpha_Result = 0
+				, @ErrorNumber = @ERROR_NUMBER, @ErrorSeverity = @ERROR_SEVERITY, @ErrorState = @ERROR_STATE, @ErrorProcedure = @ERROR_PROCEDURE, @ErrorLine = @ERROR_LINE, @ErrorMessage = @ERROR_MESSAGE;  
+			END CATCH
+			' -- Attribute_5
+		, 'EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = @TABLE_NAME, @Alpha_Step_Number = ''113H'', @Alpha_Step_Name = ''End'', @Alpha_Result = 1; 
+			' -- Attribute_6
+		, ' ' -- Attribute_7
+		, ' ' -- Attribute_8
+		, ' ' -- Attribute_9
+		, ' ' -- Attribute_10
+		, ' ' -- Attribute_11
+		, ' ' -- Attribute_12
+		, ' ' -- Attribute_13
+		, ' ' -- Attribute_14
+		, ' ' -- Attribute_15
+		, ' ' -- Attribute_16
+		, ' ' -- Attribute_17
+		, ' ' -- Attribute_18
+		, ' ' -- Attribute_19
+		, ' ' -- Attribute_20
+		, 'EXEC dbo.usp_Transform_Data @Transform_Data_Table_Name = ''_Address_Dim''; ------> HARDCODE <------
+			' -- Attribute_21
+		, 1 -- Active
+		, GETDATE() -- Insert_Date
+		, NULL  -- Update_Date                
+	)
+	,
+-- --------------------------
 -- _Award_Dim Table
 -- --------------------------
 	('Dim' -- Dim_Object
@@ -3211,159 +3740,6 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 		, ' ' -- Attribute_19
 		, ' ' -- Attribute_20
 		, 'EXEC dbo.usp_Transform_Data @Transform_Data_Table_Name = ''_Psa_Dim''; ------> HARDCODE <------
-			' -- Attribute_21
-		, 1 -- Active
-		, GETDATE() -- Insert_Date
-		, NULL  -- Update_Date                
-	)
-	,
--- --------------------------
--- _Address_Dim Table
--- --------------------------
-	('Dim' -- Dim_Object
-		, '_Address_Dim' -- Table_Name
-		, 'ContactId NVARCHAR(100)
-			, Address_Key INT  PRIMARY KEY
-			, Address_Group_Key INT
-			, Address_Primary_Yn NVARCHAR(1)
-			, Address_Street_1 NVARCHAR(100)
-			, Address_Street_2 NVARCHAR(100)
-			, Address_Street_3 NVARCHAR(100)
-			, Address_City NVARCHAR(100)
-			, Address_County NVARCHAR(100)
-			, Address_County_Code NVARCHAR(10)
-			, Address_County_Id NVARCHAR(100)
-			, Address_State_Province NVARCHAR(50)
-			, Address_State_Code NVARCHAR(100)
-			, Address_Country NVARCHAR(100)
-			, Address_Post_Code_Full NVARCHAR(100)
-			, Address_Post_Code_Last_4 NVARCHAR(15)
-			, Address_Printing_Line_1 NVARCHAR(606)
-			, Address_Printing_Line_2 NVARCHAR(406)
-			, Address_Display NVARCHAR(300)
-			, Address_Quality_Status NVARCHAR(400)
-			, Address_Quality_Status_Value INT
-			, Address_Longitude FLOAT
-			, Address_Latitude FLOAT
-			, Address_Active_Yn NVARCHAR(1)
-			, Address_Confirmed_Yn NVARCHAR(1)
-			--, Address_Undeliverable_Yn NVARCHAR(1)  /*Delete from source 5/15/17*/
-			, Address_Confidential_Yn NVARCHAR(1)
-			--, Address_Confidential_Reason NVARCHAR(400)  /*Delete from source 5/15/17*/
-			, Address_Type NVARCHAR(400)
-			, Address_Type_Value INT
-			, Address_Printing_Line_3 NVARCHAR(100)
-			, Address_Printing_Line_4 NVARCHAR(100)
-			' -- Create_Table
-		, 'ContactId
-			, Address_Key
-			, Address_Group_Key
-			, Address_Primary_Yn
-			, Address_Street_1
-			, Address_Street_2
-			, Address_Street_3
-			, Address_City
-			, Address_County
-			, Address_County_Code
-			, Address_County_Id
-			, Address_State_Province
-			, Address_State_Code
-			, Address_Country
-			, Address_Post_Code_Full
-			, Address_Post_Code_Last_4
-			, Address_Printing_Line_1
-			, Address_Printing_Line_2
-			, Address_Display
-			, Address_Quality_Status
-			, Address_Quality_Status_Value
-			, Address_Longitude
-			, Address_Latitude
-			, Address_Active_Yn
-			, Address_Confirmed_Yn
-			--, Address_Undeliverable_Yn  /*Delete from source 5/15/17*/
-			, Address_Confidential_Yn
-			--, Address_Confidential_Reason  /*Delete from source 5/15/17*/
-			, Address_Type
-			, Address_Type_Value
-			, Address_Printing_Line_3
-			, Address_Printing_Line_4
-			' -- Insert_Fields
-		, ' ' -- From_Statement
-		, ' ' -- Where_Statement
-		, 'DECLARE @TABLE_NAME NVARCHAR(100)
-			SET @TABLE_NAME = ''_Address_Dim'' ; ------> HARDCODE <------
-			EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = @TABLE_NAME, @Alpha_Step_Number = ''113D'', @Alpha_Step_Name = ''Remove Indexes - Begin'', @Alpha_Result = 1;                               
-			EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = @TABLE_NAME, @Alpha_Step_Number = ''113D'', @Alpha_Step_Name = ''Remove Indexes - End'', @Alpha_Result = 1;
-			' -- Attribute_1
-		, 'DECLARE @SQL_1 NVARCHAR(MAX)
-			DECLARE @SQL_2 NVARCHAR(MAX)
-			DECLARE @TABLE_NAME_B NVARCHAR(100)
-			SET @TABLE_NAME_B = ''_Address_Bridge''
-			EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = @TABLE_NAME_B, @Alpha_Step_Number = ''113E'', @Alpha_Step_Name = ''Bridge Table Creation - Begin'', @Alpha_Result = 1;
-			SET @SQL_2 = '' ''''LDSPhilanthropiesDW.dbo.'' + @TABLE_NAME_B + '''''', ''''U'''' ''
-			SET @SQL_1 = ''
-			IF OBJECT_ID('' + @SQL_2 + '') IS NOT NULL
-			DROP TABLE LDSPhilanthropiesDW.dbo.'' + @TABLE_NAME_B + ''                                               
-			CREATE TABLE LDSPhilanthropiesDW.dbo.'' + @TABLE_NAME_B + ''(ContactId NVARCHAR(100), Address_Key INT PRIMARY KEY, Address_Group_Key INT)''                                                        
-			EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = @TABLE_NAME_B, @Alpha_Step_Number = ''113E'', @Alpha_Step_Name = ''Bridge Table Creation - Query'', @Alpha_Query = @SQL_1, @Alpha_Result = 1;                                        
-			EXEC(@SQL_1)
-			EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = @TABLE_NAME_B, @Alpha_Step_Number = ''113E'', @Alpha_Step_Name = ''Bridge Table Creation - End'', @Alpha_Result = 1;
-			' -- Attribute_2
-		, 'EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = @TABLE_NAME, @Alpha_Step_Number = ''113F'', @Alpha_Step_Name = ''Create Indexes - Begin'', @Alpha_Result = 1;                                                                             
-			EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = @TABLE_NAME, @Alpha_Step_Number = ''113F'', @Alpha_Step_Name = ''Create Indexes - End'', @Alpha_Result = 1;
-			' -- Attribute_3
-		, 'BEGIN TRY 
-				DECLARE @TABLE_CNT3 AS VARCHAR(100)
-				DECLARE @TABLE_CNT4 AS VARCHAR(100)
-				EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''_Address_Dim'', @Alpha_Step_Number = ''113G'', @Alpha_Step_Name = ''Dim Tables - Load - Begin'', @Alpha_Result = 1;
-					
-					INSERT INTO _Address_Bridge --> HARD CODED <--
-						(ContactId
-						, Address_Key --> HARD CODED <--
-						, Address_Group_Key --> HARD CODED <--
-						)
-						SELECT DISTINCT ContactId
-							, Address_Key --> HARD CODED <--
-							, Address_Group_Key --> HARD CODED <--  
-							FROM _Address_Dim  --> HARD CODED <--              
-				SELECT @TABLE_CNT3 = (SELECT CONVERT(NVARCHAR(100),COUNT(*)) FROM _Address_Dim)
-				SELECT @TABLE_CNT4 = (SELECT CONVERT(NVARCHAR(100),COUNT(*)) FROM _Address_Bridge)
-				EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''_Address_Dim'', @Alpha_Step_Number = ''113G'', @Alpha_Step_Name = ''Dim Table - Count'', @Alpha_Count = @TABLE_CNT3, @Alpha_Result = 1;
-				EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''_Address_Dim'', @Alpha_Step_Number = ''113G'', @Alpha_Step_Name = ''Bridge Table - Count'', @Alpha_Count = @TABLE_CNT4, @Alpha_Result = 1;
-				IF @TABLE_CNT3 != @TABLE_CNT4 
-				EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''_Address_Dim'', @Alpha_Step_Number = ''113G'', @Alpha_Step_Name = ''Dim Table - Load - COUNT Error'', @Alpha_Result = 0;
-				EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''_Address_Dim'', @Alpha_Step_Number = ''113G'', @Alpha_Step_Name = ''Dim Tables - Load - End'', @Alpha_Result = 1;  
-			END TRY 
-			BEGIN CATCH
-				SELECT @ERROR_NUMBER = (SELECT ERROR_NUMBER())
-				SELECT @ERROR_SEVERITY = (SELECT ERROR_SEVERITY())
-				SELECT @ERROR_STATE = (SELECT ERROR_STATE())
-				SELECT @ERROR_PROCEDURE = (SELECT ERROR_PROCEDURE())
-				SELECT @ERROR_LINE = (SELECT ERROR_LINE())
-				SELECT @ERROR_MESSAGE = (SELECT ERROR_MESSAGE())
-				EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''_Address_Dim'', @Alpha_Step_Number = ''113X'', @Alpha_Step_Name = ''Dim Table - Load - Error'', @Alpha_Result = 0
-				, @ErrorNumber = @ERROR_NUMBER, @ErrorSeverity = @ERROR_SEVERITY, @ErrorState = @ERROR_STATE, @ErrorProcedure = @ERROR_PROCEDURE, @ErrorLine = @ERROR_LINE, @ErrorMessage = @ERROR_MESSAGE;                                             
-			END CATCH
-			' -- Attribute_4
-		, '
-			' -- Attribute_5
-		, 'EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = @TABLE_NAME, @Alpha_Step_Number = ''113H'', @Alpha_Step_Name = ''End'', @Alpha_Result = 1; 
-			' -- Attribute_6
-		, ' ' -- Attribute_7
-		, ' ' -- Attribute_8
-		, ' ' -- Attribute_9
-		, ' ' -- Attribute_10
-		, ' ' -- Attribute_11
-		, ' ' -- Attribute_12
-		, ' ' -- Attribute_13
-		, ' ' -- Attribute_14
-		, ' ' -- Attribute_15
-		, ' ' -- Attribute_16
-		, ' ' -- Attribute_17
-		, ' ' -- Attribute_18
-		, ' ' -- Attribute_19
-		, ' ' -- Attribute_20
-		, 'EXEC dbo.usp_Transform_Data @Transform_Data_Table_Name = ''_Address_Dim''; ------> HARDCODE <------
 			' -- Attribute_21
 		, 1 -- Active
 		, GETDATE() -- Insert_Date
