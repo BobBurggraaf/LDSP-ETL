@@ -2860,7 +2860,7 @@ FUNCTION Insert-Alpha_Table_1
 																OR Tier_4_Stage = 'Incomplete'
 																)
 															AND 1 =
-																(SELECT COUNT(CASE WHEN Tier_3_Stage = 'Complete' THEN 1 ELSE NULL END) AS Cnt
+																(SELECT COUNT(CASE WHEN Tier_2_Stage = 'Complete' THEN 1 ELSE NULL END) AS Cnt
 																	FROM Oa_Extract.Extract_Tables
 																	WHERE 1 = 1
 																		AND Ext_Table = '_Gift_Credit_'
@@ -4019,22 +4019,20 @@ FUNCTION Insert-Alpha_Table_1
 			} UNTIL ($Tables_To_Process_Tier_4 -eq 0 -OR $Total_Processing_Time -gt '00:59:00')
 			
 			
-			IF ($Tables_To_Process_Tier_4 -eq 0 -OR $Total_Processing_Time -gt '00:59:00')
-				{
-					#---------------------------------------------
-					#Email Stored Procedure												#<----------------------------------------------------------
-					#---------------------------------------------
-					$Connection = New-Object System.Data.SQLClient.SQLConnection           
-					$Connection.ConnectionString = "Server=$Dest_Instance;Database=$Dest_Db;Integrated Security=True"
-					$Connection.Open() 
 
-					$Command = New-Object System.Data.SQLClient.SQLCommand 
-					$Command.Connection = $Connection 
-					$Command.CommandText = “Exec dbo.usp_Extract_Email” 
-					$Command.ExecuteNonQuery()
+		#---------------------------------------------
+		#Email Stored Procedure												#<----------------------------------------------------------
+		#---------------------------------------------
+		$Connection = New-Object System.Data.SQLClient.SQLConnection           
+		$Connection.ConnectionString = "Server=$Dest_Instance;Database=$Dest_Db;Integrated Security=True"
+		$Connection.Open() 
+
+		$Command = New-Object System.Data.SQLClient.SQLCommand 
+		$Command.Connection = $Connection 
+		$Command.CommandText = “Exec dbo.usp_Extract_Email” 
+		$Command.ExecuteNonQuery()
 				
-				}
-			
+
 		  
 		#---------------------------------------------	 
 		# Return to standard error handling
