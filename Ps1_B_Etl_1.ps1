@@ -4013,10 +4013,29 @@ FUNCTION Insert-Alpha_Table_1
 								
 								Write-Host 
 								Write-Host "~ Total Processing Time: $Total_Processing_Time"
-					}
+					}				
+					
 			
 			} UNTIL ($Tables_To_Process_Tier_4 -eq 0 -OR $Total_Processing_Time -gt '00:59:00')
+			
+			
+			IF ($Tables_To_Process_Tier_4 -eq 0 -OR $Total_Processing_Time -gt '00:59:00')
+				{
+					#---------------------------------------------
+					#Email Stored Procedure												#<----------------------------------------------------------
+					#---------------------------------------------
+					$Connection = New-Object System.Data.SQLClient.SQLConnection           
+					$Connection.ConnectionString = "Server=$Dest_Instance;Database=$Dest_Db;Integrated Security=True"
+					$Connection.Open() 
 
+					$Command = New-Object System.Data.SQLClient.SQLCommand 
+					$Command.Connection = $Connection 
+					$Command.CommandText = “Exec dbo.usp_Extract_Email” 
+					$Command.ExecuteNonQuery()
+				
+				}
+			
+		  
 		#---------------------------------------------	 
 		# Return to standard error handling
 		#---------------------------------------------
