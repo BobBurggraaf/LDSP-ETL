@@ -700,7 +700,7 @@ CREATE TABLE #Prod_Summary (
 
 	EXEC msdb.dbo.sp_send_dbmail
 	@recipients = 'fams@LDSChurch.org' 
-	, @subject = 'NEW SERVER: LDSP Trans/Load Complete'  -->>>>>> EMAIL SUBJECT <<<<<<<--
+	, @subject = '*DEV* LDSP Trans/Load Complete'  -->>>>>> EMAIL SUBJECT <<<<<<<--
 	, @body = @body
 	, @body_format = 'HTML'
 	, @query = 'SELECT TOP 2500 * FROM LDSPhilanthropiesDW.dbo.Alpha_Table_2'  -- MAXES OUT MEMORY AND WON'T SEND EMAIL
