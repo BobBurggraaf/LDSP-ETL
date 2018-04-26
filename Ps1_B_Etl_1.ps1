@@ -113,7 +113,7 @@ FUNCTION Insert-Alpha_Table_1
 				#---------------------------------------------
 				# Destination variables
 				#---------------------------------------------
-				[STRING] $Dest_Instance = 'W15904\S01'
+				[STRING] $Dest_Instance = 'W15904\S01'              #<----------------------------------------------------------
 				[STRING] $Dest_Db = 'LDSPhilanthropiesDW'
 				[STRING] $Dest_Connect_String = "Data Source=$Dest_Instance;Initial Catalog=$Dest_Db;Integrated Security=TRUE;"
 						
@@ -211,7 +211,7 @@ FUNCTION Insert-Alpha_Table_1
 				#---------------------------------------------
 				# Destination variables
 				#---------------------------------------------
-				[STRING] $Dest_Instance = 'W15904\S01'
+				[STRING] $Dest_Instance = 'W15904\S01'          #<----------------------------------------------------------
 				[STRING] $Dest_Db = 'LDSPhilanthropiesDW'
 				[STRING] $Dest_Connect_String = "Data Source=$Dest_Instance;Initial Catalog=$Dest_Db;Integrated Security=TRUE;"
 
@@ -417,7 +417,7 @@ FUNCTION Insert-Alpha_Table_1
 						#---------------------------------------------
 						# Destination variables
 						#---------------------------------------------
-						[STRING] $Dest_Instance = 'W15904\S01'
+						[STRING] $Dest_Instance = 'W15904\S01'                           #<----------------------------------------------------------
 						[STRING] $Dest_Db = 'LDSPhilanthropiesDW'
 						[STRING] $Dest_Connect_String = "Data Source=$Dest_Instance;Initial Catalog=$Dest_Db;Integrated Security=TRUE;"
 						[INT] $Bulk_Copy_Batch_Size = 10000
@@ -778,7 +778,7 @@ FUNCTION Insert-Alpha_Table_1
 						#---------------------------------------------
 						# Destination variables
 						#---------------------------------------------
-						[STRING] $Dest_Instance = 'W15904\S01'
+						[STRING] $Dest_Instance = 'W15904\S01'                   #<----------------------------------------------------------
 						[STRING] $Dest_Db = 'LDSPhilanthropiesDW'
 						[STRING] $Dest_Connect_String = "Data Source=$Dest_Instance;Initial Catalog=$Dest_Db;Integrated Security=TRUE;"
 						[INT] $Bulk_Copy_Batch_Size = 10000
@@ -1169,7 +1169,7 @@ FUNCTION Insert-Alpha_Table_1
 						#---------------------------------------------
 						# Destination variables
 						#---------------------------------------------
-						[STRING] $Dest_Instance = 'W15904\S01'
+						[STRING] $Dest_Instance = 'W15904\S01'                    #<----------------------------------------------------------
 						[STRING] $Dest_Db = 'LDSPhilanthropiesDW'
 						[STRING] $Dest_Connect_String = "Data Source=$Dest_Instance;Initial Catalog=$Dest_Db;Integrated Security=TRUE;"
 						[INT] $Bulk_Copy_Batch_Size = 10000
@@ -1546,7 +1546,7 @@ FUNCTION Insert-Alpha_Table_1
 		# Destination Connection String
 		#---------------------------------------------
 
-		[STRING] $Dest_Instance = 'W15904\S01'
+		[STRING] $Dest_Instance = 'W15904\S01'                #<----------------------------------------------------------
 		[STRING] $Dest_Db = 'LDSPhilanthropiesDW'
 		[STRING] $Dest_Connect_String = "Data Source=$Dest_Instance;Initial Catalog=$Dest_Db;Integrated Security=TRUE;"
 

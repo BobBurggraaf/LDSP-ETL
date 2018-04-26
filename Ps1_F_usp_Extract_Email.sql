@@ -25,8 +25,6 @@ DECLARE @Email_Body VARCHAR(MAX)
  
 SELECT @Email_Step1_Error_Cnt = (SELECT COUNT(Alpha_Result) FROM LDSPhilanthropiesDW.Oa_Extract.Alpha_Table_1 WHERE Alpha_Result = '0'); 
 
-EXEC usp_Insert_Alpha_1 @Alpha_Stage = 'Extract Tables Email', @Alpha_Step_Number = 'Email_1A', @Alpha_Step_Name = 'Extract - Email Error Count', @Alpha_Count = @Email_Step1_Error_Cnt, @Alpha_Result = 1;
-
 
 SET @Email_Body = 'The *DEV* LDSP Extract ETL has completed with ' + CONVERT(VARCHAR(12),@Email_Step1_Error_Cnt) + ' errors.'
 
@@ -117,6 +115,5 @@ CREATE TABLE #Ext_Summary (
 	
 	DROP TABLE #Ext_Summary
 
-	EXEC usp_Insert_Alpha_1 @Alpha_Stage = 'Ext Tables Email', @Alpha_Step_Number = 'Email_1B', @Alpha_Step_Name = 'Ext - Email', @Alpha_Result = 1;
 
 END
