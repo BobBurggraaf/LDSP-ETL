@@ -9416,7 +9416,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 		, 'BEGIN TRY
 				MERGE INTO _Donation_Fact T
 					USING (
-							SELECT ContactId AS Donor_Key
+							SELECT CONVERT(NVARCHAR(100),ContactId) AS Donor_Key
 								, COALESCE(CONVERT(NVARCHAR(100),Plus_CoordinatingLiaison),''0'') AS User_Coordinating_Liaison_Key
 								, COALESCE(CONVERT(NVARCHAR(100),Plus_PendingLiaison),''0'') AS User_Pending_Liaison_Key
 								, COALESCE(CONVERT(NVARCHAR(100),Plus_ConnectedLiaison),''0'') AS User_Connected_Liaison_Key
@@ -9427,7 +9427,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 											OR Plus_ConnectedLiaison IS NOT NULL
 										)
 							UNION
-							SELECT AccountId AS Donor_Key
+							SELECT CONVERT(NVARCHAR(100),AccountId) AS Donor_Key
 								, COALESCE(CONVERT(NVARCHAR(100),Plus_CoordinatingLiaison),''0'') AS User_Coordinating_Liaison_Key
 								, COALESCE(CONVERT(NVARCHAR(100),Plus_PendingLiaison),''0'') AS User_Pending_Liaison_Key
 								, COALESCE(CONVERT(NVARCHAR(100),Plus_ConnectedLiaison),''0'') AS User_Connected_Liaison_Key
@@ -13458,7 +13458,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 										, CASE WHEN A.Retention_Year = YEAR(C.New_ReceiptDate) AND YEAR(C.New_ReceiptDate) = YEAR(GETDATE())-1 THEN 1 ELSE 0 END AS Retention_Donated_Last_Year
 										, CASE WHEN D.Retention_Donated_Cnt_Last_Year_Ytd > 0 THEN 1 ELSE 0 END AS Retention_Donated_Cnt_Last_Year_Ytd
 										FROM _Retention_Byu_Fact A
-											INNER JOIN _Donation_Fact B ON A.Donor_Key = B.Donor_Key 
+											INNER JOIN _Donation_Fact B ON CONVERT(NVARCHAR(100),A.Donor_Key) = B.Donor_Key 
 											INNER JOIN _Donation_Dim C ON B.Donation_Key = C.Donation_Key
 											LEFT JOIN
 												(SELECT A.Donor_Key
@@ -13882,7 +13882,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 										, CASE WHEN A.Retention_Year = YEAR(C.New_ReceiptDate) AND YEAR(C.New_ReceiptDate) = YEAR(GETDATE())-1 THEN 1 ELSE 0 END AS Retention_Donated_Last_Year
 										, CASE WHEN D.Retention_Donated_Cnt_Last_Year_Ytd > 0 THEN 1 ELSE 0 END AS Retention_Donated_Cnt_Last_Year_Ytd
 										FROM _Retention_Byui_Fact A
-											INNER JOIN _Donation_Fact B ON A.Donor_Key = B.Donor_Key 
+											INNER JOIN _Donation_Fact B ON CONVERT(NVARCHAR(100),A.Donor_Key) = B.Donor_Key 
 											INNER JOIN _Donation_Dim C ON B.Donation_Key = C.Donation_Key
 											LEFT JOIN
 												(SELECT A.Donor_Key
@@ -14306,7 +14306,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 										, CASE WHEN A.Retention_Year = YEAR(C.New_ReceiptDate) AND YEAR(C.New_ReceiptDate) = YEAR(GETDATE())-1 THEN 1 ELSE 0 END AS Retention_Donated_Last_Year
 										, CASE WHEN D.Retention_Donated_Cnt_Last_Year_Ytd > 0 THEN 1 ELSE 0 END AS Retention_Donated_Cnt_Last_Year_Ytd
 										FROM _Retention_Byuh_Fact A
-											INNER JOIN _Donation_Fact B ON A.Donor_Key = B.Donor_Key 
+											INNER JOIN _Donation_Fact B ON CONVERT(NVARCHAR(100),A.Donor_Key) = B.Donor_Key 
 											INNER JOIN _Donation_Dim C ON B.Donation_Key = C.Donation_Key
 											LEFT JOIN
 												(SELECT A.Donor_Key
@@ -14730,7 +14730,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 										, CASE WHEN A.Retention_Year = YEAR(C.New_ReceiptDate) AND YEAR(C.New_ReceiptDate) = YEAR(GETDATE())-1 THEN 1 ELSE 0 END AS Retention_Donated_Last_Year
 										, CASE WHEN D.Retention_Donated_Cnt_Last_Year_Ytd > 0 THEN 1 ELSE 0 END AS Retention_Donated_Cnt_Last_Year_Ytd
 										FROM _Retention_Ldsbc_Fact A
-											INNER JOIN _Donation_Fact B ON A.Donor_Key = B.Donor_Key 
+											INNER JOIN _Donation_Fact B ON CONVERT(NVARCHAR(100),A.Donor_Key) = B.Donor_Key 
 											INNER JOIN _Donation_Dim C ON B.Donation_Key = C.Donation_Key
 											LEFT JOIN
 												(SELECT A.Donor_Key

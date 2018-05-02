@@ -21,6 +21,8 @@ CREATE TABLE dbo.Stage_To_Prod
 	, Dest_Create_Fields NVARCHAR(4000)
 	, Dest_Insert_Fields NVARCHAR(4000)
 	, Dest_Where_Statement NVARCHAR(4000)
+	, Tier_1_Stage NVARCHAR(100) DEFAULT NULL
+	, Tier_1_Stage_DateTime DATETIME DEFAULT NULL
 	, Insert_Date DATETIME
 	, Update_Date DATETIME
 	);
