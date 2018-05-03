@@ -6699,7 +6699,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 														, Plus_ConnectedLiaison
 														, Plus_PendingLiaison
 														FROM 
-															(SELECT ROW_NUMBER() OVER(PARTITION BY ContactId ORDER BY ContactId) AS Row_Num
+															(SELECT ROW_NUMBER() OVER(PARTITION BY ContactId ORDER BY Liaison_Type) AS Row_Num
 																, CONVERT(NVARCHAR(100),ContactId) AS ContactId
 																, CASE WHEN Liaison_Type = ''Coordinating_Liaison'' THEN Liaison ELSE NULL END AS Plus_CoordinatingLiaison
 																, CASE WHEN Liaison_Type = ''Connected_Liaison'' THEN Liaison ELSE NULL END AS Plus_ConnectedLiaison
