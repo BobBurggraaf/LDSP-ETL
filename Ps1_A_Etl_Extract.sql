@@ -14276,39 +14276,6 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 					, NULL AS Relationship_Age
 					, E.MiddleName AS Relationship_Middle_Name
 					, E.New_BirthName AS Relationship_Birth_Name
-					, D.Number_Signs
-					, D.N00
-					, D.N01
-					, D.N02
-					, D.N03
-					, D.N04
-					, D.N05
-					, D.N06
-					, D.N07
-					, D.N08
-					, D.N09
-					, D.N10
-					, D.N11
-					, D.N12
-					, D.N13
-					, D.N14
-					, D.N15
-					, D.N16
-					, D.N17
-					, D.N18
-					, D.N19
-					, D.N20
-					, D.N21
-					, D.N22
-					, D.N23
-					, D.N24
-					, D.N25
-					, D.N26
-					, D.N27
-					, D.N28
-					, D.N29
-					, D.N30
-					, D.N31
 					FROM Ext_Connection A
 						INNER JOIN Ext_Connection_Role B ON A.Record2RoleId = B.ConnectionRoleId 
 						LEFT JOIN Ext_Contact D ON A.Record1Id = D.ContactId 
@@ -14323,7 +14290,6 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 									AND A.ConnectionId = H.ConnectionId
 									AND (H.Record2ObjectTypeCode = 1 OR H.Record2ObjectTypeCode = 2)
 							)
-						AND A.Record1Id IS NOT NULL
 				UNION
 				SELECT DISTINCT              
 					A.Record2Id AS ContactId
@@ -14338,39 +14304,6 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 					, NULL AS Relationship_Age
 					, D.MiddleName AS Relationship_Middle_Name
 					, D.New_BirthName AS Relationship_Birth_Name
-					, D.Number_Signs
-					, D.N00
-					, D.N01
-					, D.N02
-					, D.N03
-					, D.N04
-					, D.N05
-					, D.N06
-					, D.N07
-					, D.N08
-					, D.N09
-					, D.N10
-					, D.N11
-					, D.N12
-					, D.N13
-					, D.N14
-					, D.N15
-					, D.N16
-					, D.N17
-					, D.N18
-					, D.N19
-					, D.N20
-					, D.N21
-					, D.N22
-					, D.N23
-					, D.N24
-					, D.N25
-					, D.N26
-					, D.N27
-					, D.N28
-					, D.N29
-					, D.N30
-					, D.N31
 					FROM Ext_Connection A
 						INNER JOIN Ext_Connection_Role C ON A.Record1RoleId = C.ConnectionRoleId
 						LEFT JOIN Ext_Contact D ON A.Record1Id = D.ContactId 
@@ -14384,46 +14317,46 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 								WHERE 1 = 1 
 									AND A.ConnectionId = H.ConnectionId
 									AND (Record1ObjectTypeCode = 1 OR Record1ObjectTypeCode = 2)
-						AND A.Record1Id IS NOT NULL
 							)
-				) A LEFT JOIN 			
+				) A LEFT JOIN 
+				(
+				SELECT New_ConstituentId
+					, New_Emails 
+					FROM Ext_Email
+					WHERE 1 = 1
+						AND New_Primary = 1
+				) B ON A.Relationship_ContactId = B.New_ConstituentId LEFT JOIN
+				(
+				SELECT New_NumberId
+					, New_PhoneNumber
+					FROM Ext_Phone
+					WHERE 1 = 1
+						AND New_Primary = 1
+				) C ON A.Relationship_ContactId = C.New_NumberId LEFT JOIN
+				(SELECT Donor_Key
+					, CASE WHEN DATEADD(YEAR, DATEDIFF (YEAR, New_BirthDate, GETDATE()), New_BirthDate) > GETDATE()
+						THEN DATEDIFF(YEAR, New_BirthDate, GETDATE()) - 1
+						ELSE DATEDIFF(YEAR, New_BirthDate, GETDATE()) END AS Relationship_Age
+					FROM
+						(SELECT CONVERT(NVARCHAR(100),ContactId) AS Donor_Key
+							, CASE WHEN SUBSTRING(New_BirthDate,1,2) IN ([N01],[N02],[N03],[N04],[N05],[N06],[N07],[N08],[N09],[N10],[N11],[N12])
+									AND SUBSTRING(New_BirthDate,4,2) IN ([N01],[N02],[N03],[N04],[N05],[N06],[N07],[N08],[N09],[N10],
+										[N11],[N12],[N13],[N14],[N15],[N16],[N17],[N18],[N19],[N20],
+										[N21],[N22],[N23],[N24],[N25],[N26],[N27],[N28],[N29],[N30],[N31]) 
+									AND SUBSTRING(New_BirthDate,7,2) IN ([N19],[N20])
+								THEN CONVERT(VARCHAR(10),New_BirthDate,101) ELSE NULL END AS New_BirthDate
+							FROM Ext_Contact
+						) A
+				) D ON A.Relationship_ContactId = D.Donor_Key
 			' -- Ext_From_Statement
-		, 'AND A.ContactId IS NOT NULL
+		, '
 			' -- Ext_Where_Statement	
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
 		, NULL -- Tier_4_Stage
 		, NULL -- Tier_4_Stage_DateTime
 		, ' ' -- Ext_Select_Statement_2
-		, '(
-			SELECT New_ConstituentId
-				, New_Emails 
-				FROM Ext_Email
-				WHERE 1 = 1
-					AND New_Primary = 1
-			) B ON A.Relationship_ContactId = B.New_ConstituentId LEFT JOIN
-			(
-			SELECT New_NumberId
-				, New_PhoneNumber
-				FROM Ext_Phone
-				WHERE 1 = 1
-					AND New_Primary = 1
-			) C ON A.Relationship_ContactId = C.New_NumberId LEFT JOIN
-			(SELECT Donor_Key
-				, CASE WHEN DATEADD(YEAR, DATEDIFF (YEAR, New_BirthDate, GETDATE()), New_BirthDate) > GETDATE()
-					THEN DATEDIFF(YEAR, New_BirthDate, GETDATE()) - 1
-					ELSE DATEDIFF(YEAR, New_BirthDate, GETDATE()) END AS Relationship_Age
-				FROM
-					(SELECT CONVERT(NVARCHAR(100),ContactId) AS Donor_Key
-						, CASE WHEN SUBSTRING(New_BirthDate,1,2) IN ([N01],[N02],[N03],[N04],[N05],[N06],[N07],[N08],[N09],[N10],[N11],[N12])
-								AND SUBSTRING(New_BirthDate,4,2) IN ([N01],[N02],[N03],[N04],[N05],[N06],[N07],[N08],[N09],[N10],
-									[N11],[N12],[N13],[N14],[N15],[N16],[N17],[N18],[N19],[N20],
-									[N21],[N22],[N23],[N24],[N25],[N26],[N27],[N28],[N29],[N30],[N31]) 
-								AND SUBSTRING(New_BirthDate,7,2) IN ([N19],[N20])
-							THEN CONVERT(VARCHAR(10),New_BirthDate,101) ELSE NULL END AS New_BirthDate
-						FROM Ext_Contact
-					) A
-			) D ON A.Relationship_ContactId = D.Donor_Key	
+		, '	
 			LEFT JOIN 
 				(
 				SELECT Record1Id AS ContactId
@@ -14432,6 +14365,145 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 						(SELECT DISTINCT Record1Id    
 							FROM Ext_Connection) A
 				) E ON A.ContactId = E.ContactId 
+			LEFT JOIN 
+				(SELECT DISTINCT ContactId	
+					, Number_Signs
+					, N00
+					, N01
+					, N02
+					, N03
+					, N04
+					, N05
+					, N06
+					, N07
+					, N08
+					, N09
+					, N10
+					, N11
+					, N12
+					, N13
+					, N14
+					, N15
+					, N16
+					, N17
+					, N18
+					, N19
+					, N20
+					, N21
+					, N22
+					, N23
+					, N24
+					, N25
+					, N26
+					, N27
+					, N28
+					, N29
+					, N30
+					, N31
+					FROM 
+						(SELECT DISTINCT              
+							A.Record1Id AS ContactId
+							, D.Number_Signs
+							, D.N00
+							, D.N01
+							, D.N02
+							, D.N03
+							, D.N04
+							, D.N05
+							, D.N06
+							, D.N07
+							, D.N08
+							, D.N09
+							, D.N10
+							, D.N11
+							, D.N12
+							, D.N13
+							, D.N14
+							, D.N15
+							, D.N16
+							, D.N17
+							, D.N18
+							, D.N19
+							, D.N20
+							, D.N21
+							, D.N22
+							, D.N23
+							, D.N24
+							, D.N25
+							, D.N26
+							, D.N27
+							, D.N28
+							, D.N29
+							, D.N30
+							, D.N31
+							FROM Ext_Connection A
+								INNER JOIN Ext_Connection_Role B ON A.Record2RoleId = B.ConnectionRoleId 
+								LEFT JOIN Ext_Contact D ON A.Record1Id = D.ContactId 
+								LEFT JOIN Ext_Contact E ON  A.Record2Id = E.ContactId
+								LEFT JOIN Ext_Account F ON  A.Record1Id = F.AccountId
+								LEFT JOIN Ext_Account G ON  A.Record2Id = G.AccountId
+							WHERE 1 = 1 
+								AND EXISTS
+									(SELECT *
+										FROM Ext_Connection H
+										WHERE 1 = 1 
+											AND A.ConnectionId = H.ConnectionId
+											AND (H.Record2ObjectTypeCode = 1 OR H.Record2ObjectTypeCode = 2)
+									)
+						UNION
+						SELECT DISTINCT              
+							A.Record2Id AS ContactId
+							, D.Number_Signs
+							, D.N00
+							, D.N01
+							, D.N02
+							, D.N03
+							, D.N04
+							, D.N05
+							, D.N06
+							, D.N07
+							, D.N08
+							, D.N09
+							, D.N10
+							, D.N11
+							, D.N12
+							, D.N13
+							, D.N14
+							, D.N15
+							, D.N16
+							, D.N17
+							, D.N18
+							, D.N19
+							, D.N20
+							, D.N21
+							, D.N22
+							, D.N23
+							, D.N24
+							, D.N25
+							, D.N26
+							, D.N27
+							, D.N28
+							, D.N29
+							, D.N30
+							, D.N31
+							FROM Ext_Connection A
+								INNER JOIN Ext_Connection_Role C ON A.Record1RoleId = C.ConnectionRoleId
+								LEFT JOIN Ext_Contact D ON A.Record1Id = D.ContactId 
+								LEFT JOIN Ext_Contact E ON  A.Record2Id = E.ContactId
+								LEFT JOIN Ext_Account F ON  A.Record1Id = F.AccountId
+								LEFT JOIN Ext_Account G ON  A.Record2Id = G.AccountId
+							WHERE 1 = 1 
+								AND EXISTS
+									(SELECT *
+										FROM Ext_Connection H
+										WHERE 1 = 1 
+											AND A.ConnectionId = H.ConnectionId
+											AND (Record1ObjectTypeCode = 1 OR Record1ObjectTypeCode = 2)
+									)
+						) A
+					WHERE 1 = 1
+						AND Number_Signs IS NOT NULL
+				) F ON A.ContactId = F.ContactId
 			' -- Ext_From_Statement_2
 		, ' ' -- Ext_Create_Fields_2
 		, ' ' -- Ext_Create_Fields_3
