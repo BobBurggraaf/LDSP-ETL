@@ -360,24 +360,20 @@ FUNCTION Insert-Alpha_Table_3
 						
 						####################################################################################################################
 						
-						#---------------------------------------------
-						# Source Variables
-						#---------------------------------------------
-						$SQLServer = "w16358\S01"
-						$Database = "LDSPhilanthropiesDW"
-						$SQLUser = ""                                                   #<----------------------------------------------------------
-						$Password = "" | ConvertTo-SecureString -AsPlainText -Force     #<----------------------------------------------------------
-						$Password.MakeReadOnly()
-						[STRING] $Source_Table_And_Schema = $Source_Table_Name
 						
+						#---------------------------------------------
+						# Source variables
+						#---------------------------------------------
+						[STRING] $Source_Instance = 'w16358\S01'                           #<----------------------------------------------------------
+						[STRING] $Source_Db = 'LDSPhilanthropiesDW'
+						[STRING] $Source_Connect_String = "Data Source=$Source_Instance;Initial Catalog=$Source_Db;Integrated Security=TRUE;"
+
 						Write-Host
-						Write-Host "~ SQLServer: $SQLServer"
-						Write-Host "~ Database: $Database"
-						Write-Host "~ SQLUser: $SQLUser"
-						Write-Host "~ Password: $Password"
-						Write-Host "~ Source_Table_And_Schema: $Source_Table_And_Schema"
+						Write-Host "~ Source_Instance: $Source_Instance"
+						Write-Host "~ Source_Db: $Source_Db"
+						Write-Host "~ Source_Connect_String: $Source_Connect_String"
 						Write-Host
-						
+												
 						#---------------------------------------------
 						# Destination variables
 						#---------------------------------------------
@@ -394,15 +390,6 @@ FUNCTION Insert-Alpha_Table_3
 						Write-Host "~ Bulk_Copy_Batch_Size: $Bulk_Copy_Batch_Size"
 						Write-Host "~ Bulk_Copy_Timeout: $Bulk_Copy_Timeout"
 						Write-Host
-						
-						#---------------------------------------------
-						# Open connection to the database
-						#---------------------------------------------
-						[string]$connectionString = "Data Source=$SQLServer;Initial Catalog=$Database;"
-						$cred = New-Object System.Data.SqlClient.SqlCredential($SQLUser,$Password)
-						$SqlConnection = New-Object System.Data.SqlClient.SqlConnection($connectionString)
-						$SqlConnection.credential = $cred
-						$SqlConnection.Open()
 						
 						####################################################################################################################
 						
@@ -472,8 +459,8 @@ FUNCTION Insert-Alpha_Table_3
 								#---------------------------------------------
 								$Sql = "SELECT $Dest_Insert_Fields FROM $Source_Table_And_Schema WHERE 1 = 1 $Dest_Where_Statement"
 								
-							    $Sql_Command = New-Object system.Data.SqlClient.SqlCommand($Sql, $SqlConnection) 
-								[System.Data.SqlClient.SqlDataReader] $Sql_Reader = $Sql_Command.ExecuteReader()
+							    #$Sql_Command = New-Object system.Data.SqlClient.SqlCommand($Sql, $SqlConnection) 
+								#[System.Data.SqlClient.SqlDataReader] $Sql_Reader = $Sql_Command.ExecuteReader()
 								
 								
 								#---------------------------------------------
@@ -502,18 +489,49 @@ FUNCTION Insert-Alpha_Table_3
 									-Database $Dest_Db `
 									-Query $Create_Table
 								
+
+                                $Src_Table_Name = "[w16358\s01].LDSPhilanthropiesDW." + $Source_Table_Name
+
+
+                                $Insert_Table = "INSERT INTO $Dest_Table_Name (
+													$Dest_Insert_Fields
+													)
+                                                    SELECT $Dest_Insert_Fields FROM $Src_Table_Name
+                                                "
+								Write-Host
+								Write-Host "~ Insert_Table: $Insert_Table"
+
+
+								Invoke-Sqlcmd `
+									-ServerInstance $Dest_Instance `
+									-Database $Dest_Db `
+									-Query $Insert_Table `
+									-QueryTimeout 3600
 								
 								
 								#---------------------------------------------
 								# Copy to destination
 								#---------------------------------------------
-								$Bulk_Copy = New-Object Data.SqlClient.SqlBulkCopy($Dest_Connect_String, [System.Data.SqlClient.SqlBulkCopyOptions]::KeepIdentity)
-								$Bulk_Copy.DestinationTableName = $Dest_Table_Name
-								$Bulk_Copy.BulkCopyTimeOut = $Bulk_Copy_Timeout
-								$Bulk_Copy.BatchSize = $Bulk_Copy_Batch_Size
-								$Bulk_Copy.WriteToServer($Sql_Reader)
-								$Sql_Reader.Close()
-								$Bulk_Copy.Close()
+                                #$Sql = "SELECT $Dest_Insert_Fields FROM $Source_Table_And_Schema WHERE 1 = 1 $Dest_Where_Statement"
+                                #
+                                #
+                                #[string]$connectionString = "Data Source=$Dest_Instance;Initial Catalog=$Dest_Db;"
+                                #$SqlConnection = New-Object System.Data.SqlClient.SqlConnection($connectionString)
+                                #$SqlCommand = New-Object system.Data.SqlClient.SqlCommand($Sql, $SqlConnection) 
+                                #
+                                #
+                                #$SqlConnection.Open()
+                                #
+                                #
+                                ##$Sql_Command = New-Object system.Data.SqlClient.SqlCommand($Sql, $SqlConnection) 
+								#[System.Data.SqlClient.SqlDataReader] $Sql_Reader = $Sql_Command.ExecuteReader()
+								#$Bulk_Copy = New-Object Data.SqlClient.SqlBulkCopy($Dest_Connect_String, [System.Data.SqlClient.SqlBulkCopyOptions]::KeepIdentity)
+								#$Bulk_Copy.DestinationTableName = $Dest_Table_Name
+								#$Bulk_Copy.BulkCopyTimeOut = $Bulk_Copy_Timeout
+								#$Bulk_Copy.BatchSize = $Bulk_Copy_Batch_Size
+								#$Bulk_Copy.WriteToServer($Sql_Reader)
+								#$Sql_Reader.Close()
+								#$Bulk_Copy.Close()
 								
 								
 								
