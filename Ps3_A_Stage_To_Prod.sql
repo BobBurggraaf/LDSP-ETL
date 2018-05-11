@@ -3716,6 +3716,39 @@ INSERT INTO dbo.Stage_To_Prod
 		, GETDATE()
 		, NULL
 	)
+	,
+-- --------------------------
+-- _Bio_Strat_Plan_Dim
+-- --------------------------
+	( 1 -- Tier
+		, 'dbo._Bio_Strat_Plan_Dim' -- Source_Table
+		, 'dbo._Bio_Strat_Plan_Dim' -- Destination_Table
+		,'Bio_Strat_Plan_Key INT 
+			, Donor_Key NVARCHAR(100) 
+			, Plus_ConstituentNoteId NVARCHAR(100)
+			, Plus_Type NVARCHAR(400)
+			, Plus_ReasonForDrop NVARCHAR(400)
+			, Plus_CoordinatingLiaisonNeeded NVARCHAR(400)
+			, Plus_Subject NVARCHAR(200)
+			, Plus_Date DATE
+			, Plus_Note NVARCHAR(4000)
+			, CreatedOn DATE
+			' -- Dest_Create_Fields
+		, 'Bio_Strat_Plan_Key 
+			, Donor_Key 
+			, Plus_ConstituentNoteId
+			, Plus_Type
+			, Plus_ReasonForDrop
+			, Plus_CoordinatingLiaisonNeeded
+			, Plus_Subject
+			, Plus_Date
+			, Plus_Note
+			, CreatedOn
+			' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, GETDATE()
+		, NULL
+	)
 ;	
 	
 	

@@ -9814,7 +9814,10 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 				-- INSERT INTO [LDSPhilanthropiesDW].[dbo]._User_Initiative_Liaison_Dim
 					-- VALUES(''0'',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 				INSERT INTO [LDSPhilanthropiesDW].[dbo]._Hier_Dim
-					VALUES(0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+					VALUES(0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);					
+				INSERT INTO [LDSPhilanthropiesDW].[dbo]._Bio_Strat_Plan_Dim
+					VALUES(''0'',''0'',NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+					
 			EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''Zero_Key'', @Alpha_Step_Number = ''132F'', @Alpha_Step_Name = ''Zero Key - End'', @Alpha_Result = 1; 
 			' -- Attribute_4
 		, 'EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = @TABLE_NAME, @Alpha_Step_Number = ''132H'', @Alpha_Step_Name = ''End'', @Alpha_Result = 1;
