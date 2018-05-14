@@ -16487,12 +16487,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 	)
 ,
 -- --------------------------
--- _Bio_Strat_Plan_Dim
+-- _Bio_Strat_Plan_Fact
 -- --------------------------
 	( 4 -- Tier
 		, ' ' -- Source_Table
 		, ' ' -- Destination_Table
-		, '_Bio_Strat_Plan_Dim' -- Ext_Table
+		, '_Bio_Strat_Plan_Fact' -- Ext_Table
 		, ' ' -- Dest_Create_Fields
 		, ' ' -- Dest_Insert_Fields
 		, ' ' -- Dest_Where_Statement

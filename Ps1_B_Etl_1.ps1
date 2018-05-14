@@ -1,4 +1,4 @@
-Start-Process powershell -Verb runAs
+#Start-Process powershell -Verb runAs
 
 FUNCTION Insert-Alpha_Table_1
 			{
@@ -4047,4 +4047,6 @@ FUNCTION Insert-Alpha_Table_1
 		#---------------------------------------------
 		Stop-Transcript
 		
-Stop-Process $PID
+		[System.Environment]::Exit(1)
+		
+#Stop-Process $PID

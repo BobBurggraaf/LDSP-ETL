@@ -3718,11 +3718,11 @@ INSERT INTO dbo.Stage_To_Prod
 	)
 	,
 -- --------------------------
--- _Bio_Strat_Plan_Dim
+-- _Bio_Strat_Plan_Fact
 -- --------------------------
 	( 1 -- Tier
-		, 'dbo._Bio_Strat_Plan_Dim' -- Source_Table
-		, 'dbo._Bio_Strat_Plan_Dim' -- Destination_Table
+		, 'dbo._Bio_Strat_Plan_Fact' -- Source_Table
+		, 'dbo._Bio_Strat_Plan_Fact' -- Destination_Table
 		,'Bio_Strat_Plan_Key INT 
 			, Donor_Key NVARCHAR(100) 
 			, Plus_ConstituentNoteId NVARCHAR(100)
