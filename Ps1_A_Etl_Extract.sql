@@ -5693,6 +5693,9 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Plus_Date DATETIME
 			, Plus_Note NVARCHAR(MAX)
 			, CreatedOn DATETIME
+			, CreatedBy UNIQUEIDENTIFIER
+			, ModifiedOn DATETIME
+			, ModifiedBy UNIQUEIDENTIFIER
 		' -- Dest_Create_Fields
 		, 'Plus_ConstituentNoteId
 			, Plus_RelatedConstituent
@@ -5704,6 +5707,9 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Plus_Date
 			, Plus_Note
 			, CreatedOn
+			, CreatedBy
+			, ModifiedOn
+			, ModifiedBy
 		' -- Dest_Insert_Fields
 		, ' ' -- Dest_Where_Statement
 		, 'Plus_ConstituentNoteId UNIQUEIDENTIFIER
@@ -5716,6 +5722,9 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Plus_Date DATETIME
 			, Plus_Note NVARCHAR(4000)
 			, CreatedOn DATETIME
+			, CreatedBy UNIQUEIDENTIFIER
+			, ModifiedOn DATETIME
+			, ModifiedBy UNIQUEIDENTIFIER
 		' -- Ext_Create_Fields
 		, 'Plus_ConstituentNoteId
 			, Plus_RelatedConstituent
@@ -5727,6 +5736,9 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Plus_Date
 			, Plus_Note
 			, CreatedOn
+			, CreatedBy
+			, ModifiedOn
+			, ModifiedBy
 		' -- Ext_Insert_Fields
 		, 'Plus_ConstituentNoteId
 			, Plus_RelatedConstituent
@@ -5740,10 +5752,15 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, CONVERT(NVARCHAR(4000),SUBSTRING(Plus_Note,1,4000)) AS Plus_Note
 			, CASE WHEN DATENAME(dy,A.CreatedOn) BETWEEN C.Mdt_Begin_Date_Number AND C.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.CreatedOn)
 					ELSE DATEADD(hh,-7,A.CreatedOn) END AS CreatedOn
+			, CreatedBy
+			, CASE WHEN DATENAME(dy,A.ModifiedOn) BETWEEN D.Mdt_Begin_Date_Number AND D.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.ModifiedOn)
+					ELSE DATEADD(hh,-7,A.ModifiedOn) END AS ModifiedOn
+			, ModifiedBy
 			' -- Ext_Select_Statement
 		, 'Oa_Extract.Plus_ConstituentNoteBase A
 				LEFT JOIN dbo._MDT_Conversion_Dim B ON YEAR(A.Plus_Date) = B.Date_Year
 				LEFT JOIN dbo._MDT_Conversion_Dim C ON YEAR(A.CreatedOn) = C.Date_Year
+				LEFT JOIN dbo._MDT_Conversion_Dim D ON YEAR(A.ModifiedOn) = D.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, NULL -- Tier_3_Stage
@@ -16506,6 +16523,9 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Plus_Date DATE
 			, Plus_Note NVARCHAR(4000)
 			, CreatedOn DATE
+			, CreatedBy NVARCHAR(100)
+			, ModifiedOn DATE
+			, ModifiedBy NVARCHAR(100)
 		' -- Ext_Create_Fields
 		, 'Donor_Key
 			, Plus_ConstituentNoteId 
@@ -16516,6 +16536,9 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Plus_Date
 			, Plus_Note 
 			, CreatedOn
+			, CreatedBy
+			, ModifiedOn
+			, ModifiedBy
 		' -- Ext_Insert_Fields
 		, 'COALESCE(CONVERT(NVARCHAR(100),A.Plus_RelatedConstituent), CONVERT(NVARCHAR(100),A.Plus_RelatedOrganization)) AS Donor_Key
 			, CONVERT(NVARCHAR(100),A.Plus_ConstituentNoteId) AS Plus_ConstituentNoteId
@@ -16525,7 +16548,10 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, A.Plus_Subject 
 			, CONVERT(VARCHAR(10),A.Plus_Date,101) AS Plus_Date
 			, A.Plus_Note 
-			, CONVERT(VARCHAR(10),A.CreatedOn,101) AS CreatedOn								
+			, CONVERT(VARCHAR(10),A.CreatedOn,101) AS CreatedOn	
+			, CONVERT(NVARCHAR(100),A.CreatedBy) AS CreatedBy
+			, CONVERT(VARCHAR(10),A.ModifiedOn,101) AS ModifiedOn
+			, CONVERT(NVARCHAR(100),A.ModifiedBy) AS ModifiedBy
 			' -- Ext_Select_Statement
 		, 'Ext_Constituent_Note A
 			LEFT JOIN _Coordinating_Liaison_Needed_ B ON A.Plus_CoordinatingLiaisonNeeded = B.Column_Value
@@ -16563,6 +16589,133 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, GETDATE()
 		, NULL
 	)
+,
+-- --------------------------
+-- _Bio_Strat_Plan_CreatedBy_Dim
+-- --------------------------
+	( 4 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Bio_Strat_Plan_CreatedBy_Dim' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Bio_Strat_Plan_CreatedBy_Key NVARCHAR(100) PRIMARY KEY
+			, Bio_Strat_Plan_CreatedBy_Full_Name NVARCHAR(200)
+			, Bio_Strat_Plan_CreatedBy_First_Name NVARCHAR(64)
+			, Bio_Strat_Plan_CreatedBy_Last_Name NVARCHAR(64)
+			, Bio_Strat_Plan_CreatedBy_Domain_Name NVARCHAR(1024)
+			' -- Ext_Create_Fields
+		, 'Bio_Strat_Plan_CreatedBy_Key
+			, Bio_Strat_Plan_CreatedBy_Full_Name
+			, Bio_Strat_Plan_CreatedBy_First_Name
+			, Bio_Strat_Plan_CreatedBy_Last_Name
+			, Bio_Strat_Plan_CreatedBy_Domain_Name
+			' -- Ext_Insert_Fields
+		, 'DISTINCT CONVERT(NVARCHAR(100),SystemUserId) AS Bio_Strat_Plan_CreatedBy_Key
+			, FullName AS Bio_Strat_Plan_CreatedBy_Full_Name
+			, FirstName AS Bio_Strat_Plan_CreatedBy_First_Name
+			, LastName AS Bio_Strat_Plan_CreatedBy_Last_Name
+			, DomainName AS Bio_Strat_Plan_CreatedBy_Domain_Name   				
+			' -- Ext_Select_Statement
+		, 'Ext_System_User
+			' -- Ext_From_Statement
+		, '
+			' -- Ext_Where_Statement	
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
+		, ' ' -- Ext_Create_Fields_2
+		, ' ' -- Ext_Create_Fields_3
+		, ' ' -- Ext_Where_Statement_2
+		, ' ' -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+,
+-- --------------------------
+-- _Bio_Strat_Plan_ModifiedBy_Dim
+-- --------------------------
+	( 4 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Bio_Strat_Plan_ModifiedBy_Dim' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Bio_Strat_Plan_ModifiedBy_Key NVARCHAR(100) PRIMARY KEY
+			, Bio_Strat_Plan_ModifiedBy_Full_Name NVARCHAR(200)
+			, Bio_Strat_Plan_ModifiedBy_First_Name NVARCHAR(64)
+			, Bio_Strat_Plan_ModifiedBy_Last_Name NVARCHAR(64)
+			, Bio_Strat_Plan_ModifiedBy_Domain_Name NVARCHAR(1024)
+			' -- Ext_Create_Fields
+		, 'Bio_Strat_Plan_ModifiedBy_Key
+			, Bio_Strat_Plan_ModifiedBy_Full_Name
+			, Bio_Strat_Plan_ModifiedBy_First_Name
+			, Bio_Strat_Plan_ModifiedBy_Last_Name
+			, Bio_Strat_Plan_ModifiedBy_Domain_Name
+			' -- Ext_Insert_Fields
+		, 'DISTINCT CONVERT(NVARCHAR(100),SystemUserId) AS Bio_Strat_Plan_ModifiedBy_Key
+			, FullName AS Bio_Strat_Plan_ModifiedBy_Full_Name
+			, FirstName AS Bio_Strat_Plan_ModifiedBy_First_Name
+			, LastName AS Bio_Strat_Plan_ModifiedBy_Last_Name
+			, DomainName AS Bio_Strat_Plan_ModifiedBy_Domain_Name   				
+			' -- Ext_Select_Statement
+		, 'Ext_System_User
+			' -- Ext_From_Statement
+		, '
+			' -- Ext_Where_Statement	
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
+		, ' ' -- Ext_Create_Fields_2
+		, ' ' -- Ext_Create_Fields_3
+		, ' ' -- Ext_Where_Statement_2
+		, ' ' -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+
 	;	
 
 

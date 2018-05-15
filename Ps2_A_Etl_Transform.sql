@@ -9815,8 +9815,10 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 					-- VALUES(''0'',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 				INSERT INTO [LDSPhilanthropiesDW].[dbo]._Hier_Dim
 					VALUES(0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);					
-				INSERT INTO [LDSPhilanthropiesDW].[dbo]._Bio_Strat_Plan_Dim
-					VALUES(''0'',''0'',NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+				INSERT INTO [LDSPhilanthropiesDW].[dbo]._Bio_Strat_Plan_CreatedBy_Dim
+					VALUES(''0'',NULL,NULL,NULL,NULL);
+				INSERT INTO [LDSPhilanthropiesDW].[dbo]._Bio_Strat_Plan_ModifiedBy_Dim
+					VALUES(''0'',NULL,NULL,NULL,NULL);
 					
 			EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''Zero_Key'', @Alpha_Step_Number = ''132F'', @Alpha_Step_Name = ''Zero Key - End'', @Alpha_Result = 1; 
 			' -- Attribute_4
@@ -11038,6 +11040,8 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 														WHERE 1 = 1 
 															AND StatusCode != 100000003 -- I5 Deletes
 															AND StatusCode != 1 -- Processing
+															AND StatusCode != 100000006 -- Credited Back
+															AND StatusCode != 100000005 -- Rejected
 													) B ON A.ContactId = B.ContactId
 												LEFT JOIN 
 													(SELECT New_RelatedConstituent
@@ -11057,6 +11061,8 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 									WHERE 1 = 1 
 										AND StatusCode != 100000003 -- I5 Deletes
 										AND StatusCode != 1 -- Processing
+										AND StatusCode != 100000006 -- Credited Back
+										AND StatusCode != 100000005 -- Rejected
 										AND New_AccountingDate IS NOT NULL
 										AND (New_ConstituentDonor IS NOT NULL
 												OR New_OrganizationDonor IS NOT NULL
@@ -11101,6 +11107,8 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 																WHERE 1 = 1 
 																	AND A.StatusCode != 100000003 -- I5 Deletes
 																	AND A.StatusCode != 1 -- Processing
+																	AND A.StatusCode != 100000006 -- Credited Back
+																	AND A.StatusCode != 100000005 -- Rejected
 																GROUP BY New_GiftId
 															) A
 															LEFT JOIN
