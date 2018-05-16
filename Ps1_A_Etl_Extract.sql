@@ -13887,6 +13887,72 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 	)
 ,
 -- --------------------------
+-- _Bio_Strat_Plan_Fact
+-- --------------------------
+	( 3 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Bio_Strat_Plan_Fact' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Bio_Strat_Plan_Key INT IDENTITY(1,1)
+			, Donor_Key NVARCHAR(100) 
+			, Plus_ConstituentNoteId NVARCHAR(100)
+			, CreatedOn DATE
+			, CreatedBy NVARCHAR(100)
+			, ModifiedOn DATE
+			, ModifiedBy NVARCHAR(100)
+		' -- Ext_Create_Fields
+		, 'Donor_Key
+			, Plus_ConstituentNoteId 
+			, CreatedOn
+			, CreatedBy
+			, ModifiedOn
+			, ModifiedBy
+		' -- Ext_Insert_Fields
+		, 'COALESCE(CONVERT(NVARCHAR(100),A.Plus_RelatedConstituent), CONVERT(NVARCHAR(100),A.Plus_RelatedOrganization)) AS Donor_Key
+			, CONVERT(NVARCHAR(100),A.Plus_ConstituentNoteId) AS Plus_ConstituentNoteId
+			, CONVERT(VARCHAR(10),A.CreatedOn,101) AS CreatedOn	
+			, CONVERT(NVARCHAR(100),A.CreatedBy) AS CreatedBy
+			, CONVERT(VARCHAR(10),A.ModifiedOn,101) AS ModifiedOn
+			, CONVERT(NVARCHAR(100),A.ModifiedBy) AS ModifiedBy
+			' -- Ext_Select_Statement
+		, 'Ext_Constituent_Note A
+			' -- Ext_From_Statement
+		, ' ' -- Ext_Where_Statement	
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
+		, ' ' -- Ext_Create_Fields_2
+		, ' ' -- Ext_Create_Fields_3
+		, ' ' -- Ext_Where_Statement_2
+		, ' ' -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+,
+-- --------------------------
 -- _Award_Dim
 -- --------------------------
 	( 4 -- Tier
@@ -16504,93 +16570,6 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 	)
 ,
 -- --------------------------
--- _Bio_Strat_Plan_Fact
--- --------------------------
-	( 4 -- Tier
-		, ' ' -- Source_Table
-		, ' ' -- Destination_Table
-		, '_Bio_Strat_Plan_Fact' -- Ext_Table
-		, ' ' -- Dest_Create_Fields
-		, ' ' -- Dest_Insert_Fields
-		, ' ' -- Dest_Where_Statement
-		, 'Bio_Strat_Plan_Key INT IDENTITY(1,1)
-			, Donor_Key NVARCHAR(100) 
-			, Plus_ConstituentNoteId NVARCHAR(100)
-			, Plus_Type NVARCHAR(400)
-			, Plus_ReasonForDrop NVARCHAR(400)
-			, Plus_CoordinatingLiaisonNeeded NVARCHAR(400)
-			, Plus_Subject NVARCHAR(200)
-			, Plus_Date DATE
-			, Plus_Note NVARCHAR(4000)
-			, CreatedOn DATE
-			, CreatedBy NVARCHAR(100)
-			, ModifiedOn DATE
-			, ModifiedBy NVARCHAR(100)
-		' -- Ext_Create_Fields
-		, 'Donor_Key
-			, Plus_ConstituentNoteId 
-			, Plus_Type 
-			, Plus_ReasonForDrop 
-			, Plus_CoordinatingLiaisonNeeded 
-			, Plus_Subject 
-			, Plus_Date
-			, Plus_Note 
-			, CreatedOn
-			, CreatedBy
-			, ModifiedOn
-			, ModifiedBy
-		' -- Ext_Insert_Fields
-		, 'COALESCE(CONVERT(NVARCHAR(100),A.Plus_RelatedConstituent), CONVERT(NVARCHAR(100),A.Plus_RelatedOrganization)) AS Donor_Key
-			, CONVERT(NVARCHAR(100),A.Plus_ConstituentNoteId) AS Plus_ConstituentNoteId
-			, D.Column_Label AS Plus_Type 
-			, C.Column_Label AS Plus_ReasonForDrop 
-			, B.Column_Label AS Plus_CoordinatingLiaisonNeeded 
-			, A.Plus_Subject 
-			, CONVERT(VARCHAR(10),A.Plus_Date,101) AS Plus_Date
-			, A.Plus_Note 
-			, CONVERT(VARCHAR(10),A.CreatedOn,101) AS CreatedOn	
-			, CONVERT(NVARCHAR(100),A.CreatedBy) AS CreatedBy
-			, CONVERT(VARCHAR(10),A.ModifiedOn,101) AS ModifiedOn
-			, CONVERT(NVARCHAR(100),A.ModifiedBy) AS ModifiedBy
-			' -- Ext_Select_Statement
-		, 'Ext_Constituent_Note A
-			LEFT JOIN _Coordinating_Liaison_Needed_ B ON A.Plus_CoordinatingLiaisonNeeded = B.Column_Value
-			LEFT JOIN _Reason_For_Drop_ C ON A.Plus_ReasonForDrop = C.Column_Value
-			LEFT JOIN _Plus_Type_ D ON A.Plus_Type = D.Column_Value
-			' -- Ext_From_Statement
-		, ' ' -- Ext_Where_Statement	
-		, NULL -- Tier_3_Stage
-		, NULL -- Tier_3_Stage_DateTime
-		, NULL -- Tier_4_Stage
-		, NULL -- Tier_4_Stage_DateTime
-		, ' ' -- Ext_Select_Statement_2
-		, ' ' -- Ext_From_Statement_2
-		, ' ' -- Ext_Create_Fields_2
-		, ' ' -- Ext_Create_Fields_3
-		, ' ' -- Ext_Where_Statement_2
-		, ' ' -- Ext_Where_Statement_3
-		, NULL -- Tier_5_Stage
-		, NULL -- Tier_5_Stage_DateTime
-		, NULL -- Tier_6_Stage
-		, NULL -- Tier_6_Stage_DateTime
-		, NULL -- Tier_7_Stage
-		, NULL -- Tier_7_Stage_DateTime
-		, NULL -- Tier_8_Stage
-		, NULL -- Tier_8_Stage_DateTime
-		, NULL -- Tier_9_Stage
-		, NULL -- Tier_9_Stage_DateTime
-		, 1
-		, NULL -- Extract_Stage
-		, NULL -- Extract_Stage_DateTime
-		, NULL -- Coupler_Stage
-		, NULL -- Coupler_Stage_DateTime
-		, NULL -- Tier_2_Stage
-		, NULL -- Tier_2_Stage_DateTime
-		, GETDATE()
-		, NULL
-	)
-,
--- --------------------------
 -- _Bio_Strat_Plan_CreatedBy_Dim
 -- --------------------------
 	( 4 -- Tier
@@ -16685,6 +16664,84 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, '
 			' -- Ext_Where_Statement	
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
+		, ' ' -- Ext_Create_Fields_2
+		, ' ' -- Ext_Create_Fields_3
+		, ' ' -- Ext_Where_Statement_2
+		, ' ' -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+,
+-- --------------------------
+-- _Bio_Strat_Plan_Dim
+-- --------------------------
+	( 4 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Bio_Strat_Plan_Dim' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Bio_Strat_Plan_Key INT 
+			, Donor_Key NVARCHAR(100) 
+			, Plus_ConstituentNoteId NVARCHAR(100)
+			, Plus_Type NVARCHAR(400)
+			, Plus_ReasonForDrop NVARCHAR(400)
+			, Plus_CoordinatingLiaisonNeeded NVARCHAR(400)
+			, Plus_Subject NVARCHAR(200)
+			, Plus_Date DATE
+			, Plus_Note NVARCHAR(4000)
+		' -- Ext_Create_Fields
+		, 'Bio_Strat_Plan_Key
+			, Donor_Key
+			, Plus_ConstituentNoteId 
+			, Plus_Type 
+			, Plus_ReasonForDrop 
+			, Plus_CoordinatingLiaisonNeeded 
+			, Plus_Subject 
+			, Plus_Date
+			, Plus_Note 
+		' -- Ext_Insert_Fields
+		, 'A.Bio_Strat_Plan_Key
+			, COALESCE(CONVERT(NVARCHAR(100),B.Plus_RelatedConstituent), CONVERT(NVARCHAR(100),B.Plus_RelatedOrganization)) AS Donor_Key
+			, CONVERT(NVARCHAR(100),B.Plus_ConstituentNoteId) AS Plus_ConstituentNoteId
+			, E.Column_Label AS Plus_Type 
+			, D.Column_Label AS Plus_ReasonForDrop 
+			, C.Column_Label AS Plus_CoordinatingLiaisonNeeded 
+			, B.Plus_Subject 
+			, CONVERT(VARCHAR(10),B.Plus_Date,101) AS Plus_Date
+			, B.Plus_Note 
+			' -- Ext_Select_Statement
+		, '_Bio_Strat_Plan_Fact A
+			INNER JOIN Ext_Constituent_Note B ON A.Plus_ConstituentNoteId = CONVERT(NVARCHAR(100),B.Plus_ConstituentNoteId)
+			LEFT JOIN _Coordinating_Liaison_Needed_ C ON B.Plus_CoordinatingLiaisonNeeded = C.Column_Value
+			LEFT JOIN _Reason_For_Drop_ D ON B.Plus_ReasonForDrop = D.Column_Value
+			LEFT JOIN _Plus_Type_ E ON B.Plus_Type = E.Column_Value
+			' -- Ext_From_Statement
+		, ' ' -- Ext_Where_Statement	
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
 		, NULL -- Tier_4_Stage
