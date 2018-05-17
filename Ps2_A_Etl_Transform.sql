@@ -9740,7 +9740,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 			' -- Attribute_3
 		, 'EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''Zero_Key'', @Alpha_Step_Number = ''132F'', @Alpha_Step_Name = ''Zero Key - Begin'', @Alpha_Result = 1;
 				INSERT INTO [LDSPhilanthropiesDW].[dbo]._Drop_Include_Dim
-					VALUES(0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+					VALUES(0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 				INSERT INTO [LDSPhilanthropiesDW].[dbo]._Alumni_Dim
 					VALUES(NULL,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 				INSERT INTO [LDSPhilanthropiesDW].[dbo]._Alumni_Bridge
@@ -9796,7 +9796,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 				INSERT INTO [LDSPhilanthropiesDW].[dbo]._Interest_Bridge
 					VALUES(NULL,0,0);
 				INSERT INTO [LDSPhilanthropiesDW].[dbo]._Student_Dim
-					VALUES(0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+					VALUES(0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 				INSERT INTO [LDSPhilanthropiesDW].[dbo]._Student_Bridge
 					VALUES(NULL,0,0);
 				INSERT INTO [LDSPhilanthropiesDW].[dbo]._Affiliated_Dim
@@ -9873,6 +9873,8 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 					IF OBJECT_ID(''tempdb..#Couples_Totals2'') IS NOT NULL
 					DROP TABLE #Couples_Totals2 
 			BEGIN TRY
+				SET ANSI_WARNINGS OFF
+				
 				DECLARE @TABLE_CNT1 AS VARCHAR(100)
 				DECLARE @TABLE_CNT2 AS VARCHAR(100)
 				DECLARE @TABLE_CNT3 AS VARCHAR(100)
@@ -10126,6 +10128,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 						T.Donor_Total_Name = S.Couples_Name
 						, T.Donor_Total_Donation = CONCAT(''$'',CONVERT(NVARCHAR(50),S.Couples_Combind_Donation))
 						;
+					SET ANSI_WARNINGS ON
 				SELECT @TABLE_CNT1 = (SELECT CONVERT(NVARCHAR(100),COUNT(*)) FROM #All_Donors_Totals)
 				SELECT @TABLE_CNT2 = (SELECT CONVERT(NVARCHAR(100),COUNT(*)) FROM #Couples_Totals1)
 				SELECT @TABLE_CNT3 = (SELECT CONVERT(NVARCHAR(100),COUNT(*)) FROM #Couples_Totals2)
@@ -21916,6 +21919,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 		, 'BEGIN TRY       
 				DECLARE @TABLE_CNT112 AS VARCHAR(100)
 				EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''_Initiative_Fact'', @Alpha_Step_Number = ''159F'', @Alpha_Step_Name = ''Initiative Fact Table - Load - Begin'', @Alpha_Result = 1;
+					SET ANSI_WARNINGS OFF
 					INSERT INTO _Initiative_Fact (
 						Initiative_Key
 						, Donor_Key
@@ -22290,7 +22294,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 												LEFT JOIN _Donation_Dim C ON A.Donation_Key = C.Donation_Key
 										) A
 								) A
-
+							SET ANSI_WARNINGS ON
 				SELECT @TABLE_CNT112 = (SELECT CONVERT(NVARCHAR(100),COUNT(*)) FROM _Initiative_Fact)
 				EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''_Initiative_Fact'', @Alpha_Step_Number = ''159F'', @Alpha_Step_Name = ''Initiative Fact Table - Count'', @Alpha_Count = @TABLE_CNT112, @Alpha_Result = 1;
 				EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''_Initiative_Fact'', @Alpha_Step_Number = ''159F'', @Alpha_Step_Name = ''Initiative Fact Table - Load - End'', @Alpha_Result = 1;                                                        
