@@ -23192,33 +23192,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 		, 'BEGIN TRY       
 				DECLARE @TABLE_CNT112 AS VARCHAR(100)
 				EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''_Recurring_Gift_Dim'', @Alpha_Step_Number = ''163F'', @Alpha_Step_Name = ''Recurring Gift Fact Table - Load - Begin'', @Alpha_Result = 1;					
-					INSERT INTO _Recurring_Gift_Dim(
-						Recurring_Gift_Key
-						, Recurring_Gift_Status_Code
-						, Recurring_Gift_State_Code
-						, Recurring_Gift_Type
-						, Recurring_Gift_Amt
-						, Recurring_Gift_Frequency
-						, Recurring_Gift_Payment_Start_Date
-						, Recurring_Gift_Payment_Stop_Date
-						, Recurring_Gift_Group
-					)
-					SELECT CONVERT(NVARCHAR(100),A.Plus_RecurringGiftRulesId) AS Recurring_Gift_Key
-						, E.Column_Label AS Recurring_Gift_Status_Code
-						, F.Column_Label AS Recurring_Gift_State_Code
-						, C.Column_Label AS Recurring_Gift_Type
-						, A.Plus_Amount AS Recurring_Gift_Amt
-						, D.Column_Label AS Recurring_Gift_Frequency
-						, CONVERT(NVARCHAR(10),A.Plus_PaymentStart,110) AS Recurring_Gift_Payment_Start_Date
-						, CONVERT(NVARCHAR(10),A.Plus_PaymentStop,110) AS Recurring_Gift_Payment_Stop_Date
-						, B.Plus_Name AS Recurring_Gift_Group
-						FROM Ext_Recurring_Gift_Rules A
-							LEFT JOIN Ext_Payroll_Group B ON A.Plus_Group = B.Plus_PayrollGroupId
-							LEFT JOIN _Recurring_Gift_Type_ C ON A.Plus_Type = C.Column_Value
-							LEFT JOIN _Recurring_Frequency_ D ON A.Plus_Frequency = D.Column_Value
-							LEFT JOIN _Recurring_StateCode_ E ON A.StateCode = E.Column_Value
-							LEFT JOIN _Recurring_StatusCode_ F ON A.StatusCode = F.Column_Value
-																
+																	
 				SELECT @TABLE_CNT112 = (SELECT CONVERT(NVARCHAR(100),COUNT(*)) FROM _Recurring_Gift_Dim)
 				EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''_Recurring_Gift_Dim'', @Alpha_Step_Number = ''163F'', @Alpha_Step_Name = ''_Recurring_Gift_Dim Table - Count'', @Alpha_Count = @TABLE_CNT112, @Alpha_Result = 1;
 				EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''_Recurring_Gift_Dim'', @Alpha_Step_Number = ''163F'', @Alpha_Step_Name = ''_Recurring_Gift_Dim Table - Load - End'', @Alpha_Result = 1;                                                        

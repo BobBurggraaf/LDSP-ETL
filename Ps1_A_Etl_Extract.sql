@@ -13953,6 +13953,226 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 	)
 ,
 -- --------------------------
+-- _Recurring_Gift_Dim
+-- --------------------------
+	( 3 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Recurring_Gift_Dim' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, '	Recurring_Gift_Key NVARCHAR(100) NOT NULL
+			, Recurring_Gift_Status_Code NVARCHAR(400)
+			, Recurring_Gift_State_Code NVARCHAR(400)
+			, Recurring_Gift_Type NVARCHAR(400)
+			, Recurring_Gift_Amt MONEY
+			, Recurring_Gift_Frequency NVARCHAR(400)
+			, Recurring_Gift_Payment_Start_Date DATE
+			, Recurring_Gift_Payment_Stop_Date DATE
+			, Recurring_Gift_Group NVARCHAR(100)
+			, Active NVARCHAR(10) DEFAULT ''Active''
+			, Payroll_Deduction NVARCHAR(20) DEFAULT ''Payroll Deduction''
+		' -- Ext_Create_Fields
+		, 'Recurring_Gift_Key
+			, Recurring_Gift_Status_Code
+			, Recurring_Gift_State_Code
+			, Recurring_Gift_Type
+			, Recurring_Gift_Amt
+			, Recurring_Gift_Frequency
+			, Recurring_Gift_Payment_Start_Date
+			, Recurring_Gift_Payment_Stop_Date
+			, Recurring_Gift_Group
+		' -- Ext_Insert_Fields
+		, 'CONVERT(NVARCHAR(100),A.Plus_RecurringGiftRulesId) AS Recurring_Gift_Key
+			, E.Column_Label AS Recurring_Gift_Status_Code
+			, F.Column_Label AS Recurring_Gift_State_Code
+			, C.Column_Label AS Recurring_Gift_Type
+			, A.Plus_Amount AS Recurring_Gift_Amt
+			, D.Column_Label AS Recurring_Gift_Frequency
+			, CONVERT(NVARCHAR(10),A.Plus_PaymentStart,110) AS Recurring_Gift_Payment_Start_Date
+			, CONVERT(NVARCHAR(10),A.Plus_PaymentStop,110) AS Recurring_Gift_Payment_Stop_Date
+			, B.Plus_Name AS Recurring_Gift_Group
+			' -- Ext_Select_Statement
+		, 'Ext_Recurring_Gift_Rules A
+			LEFT JOIN Ext_Payroll_Group B ON A.Plus_Group = B.Plus_PayrollGroupId
+			LEFT JOIN _Recurring_Gift_Type_ C ON A.Plus_Type = C.Column_Value
+			LEFT JOIN _Recurring_Frequency_ D ON A.Plus_Frequency = D.Column_Value
+			LEFT JOIN _Recurring_StateCode_ E ON A.StateCode = E.Column_Value
+			LEFT JOIN _Recurring_StatusCode_ F ON A.StatusCode = F.Column_Value
+			' -- Ext_From_Statement
+		, ' ' -- Ext_Where_Statement	
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
+		, ' ' -- Ext_Create_Fields_2
+		, ' ' -- Ext_Create_Fields_3
+		, ' ' -- Ext_Where_Statement_2
+		, ' ' -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+,
+-- --------------------------
+-- _Employment_Dim
+-- --------------------------
+	( 3 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Employment_Dim' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'ContactId  NVARCHAR(100) 
+			, Employment_Key  INT  PRIMARY KEY
+			, Employment_Group_Key  INT 
+			, Employment_Donor_Yn  NVARCHAR(1) 
+			, Employment_Active_Yn  NVARCHAR(1) 
+			, Employment_Church_Affil_Dept  NVARCHAR(100)
+			, Employer NVARCHAR(100)
+			, Job_Title NVARCHAR(100)
+			, Job_Code NVARCHAR(100)
+			, Industry NVARCHAR(100)
+			, Source NVARCHAR(100)
+			, Church_Affiliated NVARCHAR(1)
+			, Start_Date DATE
+			, End_Date         DATE
+			, Internship NVARCHAR(1)
+			, Church_Employment_Status NVARCHAR(400)
+			, Employment_Institutional_Hierarchy NVARCHAR(100)
+			, New_InstitutionalHierarchyId NVARCHAR(100)
+			, Employer_Ldsp_Id NVARCHAR(100)
+			, StatusCode NVARCHAR(400)
+			, Employment_Modified_On_Date DATE
+			, Employment_Lds_CampusAddress NVARCHAR(100)
+			, Y NVARCHAR(1) DEFAULT ''Y''
+			, N NVARCHAR(1) DEFAULT ''N''
+			, BYU NVARCHAR(3) DEFAULT ''BYU''
+			, [Current] NVARCHAR(10) DEFAULT ''Current''
+			' -- Ext_Create_Fields
+		, 'ContactId 
+			, Employment_Key 
+			, Employment_Group_Key 
+			, Employment_Donor_Yn 
+			, Employment_Active_Yn 
+			, Employment_Church_Affil_Dept
+			, Employer
+			, Job_Title
+			, Job_Code
+			, Industry
+			, Source
+			, Church_Affiliated
+			, Start_Date
+			, End_Date         
+			, Internship
+			, Church_Employment_Status 
+			, Employment_Institutional_Hierarchy
+			, New_InstitutionalHierarchyId
+			, Employer_Ldsp_Id
+			, StatusCode
+			, Employment_Modified_On_Date
+			, Employment_Lds_CampusAddress
+			' -- Ext_Insert_Fields
+		, 'DISTINCT CONVERT(NVARCHAR(100),E.New_EmploymentsId) AS ContactId  
+			, ROW_NUMBER() OVER(ORDER BY E.New_EmploymentId) AS Employment_Key
+			, B.Employment_Group_Key
+			, CASE WHEN E.New_PaymentFrequency IS NULL THEN E.[N] ELSE E.[Y] END AS Employment_Donor_Yn 
+			, CASE WHEN E.StateCode = 0 THEN E.[Y] ELSE E.[N] END AS Employment_Active_Yn 
+			, E.New_Department AS Employment_Church_Affil_Dept
+			, CASE WHEN E.New_ChurchAff = 1 THEN NI.New_Name 
+				WHEN E.New_ChurchAff = 0 THEN COALESCE(REPLACE(E.New_Department,[Emp_Dash],[Blank]),A.Name,E.Plus_AlternateOrganizationName)
+				ELSE NULL END AS Employer
+			, E.New_Title AS Job_Title
+			, NJ.New_Name AS Job_Code
+			, NIB.New_Name AS Industry
+			, NS.New_Source AS Source
+			, CASE WHEN E.New_ChurchAff = 1 THEN E.[Y] 
+				WHEN E.New_ChurchAff = 0 THEN E.[N] 
+				ELSE NULL END AS Church_Affiliated
+			, CONVERT(VARCHAR(10),E.New_DateStarted,101) AS Start_Date
+			, CONVERT(VARCHAR(10),E.New_DateEnded,101) AS End_Date           
+			, CASE WHEN E.New_Internship = 1 THEN E.[Y]
+				WHEN E.New_Internship = 0 THEN E.[N] 
+				ELSE NULL END AS Internship
+			, P.Column_Label AS Church_Employment_Status 
+			, NI.New_Name AS Employment_Institutional_Hierarchy
+			, CONVERT(NVARCHAR(100),E.New_InstitutionalHierarchyId) AS New_InstitutionalHierarchyId
+			, A.New_LdspId AS Employer_Ldsp_Id
+			, S.Column_Label AS StatusCode
+			, E.ModifiedOn AS Employment_Modified_On_Date
+			, E.Lds_CampusAddress AS Employment_Lds_CampusAddress										
+			' -- Ext_Select_Statement
+		, 'Ext_Employment E
+				LEFT JOIN Ext_Source NS ON E.New_Source = NS.New_SourceId
+				LEFT JOIN Ext_Institution NI ON E.New_InstitutionalHierarchyId = NI.New_InstitutionId
+				LEFT JOIN Ext_Industry NIB ON E.New_IndustryCategory = NIB.New_IndustryId
+				LEFT JOIN Ext_Job_Code NJ ON E.New_JobCode = NJ.New_JobCodeId
+				LEFT JOIN Ext_Account A ON E.New_Company = A.AccountId
+				LEFT JOIN _Plus_Church_Employment_Status_ P ON E.Plus_ChurchEmploymentStatus = P.Column_Value
+				LEFT JOIN _Employment_StatusCode_ S ON E.StatusCode = S.Column_Value	
+				LEFT JOIN 
+					(
+					SELECT New_EmploymentsId AS ContactId
+						, ROW_NUMBER() OVER(ORDER BY New_EmploymentsId) AS Employment_Group_Key
+						FROM
+							(SELECT DISTINCT New_EmploymentsId    
+								FROM Ext_Employment) A
+					) B ON E.New_EmploymentsId = B.ContactId
+			' -- Ext_From_Statement
+		, '
+			' -- Ext_Where_Statement	
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
+		, ' ' -- Ext_Create_Fields_2
+		, ' ' -- Ext_Create_Fields_3
+		, ' ' -- Ext_Where_Statement_2
+		, ' ' -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+,
+-- --------------------------
 -- _Award_Dim
 -- --------------------------
 	( 4 -- Tier
@@ -14480,141 +14700,6 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 							(SELECT DISTINCT COALESCE(New_ConstituentId, New_RelatedOrganization) AS ContactId  
 								FROM Ext_Association_Membership) A
 					) F ON COALESCE(A.New_ConstituentId, A.New_RelatedOrganization) = F.ContactId
-			' -- Ext_From_Statement
-		, '
-			' -- Ext_Where_Statement	
-		, NULL -- Tier_3_Stage
-		, NULL -- Tier_3_Stage_DateTime
-		, NULL -- Tier_4_Stage
-		, NULL -- Tier_4_Stage_DateTime
-		, ' ' -- Ext_Select_Statement_2
-		, ' ' -- Ext_From_Statement_2
-		, ' ' -- Ext_Create_Fields_2
-		, ' ' -- Ext_Create_Fields_3
-		, ' ' -- Ext_Where_Statement_2
-		, ' ' -- Ext_Where_Statement_3
-		, NULL -- Tier_5_Stage
-		, NULL -- Tier_5_Stage_DateTime
-		, NULL -- Tier_6_Stage
-		, NULL -- Tier_6_Stage_DateTime
-		, NULL -- Tier_7_Stage
-		, NULL -- Tier_7_Stage_DateTime
-		, NULL -- Tier_8_Stage
-		, NULL -- Tier_8_Stage_DateTime
-		, NULL -- Tier_9_Stage
-		, NULL -- Tier_9_Stage_DateTime
-		, 1
-		, NULL -- Extract_Stage
-		, NULL -- Extract_Stage_DateTime
-		, NULL -- Coupler_Stage
-		, NULL -- Coupler_Stage_DateTime
-		, NULL -- Tier_2_Stage
-		, NULL -- Tier_2_Stage_DateTime
-		, GETDATE()
-		, NULL
-	)
-,
--- --------------------------
--- _Employment_Dim
--- --------------------------
-	( 4 -- Tier
-		, ' ' -- Source_Table
-		, ' ' -- Destination_Table
-		, '_Employment_Dim' -- Ext_Table
-		, ' ' -- Dest_Create_Fields
-		, ' ' -- Dest_Insert_Fields
-		, ' ' -- Dest_Where_Statement
-		, 'ContactId  NVARCHAR(100) 
-			, Employment_Key  INT  PRIMARY KEY
-			, Employment_Group_Key  INT 
-			, Employment_Donor_Yn  NVARCHAR(1) 
-			, Employment_Active_Yn  NVARCHAR(1) 
-			, Employment_Church_Affil_Dept  NVARCHAR(100)
-			, Employer NVARCHAR(100)
-			, Job_Title NVARCHAR(100)
-			, Job_Code NVARCHAR(100)
-			, Industry NVARCHAR(100)
-			, Source NVARCHAR(100)
-			, Church_Affiliated NVARCHAR(1)
-			, Start_Date DATE
-			, End_Date         DATE
-			, Internship NVARCHAR(1)
-			, Church_Employment_Status NVARCHAR(400)
-			, Employment_Institutional_Hierarchy NVARCHAR(100)
-			, New_InstitutionalHierarchyId NVARCHAR(100)
-			, Employer_Ldsp_Id NVARCHAR(100)
-			, StatusCode NVARCHAR(400)
-			, Employment_Modified_On_Date DATE
-			, Employment_Lds_CampusAddress NVARCHAR(100)
-			' -- Ext_Create_Fields
-		, 'ContactId 
-			, Employment_Key 
-			, Employment_Group_Key 
-			, Employment_Donor_Yn 
-			, Employment_Active_Yn 
-			, Employment_Church_Affil_Dept
-			, Employer
-			, Job_Title
-			, Job_Code
-			, Industry
-			, Source
-			, Church_Affiliated
-			, Start_Date
-			, End_Date         
-			, Internship
-			, Church_Employment_Status 
-			, Employment_Institutional_Hierarchy
-			, New_InstitutionalHierarchyId
-			, Employer_Ldsp_Id
-			, StatusCode
-			, Employment_Modified_On_Date
-			, Employment_Lds_CampusAddress
-			' -- Ext_Insert_Fields
-		, 'DISTINCT CONVERT(NVARCHAR(100),E.New_EmploymentsId) AS ContactId  
-			, ROW_NUMBER() OVER(ORDER BY E.New_EmploymentId) AS Employment_Key
-			, B.Employment_Group_Key
-			, CASE WHEN E.New_PaymentFrequency IS NULL THEN E.[N] ELSE E.[Y] END AS Employment_Donor_Yn 
-			, CASE WHEN E.StateCode = 0 THEN E.[Y] ELSE E.[N] END AS Employment_Active_Yn 
-			, E.New_Department AS Employment_Church_Affil_Dept
-			, CASE WHEN E.New_ChurchAff = 1 THEN NI.New_Name 
-				WHEN E.New_ChurchAff = 0 THEN COALESCE(REPLACE(E.New_Department,[Emp_Dash],[Blank]),A.Name,E.Plus_AlternateOrganizationName)
-				ELSE NULL END AS Employer
-			, E.New_Title AS Job_Title
-			, NJ.New_Name AS Job_Code
-			, NIB.New_Name AS Industry
-			, NS.New_Source AS Source
-			, CASE WHEN E.New_ChurchAff = 1 THEN E.[Y] 
-				WHEN E.New_ChurchAff = 0 THEN E.[N] 
-				ELSE NULL END AS Church_Affiliated
-			, CONVERT(VARCHAR(10),E.New_DateStarted,101) AS Start_Date
-			, CONVERT(VARCHAR(10),E.New_DateEnded,101) AS End_Date           
-			, CASE WHEN E.New_Internship = 1 THEN E.[Y]
-				WHEN E.New_Internship = 0 THEN E.[N] 
-				ELSE NULL END AS Internship
-			, P.Column_Label AS Church_Employment_Status 
-			, NI.New_Name AS Employment_Institutional_Hierarchy
-			, CONVERT(NVARCHAR(100),E.New_InstitutionalHierarchyId) AS New_InstitutionalHierarchyId
-			, A.New_LdspId AS Employer_Ldsp_Id
-			, S.Column_Label AS StatusCode
-			, E.ModifiedOn AS Employment_Modified_On_Date
-			, E.Lds_CampusAddress AS Employment_Lds_CampusAddress										
-			' -- Ext_Select_Statement
-		, 'Ext_Employment E
-				LEFT JOIN Ext_Source NS ON E.New_Source = NS.New_SourceId
-				LEFT JOIN Ext_Institution NI ON E.New_InstitutionalHierarchyId = NI.New_InstitutionId
-				LEFT JOIN Ext_Industry NIB ON E.New_IndustryCategory = NIB.New_IndustryId
-				LEFT JOIN Ext_Job_Code NJ ON E.New_JobCode = NJ.New_JobCodeId
-				LEFT JOIN Ext_Account A ON E.New_Company = A.AccountId
-				LEFT JOIN _Plus_Church_Employment_Status_ P ON E.Plus_ChurchEmploymentStatus = P.Column_Value
-				LEFT JOIN _Employment_StatusCode_ S ON E.StatusCode = S.Column_Value	
-				LEFT JOIN 
-					(
-					SELECT New_EmploymentsId AS ContactId
-						, ROW_NUMBER() OVER(ORDER BY New_EmploymentsId) AS Employment_Group_Key
-						FROM
-							(SELECT DISTINCT New_EmploymentsId    
-								FROM Ext_Employment) A
-					) B ON E.New_EmploymentsId = B.ContactId
 			' -- Ext_From_Statement
 		, '
 			' -- Ext_Where_Statement	
@@ -16748,6 +16833,217 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Tier_4_Stage_DateTime
 		, ' ' -- Ext_Select_Statement_2
 		, ' ' -- Ext_From_Statement_2
+		, ' ' -- Ext_Create_Fields_2
+		, ' ' -- Ext_Create_Fields_3
+		, ' ' -- Ext_Where_Statement_2
+		, ' ' -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+	)
+,
+-- --------------------------
+-- _Byu_Employee_Giving_Dim
+-- --------------------------
+	( 4 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Byu_Employee_Giving_Dim' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, '	Donor_Key NVARCHAR(100)
+			, Month_Before_Last_Month_Gift_Total MONEY
+			, Last_Month_Gift_Total MONEY
+			, Byu_Employee_Giving_Upgrade NVARCHAR(1)
+			, Byu_Employee_Giving_New NVARCHAR(1)
+		' -- Ext_Create_Fields
+		, 'Donor_Key 
+			, Month_Before_Last_Month_Gift_Total
+			, Last_Month_Gift_Total
+			, Byu_Employee_Giving_Upgrade
+			, Byu_Employee_Giving_New 
+		' -- Ext_Insert_Fields
+		, 'Donor_Key
+			, Month_Before_Last_Month_Gift_Total
+			, Last_Month_Gift_Total
+			, CASE WHEN Last_Month_Gift_Total > Month_Before_Last_Month_Gift_Total
+				AND Month_Before_Last_Month_Gift_Total IS NOT NULL THEN [Y] ELSE [N] END AS Byu_Employee_Giving_Upgrade
+			, CASE WHEN Month_Before_Last_Month_Gift_Total IS NULL THEN [Y] ELSE [N] END AS Byu_Employee_Giving_New 
+			' -- Ext_Select_Statement
+		, '	(SELECT Donor_Key
+				, Month_Before_Last_Month_Gift_Total
+				, Last_Month_Gift_Total
+				, Y
+				, N
+				FROM
+					(SELECT A.Donor_Key
+						, A.Month_Before_Last_Month_Gift_Total
+						, A.Last_Month_Gift_Total
+						, Y
+						, N
+						FROM
+							(SELECT CONVERT(NVARCHAR(100),A.New_ConstituentDonor) AS Donor_Key
+									, B.Month_Before_Last_Month_Gift_Total
+									, A.Last_Month_Gift_Total
+									FROM
+										(SELECT New_ConstituentDonor
+											, SUM(New_GiftAmount) AS Last_Month_Gift_Total
+											FROM _Gift_
+											WHERE 1 = 1
+												AND Lds_RecurringGiftRule IS NOT NULL
+												AND CONVERT(DATE,New_ReceiptDate) BETWEEN CONVERT(DATE,DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE()) - 1, 0)) 
+																						AND CONVERT(DATE,DATEADD(s,-1,DATEADD(mm, DATEDIFF(m,0,GETDATE())-0,0))) --Last Month
+											GROUP BY New_ConstituentDonor
+										) A
+										LEFT JOIN
+										(SELECT New_ConstituentDonor
+											, SUM(New_GiftAmount) AS Month_Before_Last_Month_Gift_Total
+											FROM _Gift_
+											WHERE 1 = 1
+												AND Lds_RecurringGiftRule IS NOT NULL
+												AND CONVERT(DATE,New_ReceiptDate) BETWEEN CONVERT(DATE,DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE()) - 2, 0)) 
+																						AND CONVERT(DATE,DATEADD(s,-1,DATEADD(mm, DATEDIFF(m,0,GETDATE())-1,0))) --Month Before Last Month
+											GROUP BY New_ConstituentDonor
+										) B ON A.New_ConstituentDonor = B.New_ConstituentDonor
+									WHERE 1 = 1
+										AND B.Month_Before_Last_Month_Gift_Total IS NOT NULL
+										AND A.Last_Month_Gift_Total > B.Month_Before_Last_Month_Gift_Total
+							) A
+							INNER JOIN
+							(SELECT DISTINCT Donor_Key
+								, Y
+								, N
+								FROM
+									(SELECT B.Donor_Key
+										, A.Recurring_Gift_Key
+										, A.Recurring_Gift_Status_Code
+										, A.Recurring_Gift_Type
+										, A.Recurring_Gift_Amt
+										, C.Employer
+										, C.Employment_Active_Yn
+										, C.Y
+										, C.N
+										FROM _Recurring_Gift_Dim A
+											INNER JOIN _Recurring_Gift_Fact B ON A.Recurring_Gift_Key = B.Recurring_Gift_Key
+											INNER JOIN 
+												(SELECT ContactId
+													, Employment_Donor_Yn
+													, Employment_Active_Yn
+													, Employer
+													, [Start_Date]
+													, End_Date
+													, StatusCode
+													, Y
+													, N
+													FROM _Employment_Dim
+													WHERE 1 = 1
+														AND Employer = [BYU]
+														AND Employment_Active_Yn = [Y]
+														AND StatusCode = [Current]
+												) C ON B.Donor_Key = C.ContactId
+										WHERE 1 = 1
+											AND A.Recurring_Gift_Status_Code = [Active]
+											AND A.Recurring_Gift_Type = [Payroll_Deduction]
+									) A
+							) B ON A.Donor_Key = B.Donor_Key
+			' -- Ext_From_Statement
+		, ' ' -- Ext_Where_Statement	
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' 		UNION
+					SELECT A.Donor_Key
+						, A.Month_Before_Last_Month_Gift_Total
+						, A.Last_Month_Gift_Total
+						, Y
+						, N
+						FROM
+							(SELECT CONVERT(NVARCHAR(100),A.New_ConstituentDonor) AS Donor_Key
+									, B.Month_Before_Last_Month_Gift_Total
+									, A.Last_Month_Gift_Total
+									FROM
+										(SELECT New_ConstituentDonor
+											, SUM(New_GiftAmount) AS Last_Month_Gift_Total
+											FROM _Gift_
+											WHERE 1 = 1
+												AND Lds_RecurringGiftRule IS NOT NULL
+												AND CONVERT(DATE,New_ReceiptDate) BETWEEN CONVERT(DATE,DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE()) - 1, 0)) 
+																						AND CONVERT(DATE,DATEADD(s,-1,DATEADD(mm, DATEDIFF(m,0,GETDATE())-0,0))) --Last Month
+											GROUP BY New_ConstituentDonor
+										) A
+										LEFT JOIN
+										(SELECT New_ConstituentDonor
+											, SUM(New_GiftAmount) AS Month_Before_Last_Month_Gift_Total
+											FROM _Gift_
+											WHERE 1 = 1
+												AND Lds_RecurringGiftRule IS NOT NULL
+												AND CONVERT(DATE,New_ReceiptDate) BETWEEN CONVERT(DATE,DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE()) - 2, 0)) 
+																						AND CONVERT(DATE,DATEADD(s,-1,DATEADD(mm, DATEDIFF(m,0,GETDATE())-1,0))) --Month Before Last Month
+											GROUP BY New_ConstituentDonor
+										) B ON A.New_ConstituentDonor = B.New_ConstituentDonor
+									WHERE 1 = 1
+										AND B.Month_Before_Last_Month_Gift_Total IS NULL
+							) A
+							INNER JOIN
+							(SELECT DISTINCT Donor_Key
+								, Y
+								, N
+								FROM
+									(SELECT B.Donor_Key
+										, A.Recurring_Gift_Key
+										, A.Recurring_Gift_Status_Code
+										, A.Recurring_Gift_Type
+										, A.Recurring_Gift_Amt
+										, C.Employer
+										, C.Employment_Active_Yn
+										, Y
+										, N
+										FROM _Recurring_Gift_Dim A
+											INNER JOIN _Recurring_Gift_Fact B ON A.Recurring_Gift_Key = B.Recurring_Gift_Key
+											INNER JOIN 
+												(SELECT ContactId
+													, Employment_Donor_Yn
+													, Employment_Active_Yn
+													, Employer
+													, [Start_Date]
+													, End_Date
+													, StatusCode
+													, Y
+													, N
+													FROM _Employment_Dim
+													WHERE 1 = 1
+														AND Employer = [BYU]
+														AND Employment_Active_Yn = [Y]
+														AND StatusCode = [Current]
+												) C ON B.Donor_Key = C.ContactId
+										WHERE 1 = 1
+											AND A.Recurring_Gift_Status_Code = [Active]
+											AND A.Recurring_Gift_Type = [Payroll_Deduction]
+									) A
+							) B ON A.Donor_Key = B.Donor_Key
+						WHERE 1 = 1
+					) A
+			) A
+			' -- Ext_From_Statement_2
 		, ' ' -- Ext_Create_Fields_2
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
