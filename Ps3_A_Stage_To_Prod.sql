@@ -3820,6 +3820,29 @@ INSERT INTO dbo.Stage_To_Prod
 		, GETDATE()
 		, NULL
 	)
+,
+-- --------------------------
+-- _Byu_Employee_Giving_Dim
+-- --------------------------
+	( 1 -- Tier
+		, 'dbo._Byu_Employee_Giving_Dim' -- Source_Table
+		, 'dbo._Byu_Employee_Giving_Dim' -- Destination_Table
+		,'Donor_Key NVARCHAR(100)
+			, Month_Before_Last_Month_Gift_Total MONEY
+			, Last_Month_Gift_Total MONEY
+			, Byu_Employee_Giving_Upgrade NVARCHAR(1)
+			, Byu_Employee_Giving_New NVARCHAR(1)
+			' -- Dest_Create_Fields
+		, 'Donor_Key
+			, Month_Before_Last_Month_Gift_Total
+			, Last_Month_Gift_Total
+			, Byu_Employee_Giving_Upgrade
+			, Byu_Employee_Giving_New
+			' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, GETDATE()
+		, NULL
+	) 
 ;	
 	
 	
