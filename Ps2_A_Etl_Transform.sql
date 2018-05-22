@@ -5911,7 +5911,9 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 				UPDATE STATISTICS dbo._Numbered_ContactIds 
 
 			'
-		, 'DECLARE @Total_Loop_Num INT
+		, 'SET ANSI_WARNINGS OFF
+		
+			DECLARE @Total_Loop_Num INT
 			DECLARE @RowNum_Beg INT
 			DECLARE @RowNum_End INT
 				SELECT @Total_Loop_Num = (
@@ -6769,6 +6771,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 					SET @LOOP_NUM = @LOOP_NUM + 1   
 				END
 			SET @LOOP_NUM = 0
+			SET ANSI_WARNINGS ON
 			'
 		, 'IF OBJECT_ID(''dbo._Donor_Dim_1'',''U'') IS NOT NULL
 			DROP TABLE dbo._Donor_Dim_1
@@ -9766,7 +9769,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 				INSERT INTO [LDSPhilanthropiesDW].[dbo]._Email_Bridge
 					VALUES(NULL,0,0);
 				INSERT INTO [LDSPhilanthropiesDW].[dbo]._Employment_Dim
-					VALUES(NULL,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+					VALUES(NULL,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,''Y'',''N'',''BYU'',''Current'');
 				INSERT INTO [LDSPhilanthropiesDW].[dbo]._Employment_Bridge
 					VALUES(NULL,0,0);
 				INSERT INTO [LDSPhilanthropiesDW].[dbo]._Language_Dim
@@ -22317,6 +22320,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 			END CATCH 
 			' -- Attribute_4
 		, 'BEGIN TRY
+				SET ANSI_WARNINGS OFF
 				MERGE INTO _Initiative_Fact T
 					USING (
 							SELECT A.Initiative_Fact_Key
@@ -22357,6 +22361,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 					UPDATE
 						SET T.User_Coordinating_Liaison_Key = S.User_Coordinating_Liaison_Key
 				;
+				SET ANSI_WARNINGS ON
 			END TRY 
 			BEGIN CATCH
 				SELECT @ERROR_NUMBER = (SELECT ERROR_NUMBER())
@@ -22458,7 +22463,8 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 		, 'EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = @TABLE_NAME, @Alpha_Step_Number = ''160E'', @Alpha_Step_Name = ''Create Indexes - Begin'', @Alpha_Result = 1;                                                                             
 			EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = @TABLE_NAME, @Alpha_Step_Number = ''160E'', @Alpha_Step_Name = ''Create Indexes - End'', @Alpha_Result = 1;
 			' -- Attribute_3
-		, 'BEGIN TRY       
+		, 'BEGIN TRY
+				SET ANSI_WARNINGS OFF
 				DECLARE @TABLE_CNT112 AS VARCHAR(100)
 				EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''_Initiative_Dim'', @Alpha_Step_Number = ''160F'', @Alpha_Step_Name = ''Initiative Dim Table - Load - Begin'', @Alpha_Result = 1;
 					INSERT INTO _Initiative_Dim (
@@ -22657,7 +22663,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 								LEFT JOIN _Opportunity_StatusCode_ G ON A.StatusCode = G.Column_Value
 								LEFT JOIN _Opportunity_ProposalStatus_ H ON A.Plus_ProposalStatus = H.Column_Value
 								LEFT JOIN _Opportunity_Plus_NewAccount_ I ON A.Plus_NewAccount = I.Column_Value
-								
+						SET ANSI_WARNINGS ON		
 				SELECT @TABLE_CNT112 = (SELECT CONVERT(NVARCHAR(100),COUNT(*)) FROM _Initiative_Dim)
 				EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''_Initiative_Dim'', @Alpha_Step_Number = ''160F'', @Alpha_Step_Name = ''Initiative Dim Table - Count'', @Alpha_Count = @TABLE_CNT112, @Alpha_Result = 1;
 				EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''_Initiative_Dim'', @Alpha_Step_Number = ''160F'', @Alpha_Step_Name = ''Initiative Dim Table - Load - End'', @Alpha_Result = 1;                                                        
@@ -22680,6 +22686,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 			END CATCH 
 			' -- Attribute_4
 		, 'BEGIN TRY
+				SET ANSI_WARNINGS OFF
 				MERGE INTO _Initiative_Dim T
 					USING (
 							SELECT DISTINCT A.OpportunityId AS Initiative_Key
@@ -22691,6 +22698,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 						UPDATE
 							SET T.Initiative_Coordinating_Liaison = S.Initiative_Coordinating_Liaison
 							;
+				SET ANSI_WARNINGS ON
 			END TRY 
 			BEGIN CATCH
 				SELECT @ERROR_NUMBER = (SELECT ERROR_NUMBER())
@@ -22704,6 +22712,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 			END CATCH
 			' -- Attribute_5
 		, 'BEGIN TRY
+				SET ANSI_WARNINGS OFF
 				MERGE INTO _Initiative_Dim T
 					USING (
 							SELECT A.Initiative_Key
@@ -22738,6 +22747,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 							SET T.Initiative_Primary_Initiative = S.Initiative_Primary_Initiative
 							, T.Initiative_Parent_Initiative = S.Initiative_Parent_Initiative
 						;
+				SET ANSI_WARNINGS ON
 			END TRY 
 			BEGIN CATCH
 				SELECT @ERROR_NUMBER = (SELECT ERROR_NUMBER())
@@ -23262,6 +23272,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 		' -- Attribute_3
 	, '
 		BEGIN TRY
+			SET ANSI_WARNINGS OFF
 			MERGE INTO _Donor_Dim T
 				USING (
 						SELECT Donor_Key
@@ -23478,6 +23489,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 					UPDATE
 						SET T.Donor_Pledge_Reminder_Email_Content_Ldsbc = S.Donor_Pledge_Reminder_Email_Content_Ldsbc
 						;
+			SET ANSI_WARNINGS ON
 		END TRY 
 		BEGIN CATCH
 			DECLARE @ERROR_NUMBER INT
@@ -23497,6 +23509,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 		END CATCH
 		' -- Attribute_4
 	, 'BEGIN TRY
+			SET ANSI_WARNINGS OFF
 			MERGE INTO _Donor_Dim T
 				USING (
 						SELECT Donor_Key
@@ -23556,6 +23569,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 							, T.Plus_ConnectedLiaison_DomainName = S.Plus_ConnectedLiaison_DomainName
 							, T.Plus_PendingLiaison_DomainName = S.Plus_PendingLiaison_DomainName
 						;
+			SET ANSI_WARNINGS ON
 		END TRY 
 		BEGIN CATCH
 			SELECT @ERROR_NUMBER = (SELECT ERROR_NUMBER())
@@ -23569,6 +23583,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 		END CATCH 
 		' -- Attribute_5
 	, 'BEGIN TRY
+			SET ANSI_WARNINGS OFF
 			MERGE INTO _Donor_Dim T
 				USING (
 						SELECT A.Donor_Key
@@ -23716,6 +23731,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 					UPDATE
 						SET T.Donor_First_Recurring_Rule_Date_Ldsbc = S.Donor_First_Recurring_Rule_Date_Ldsbc
 						;
+			SET ANSI_WARNINGS ON
 		END TRY 
 		BEGIN CATCH
 			SELECT @ERROR_NUMBER = (SELECT ERROR_NUMBER())
@@ -23729,6 +23745,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 		END CATCH 
 		' -- Attribute_6
 	, 'BEGIN TRY
+			SET ANSI_WARNINGS OFF
 			MERGE INTO _Donor_Dim T
 				USING (
 						SELECT COALESCE(A.New_ConstituentDonor,A.New_OrganizationDonor) AS Donor_Key
@@ -23881,6 +23898,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 					UPDATE
 						SET T.Donor_Recurring_Total_Month_Before_Last_Ldsbc = S.Donor_Recurring_Total_Month_Before_Last_Ldsbc
 						;
+			SET ANSI_WARNINGS ON
 		END TRY 
 		BEGIN CATCH
 			SELECT @ERROR_NUMBER = (SELECT ERROR_NUMBER())
@@ -23894,6 +23912,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 		END CATCH
 		' -- Attribute_7
 	, 'BEGIN TRY
+			SET ANSI_WARNINGS OFF
 			MERGE INTO _Donor_Dim T
 				USING (
 						SELECT Donor_Key
@@ -23938,6 +23957,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 					UPDATE
 						SET T.Donor_Recurring_Gift_Upgrade_Ldsbc = S.Donor_Recurring_Gift_Upgrade_Ldsbc
 						;
+			SET ANSI_WARNINGS ON
 		END TRY 
 		BEGIN CATCH
 			SELECT @ERROR_NUMBER = (SELECT ERROR_NUMBER())
@@ -23951,6 +23971,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 		END CATCH  
 		' -- Attribute_8
 	, 'BEGIN TRY
+			SET ANSI_WARNINGS OFF
 			MERGE INTO _Donor_Dim T
 				USING (
 						SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS Donor_Key 
@@ -24059,6 +24080,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 					UPDATE
 						SET T.Donor_Total_Giving_To_Church_Current_Year_Minus_5_Amt = S.Donor_Total_Giving_To_Church_Current_Year_Minus_5_Amt
 						;
+			SET ANSI_WARNINGS ON
 		END TRY 
 		BEGIN CATCH
 			SELECT @ERROR_NUMBER = (SELECT ERROR_NUMBER())
@@ -24072,6 +24094,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 		END CATCH 
 		' -- Attribute_9
 	, 'BEGIN TRY
+			SET ANSI_WARNINGS OFF
 			MERGE INTO _Donor_Dim T
 				USING (
 						SELECT Donor_Key
@@ -24832,6 +24855,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 					UPDATE
 						SET T.Donor_Retention_Type_Code_Ldsbc_Minus_5 = S.Donor_Retention_Type_Code_Ldsbc_Minus_5
 						;
+			SET ANSI_WARNINGS ON
 		END TRY 
 		BEGIN CATCH
 			SELECT @ERROR_NUMBER = (SELECT ERROR_NUMBER())
@@ -24845,6 +24869,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 		END CATCH
 		' -- Attribute_10
 	, 'BEGIN TRY
+			SET ANSI_WARNINGS OFF
 			MERGE INTO _Donor_Dim T
 				USING (
 						SELECT A.Donor_Key
@@ -24952,6 +24977,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 					UPDATE
 						SET T.Donor_First_Gift_To_Ldsp_Amt = S.Donor_First_Gift_To_Ldsp_Amt
 						;
+			SET ANSI_WARNINGS ON
 		END TRY 
 		BEGIN CATCH
 			SELECT @ERROR_NUMBER = (SELECT ERROR_NUMBER())
@@ -24965,6 +24991,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 		END CATCH 
 		' -- Attribute_11
 	, 'BEGIN TRY
+			SET ANSI_WARNINGS OFF
 			MERGE INTO _Donor_Dim T
 				USING (
 						SELECT A.Donor_Key
@@ -25065,6 +25092,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 					UPDATE
 						SET T.Donor_First_Gift_Date_Ldsp = S.Donor_First_Gift_Date_Ldsp
 						;
+			SET ANSI_WARNINGS ON
 		END TRY 
 		BEGIN CATCH
 			SELECT @ERROR_NUMBER = (SELECT ERROR_NUMBER())
@@ -25078,6 +25106,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 		END CATCH 
 		' -- Attribute_12
 	, 'BEGIN TRY
+			SET ANSI_WARNINGS OFF
 			MERGE INTO _Donor_Dim T
 				USING (
 						SELECT COALESCE(New_RelatedConstituent, New_OrganizationId) AS Donor_Key 
@@ -25168,6 +25197,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 					UPDATE
 						SET T.Donor_Total_Giving_Current_Year_Minus_5_With_Matching = S.Donor_Total_Giving_Current_Year_Minus_5_With_Matching
 						;
+			SET ANSI_WARNINGS ON
 		END TRY 
 		BEGIN CATCH
 			SELECT @ERROR_NUMBER = (SELECT ERROR_NUMBER())
