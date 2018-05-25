@@ -17692,119 +17692,6 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 	)	
 	,
 -- --------------------------
--- _Psa_Dim
--- --------------------------
-	( 3 -- Tier
-		, ' ' -- Source_Table
-		, ' ' -- Destination_Table
-		, '_Psa_Dim' -- Ext_Table
-		, ' ' -- Dest_Create_Fields
-		, ' ' -- Dest_Insert_Fields
-		, ' ' -- Dest_Where_Statement
-		, 'ContactId  NVARCHAR(100) 
-			, Psa_Key  INT  PRIMARY KEY
-			, Psa_Group_Key  INT 
-			, Psa_Code  NVARCHAR(50) 
-			, Psa_Eff_From  DATE 
-			, Psa_Eff_Thru  DATE 
-			, Psa_Act_Src  NVARCHAR(100) 
-			, Psa_Entered_Dt  DATE 
-			, Psa_Change_Dt  DATE 
-			, Psa_Type  VARCHAR(100) 
-			, Psa_Text_Line  NVARCHAR(100)
-			' -- Ext_Create_Fields
-		, 'ContactId 
-			, Psa_Key 
-			, Psa_Group_Key 
-			, Psa_Code 
-			, Psa_Eff_From 
-			, Psa_Eff_Thru 
-			, Psa_Act_Src 
-			, Psa_Entered_Dt 
-			, Psa_Change_Dt 
-			, Psa_Type 
-			, Psa_Text_Line
-			' -- Ext_Insert_Fields
-		, 'DISTINCT CONVERT(NVARCHAR(100),A.ContactId) AS ContactId
-			, ROW_NUMBER() OVER(ORDER BY A.Psa_Key) AS Psa_Key 
-			, B.Psa_Group_Key 
-			, A.Psa_Code 
-			, CONVERT(VARCHAR(10),A.Psa_Eff_From,101) AS Psa_Eff_From 
-			, CONVERT(VARCHAR(10),A.Psa_Eff_Thru,101) AS Psa_Eff_Thru 
-			, A.Psa_Act_Src 
-			, CONVERT(VARCHAR(10),A.Psa_Entered_Dt,101) AS Psa_Entered_Dt 
-			, CONVERT(VARCHAR(10),A.Psa_Change_Dt,101) AS Psa_Change_Dt 
-			, A.Psa_Type 
-			, A.Psa_Text_Line   				
-			' -- Ext_Select_Statement
-		, 'Ext_Psa A
-				LEFT JOIN 
-						(
-						SELECT ContactId
-							, ROW_NUMBER() OVER(ORDER BY ContactId) AS Psa_Group_Key 
-							FROM
-								(SELECT DISTINCT ContactId   
-									FROM Ext_Psa) A
-						) B ON A.ContactId = B.ContactId
-			' -- Ext_From_Statement
-		, '
-			' -- Ext_Where_Statement	
-		, NULL -- Tier_3_Stage
-		, NULL -- Tier_3_Stage_DateTime
-		, NULL -- Tier_4_Stage
-		, NULL -- Tier_4_Stage_DateTime
-		, ' ' -- Ext_Select_Statement_2
-		, ' ' -- Ext_From_Statement_2
-		, ' ' -- Ext_Create_Fields_2
-		, ' ' -- Ext_Create_Fields_3
-		, ' ' -- Ext_Where_Statement_2
-		, ' ' -- Ext_Where_Statement_3
-		, NULL -- Tier_5_Stage
-		, NULL -- Tier_5_Stage_DateTime
-		, NULL -- Tier_6_Stage
-		, NULL -- Tier_6_Stage_DateTime
-		, NULL -- Tier_7_Stage
-		, NULL -- Tier_7_Stage_DateTime
-		, NULL -- Tier_8_Stage
-		, NULL -- Tier_8_Stage_DateTime
-		, NULL -- Tier_9_Stage
-		, NULL -- Tier_9_Stage_DateTime
-		, 1
-		, NULL -- Extract_Stage
-		, NULL -- Extract_Stage_DateTime
-		, NULL -- Coupler_Stage
-		, NULL -- Coupler_Stage_DateTime
-		, NULL -- Tier_2_Stage
-		, NULL -- Tier_2_Stage_DateTime
-		, GETDATE()
-		, NULL
-		, NULL -- Ext_Select_Statement_3
-		, NULL -- Ext_Select_Statement_4
-		, NULL -- Ext_Select_Statement_5
-		, NULL -- Ext_Select_Statement_6
-		, NULL -- Ext_Select_Statement_7
-		, NULL -- Ext_From_Statement_3
-		, NULL -- Ext_From_Statement_4
-		, NULL -- Ext_From_Statement_5
-		, NULL -- Ext_From_Statement_6
-		, NULL -- Ext_From_Statement_7
-		, NULL -- Ext_Where_Statement_4
-		, NULL -- Ext_Where_Statement_5
-		, NULL -- Ext_Where_Statement_6
-		, NULL -- Ext_Where_Statement_7
-		, NULL -- Extra_1
-		, NULL -- Extra_2
-		, NULL -- Extra_3
-		, NULL -- Extra_4
-		, NULL -- Extra_5
-		, NULL -- Extra_6
-		, NULL -- Extra_7
-		, NULL -- Extra_8
-		, NULL -- Extra_9
-		, NULL -- Extra_10
-	)
-,
--- --------------------------
 -- _Hier_Dim
 -- --------------------------
 	( 3 -- Tier
@@ -22196,7 +22083,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Dest_Create_Fields
 		, ' ' -- Dest_Insert_Fields
 		, ' ' -- Dest_Where_Statement
-		, 'Donor_Key NVARCHAR(100)
+		, 'Donor_Key NVARCHAR(100) PRIMARY KEY
 			, Total_Giving_With_Matching_Current_Year MONEY
 			, Total_Giving_With_Matching_Current_Year_Minus_1 MONEY
 			, Total_Giving_With_Matching_Current_Year_Minus_2 MONEY
@@ -22321,7 +22208,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 				LEFT JOIN _Gift_ C ON B.New_RelatedGift = C.New_GiftId
 				LEFT JOIN Ext_Institution D ON C.New_InstitutionalHierarchyId = D.New_InstitutionId
 			' -- Ext_From_Statement
-		, 'GROUP BY A.Donor_Key 
+		, 'AND A.Donor_Key IS NOT NULL
+			GROUP BY A.Donor_Key 
 			' -- Ext_Where_Statement	
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
@@ -22522,6 +22410,403 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 							AND D.New_Inst = [Church]
 							THEN New_CreditAmount
 						ELSE NULL END) AS Total_Giving_With_Matching_Current_Year_Minus_5_Church
+			' -- Ext_Select_Statement_5
+		, NULL -- Ext_Select_Statement_6
+		, NULL -- Ext_Select_Statement_7
+		, NULL -- Ext_From_Statement_3
+		, NULL -- Ext_From_Statement_4
+		, NULL -- Ext_From_Statement_5
+		, NULL -- Ext_From_Statement_6
+		, NULL -- Ext_From_Statement_7
+		, NULL -- Ext_Where_Statement_4
+		, NULL -- Ext_Where_Statement_5
+		, NULL -- Ext_Where_Statement_6
+		, NULL -- Ext_Where_Statement_7
+		, NULL -- Extra_1
+		, NULL -- Extra_2
+		, NULL -- Extra_3
+		, NULL -- Extra_4
+		, NULL -- Extra_5
+		, NULL -- Extra_6
+		, NULL -- Extra_7
+		, NULL -- Extra_8
+		, NULL -- Extra_9
+		, NULL -- Extra_10
+	)
+,
+-- --------------------------
+-- _Total_Giving_Dim
+-- --------------------------
+	( 4 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Total_Giving_Dim' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Donor_Key NVARCHAR(100) PRIMARY KEY
+			, Total_Giving_Current_Year MONEY
+			, Total_Giving_Current_Year_Minus_1 MONEY
+			, Total_Giving_Current_Year_Minus_2 MONEY
+			, Total_Giving_Current_Year_Minus_3 MONEY
+			, Total_Giving_Current_Year_Minus_4 MONEY
+			, Total_Giving_Current_Year_Minus_5 MONEY
+			, Total_Giving_Current_Year_Byu MONEY
+			, Total_Giving_Current_Year_Minus_1_Byu MONEY
+			, Total_Giving_Current_Year_Minus_2_Byu MONEY
+			, Total_Giving_Current_Year_Minus_3_Byu MONEY
+			, Total_Giving_Current_Year_Minus_4_Byu MONEY
+			, Total_Giving_Current_Year_Minus_5_Byu MONEY
+			, Total_Giving_Current_Year_Byui MONEY
+			, Total_Giving_Current_Year_Minus_1_Byui MONEY
+			, Total_Giving_Current_Year_Minus_2_Byui MONEY
+			, Total_Giving_Current_Year_Minus_3_Byui MONEY
+			, Total_Giving_Current_Year_Minus_4_Byui MONEY
+			, Total_Giving_Current_Year_Minus_5_Byui MONEY
+			, Total_Giving_Current_Year_Byuh MONEY
+			, Total_Giving_Current_Year_Minus_1_Byuh MONEY
+			, Total_Giving_Current_Year_Minus_2_Byuh MONEY
+			, Total_Giving_Current_Year_Minus_3_Byuh MONEY
+			, Total_Giving_Current_Year_Minus_4_Byuh MONEY
+			, Total_Giving_Current_Year_Minus_5_Byuh MONEY
+			, Total_Giving_Current_Year_Ldsbc MONEY
+			, Total_Giving_Current_Year_Minus_1_Ldsbc MONEY
+			, Total_Giving_Current_Year_Minus_2_Ldsbc MONEY
+			, Total_Giving_Current_Year_Minus_3_Ldsbc MONEY
+			, Total_Giving_Current_Year_Minus_4_Ldsbc MONEY
+			, Total_Giving_Current_Year_Minus_5_Ldsbc MONEY
+			, Total_Giving_Current_Year_Church MONEY
+			, Total_Giving_Current_Year_Minus_1_Church MONEY
+			, Total_Giving_Current_Year_Minus_2_Church MONEY
+			, Total_Giving_Current_Year_Minus_3_Church MONEY
+			, Total_Giving_Current_Year_Minus_4_Church MONEY
+			, Total_Giving_Current_Year_Minus_5_Church MONEY
+		' -- Ext_Create_Fields
+		, 'Donor_Key
+			, Total_Giving_Current_Year
+			, Total_Giving_Current_Year_Minus_1
+			, Total_Giving_Current_Year_Minus_2
+			, Total_Giving_Current_Year_Minus_3
+			, Total_Giving_Current_Year_Minus_4
+			, Total_Giving_Current_Year_Minus_5
+			, Total_Giving_Current_Year_Byu
+			, Total_Giving_Current_Year_Minus_1_Byu
+			, Total_Giving_Current_Year_Minus_2_Byu
+			, Total_Giving_Current_Year_Minus_3_Byu
+			, Total_Giving_Current_Year_Minus_4_Byu
+			, Total_Giving_Current_Year_Minus_5_Byu
+			, Total_Giving_Current_Year_Byui
+			, Total_Giving_Current_Year_Minus_1_Byui
+			, Total_Giving_Current_Year_Minus_2_Byui
+			, Total_Giving_Current_Year_Minus_3_Byui
+			, Total_Giving_Current_Year_Minus_4_Byui
+			, Total_Giving_Current_Year_Minus_5_Byui
+			, Total_Giving_Current_Year_Byuh
+			, Total_Giving_Current_Year_Minus_1_Byuh
+			, Total_Giving_Current_Year_Minus_2_Byuh
+			, Total_Giving_Current_Year_Minus_3_Byuh
+			, Total_Giving_Current_Year_Minus_4_Byuh
+			, Total_Giving_Current_Year_Minus_5_Byuh
+			, Total_Giving_Current_Year_Ldsbc
+			, Total_Giving_Current_Year_Minus_1_Ldsbc
+			, Total_Giving_Current_Year_Minus_2_Ldsbc
+			, Total_Giving_Current_Year_Minus_3_Ldsbc
+			, Total_Giving_Current_Year_Minus_4_Ldsbc
+			, Total_Giving_Current_Year_Minus_5_Ldsbc
+			, Total_Giving_Current_Year_Church
+			, Total_Giving_Current_Year_Minus_1_Church
+			, Total_Giving_Current_Year_Minus_2_Church
+			, Total_Giving_Current_Year_Minus_3_Church
+			, Total_Giving_Current_Year_Minus_4_Church
+			, Total_Giving_Current_Year_Minus_5_Church 
+		' -- Ext_Insert_Fields
+		, 'A.Donor_Key 
+			, SUM(CASE WHEN CONVERT(DATE,C.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-1,0),112) 
+																	AND CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-0,-1),112) 
+							AND B.Plus_Type != 100000001 
+							AND B.Plus_SubType != 100000002
+							THEN New_CreditAmount
+						ELSE NULL END) AS Total_Giving_Current_Year
+			, SUM(CASE WHEN CONVERT(DATE,C.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-2,0),112) 
+																	AND CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-1,-1),112) 
+							AND B.Plus_Type != 100000001 
+							AND B.Plus_SubType != 100000002  
+							THEN New_CreditAmount
+						ELSE NULL END) AS Total_Giving_Current_Year_Minus_1
+			, SUM(CASE WHEN CONVERT(DATE,C.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-3,0),112) 
+																	AND CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-2,-1),112) 
+							AND B.Plus_Type != 100000001 
+							AND B.Plus_SubType != 100000002 
+							THEN New_CreditAmount
+						ELSE NULL END) AS Total_Giving_Current_Year_Minus_2
+			, SUM(CASE WHEN CONVERT(DATE,C.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-4,0),112) 
+																	AND CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-3,-1),112) 
+							AND B.Plus_Type != 100000001 
+							AND B.Plus_SubType != 100000002  
+							THEN New_CreditAmount
+						ELSE NULL END) AS Total_Giving_Current_Year_Minus_3
+			, SUM(CASE WHEN CONVERT(DATE,C.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-5,0),112) 
+																	AND CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-4,-1),112) 
+							AND B.Plus_Type != 100000001 
+							AND B.Plus_SubType != 100000002
+							THEN New_CreditAmount
+						ELSE NULL END) AS Total_Giving_Current_Year_Minus_4
+			, SUM(CASE WHEN CONVERT(DATE,C.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-6,0),112) 
+																	AND CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-5,-1),112) 
+							AND B.Plus_Type != 100000001 
+							AND B.Plus_SubType != 100000002
+							THEN New_CreditAmount
+						ELSE NULL END) AS Total_Giving_Current_Year_Minus_5
+			, SUM(CASE WHEN CONVERT(DATE,C.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-1,0),112) 
+																	AND CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-0,-1),112) 
+							AND B.Plus_Type != 100000001 
+							AND B.Plus_SubType != 100000002 
+							AND D.New_Inst = [BYU]
+							THEN New_CreditAmount
+						ELSE NULL END) AS Total_Giving_Current_Year_Byu
+			, SUM(CASE WHEN CONVERT(DATE,C.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-2,0),112) 
+																	AND CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-1,-1),112) 
+							AND B.Plus_Type != 100000001 
+							AND B.Plus_SubType != 100000002 
+							AND D.New_Inst = [BYU]
+							THEN New_CreditAmount
+						ELSE NULL END) AS Total_Giving_Current_Year_Minus_1_Byu 
+			' -- Ext_Select_Statement
+		, '_All_Donors_ A
+				LEFT JOIN _Gift_Credit_ B ON A.Donor_Key = CONVERT(NVARCHAR(100),COALESCE(B.New_RelatedConstituent, B.New_OrganizationId))
+				LEFT JOIN _Gift_ C ON B.New_RelatedGift = C.New_GiftId
+				LEFT JOIN Ext_Institution D ON C.New_InstitutionalHierarchyId = D.New_InstitutionId
+			' -- Ext_From_Statement
+		, 'AND A.Donor_Key IS NOT NULL 
+			GROUP BY A.Donor_Key 
+			' -- Ext_Where_Statement	
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ', SUM(CASE WHEN CONVERT(DATE,C.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-3,0),112) 
+																	AND CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-2,-1),112) 
+							AND B.Plus_Type != 100000001 
+							AND B.Plus_SubType != 100000002 
+							AND D.New_Inst = [BYU] 
+							THEN New_CreditAmount
+						ELSE NULL END) AS Total_Giving_Current_Year_Minus_2_Byu
+			, SUM(CASE WHEN CONVERT(DATE,C.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-4,0),112) 
+																	AND CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-3,-1),112) 
+							AND B.Plus_Type != 100000001 
+							AND B.Plus_SubType != 100000002 
+							AND D.New_Inst = [BYU] 
+							THEN New_CreditAmount
+						ELSE NULL END) AS Total_Giving_Current_Year_Minus_3_Byu
+			, SUM(CASE WHEN CONVERT(DATE,C.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-5,0),112) 
+																	AND CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-4,-1),112)
+							AND B.Plus_Type != 100000001 
+							AND B.Plus_SubType != 100000002 
+							AND D.New_Inst = [BYU] 
+							THEN New_CreditAmount
+						ELSE NULL END) AS Total_Giving_Current_Year_Minus_4_Byu
+			, SUM(CASE WHEN CONVERT(DATE,C.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-6,0),112) 
+																	AND CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-5,-1),112)
+							AND B.Plus_Type != 100000001 
+							AND B.Plus_SubType != 100000002  
+							AND D.New_Inst = [BYU]
+							THEN New_CreditAmount
+						ELSE NULL END) AS Total_Giving_Current_Year_Minus_5_Byu
+			, SUM(CASE WHEN CONVERT(DATE,C.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-1,0),112) 
+																	AND CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-0,-1),112) 
+							AND B.Plus_Type != 100000001 
+							AND B.Plus_SubType != 100000002  
+							AND D.New_Inst = [BYUI]
+							THEN New_CreditAmount
+						ELSE NULL END) AS Total_Giving_Current_Year_Byui
+			, SUM(CASE WHEN CONVERT(DATE,C.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-2,0),112) 
+																	AND CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-1,-1),112) 
+							AND B.Plus_Type != 100000001 
+							AND B.Plus_SubType != 100000002 
+							AND D.New_Inst = [BYUI]
+							THEN New_CreditAmount
+						ELSE NULL END) AS Total_Giving_Current_Year_Minus_1_Byui
+			, SUM(CASE WHEN CONVERT(DATE,C.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-3,0),112) 
+																	AND CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-2,-1),112)
+							AND B.Plus_Type != 100000001 
+							AND B.Plus_SubType != 100000002 
+							AND D.New_Inst = [BYUI] 
+							THEN New_CreditAmount
+						ELSE NULL END) AS Total_Giving_Current_Year_Minus_2_Byui
+			, SUM(CASE WHEN CONVERT(DATE,C.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-4,0),112)
+																	AND CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-3,-1),112) 
+							AND B.Plus_Type != 100000001 
+							AND B.Plus_SubType != 100000002 
+							AND D.New_Inst = [BYUI] 
+							THEN New_CreditAmount
+						ELSE NULL END) AS Total_Giving_With_Matching_Current_Year_Minus_3_Byui 
+			' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
+		, ' ' -- Ext_Create_Fields_2
+		, ' ' -- Ext_Create_Fields_3
+		, ' ' -- Ext_Where_Statement_2
+		, ' ' -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+		, ', SUM(CASE WHEN CONVERT(DATE,C.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-5,0),112)
+																	AND CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-4,-1),112)
+							AND B.Plus_Type != 100000001 
+							AND B.Plus_SubType != 100000002 
+							AND D.New_Inst = [BYUI] 
+							THEN New_CreditAmount
+						ELSE NULL END) AS Total_Giving_Current_Year_Minus_4_Byui
+			, SUM(CASE WHEN CONVERT(DATE,C.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-6,0),112)
+																	AND CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-5,-1),112)
+							AND B.Plus_Type != 100000001 
+							AND B.Plus_SubType != 100000002  
+							AND D.New_Inst = [BYUI]
+							THEN New_CreditAmount
+						ELSE NULL END) AS Total_Giving_Current_Year_Minus_5_Byui
+			, SUM(CASE WHEN CONVERT(DATE,C.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-1,0),112)
+																	AND CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-0,-1),112)
+							AND B.Plus_Type != 100000001 
+							AND B.Plus_SubType != 100000002 
+							AND D.New_Inst = [BYUH]
+							THEN New_CreditAmount
+						ELSE NULL END) AS Total_Giving_Current_Year_Byuh
+			, SUM(CASE WHEN CONVERT(DATE,C.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-2,0),112)
+																	AND CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-1,-1),112)
+							AND B.Plus_Type != 100000001 
+							AND B.Plus_SubType != 100000002  
+							AND D.New_Inst = [BYUH]
+							THEN New_CreditAmount
+						ELSE NULL END) AS Total_Giving_Current_Year_Minus_1_Byuh
+			, SUM(CASE WHEN CONVERT(DATE,C.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-3,0),112)
+																	AND CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-2,-1),112)
+							AND B.Plus_Type != 100000001 
+							AND B.Plus_SubType != 100000002 
+							AND D.New_Inst = [BYUH] 
+							THEN New_CreditAmount
+						ELSE NULL END) AS Total_Giving_Current_Year_Minus_2_Byuh
+			, SUM(CASE WHEN CONVERT(DATE,C.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-4,0),112)
+																	AND CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-3,-1),112)
+							AND B.Plus_Type != 100000001 
+							AND B.Plus_SubType != 100000002 
+							AND D.New_Inst = [BYUH] 
+							THEN New_CreditAmount
+						ELSE NULL END) AS Total_Giving_Current_Year_Minus_3_Byuh
+			, SUM(CASE WHEN CONVERT(DATE,C.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-5,0),112)
+																	AND CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-4,-1),112)
+							AND B.Plus_Type != 100000001 
+							AND B.Plus_SubType != 100000002 
+							AND D.New_Inst = [BYUH] 
+							THEN New_CreditAmount
+						ELSE NULL END) AS Total_Giving_Current_Year_Minus_4_Byuh
+			, SUM(CASE WHEN CONVERT(DATE,C.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-6,0),112)
+																	AND CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-5,-1),112)
+							AND B.Plus_Type != 100000001 
+							AND B.Plus_SubType != 100000002  
+							AND D.New_Inst = [BYUH]
+							THEN New_CreditAmount
+						ELSE NULL END) AS Total_Giving_Current_Year_Minus_5_Byuh
+			' -- Ext_Select_Statement_3
+		, ', SUM(CASE WHEN CONVERT(DATE,C.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-1,0),112)
+															AND CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-0,-1),112)
+							AND B.Plus_Type != 100000001 
+							AND B.Plus_SubType != 100000002  
+							AND D.New_Inst = [LDSBC]
+							THEN New_CreditAmount
+						ELSE NULL END) AS Total_Giving_Current_Year_Ldsbc
+			, SUM(CASE WHEN CONVERT(DATE,C.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-2,0),112) 
+																	AND CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-1,-1),112)
+							AND B.Plus_Type != 100000001 
+							AND B.Plus_SubType != 100000002  
+							AND D.New_Inst = [LDSBC]
+							THEN New_CreditAmount
+						ELSE NULL END) AS Total_Giving_Current_Year_Minus_1_Ldsbc
+			, SUM(CASE WHEN CONVERT(DATE,C.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-3,0),112)
+																	AND CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-2,-1),112)
+							AND B.Plus_Type != 100000001 
+							AND B.Plus_SubType != 100000002 
+							AND D.New_Inst = [LDSBC] 
+							THEN New_CreditAmount
+						ELSE NULL END) AS Total_Giving_Current_Year_Minus_2_Ldsbc
+			, SUM(CASE WHEN CONVERT(DATE,C.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-4,0),112) 
+																	AND CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-3,-1),112) 
+							AND B.Plus_Type != 100000001 
+							AND B.Plus_SubType != 100000002 
+							AND D.New_Inst = [LDSBC] 
+							THEN New_CreditAmount
+						ELSE NULL END) AS Total_Giving_Current_Year_Minus_3_Ldsbc
+			, SUM(CASE WHEN CONVERT(DATE,C.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-5,0),112) 
+																	AND CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-4,-1),112)
+							AND B.Plus_Type != 100000001 
+							AND B.Plus_SubType != 100000002 
+							AND D.New_Inst = [LDSBC] 
+							THEN New_CreditAmount
+						ELSE NULL END) AS Total_Giving_Current_Year_Minus_4_Ldsbc
+			, SUM(CASE WHEN CONVERT(DATE,C.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-6,0),112) 
+																	AND CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-5,-1),112)
+							AND B.Plus_Type != 100000001 
+							AND B.Plus_SubType != 100000002  
+							AND D.New_Inst = [LDSBC]
+							THEN New_CreditAmount
+						ELSE NULL END) AS Total_Giving_Current_Year_Minus_5_Ldsbc
+			, SUM(CASE WHEN CONVERT(DATE,C.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-1,0),112) 
+																	AND CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-0,-1),112) 
+							AND B.Plus_Type != 100000001 
+							AND B.Plus_SubType != 100000002  
+							AND D.New_Inst = [Church]
+							THEN New_CreditAmount
+						ELSE NULL END) AS Total_Giving_Current_Year_Church
+			, SUM(CASE WHEN CONVERT(DATE,C.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-2,0),112)
+																	AND CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-1,-1),112)
+							AND B.Plus_Type != 100000001 
+							AND B.Plus_SubType != 100000002  
+							AND D.New_Inst = [Church]
+							THEN New_CreditAmount
+						ELSE NULL END) AS Total_Giving_Current_Year_Minus_1_Church
+			' -- Ext_Select_Statement_4
+		, ', SUM(CASE WHEN CONVERT(DATE,C.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-3,0),112)
+															AND CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-2,-1),112) 
+							AND B.Plus_Type != 100000001 
+							AND B.Plus_SubType != 100000002
+							AND D.New_Inst = [Church] 
+							THEN New_CreditAmount
+						ELSE NULL END) AS Total_Giving_Current_Year_Minus_2_Church
+			, SUM(CASE WHEN CONVERT(DATE,C.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-4,0),112) 
+																	AND CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-3,-1),112) 
+							AND B.Plus_Type != 100000001 
+							AND B.Plus_SubType != 100000002 
+							AND D.New_Inst = [Church] 
+							THEN New_CreditAmount
+						ELSE NULL END) AS Total_Giving_Current_Year_Minus_3_Church
+			, SUM(CASE WHEN CONVERT(DATE,C.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-5,0),112) 
+																	AND CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-4,-1),112)
+							AND B.Plus_Type != 100000001 
+							AND B.Plus_SubType != 100000002 
+							AND D.New_Inst = [Church] 
+							THEN New_CreditAmount
+						ELSE NULL END) AS Total_Giving_Current_Year_Minus_4_Church
+			, SUM(CASE WHEN CONVERT(DATE,C.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-6,0),112)
+																	AND CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-5,-1),112) 
+							AND B.Plus_Type != 100000001 
+							AND B.Plus_SubType != 100000002 
+							AND D.New_Inst = [Church]
+							THEN New_CreditAmount
+						ELSE NULL END) AS Total_Giving_Current_Year_Minus_5_Church
 			' -- Ext_Select_Statement_5
 		, NULL -- Ext_Select_Statement_6
 		, NULL -- Ext_Select_Statement_7
