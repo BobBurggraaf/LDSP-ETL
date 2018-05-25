@@ -9593,8 +9593,6 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 					VALUES(NULL,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 				INSERT INTO [LDSPhilanthropiesDW].[dbo]._Phone_Bridge
 					VALUES(NULL,0,0);
-				INSERT INTO [LDSPhilanthropiesDW].[dbo]._Psa_Bridge
-					VALUES(NULL,0,0);
 				INSERT INTO [LDSPhilanthropiesDW].[dbo]._Connection_Dim
 					VALUES(NULL,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 				INSERT INTO [LDSPhilanthropiesDW].[dbo]._Connection_Bridge
