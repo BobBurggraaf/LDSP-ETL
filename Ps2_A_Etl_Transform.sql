@@ -23323,12 +23323,220 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 			, @ErrorNumber = @ERROR_NUMBER, @ErrorSeverity = @ERROR_SEVERITY, @ErrorState = @ERROR_STATE, @ErrorProcedure = @ERROR_PROCEDURE, @ErrorLine = @ERROR_LINE, @ErrorMessage = @ERROR_MESSAGE;  
 		END CATCH  
 		' -- Attribute_13
-	, 'EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''_Merge_Into_Donor_Dim_2'', @Alpha_Step_Number = ''164H'', @Alpha_Step_Name = ''End'', @Alpha_Result = 1; 
+	, 'BEGIN TRY
+				SET ANSI_WARNINGS OFF
+				MERGE INTO _Donor_Dim T
+					USING (
+							SELECT Donor_Key
+								, Donor_Retention_Type_Code_Byu
+								FROM
+									(SELECT Donor_Key
+										, Donor_Retention_Type_Code_Byu
+										, ROW_NUMBER() OVER(PARTITION BY Donor_Key ORDER BY Donor_Retention_Type_Code_Byu) AS RowNum
+										FROM
+											(SELECT A.Donor_Key
+												, CONVERT(NVARCHAR(2),B.Plus_I5LegacyDonorType) AS Donor_Retention_Type_Code_Byu
+												FROM
+													(SELECT COALESCE(A.Plus_Constituent,A.Plus_Institution) AS Donor_Key
+														, MIN(A.ModifiedOn) AS ModifiedOn -- Earliest Date
+														FROM Ext_Donor_Score A
+															INNER JOIN Ext_Institution B ON A.Plus_Institution = B.New_InstitutionId
+														WHERE 1 = 1
+															AND YEAR(A.Plus_I5LegacyDonorTypeDate) = YEAR(GETDATE())
+															AND B.New_Inst = ''BYU''
+															AND A.StatusCode = 1 -- Active
+														GROUP BY COALESCE(A.Plus_Constituent,A.Plus_Institution)
+													) A
+													INNER JOIN Ext_Donor_Score B ON A.Donor_Key = COALESCE(B.Plus_Constituent,B.Plus_Institution)
+																						AND A.ModifiedOn = B.ModifiedOn
+													INNER JOIN Ext_Institution C ON B.Plus_Institution = C.New_InstitutionId
+												WHERE 1 = 1
+													AND YEAR(B.Plus_I5LegacyDonorTypeDate) = YEAR(GETDATE())
+													AND C.New_Inst = ''BYU''
+													AND B.StatusCode = 1 -- Active
+											) A
+									) A
+								WHERE 1 = 1
+									AND RowNum = 1
+							) S ON T.Donor_Key = S.Donor_Key
+						WHEN MATCHED THEN 
+							UPDATE
+								SET T.Donor_Retention_Type_Code_Byu = S.Donor_Retention_Type_Code_Byu
+								;
+				SET ANSI_WARNINGS ON
+			END TRY 
+			BEGIN CATCH
+				SELECT @ERROR_NUMBER = (SELECT ERROR_NUMBER())
+				SELECT @ERROR_SEVERITY = (SELECT ERROR_SEVERITY())
+				SELECT @ERROR_STATE = (SELECT ERROR_STATE())
+				SELECT @ERROR_PROCEDURE = (SELECT ERROR_PROCEDURE())
+				SELECT @ERROR_LINE = (SELECT ERROR_LINE())
+				SELECT @ERROR_MESSAGE = (SELECT ERROR_MESSAGE())
+				EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''Donor_Retention_Type_Code_Byu'', @Alpha_Step_Number = ''141X'', @Alpha_Step_Name = ''Donor_Retention_Type_Code_Byu - Error'', @Alpha_Result = 0
+				, @ErrorNumber = @ERROR_NUMBER, @ErrorSeverity = @ERROR_SEVERITY, @ErrorState = @ERROR_STATE, @ErrorProcedure = @ERROR_PROCEDURE, @ErrorLine = @ERROR_LINE, @ErrorMessage = @ERROR_MESSAGE;  
+			END CATCH 
 		' -- Attribute_14
-	, ' ' -- Attribute_15
-	, ' ' -- Attribute_16
-	, ' ' -- Attribute_17
-	, ' ' -- Attribute_18
+	, 'BEGIN TRY
+				SET ANSI_WARNINGS OFF
+				MERGE INTO _Donor_Dim T
+					USING (
+							SELECT Donor_Key
+								, Donor_Retention_Type_Code_Byui
+								FROM
+									(SELECT Donor_Key
+										, Donor_Retention_Type_Code_Byui
+										, ROW_NUMBER() OVER(PARTITION BY Donor_Key ORDER BY Donor_Retention_Type_Code_Byui) AS RowNum
+										FROM
+											(SELECT A.Donor_Key
+												, CONVERT(NVARCHAR(2),B.Plus_I5LegacyDonorType) AS Donor_Retention_Type_Code_Byui
+												FROM
+													(SELECT COALESCE(A.Plus_Constituent,A.Plus_Institution) AS Donor_Key
+														, MIN(A.ModifiedOn) AS ModifiedOn -- Earliest Date
+														FROM Ext_Donor_Score A
+															INNER JOIN Ext_Institution B ON A.Plus_Institution = B.New_InstitutionId
+														WHERE 1 = 1
+															AND YEAR(A.Plus_I5LegacyDonorTypeDate) = YEAR(GETDATE())
+															AND B.New_Inst = ''BYUI''
+															AND A.StatusCode = 1 -- Active
+														GROUP BY COALESCE(A.Plus_Constituent,A.Plus_Institution)
+													) A
+													INNER JOIN Ext_Donor_Score B ON A.Donor_Key = COALESCE(B.Plus_Constituent,B.Plus_Institution)
+																						AND A.ModifiedOn = B.ModifiedOn
+													INNER JOIN Ext_Institution C ON B.Plus_Institution = C.New_InstitutionId
+												WHERE 1 = 1
+													AND YEAR(B.Plus_I5LegacyDonorTypeDate) = YEAR(GETDATE())
+													AND C.New_Inst = ''BYUI''
+													AND B.StatusCode = 1 -- Active
+											) A
+									) A
+								WHERE 1 = 1
+									AND RowNum = 1
+							) S ON T.Donor_Key = S.Donor_Key
+						WHEN MATCHED THEN 
+							UPDATE
+								SET T.Donor_Retention_Type_Code_Byui = S.Donor_Retention_Type_Code_Byui
+								;
+				SET ANSI_WARNINGS ON
+			END TRY 
+			BEGIN CATCH
+				SELECT @ERROR_NUMBER = (SELECT ERROR_NUMBER())
+				SELECT @ERROR_SEVERITY = (SELECT ERROR_SEVERITY())
+				SELECT @ERROR_STATE = (SELECT ERROR_STATE())
+				SELECT @ERROR_PROCEDURE = (SELECT ERROR_PROCEDURE())
+				SELECT @ERROR_LINE = (SELECT ERROR_LINE())
+				SELECT @ERROR_MESSAGE = (SELECT ERROR_MESSAGE())
+				EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''Donor_Retention_Type_Code_Byui'', @Alpha_Step_Number = ''142X'', @Alpha_Step_Name = ''Donor_Retention_Type_Code_Byui - Error'', @Alpha_Result = 0
+				, @ErrorNumber = @ERROR_NUMBER, @ErrorSeverity = @ERROR_SEVERITY, @ErrorState = @ERROR_STATE, @ErrorProcedure = @ERROR_PROCEDURE, @ErrorLine = @ERROR_LINE, @ErrorMessage = @ERROR_MESSAGE;  
+			END CATCH 
+		' -- Attribute_15
+	, 'BEGIN TRY
+				SET ANSI_WARNINGS OFF
+				MERGE INTO _Donor_Dim T
+					USING (
+							SELECT Donor_Key
+								, Donor_Retention_Type_Code_Byuh
+								FROM
+									(SELECT Donor_Key
+										, Donor_Retention_Type_Code_Byuh
+										, ROW_NUMBER() OVER(PARTITION BY Donor_Key ORDER BY Donor_Retention_Type_Code_Byuh) AS RowNum
+										FROM
+											(SELECT A.Donor_Key
+												, CONVERT(NVARCHAR(2),B.Plus_I5LegacyDonorType) AS Donor_Retention_Type_Code_Byuh
+												FROM
+													(SELECT COALESCE(A.Plus_Constituent,A.Plus_Institution) AS Donor_Key
+														, MIN(A.ModifiedOn) AS ModifiedOn -- Earliest Date
+														FROM Ext_Donor_Score A
+															INNER JOIN Ext_Institution B ON A.Plus_Institution = B.New_InstitutionId
+														WHERE 1 = 1
+															AND YEAR(A.Plus_I5LegacyDonorTypeDate) = YEAR(GETDATE())
+															AND B.New_Inst = ''BYUH''
+															AND A.StatusCode = 1 -- Active
+														GROUP BY COALESCE(A.Plus_Constituent,A.Plus_Institution)
+													) A
+													INNER JOIN Ext_Donor_Score B ON A.Donor_Key = COALESCE(B.Plus_Constituent,B.Plus_Institution)
+																						AND A.ModifiedOn = B.ModifiedOn
+													INNER JOIN Ext_Institution C ON B.Plus_Institution = C.New_InstitutionId
+												WHERE 1 = 1
+													AND YEAR(B.Plus_I5LegacyDonorTypeDate) = YEAR(GETDATE())
+													AND C.New_Inst = ''BYUH''
+													AND B.StatusCode = 1 -- Active
+											) A
+									) A
+								WHERE 1 = 1
+									AND RowNum = 1
+							) S ON T.Donor_Key = S.Donor_Key
+						WHEN MATCHED THEN 
+							UPDATE
+								SET T.Donor_Retention_Type_Code_Byuh = S.Donor_Retention_Type_Code_Byuh
+								;
+				SET ANSI_WARNINGS ON
+			END TRY 
+			BEGIN CATCH
+				SELECT @ERROR_NUMBER = (SELECT ERROR_NUMBER())
+				SELECT @ERROR_SEVERITY = (SELECT ERROR_SEVERITY())
+				SELECT @ERROR_STATE = (SELECT ERROR_STATE())
+				SELECT @ERROR_PROCEDURE = (SELECT ERROR_PROCEDURE())
+				SELECT @ERROR_LINE = (SELECT ERROR_LINE())
+				SELECT @ERROR_MESSAGE = (SELECT ERROR_MESSAGE())
+				EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''Donor_Retention_Type_Code_Byuh'', @Alpha_Step_Number = ''143X'', @Alpha_Step_Name = ''Donor_Retention_Type_Code_Byuh - Error'', @Alpha_Result = 0
+				, @ErrorNumber = @ERROR_NUMBER, @ErrorSeverity = @ERROR_SEVERITY, @ErrorState = @ERROR_STATE, @ErrorProcedure = @ERROR_PROCEDURE, @ErrorLine = @ERROR_LINE, @ErrorMessage = @ERROR_MESSAGE;  
+			END CATCH 
+		' -- Attribute_16
+	, 'BEGIN TRY
+				SET ANSI_WARNINGS OFF
+				MERGE INTO _Donor_Dim T
+					USING (
+							SELECT Donor_Key
+								, Donor_Retention_Type_Code_Ldsbc
+								FROM
+									(SELECT Donor_Key
+										, Donor_Retention_Type_Code_Ldsbc
+										, ROW_NUMBER() OVER(PARTITION BY Donor_Key ORDER BY Donor_Retention_Type_Code_Ldsbc) AS RowNum
+										FROM
+											(SELECT A.Donor_Key
+												, CONVERT(NVARCHAR(2),B.Plus_I5LegacyDonorType) AS Donor_Retention_Type_Code_Ldsbc
+												FROM
+													(SELECT COALESCE(A.Plus_Constituent,A.Plus_Institution) AS Donor_Key
+														, MIN(A.ModifiedOn) AS ModifiedOn -- Earliest Date
+														FROM Ext_Donor_Score A
+															INNER JOIN Ext_Institution B ON A.Plus_Institution = B.New_InstitutionId
+														WHERE 1 = 1
+															AND YEAR(A.Plus_I5LegacyDonorTypeDate) = YEAR(GETDATE())
+															AND B.New_Inst = ''LDSBC''
+															AND A.StatusCode = 1 -- Active
+														GROUP BY COALESCE(A.Plus_Constituent,A.Plus_Institution)
+													) A
+													INNER JOIN Ext_Donor_Score B ON A.Donor_Key = COALESCE(B.Plus_Constituent,B.Plus_Institution)
+																						AND A.ModifiedOn = B.ModifiedOn
+													INNER JOIN Ext_Institution C ON B.Plus_Institution = C.New_InstitutionId
+												WHERE 1 = 1
+													AND YEAR(B.Plus_I5LegacyDonorTypeDate) = YEAR(GETDATE())
+													AND C.New_Inst = ''LDSBC''
+													AND B.StatusCode = 1 -- Active
+											) A
+									) A
+								WHERE 1 = 1
+									AND RowNum = 1
+							) S ON T.Donor_Key = S.Donor_Key
+						WHEN MATCHED THEN 
+							UPDATE
+								SET T.Donor_Retention_Type_Code_Ldsbc = S.Donor_Retention_Type_Code_Ldsbc
+								;
+				SET ANSI_WARNINGS ON
+			END TRY 
+			BEGIN CATCH
+				SELECT @ERROR_NUMBER = (SELECT ERROR_NUMBER())
+				SELECT @ERROR_SEVERITY = (SELECT ERROR_SEVERITY())
+				SELECT @ERROR_STATE = (SELECT ERROR_STATE())
+				SELECT @ERROR_PROCEDURE = (SELECT ERROR_PROCEDURE())
+				SELECT @ERROR_LINE = (SELECT ERROR_LINE())
+				SELECT @ERROR_MESSAGE = (SELECT ERROR_MESSAGE())
+				EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''Donor_Retention_Type_Code_Ldsbc'', @Alpha_Step_Number = ''144X'', @Alpha_Step_Name = ''Donor_Retention_Type_Code_Ldsbc - Error'', @Alpha_Result = 0
+				, @ErrorNumber = @ERROR_NUMBER, @ErrorSeverity = @ERROR_SEVERITY, @ErrorState = @ERROR_STATE, @ErrorProcedure = @ERROR_PROCEDURE, @ErrorLine = @ERROR_LINE, @ErrorMessage = @ERROR_MESSAGE;  
+			END CATCH 
+		' -- Attribute_17
+	, 'EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''_Merge_Into_Donor_Dim_2'', @Alpha_Step_Number = ''164H'', @Alpha_Step_Name = ''End'', @Alpha_Result = 1; 
+		' -- Attribute_18
 	, ' ' -- Attribute_19
 	, ' ' -- Attribute_20
 	, 'EXEC dbo.usp_Transform_Data @Transform_Data_Table_Name = ''_Merge_Into_Donor_Dim_2''; ------> HARDCODE <------

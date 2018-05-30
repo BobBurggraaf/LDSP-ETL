@@ -21852,7 +21852,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 											, SUM(New_GiftAmount) AS Last_Month_Gift_Total
 											FROM _Gift_
 											WHERE 1 = 1
-												AND Lds_RecurringGiftRule IS NOT NULL
+												AND (Lds_RecurringGiftRule IS NOT NULL
+														OR Lds_RecurringGiftGroup IS NOT NULL)
 												AND CONVERT(DATE,New_ReceiptDate) BETWEEN CONVERT(DATE,DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE()) - 1, 0)) 
 																						AND CONVERT(DATE,DATEADD(s,-1,DATEADD(mm, DATEDIFF(m,0,GETDATE())-0,0))) --Last Month
 											GROUP BY New_ConstituentDonor
@@ -21862,7 +21863,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 											, SUM(New_GiftAmount) AS Month_Before_Last_Month_Gift_Total
 											FROM _Gift_
 											WHERE 1 = 1
-												AND Lds_RecurringGiftRule IS NOT NULL
+												AND (Lds_RecurringGiftRule IS NOT NULL
+														OR Lds_RecurringGiftGroup IS NOT NULL)
 												AND CONVERT(DATE,New_ReceiptDate) BETWEEN CONVERT(DATE,DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE()) - 2, 0)) 
 																						AND CONVERT(DATE,DATEADD(s,-1,DATEADD(mm, DATEDIFF(m,0,GETDATE())-1,0))) --Month Before Last Month
 											GROUP BY New_ConstituentDonor
@@ -21905,9 +21907,15 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 												) C ON B.Donor_Key = C.ContactId
 										WHERE 1 = 1
 											AND A.Recurring_Gift_Status_Code = [Active]
-											AND A.Recurring_Gift_Type = [Payroll_Deduction]
 									) A
 							) B ON A.Donor_Key = B.Donor_Key
+					UNION
+					SELECT A.Donor_Key
+						, A.Month_Before_Last_Month_Gift_Total
+						, A.Last_Month_Gift_Total
+						, Y
+						, N
+						FROM
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement	
 		, NULL -- Tier_3_Stage
@@ -21915,13 +21923,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Tier_4_Stage
 		, NULL -- Tier_4_Stage_DateTime
 		, ' ' -- Ext_Select_Statement_2
-		, ' 		UNION
-					SELECT A.Donor_Key
-						, A.Month_Before_Last_Month_Gift_Total
-						, A.Last_Month_Gift_Total
-						, Y
-						, N
-						FROM
+		, ' 		
 							(SELECT CONVERT(NVARCHAR(100),A.New_ConstituentDonor) AS Donor_Key
 									, B.Month_Before_Last_Month_Gift_Total
 									, A.Last_Month_Gift_Total
@@ -21930,7 +21932,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 											, SUM(New_GiftAmount) AS Last_Month_Gift_Total
 											FROM _Gift_
 											WHERE 1 = 1
-												AND Lds_RecurringGiftRule IS NOT NULL
+												AND (Lds_RecurringGiftRule IS NOT NULL
+														OR Lds_RecurringGiftGroup IS NOT NULL)
 												AND CONVERT(DATE,New_ReceiptDate) BETWEEN CONVERT(DATE,DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE()) - 1, 0)) 
 																						AND CONVERT(DATE,DATEADD(s,-1,DATEADD(mm, DATEDIFF(m,0,GETDATE())-0,0))) --Last Month
 											GROUP BY New_ConstituentDonor
@@ -21940,7 +21943,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 											, SUM(New_GiftAmount) AS Month_Before_Last_Month_Gift_Total
 											FROM _Gift_
 											WHERE 1 = 1
-												AND Lds_RecurringGiftRule IS NOT NULL
+												AND (Lds_RecurringGiftRule IS NOT NULL
+														OR Lds_RecurringGiftGroup IS NOT NULL)
 												AND CONVERT(DATE,New_ReceiptDate) BETWEEN CONVERT(DATE,DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE()) - 2, 0)) 
 																						AND CONVERT(DATE,DATEADD(s,-1,DATEADD(mm, DATEDIFF(m,0,GETDATE())-1,0))) --Month Before Last Month
 											GROUP BY New_ConstituentDonor
@@ -21982,7 +21986,6 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 												) C ON B.Donor_Key = C.ContactId
 										WHERE 1 = 1
 											AND A.Recurring_Gift_Status_Code = [Active]
-											AND A.Recurring_Gift_Type = [Payroll_Deduction]
 									) A
 							) B ON A.Donor_Key = B.Donor_Key
 						WHERE 1 = 1
@@ -22808,6 +22811,119 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 							THEN New_CreditAmount
 						ELSE NULL END) AS Total_Giving_Current_Year_Minus_5_Church
 			' -- Ext_Select_Statement_5
+		, NULL -- Ext_Select_Statement_6
+		, NULL -- Ext_Select_Statement_7
+		, NULL -- Ext_From_Statement_3
+		, NULL -- Ext_From_Statement_4
+		, NULL -- Ext_From_Statement_5
+		, NULL -- Ext_From_Statement_6
+		, NULL -- Ext_From_Statement_7
+		, NULL -- Ext_Where_Statement_4
+		, NULL -- Ext_Where_Statement_5
+		, NULL -- Ext_Where_Statement_6
+		, NULL -- Ext_Where_Statement_7
+		, NULL -- Extra_1
+		, NULL -- Extra_2
+		, NULL -- Extra_3
+		, NULL -- Extra_4
+		, NULL -- Extra_5
+		, NULL -- Extra_6
+		, NULL -- Extra_7
+		, NULL -- Extra_8
+		, NULL -- Extra_9
+		, NULL -- Extra_10
+	)
+,
+-- --------------------------
+-- _Donor_Employment_Dim
+-- --------------------------
+	( 4 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Donor_Employment_Dim' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Donor_Key NVARCHAR(100) PRIMARY KEY
+			, Byu_Employee_Giving_Campus_Address NVARCHAR(100)
+		' -- Ext_Create_Fields
+		, 'Donor_Key
+			, Byu_Employee_Giving_Campus_Address
+		' -- Ext_Insert_Fields
+		, 'A.Donor_Key
+			,  B.Byu_Employee_Giving_Campus_Address
+			' -- Ext_Select_Statement
+		, '_All_Donors_ A
+			LEFT JOIN
+				(SELECT CONVERT(NVARCHAR(100),A.New_EmploymentsId) AS Donor_Key
+					, B.Lds_CampusAddress AS Byu_Employee_Giving_Campus_Address -- NVARCHAR(100)
+					FROM
+						(SELECT ROW_NUMBER() OVER(PARTITION BY B.New_EmploymentsId ORDER BY B.New_EmploymentId) AS Duplicate_Id 
+							, B.New_EmploymentId
+							, B.New_EmploymentsId
+								FROM 
+								(SELECT New_EmploymentsId
+									, StatusCode
+									, MAX(ModifiedOn) AS Max_Modified
+									FROM Ext_Employment
+									WHERE 1 = 1
+										AND StatusCode = 100000002 --Current
+										AND Lds_CampusAddress IS NOT NULL
+									GROUP BY New_EmploymentsId
+										, StatusCode
+								) A 
+								INNER JOIN
+								(SELECT New_EmploymentsId
+									, New_EmploymentId
+									, StatusCode
+									, ModifiedOn
+									FROM Ext_Employment
+									WHERE 1 = 1
+										AND StatusCode = 100000002 --Current
+										AND Lds_CampusAddress IS NOT NULL
+								) B ON A.New_EmploymentsId = B.New_EmploymentsId
+										AND A.Max_Modified = B.ModifiedOn
+							WHERE 1 = 1
+						) A
+						LEFT JOIN Ext_Employment B ON A.New_EmploymentId = B.New_EmploymentId
+					WHERE 1 = 1
+						AND Duplicate_Id = 1 
+			) B ON A.Donor_Key = B.Donor_Key
+			' -- Ext_From_Statement
+		, 'AND A.Donor_Key IS NOT NULL
+			' -- Ext_Where_Statement	
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, NULL -- Ext_Select_Statement_2
+		, NULL -- Ext_From_Statement_2
+		, NULL -- Ext_Create_Fields_2
+		, NULL -- Ext_Create_Fields_3
+		, NULL -- Ext_Where_Statement_2
+		, NULL -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+		, NULL -- Ext_Select_Statement_3
+		, NULL -- Ext_Select_Statement_4
+		, NULL -- Ext_Select_Statement_5
 		, NULL -- Ext_Select_Statement_6
 		, NULL -- Ext_Select_Statement_7
 		, NULL -- Ext_From_Statement_3
