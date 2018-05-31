@@ -488,6 +488,10 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, ScheduledStart DATETIME
 			, PartyIdName NVARCHAR(4000)
 			, ParticipationTypeMask INT
+			, Organization NVARCHAR(25) DEFAULT ''Organization''
+			, Constituent NVARCHAR(25) DEFAULT ''Constituent''
+			, Y NVARCHAR(1) DEFAULT ''Y''
+			, N NVARCHAR(1) DEFAULT ''N''
 			' -- Ext_Create_Fields
 		, 'ActivityPartyId
 			, ActivityId
@@ -22891,6 +22895,245 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			) B ON A.Donor_Key = B.Donor_Key
 			' -- Ext_From_Statement
 		, 'AND A.Donor_Key IS NOT NULL
+			' -- Ext_Where_Statement	
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, NULL -- Ext_Select_Statement_2
+		, NULL -- Ext_From_Statement_2
+		, NULL -- Ext_Create_Fields_2
+		, NULL -- Ext_Create_Fields_3
+		, NULL -- Ext_Where_Statement_2
+		, NULL -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+		, NULL -- Ext_Select_Statement_3
+		, NULL -- Ext_Select_Statement_4
+		, NULL -- Ext_Select_Statement_5
+		, NULL -- Ext_Select_Statement_6
+		, NULL -- Ext_Select_Statement_7
+		, NULL -- Ext_From_Statement_3
+		, NULL -- Ext_From_Statement_4
+		, NULL -- Ext_From_Statement_5
+		, NULL -- Ext_From_Statement_6
+		, NULL -- Ext_From_Statement_7
+		, NULL -- Ext_Where_Statement_4
+		, NULL -- Ext_Where_Statement_5
+		, NULL -- Ext_Where_Statement_6
+		, NULL -- Ext_Where_Statement_7
+		, NULL -- Extra_1
+		, NULL -- Extra_2
+		, NULL -- Extra_3
+		, NULL -- Extra_4
+		, NULL -- Extra_5
+		, NULL -- Extra_6
+		, NULL -- Extra_7
+		, NULL -- Extra_8
+		, NULL -- Extra_9
+		, NULL -- Extra_10
+	)
+,
+-- --------------------------
+-- _Activity_Dim
+-- --------------------------
+	( 4 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Activity_Dim' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Activity_Key INT PRIMARY KEY
+			, Activity_Group_Key INT
+			, Activity_Id NVARCHAR(100)
+			, ContactId NVARCHAR(100)
+			, ContactName NVARCHAR(4000)
+			, Party_Object_Type NVARCHAR(100)
+			, Participation_Type NVARCHAR(100)
+			, Type NVARCHAR(100)
+			, Subject NVARCHAR(200)
+			, Regarding NVARCHAR(4000)
+			, Face_To_Face NVARCHAR(1)
+			, Scheduled_Start DATE
+			, Scheduled_Start_Date_Key NUMERIC(10,0)
+			, Scheduled_End DATE
+			, Scheduled_End_Date_Key NUMERIC(10,0)
+			, Completed DATE
+			, Completed_Date_Key NUMERIC(10,0)
+			, Description NVARCHAR(4000)
+			, Attendees NVARCHAR(4000)
+			, Owner NVARCHAR(200)
+			, Owner_Id NVARCHAR(100)
+			, Source NVARCHAR(100)
+			, Plus_M11ActivityType NVARCHAR(400)
+			, Plus_MllMessageType NVARCHAR(400)
+			, StateCode NVARCHAR(400)
+			, StatusCode NVARCHAR(400)
+			, CreatedOn DATE
+			, ModifiedOn DATE
+			, DomainName NVARCHAR(1024)
+		' -- Ext_Create_Fields
+		, 'Activity_Key
+			, Activity_Group_Key
+			, Activity_Id
+			, ContactId
+			, ContactName
+			, Party_Object_Type
+			, Participation_Type
+			, Type
+			, Subject
+			, Regarding
+			, Face_To_Face
+			, Scheduled_Start
+			, Scheduled_Start_Date_Key
+			, Scheduled_End
+			, Scheduled_End_Date_Key
+			, Completed
+			, Completed_Date_Key
+			, Description
+			, Attendees
+			, Owner
+			, Owner_Id
+			, Source
+			, Plus_M11ActivityType
+			, Plus_MllMessageType
+			, StateCode
+			, StatusCode
+			, CreatedOn
+			, ModifiedOn
+			, DomainName
+		' -- Ext_Insert_Fields
+		, 'ROW_NUMBER() OVER(ORDER BY Activity_Key) AS Activity_Key
+			, E.Activity_Group_Key
+			, CONVERT(NVARCHAR(100),A.Activity_Id) AS Activity_Id
+			, CONVERT(NVARCHAR(100),A.ContactId) AS ContactId
+			, ContactName
+			, Party_Object_Type
+			, Participation_Type
+			, Type    
+			, Subject
+			, Regarding
+			, Face_To_Face
+			, CONVERT(VARCHAR(10),A.Scheduled_Start,101) AS Scheduled_Start
+			, CONVERT(NUMERIC(10,0),CONVERT(VARCHAR(10),A.Scheduled_Start,112)) AS Scheduled_Start_Date_Key
+			, CONVERT(VARCHAR(10),A.Scheduled_End,101) AS Scheduled_End 
+			, CONVERT(NUMERIC(10,0),CONVERT(VARCHAR(10),A.Scheduled_End,112)) AS Scheduled_End_Date_Key
+			, CONVERT(VARCHAR(10),A.Completed,101) AS Completed
+			, CONVERT(NUMERIC(10,0),CONVERT(VARCHAR(10),A.Completed,112)) AS Completed_Date_Key 
+			, Description
+			, Attendees
+			, Owner
+			, CONVERT(NVARCHAR(100),A.Owner_Id) AS Owner_Id         
+			, Source
+			, Plus_M11ActivityType
+			, Plus_MllMessageType
+			, StateCode
+			, StatusCode
+			, CONVERT(VARCHAR(10),A.CreatedOn,101) AS CreatedOn
+			, CONVERT(VARCHAR(10),A.ModifiedOn,101) AS ModifiedOn
+			, DomainName
+			' -- Ext_Select_Statement
+		, '	(SELECT DISTINCT A.Activity_Key		
+			, A.ActivityId AS Activity_Id
+			, A.ContactId
+			, A.ContactName
+			, A.Party_Object_Type
+			, A.Participation_Type
+			, A.Type              
+			, A.Subject
+			, A.Regarding
+			, A.Face_To_Face
+			, A.Scheduled_Start
+			, A.Scheduled_End 
+			, A.Completed 
+			, A.Description
+			, A.Attendees
+			, A.Owner
+			, A.Owner_Id     
+			, S.New_Source AS Source
+			, MT.Column_Label AS Plus_MllMessageType
+			, MAT.Column_Label AS Plus_M11ActivityType
+			, STATE.Column_Label AS StateCode
+			, STATUS.Column_Label AS StatusCode
+			, A.CreatedOn
+			, A.ModifiedOn
+			, A.DomainName
+			FROM
+				(SELECT  A.ActivityPartyId AS Activity_Key -- (Unique to all records)
+					, A.ActivityId -- Distinct Activity
+					, CASE WHEN A.PartyObjectTypeCode IN (1,2) THEN A.PartyId 
+						ELSE NULL END AS ContactId -- (ContactId[2]\AccountId[1]\UserId[8])
+					, CASE WHEN A.PartyObjectTypeCode IN (1,2) THEN A.PartyIdName 
+						ELSE NULL END AS ContactName
+					, CASE WHEN A.PartyObjectTypeCode = 1 THEN [Organization]
+						WHEN A.PartyObjectTypeCode = 2 THEN [Constituent]
+						ELSE NULL END AS Party_Object_Type
+					, F.Participation_Type
+					, G.[Type] 
+					, CASE WHEN A.PartyObjectTypeCode IN (1,2) THEN B.Subject 
+						ELSE NULL END AS Subject
+					, CASE WHEN A.PartyObjectTypeCode IN (1,2) THEN B.RegardingObjectIdName 
+						ELSE NULL END AS Regarding -- AS Regarding (Campaign type name)
+					, CASE WHEN C.Plus_FaceToFace = 0 THEN A.[N]
+						WHEN C.Plus_FaceToFace = 1 THEN A.[Y]
+						ELSE NULL END AS Face_To_Face
+					, B.ScheduledStart AS Scheduled_Start -- Date/Time
+					, B.ScheduledEnd AS Scheduled_End -- Date/Time
+					, B.ActualEnd AS Completed -- Date/Time (Best for a date)
+					, CASE WHEN A.PartyObjectTypeCode IN (1,2) THEN B.Description 
+						ELSE NULL END AS Description
+					, E.Attendees AS Attendees
+					, D.FullName AS Owner
+					, D.SystemUserId AS Owner_Id
+					, B.StateCode
+					, B.StatusCode
+					, B.CreatedOn
+					, B.ModifiedOn
+					, D.DomainName
+					FROM Ext_Activity A -- People
+						LEFT JOIN Ext_Activity_Pointer B ON A.ActivityId = B.ActivityId  -- Activities
+						LEFT JOIN Ext_Appointment C ON A.ActivityId = C.ActivityId
+						LEFT JOIN Ext_System_User D ON B.OwnerId = D.SystemUserId
+						LEFT JOIN Uf_Activity_Attendees() E ON A.ActivityId = E.ActivityId
+						LEFT JOIN Uf_Activity_Participation_Type() F ON A.ActivityPartyId = F.ActivityPartyId
+						LEFT JOIN Uf_Activity_Pointer_Type() G ON B.ActivityId = G.ActivityId
+				) A
+				LEFT JOIN Ext_Plus_LegacyM11Base B ON A.ActivityId = B.ActivityId
+				LEFT JOIN Ext_Source S ON B.Plus_Source = S.New_SourceId
+				LEFT JOIN _Plus_M11MessageType_ MT ON B.Plus_M11MessageType = MT.Column_Value
+				LEFT JOIN _Plus_M11ActivityType_ MAT ON B.Plus_M11ActivityType = MAT.Column_Value
+				LEFT JOIN _ActivityPointer_StateCode_ STATE ON A.StateCode = STATE.Column_Value
+				LEFT JOIN _ActivityPointer_StatusCode_ STATUS ON A.StatusCode = STATUS.Column_Value
+			) A
+			LEFT JOIN 
+				(
+				SELECT A.ContactId
+					, ROW_NUMBER() OVER(ORDER BY A.ContactId) AS Activity_Group_Key
+					FROM
+						(SELECT DISTINCT CASE WHEN PartyObjectTypeCode IN (1,2) THEN PartyId 
+									ELSE NULL END AS ContactId    
+							FROM Ext_Activity) A
+				) E ON A.ContactId = E.ContactId
+			' -- Ext_From_Statement
+		, '
 			' -- Ext_Where_Statement	
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
