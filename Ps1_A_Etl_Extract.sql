@@ -513,7 +513,14 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.ActivityPartyBase A
 				LEFT JOIN dbo._MDT_Conversion_Dim B ON YEAR(A.ScheduledStart) = B.Date_Year
 			' -- Ext_From_Statement
-		, ' ' -- Ext_Where_Statement
+		, 'CREATE NONCLUSTERED INDEX IX_ActivityId 
+			ON Ext_Activity(ActivityId ASC)
+				INCLUDE (
+						ActivityPartyId
+						, ScheduledStart
+				); 
+			UPDATE STATISTICS dbo.Ext_Activity
+			' -- Ext_Where_Statement
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
 		, NULL -- Tier_4_Stage
@@ -693,7 +700,19 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 				LEFT JOIN dbo._MDT_Conversion_Dim F ON YEAR(A.CreatedOn) = F.Date_Year
 				LEFT JOIN dbo._MDT_Conversion_Dim G ON YEAR(A.ModifiedOn) = G.Date_Year
 			' -- Ext_From_Statement
-		, ' ' -- Ext_Where_Statement
+		, 'CREATE NONCLUSTERED INDEX IX_ActivityId 
+			ON Ext_Activity_Pointer(ActivityId ASC)
+				INCLUDE (
+					ActivityTypeCode
+				);     
+					   
+			CREATE NONCLUSTERED INDEX IX_ActivityTypeCode 
+			ON Ext_Activity_Pointer(ActivityTypeCode ASC)
+				INCLUDE (
+					ActivityId
+			); 
+			UPDATE STATISTICS dbo.Ext_Activity_Pointer
+			' -- Ext_Where_Statement
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
 		, NULL -- Tier_4_Stage
@@ -1719,7 +1738,14 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 				LEFT JOIN dbo._MDT_Conversion_Dim B ON YEAR(A.Plus_WealthDate) = B.Date_Year
 				LEFT JOIN dbo._MDT_Conversion_Dim C ON YEAR(A.Lds_QualifiedOn) = C.Date_Year
 			' -- Ext_From_Statement
-		, ' ' -- Ext_Where_Statement
+		, 'CREATE NONCLUSTERED INDEX IX_Contact_C_L_F 
+			ON Ext_Contact(ContactId)
+				INCLUDE (
+				New_LdspId
+				, FullName
+				);
+			UPDATE STATISTICS dbo.Ext_Contact 
+			' -- Ext_Where_Statement
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
 		, NULL -- Tier_4_Stage
@@ -1949,6 +1975,11 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Lds_County NVARCHAR(100)
 			, Lds_City NVARCHAR(100)
 			, Row_Num BIGINT
+			, Y NVARCHAR(1) DEFAULT ''Y''
+			, N NVARCHAR(1) DEFAULT ''N''
+			, Dash NVARCHAR(1) DEFAULT ''-''
+			, Space NVARCHAR(1) DEFAULT '' ''
+			, Comma_Space NVARCHAR(2) DEFAULT '', ''
 			' -- Ext_Create_Fields
 		, 'Plus_RelatedContact
 			, New_Primary
@@ -18593,6 +18624,269 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
 		, ' ' -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+		, NULL -- Ext_Select_Statement_3
+		, NULL -- Ext_Select_Statement_4
+		, NULL -- Ext_Select_Statement_5
+		, NULL -- Ext_Select_Statement_6
+		, NULL -- Ext_Select_Statement_7
+		, NULL -- Ext_From_Statement_3
+		, NULL -- Ext_From_Statement_4
+		, NULL -- Ext_From_Statement_5
+		, NULL -- Ext_From_Statement_6
+		, NULL -- Ext_From_Statement_7
+		, NULL -- Ext_Where_Statement_4
+		, NULL -- Ext_Where_Statement_5
+		, NULL -- Ext_Where_Statement_6
+		, NULL -- Ext_Where_Statement_7
+		, NULL -- Extra_1
+		, NULL -- Extra_2
+		, NULL -- Extra_3
+		, NULL -- Extra_4
+		, NULL -- Extra_5
+		, NULL -- Extra_6
+		, NULL -- Extra_7
+		, NULL -- Extra_8
+		, NULL -- Extra_9
+		, NULL -- Extra_10
+	)
+,
+-- --------------------------
+-- _Address_Dim
+-- --------------------------
+	( 4 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Address_Dim' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'ContactId NVARCHAR(100)
+			, Address_Key BIGINT  PRIMARY KEY
+			, Address_Group_Key BIGINT
+			, Address_Primary_Yn NVARCHAR(1)
+			, Address_Street_1 NVARCHAR(100)
+			, Address_Street_2 NVARCHAR(100)
+			, Address_Street_3 NVARCHAR(100)
+			, Address_City NVARCHAR(100)
+			, Address_County NVARCHAR(100)
+			, Address_County_Code NVARCHAR(10)
+			, Address_County_Id NVARCHAR(100)
+			, Address_State_Province NVARCHAR(100)
+			, Address_State_Code NVARCHAR(100)
+			, Address_Country NVARCHAR(100)
+			, Address_Post_Code_Full NVARCHAR(100)
+			, Address_Post_Code_Last_4 NVARCHAR(15)
+			, Address_Printing_Line_1 NVARCHAR(606)
+			, Address_Printing_Line_2 NVARCHAR(406)
+			, Address_Display NVARCHAR(300)
+			, Address_Quality_Status NVARCHAR(400)
+			, Address_Quality_Status_Value INT
+			, Address_Longitude FLOAT
+			, Address_Latitude FLOAT
+			, Address_Active_Yn NVARCHAR(1)
+			, Address_Confirmed_Yn NVARCHAR(1)
+			, Address_Confidential_Yn NVARCHAR(1)
+			, Address_Type NVARCHAR(400)
+			, Address_Type_Value INT
+			, Address_Printing_Line_3 NVARCHAR(100)
+			, Address_Printing_Line_4 NVARCHAR(100)
+		' -- Ext_Create_Fields
+		, 'ContactId
+			, Address_Key
+			, Address_Group_Key
+			, Address_Primary_Yn
+			, Address_Street_1
+			, Address_Street_2
+			, Address_Street_3
+			, Address_City
+			, Address_County
+			, Address_County_Code
+			, Address_County_Id
+			, Address_State_Province
+			, Address_State_Code
+			, Address_Country
+			, Address_Post_Code_Full
+			, Address_Post_Code_Last_4
+			, Address_Printing_Line_1
+			, Address_Printing_Line_2
+			, Address_Display
+			, Address_Quality_Status
+			, Address_Quality_Status_Value
+			, Address_Longitude
+			, Address_Latitude
+			, Address_Active_Yn
+			, Address_Confirmed_Yn
+			, Address_Confidential_Yn
+			, Address_Type
+			, Address_Type_Value
+			, Address_Printing_Line_3
+			, Address_Printing_Line_4
+		' -- Ext_Insert_Fields
+		, 'CONVERT(NVARCHAR(100),F.ContactId) AS ContactId
+			, ROW_NUMBER() OVER(ORDER BY F.New_AddressId) AS Address_Key
+			, F.Address_Group_Key
+			, F.Address_Primary_Yn
+			, F.Address_Street_1
+			, F.Address_Street_2
+			, F.Address_Street_3
+			, F.Address_City
+			, F.Address_County
+			, F.Address_County_Code
+			, CONVERT(NVARCHAR(100),F.Address_County_Id) AS Address_County_Id
+			, F.Address_State_Province
+			, F.Address_State_Code
+			, F.Address_Country
+			, F.Address_Post_Code_Full
+			, F.Address_Post_Code_Last_4
+			, F.Address_Printing_Line_1
+			, F.Address_Printing_Line_2
+			, F.Address_Display
+			, F.Address_Quality_Status
+			, F.Address_Quality_Status_Value			
+			, F.Address_Longitude
+			, F.Address_Latitude
+			, F.Address_Active_Yn
+			, F.Address_Confirmed_Yn
+			, F.Address_Confidential_Yn
+			, F.Address_Type
+			, F.Address_Type_Value
+			, F.Address_Printing_Line_3
+			, F.Address_Printing_Line_4
+			' -- Ext_Select_Statement
+		, '(SELECT A.ContactId
+				, A.New_AddressId
+				, F.Address_Group_Key
+				, B.Address_Primary_Yn
+				, A.Address_Street_1
+				, A.Address_Street_2
+				, A.Address_Street_3
+				, C.Address_City
+				, C.Address_County
+				, C.Address_County_Code
+				, C.Address_County_Id
+				, C.Address_State_Province
+				, C.Address_State_Code
+				, C.Address_Country
+				, C.Address_Post_Code_Full
+				, B.Address_Printing_Line_1
+				, D.Address_Printing_Line_2
+				, A.Address_Display
+				, E.Address_Quality_Status
+				, E.Address_Quality_Status_Value
+				, A.Address_Post_Code_Last_4
+				, A.Address_Longitude
+				, A.Address_Latitude
+				, B.Address_Active_Yn
+				, B.Address_Confirmed_Yn
+				, B.Address_Confidential_Yn
+				, E.Address_Type
+				, E.Address_Type_Value
+				, C.Address_Printing_Line_3
+				, C.Address_Printing_Line_4
+				FROM
+					(SELECT DISTINCT OA.Plus_RelatedContact AS ContactId
+						, OA.New_AddressId
+						, OA.New_Street1 AS Address_Street_1
+						, OA.New_Street2 AS Address_Street_2
+						, OA.New_Street3 AS Address_Street_3
+						, OA.New_Zip4 AS Address_Post_Code_Last_4
+						, CONVERT(NVARCHAR(300),OA.Plus_AddressDisplay) AS Address_Display
+						, OA.Plus_Longitude AS Address_Longitude
+						, OA.Plus_Latitude AS Address_Latitude
+						FROM Ext_Address OA
+					) A LEFT JOIN
+					(SELECT DISTINCT OA.New_AddressId
+						, CASE WHEN OA.New_Primary = 1 THEN [Y] 
+							WHEN OA.New_Primary = 0 THEN [N]
+							ELSE [Dash] END AS Address_Primary_Yn
+						, COALESCE(OA.New_Street1,[Space]) + COALESCE(OA.New_Street2,[Space]) + COALESCE(OA.New_Street3,[Space]) AS Address_Printing_Line_1 
+						, CASE WHEN OA.StateCode = 0 THEN [Y] ELSE [N] END AS Address_Active_Yn
+						, CASE WHEN OA.New_ConfirmedDate IS NULL THEN [N] ELSE [Y] END AS Address_Confirmed_Yn
+						, CASE WHEN OA.New_Confidential = 0 THEN [N] ELSE [Y] END AS Address_Confidential_Yn
+						, [Y]
+						FROM Ext_Address OA
+					) B ON A.New_AddressId = B.New_AddressId LEFT JOIN
+					(SELECT DISTINCT OA.New_AddressId
+						, CITY.Address_City
+						, OA.Lds_County AS Address_County
+						, NCTY.Plus_CountyCode AS Address_County_Code
+						, NCTY.New_CountyId AS Address_County_Id
+						, OA.Lds_StateProvince AS Address_State_Province
+						, OA.Lds_StateProvince AS Address_State_Code
+						, NCRY.New_Name AS Address_Country
+						, OA.Lds_PostalCode AS Address_Post_Code_Full
+						, OA.Lds_PostalCode AS Address_Printing_Line_3
+						, NCRY.New_Name AS Address_Printing_Line_4
+						FROM LDSPhilanthropiesDW.dbo.Ext_Address OA
+							LEFT JOIN Ext_City NC ON OA.New_CityLookUp = NC.New_CityId
+							LEFT JOIN Ext_County NCTY ON OA.New_CountyId = NCTY.New_CountyId 
+							LEFT JOIN Ext_State NST ON OA.New_StatesProvinces = NST.New_StateId
+							LEFT JOIN Ext_Country NCRY ON OA.New_CountryRegions = NCRY.New_CountryId
+							LEFT JOIN Ext_Postal PC ON OA.New_PostalCodes = PC.New_PostalCodeId
+							LEFT JOIN Uf_Address_City() CITY ON OA.New_AddressId = CITY.New_AddressId
+					) C ON A.New_AddressId = C.New_AddressId LEFT JOIN
+			' -- Ext_From_Statement
+		, NULL -- Ext_Where_Statement	
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, NULL -- Ext_Select_Statement_2
+		, '			(SELECT DISTINCT OA.New_AddressId
+						, CASE WHEN AF.New_UseStateAbreviation = 1 THEN COALESCE(OA.Lds_City,[Space]) + [Comma_Space] + COALESCE(OA.Lds_StateProvince,[Space]) 
+							ELSE COALESCE(OA.Lds_City,[Space]) + [Comma_Space] + COALESCE(OA.Lds_StateProvince,[Space]) END AS Address_Printing_Line_2
+						FROM LDSPhilanthropiesDW.dbo.Ext_Address OA
+							LEFT JOIN Ext_City NC ON OA.New_CityLookUp = NC.New_CityId
+							LEFT JOIN Ext_County NCTY ON OA.New_CountyId = NCTY.New_CountyId 
+							LEFT JOIN Ext_State NST ON OA.New_StatesProvinces = NST.New_StateId
+							LEFT JOIN Ext_Country NCRY ON OA.New_CountryRegions = NCRY.New_CountryId
+							LEFT JOIN Ext_Postal PC ON OA.New_PostalCodes = PC.New_PostalCodeId 
+							LEFT JOIN Ext_Address_Format AF ON NCRY.Plus_AdderessFormat = AF.Plus_AddressFormatId
+					) D ON A.New_AddressId = D.New_AddressId LEFT JOIN
+					(SELECT DISTINCT OA.New_AddressId
+						, Q.Column_Label AS Address_Quality_Status
+						, Q.Column_Value AS Address_Quality_Status_Value
+						, A.Column_Label AS Address_Type
+						, A.Column_Value AS Address_Type_Value
+						FROM LDSPhilanthropiesDW.dbo.Ext_Address OA
+							LEFT JOIN _Address_Quality_ Q ON OA.Plus_OneAccordQuality = Q.Column_Value 
+							LEFT JOIN _Address_Type_ A ON OA.New_AddressType = A.Column_Value
+					) E ON A.New_AddressId = E.New_AddressId
+					LEFT JOIN
+						(
+						SELECT Plus_RelatedContact AS ContactId
+							, ROW_NUMBER() OVER(ORDER BY Plus_RelatedContact) AS Address_Group_Key
+							FROM
+								(SELECT DISTINCT Plus_RelatedContact   
+									FROM Ext_Address) A
+						) F ON A.ContactId = F.ContactId
+				WHERE 1 = 1
+					AND B.Address_Active_Yn = B.[Y]
+			) F
+			' -- Ext_From_Statement_2
+		, NULL -- Ext_Create_Fields_2
+		, NULL -- Ext_Create_Fields_3
+		, NULL -- Ext_Where_Statement_2
+		, NULL -- Ext_Where_Statement_3
 		, NULL -- Tier_5_Stage
 		, NULL -- Tier_5_Stage_DateTime
 		, NULL -- Tier_6_Stage
