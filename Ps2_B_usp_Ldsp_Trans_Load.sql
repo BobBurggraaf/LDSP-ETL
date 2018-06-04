@@ -50,7 +50,7 @@ DECLARE @Todays_Date DATE
 	SET @Todays_Date = GETDATE()
 
 	DECLARE @Table_Name_Check NVARCHAR(100)
-	SET @Table_Name_Check = 'dbo._Connection_Dim'
+	SET @Table_Name_Check = 'dbo._Address_Dim'
 	
 	DECLARE @Step_Date DATE
 		SELECT @Step_Date = (
@@ -254,7 +254,7 @@ IF @Step_Date != @Todays_Date OR @Step_Date IS NULL
 		SET @Todays_Date_2 = GETDATE()
 
 		DECLARE @Table_Name_Check_2 NVARCHAR(100)
-		SET @Table_Name_Check_2 = 'dbo._Connection_Dim'
+		SET @Table_Name_Check_2 = 'dbo._Address_Dim'
 		
 		DECLARE @Step_Date_2 DATE
 			SELECT @Step_Date_2 = (

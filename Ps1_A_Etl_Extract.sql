@@ -5940,7 +5940,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, New_CreditAmount
 			, Plus_Type
 			, Plus_OriginatingConstituent
-			, Plus_SubType
+			, CASE WHEN Plus_SubType IS NULL THEN 100000003 ELSE Plus_SubType END AS Plus_SubType
 			, CASE WHEN DATENAME(dy,A.New_ReceiptDate) BETWEEN B.Mdt_Begin_Date_Number AND B.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.New_ReceiptDate)
 					ELSE DATEADD(hh,-7,A.New_ReceiptDate) END AS New_ReceiptDate
 			, Plus_InstitutionalHieararchy
@@ -23439,6 +23439,433 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Ext_Create_Fields_3
 		, NULL -- Ext_Where_Statement_2
 		, NULL -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+		, NULL -- Ext_Select_Statement_3
+		, NULL -- Ext_Select_Statement_4
+		, NULL -- Ext_Select_Statement_5
+		, NULL -- Ext_Select_Statement_6
+		, NULL -- Ext_Select_Statement_7
+		, NULL -- Ext_From_Statement_3
+		, NULL -- Ext_From_Statement_4
+		, NULL -- Ext_From_Statement_5
+		, NULL -- Ext_From_Statement_6
+		, NULL -- Ext_From_Statement_7
+		, NULL -- Ext_Where_Statement_4
+		, NULL -- Ext_Where_Statement_5
+		, NULL -- Ext_Where_Statement_6
+		, NULL -- Ext_Where_Statement_7
+		, NULL -- Extra_1
+		, NULL -- Extra_2
+		, NULL -- Extra_3
+		, NULL -- Extra_4
+		, NULL -- Extra_5
+		, NULL -- Extra_6
+		, NULL -- Extra_7
+		, NULL -- Extra_8
+		, NULL -- Extra_9
+		, NULL -- Extra_10
+	)
+,
+-- --------------------------
+-- _Alumni_Dim
+-- --------------------------
+	( 4 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Alumni_Dim' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'ContactId NVARCHAR(100)
+			, Alumni_Key INT  PRIMARY KEY
+			, Alumni_Group_Key INT
+			, New_StudentAttendanceId NVARCHAR(100)
+			, New_Term NVARCHAR(100)
+			, New_Year NVARCHAR(100)
+			, New_HoursCompleted INT
+			, New_ExpectedGraduationDate DATE
+			, Plus_Year NVARCHAR(10)
+			, Plus_AlumniId NVARCHAR(100)
+			, Plus_Name NVARCHAR(100)
+			, Plus_ActualGraduationDate DATE
+			, Actual_Graduation_Date_Key NUMERIC(10,0)
+			, Plus_AlumniStatus NVARCHAR(400)
+			, Plus_DgId INT
+			, Plus_HoursCredits DECIMAL(20,2)
+			, Plus_PreferredGraduationDate DATE
+			, Preferred_Graduation_Date_Key NUMERIC(10,0)
+			, College_Name NVARCHAR(100)
+			, New_CollegeCode NVARCHAR(10)
+			, Department NVARCHAR(100)
+			, New_Degree NVARCHAR(100)
+			, New_DegreeCode NVARCHAR(100)
+			, Plus_DegreeLevel NVARCHAR(400)
+			, New_University NVARCHAR(100)
+			, New_UniversityCode NVARCHAR(10)
+			, Plus_UniversityAcronym NVARCHAR(100)
+			, New_Major NVARCHAR(100)
+			, New_MajorName NVARCHAR(100)
+			, New_MajorCode NVARCHAR(10)
+			, Program_Code NVARCHAR(10)
+			, New_Source NVARCHAR(100)
+			, New_LongDescription NVARCHAR(100)
+			, Program NVARCHAR(100)
+			, Emphasis NVARCHAR(100)
+			' -- Ext_Create_Fields
+		, 'ContactId
+			, Alumni_Key
+			, Alumni_Group_Key
+			, New_StudentAttendanceId
+			, New_Term
+			, New_Year
+			, New_HoursCompleted
+			, New_ExpectedGraduationDate
+			, Plus_Year
+			, Plus_AlumniId
+			, Plus_Name
+			, Plus_ActualGraduationDate
+			, Actual_Graduation_Date_Key
+			, Plus_AlumniStatus
+			, Plus_DgId
+			, Plus_HoursCredits
+			, Plus_PreferredGraduationDate
+			, Preferred_Graduation_Date_Key
+			, College_Name
+			, New_CollegeCode
+			, Department
+			, New_Degree
+			, New_DegreeCode
+			, Plus_DegreeLevel
+			, New_University
+			, New_UniversityCode
+			, Plus_UniversityAcronym
+			, New_Major
+			, New_MajorName
+			, New_MajorCode
+			, Program_Code
+			, New_Source
+			, New_LongDescription
+			, Program
+			, Emphasis
+			' -- Ext_Insert_Fields
+		, 'DISTINCT CONVERT(NVARCHAR(100),COALESCE(New_StudentsAttendanceId, Plus_Constituent)) AS ContactId
+			, ROW_NUMBER() OVER(ORDER BY COALESCE(New_StudentAttendanceId, Plus_AlumniId)) AS Alumni_Key
+			, Alumni_Group_Key
+			, CONVERT(NVARCHAR(100),A.New_StudentAttendanceId) AS New_StudentAttendanceId
+			, New_Term
+			, New_Year
+			, New_HoursCompleted
+			, CONVERT(VARCHAR(10),A.New_ExpectedGraduationDate,101) AS New_ExpectedGraduationDate
+			, Plus_Year
+			, CONVERT(VARCHAR(100),A.Plus_AlumniId) AS Plus_AlumniId
+			, Plus_Name
+			, CONVERT(VARCHAR(10),A.Plus_ActualGraduationDate,101) AS Plus_ActualGraduationDate
+			, CONVERT(NUMERIC(10,0),CONVERT(VARCHAR(10),A.Plus_ActualGraduationDate,112)) AS Actual_Graduation_Date_Key
+			, Plus_AlumniStatus
+			, Plus_DgId
+			, CONVERT(DECIMAL(20,2), A.Plus_HoursCredits) AS Plus_HoursCredits
+			, CONVERT(VARCHAR(10),A.Plus_PreferredGraduationDate,101) AS Plus_PreferredGraduationDate
+			, CONVERT(NUMERIC(10,0),CONVERT(VARCHAR(10),A.Plus_PreferredGraduationDate,112)) AS Preferred_Graduation_Date_Key
+			, College_Name
+			, New_CollegeCode
+			, Department
+			, New_Degree
+			, New_DegreeCode
+			, Plus_DegreeLevel
+			, New_University
+			, New_UniversityCode
+			, Plus_UniversityAcronym
+			, New_Major
+			, New_MajorName 
+			, New_MajorCode
+			, Program_Code
+			, New_Source
+			, New_LongDescription
+			, Program
+			, Emphasis				
+			' -- Ext_Select_Statement
+		, '(SELECT DISTINCT New_StudentAttendanceId
+			, New_Term
+			, New_Year
+			, New_HoursCompleted
+			, New_ExpectedGraduationDate
+			, Plus_Year
+			, New_StudentsAttendanceId
+			, Plus_AlumniId
+			, Plus_Name
+			, Plus_ActualGraduationDate
+			, Plus_AlumniStatus
+			, Plus_DgId
+			, Plus_HoursCredits
+			, Plus_PreferredGraduationDate
+			, Plus_Constituent
+			, College_Name
+			, New_CollegeCode
+			, Department
+			, New_Degree
+			, New_DegreeCode
+			, Plus_DegreeLevel
+			, New_University
+			, New_UniversityCode
+			, Plus_UniversityAcronym
+			, New_Major
+			, New_MajorName 
+			, New_MajorCode
+			, Program_Code
+			, New_Source
+			, New_LongDescription
+			, Program
+			, Emphasis
+			FROM
+				(
+				SELECT New_StudentAttendanceId
+					, New_Term
+					, New_Year
+					, New_HoursCompleted
+					, New_ExpectedGraduationDate
+					, Plus_Year
+					, New_StudentsAttendanceId
+					, NULL AS Plus_AlumniId
+					, NULL AS Plus_Name
+					, NULL AS Plus_ActualGraduationDate
+					, NULL AS Plus_AlumniStatus
+					, NULL AS Plus_DgId
+					, NULL AS Plus_HoursCredits
+					, NULL AS Plus_PreferredGraduationDate
+					, NULL AS Plus_Constituent
+					, College_Name
+					, New_CollegeCode
+					, Department
+					, NULL AS New_Degree
+					, NULL AS New_DegreeCode
+					, NULL AS Plus_DegreeLevel
+					, New_University
+					, New_UniversityCode
+					, Plus_UniversityAcronym
+					, New_Major
+					, New_MajorName 
+					, New_MajorCode
+					, Program_Code
+					, New_Source
+					, New_LongDescription
+					, NULL AS Program
+					, Emphasis         
+					FROM
+						(SELECT DISTINCT New_StudentAttendanceId
+							, New_Term
+							, New_Year
+							, New_HoursCompleted
+							, New_ExpectedGraduationDate
+							, Plus_Year
+							, New_StudentsAttendanceId
+							, College_Name
+							, New_CollegeCode
+							, Department
+							, New_University
+							, New_UniversityCode
+							, Plus_UniversityAcronym
+							, New_Major
+							, New_MajorName 
+							, New_MajorCode
+							, Program_Code
+							, New_Source
+							, New_LongDescription
+							, Emphasis
+							FROM 
+								(
+								SELECT A.New_StudentAttendanceId
+									, A.New_Term
+									, A.New_Year
+									, A.New_HoursCompleted
+									, A.New_ExpectedGraduationDate
+									, A.Plus_Year
+									, A.New_StudentsAttendanceId
+									, A.College_Name
+									, A.New_CollegeCode
+									, A.Department
+									, A.New_University
+									, A.New_UniversityCode
+									, A.Plus_UniversityAcronym
+									, A.New_Major
+									, A.New_MajorName 
+									, A.New_MajorCode
+									, A.Program_Code
+									, B.New_Source
+									, B.New_LongDescription
+									, B.Emphasis      
+									FROM                  
+										(
+										SELECT SA.New_StudentAttendanceId
+										, SA.New_Term
+										, SA.New_Year
+										, SA.New_HoursCompleted
+										, SA.New_ExpectedGraduationDate
+										, SA.Plus_Year
+										, SA.New_StudentsAttendanceId
+										, C.New_Name AS College_Name
+										, C.New_CollegeCode
+										, C.New_Name AS Department
+										, U.New_University
+										, U.New_UniversityCode
+										, U.Plus_UniversityAcronym
+										, M.New_Major
+										, M.New_MajorName 
+										, M.New_MajorCode       
+										, M.New_MajorCode AS Program_Code
+										FROM Ext_Student SA
+											LEFT JOIN Ext_College C ON SA.New_College = C.New_CollegeId
+											LEFT JOIN Ext_University U ON SA.New_University = U.New_UniversityId       
+											LEFT JOIN Ext_Major M ON SA.New_Major = M.New_MajorId
+										) A LEFT JOIN
+										(
+										SELECT SA.New_StudentAttendanceId
+											, S.New_Source
+											, S.New_LongDescription
+											, E.New_MajorName AS Emphasis             											
+			' -- Ext_From_Statement
+		, '	' -- Ext_Where_Statement	
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, '									FROM Ext_Student SA
+												LEFT JOIN Ext_Source S ON SA.New_Source = S.New_SourceId
+												LEFT JOIN Ext_Major E ON SA.Plus_Emphasis = E.New_MajorId
+										) B ON A.New_StudentAttendanceId = B.New_StudentAttendanceId
+								) A 
+						) A
+				UNION
+				SELECT NULL AS New_StudentAttendanceId
+					, NULL AS New_Term
+					, NULL AS New_Year
+					, NULL AS New_HoursCompleted
+					, NULL AS New_ExpectedGraduationDate
+					, NULL AS Plus_Year
+					, NULL AS New_StudentsAttendanceId
+					, Plus_AlumniId
+					, Plus_Name
+					, Plus_ActualGraduationDate
+					, Plus_AlumniStatus
+					, Plus_DgId
+					, Plus_HoursCredits
+					, Plus_PreferredGraduationDate
+					, Plus_Constituent
+					, College_Name
+					, New_CollegeCode
+					, Department
+					, New_Degree
+					, New_DegreeCode
+					, Plus_DegreeLevel
+					, New_University
+					, New_UniversityCode
+					, Plus_UniversityAcronym
+					, NULL AS New_Major
+					, NULL AS New_MajorName 
+					, NULL AS New_MajorCode
+					, Program_Code
+					, New_Source
+					, New_LongDescription
+					, Program
+					, Emphasis
+					FROM
+						(SELECT DISTINCT A.Plus_AlumniId
+							, A.Plus_Name
+							, A.Plus_ActualGraduationDate
+							, B.Plus_AlumniStatus
+							, A.Plus_DgId
+							, A.Plus_HoursCredits
+							, A.Plus_PreferredGraduationDate
+							, A.Plus_Constituent
+							, A.College_Name
+							, A.New_CollegeCode
+							, A.Department
+							, A.New_Degree
+							, A.New_DegreeCode
+							, B.Plus_DegreeLevel
+							, A.New_University
+							, A.New_UniversityCode
+							, A.Plus_UniversityAcronym
+							, B.Program_Code
+							, B.New_Source
+							, B.New_LongDescription
+							, B.Program
+							, B.Emphasis
+							FROM                                               
+								(SELECT A.Plus_AlumniId
+									, A.Plus_Name
+									, A.Plus_ActualGraduationDate
+									, A.Plus_DgId
+									, A.Plus_HoursCredits
+									, A.Plus_PreferredGraduationDate
+									, A.Plus_Constituent
+									, C.New_Name AS College_Name
+									, C.New_CollegeCode
+									, C.New_Name AS Department
+									, D.New_Degree
+									, D.New_DegreeCode
+									, U.New_University
+									, U.New_UniversityCode
+									, U.Plus_UniversityAcronym
+									FROM Ext_Alumni A
+										LEFT JOIN Ext_College C ON A.Plus_College = C.New_CollegeId
+										LEFT JOIN Ext_Degree D ON A.Plus_Degree = D.New_DegreeId
+										LEFT JOIN Ext_University U ON A.Plus_University = U.New_UniversityId                                                                
+								) A  LEFT JOIN                                                                                   
+								(SELECT  A.Plus_AlumniId
+									, PA.Column_Label AS Plus_AlumniStatus
+									, PD.Column_Label AS Plus_DegreeLevel
+									, S.New_Source
+									, S.New_LongDescription
+									, P.New_MajorName AS Program
+									, P.New_MajorCode AS Program_Code
+									, E.New_MajorName AS Emphasis
+									FROM Ext_Alumni A
+										LEFT JOIN Ext_Degree D ON A.Plus_Degree = D.New_DegreeId
+										LEFT JOIN Ext_Source S ON A.Plus_Source = S.New_SourceId
+										LEFT JOIN Ext_Major P ON A.Plus_Program = P.New_MajorId
+										LEFT JOIN Ext_Major E ON A.Plus_Emphasis = E.New_MajorId
+										LEFT JOIN _Plus_AlumniStatus_ PA ON A.Plus_AlumniStatus = PA.Column_Value
+										LEFT JOIN _Plus_DegreeLevel_ PD ON D.Plus_DegreeLevel = PD.Column_Value
+								) B ON A.Plus_AlumniId = B.Plus_AlumniId
+						) A
+				) A
+			) A
+			LEFT JOIN 
+				(
+				SELECT A.ContactId
+					, ROW_NUMBER() OVER(ORDER BY A.ContactId) AS Alumni_Group_Key
+					FROM
+						(SELECT DISTINCT New_StudentsAttendanceId AS ContactId 
+							FROM Ext_Student
+						UNION 
+						SELECT DISTINCT Plus_Constituent AS ContactId
+							FROM Ext_Alumni
+						) A
+				) B ON COALESCE(New_StudentsAttendanceId, Plus_Constituent) = B.ContactId 
+			' -- Ext_From_Statement_2
+		, ' ' -- Ext_Create_Fields_2
+		, ' ' -- Ext_Create_Fields_3
+		, ' ' -- Ext_Where_Statement_2
+		, ' ' -- Ext_Where_Statement_3
 		, NULL -- Tier_5_Stage
 		, NULL -- Tier_5_Stage_DateTime
 		, NULL -- Tier_6_Stage
