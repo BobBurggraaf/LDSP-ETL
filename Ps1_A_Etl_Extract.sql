@@ -3209,6 +3209,10 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, C NVARCHAR(1) DEFAULT ''C''
 			, F NVARCHAR(1) DEFAULT ''F''
 			, R NVARCHAR(1) DEFAULT ''R''
+			, Percent_Byu_Percent NVARCHAR(10) DEFAULT ''%BYU%''
+			, Percent_Byui_Percent NVARCHAR(10) DEFAULT ''%BYUI%''
+			, Percent_Byuh_Percent NVARCHAR(10) DEFAULT ''%BYUH%''
+			, Ldsbc_Dash_General NVARCHAR(20) DEFAULT ''LDSBC - GENERAL''
 			' -- Ext_Create_Fields
 		, 'New_EmploymentsId
 			, New_EmploymentId
@@ -3266,7 +3270,15 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 				LEFT JOIN dbo._MDT_Conversion_Dim C ON YEAR(A.New_DateEnded) = C.Date_Year
 				LEFT JOIN dbo._MDT_Conversion_Dim D ON YEAR(A.ModifiedOn) = D.Date_Year
 			' -- Ext_From_Statement
-		, ' ' -- Ext_Where_Statement
+		, 'CREATE NONCLUSTERED INDEX IX_New_Type 
+				ON Ext_Employment(New_Type ASC)
+				INCLUDE (
+				New_EmploymentsId
+				, New_DateStarted
+				, New_InstitutionalHierarchyId
+				);
+			UPDATE STATISTICS dbo.Ext_Employment 
+			' -- Ext_Where_Statement
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
 		, NULL -- Tier_4_Stage
@@ -4251,7 +4263,13 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_Select_Statement
 		, 'Oa_Extract.New_InstitutionBase
 			' -- Ext_From_Statement
-		, ' ' -- Ext_Where_Statement
+		, 'CREATE NONCLUSTERED INDEX IX_New_Name 
+				ON Ext_Institution(New_Name ASC)
+				INCLUDE (
+				New_InstitutionId
+				);
+			UPDATE STATISTICS dbo.Ext_Institution 
+			' -- Ext_Where_Statement
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
 		, NULL -- Tier_4_Stage
@@ -4355,6 +4373,10 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, New_Country UNIQUEIDENTIFIER
 			, Y NVARCHAR(1) DEFAULT ''Y''
 			, N NVARCHAR(1) DEFAULT ''N''
+			, Percent_Byu_Percent NVARCHAR(10) DEFAULT ''%BYU%''
+			, Percent_Byui_Percent NVARCHAR(10) DEFAULT ''%BYUI%''
+			, Percent_Byuh_Percent NVARCHAR(10) DEFAULT ''%BYUH%''
+			, Ldsbc_Dash_General NVARCHAR(20) DEFAULT ''LDSBC - GENERAL''
 			' -- Ext_Create_Fields
 		, 'New_InternationalExperienceId
 			, New_InternationalExperiencesAId
@@ -4388,7 +4410,15 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 				LEFT JOIN dbo._MDT_Conversion_Dim B ON YEAR(A.New_StartDate) = B.Date_Year
 				LEFT JOIN dbo._MDT_Conversion_Dim C ON YEAR(A.New_EndDate) = C.Date_Year
 			' -- Ext_From_Statement
-		, ' ' -- Ext_Where_Statement
+		, 'CREATE NONCLUSTERED INDEX IX_New_Experience 
+				ON Ext_International_Experience(New_Experience ASC)
+				INCLUDE (
+				New_InternationalExperiencesAId
+				, New_StartDate
+				, Plus_InstitutionalHierarchy
+				);
+			UPDATE STATISTICS dbo.Ext_International_Experience 
+			' -- Ext_Where_Statement
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
 		, NULL -- Tier_4_Stage
@@ -6234,6 +6264,17 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Winter NVARCHAR(10) DEFAULT ''Winter''
 			, Spring NVARCHAR(10) DEFAULT ''Spring''
 			, Summer NVARCHAR(10) DEFAULT ''Summer''
+			, Byu NVARCHAR(5) DEFAULT ''BYU''
+			, Byui NVARCHAR(5) DEFAULT ''BYUI''
+			, Byuh NVARCHAR(5) DEFAULT ''BYUH''
+			, Ldsbc NVARCHAR(5) DEFAULT ''LDSBC''
+			, N1 NVARCHAR(1) DEFAULT ''1''
+			, N2 NVARCHAR(1) DEFAULT ''2''
+			, Fall_Percent NVARCHAR(10) DEFAULT ''Fall%''
+			, Winter_Percent NVARCHAR(10) DEFAULT ''Winter%''
+			, Spring_Percent NVARCHAR(10) DEFAULT ''Spring%''
+			, Summer_Percent NVARCHAR(10) DEFAULT ''Summer%''
+			, Slash_1_Slash NVARCHAR(3) DEFAULT ''/1/''
 			' -- Ext_Create_Fields
 		, 'New_StudentAttendanceId
 			, New_Term
@@ -6847,6 +6888,10 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Plus_Emphasis UNIQUEIDENTIFIER
 			, Y NVARCHAR(1) DEFAULT ''Y''
 			, N NVARCHAR(1) DEFAULT ''N''
+			, Byu NVARCHAR(5) DEFAULT ''BYU''
+			, Byui NVARCHAR(5) DEFAULT ''BYUI''
+			, Byuh NVARCHAR(5) DEFAULT ''BYUH''
+			, Ldsbc NVARCHAR(5) DEFAULT ''LDSBC''
 			' -- Ext_Create_Fields
 		, 'Plus_AlumniId 
 			, Plus_Name
@@ -6884,7 +6929,14 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 				LEFT JOIN dbo._MDT_Conversion_Dim B ON YEAR(A.Plus_ActualGraduationDate) = B.Date_Year
 				LEFT JOIN dbo._MDT_Conversion_Dim C ON YEAR(A.Plus_PreferredGraduationDate) = C.Date_Year
 			' -- Ext_From_Statement
-		, ' ' -- Ext_Where_Statement
+		, 'CREATE NONCLUSTERED INDEX IX_Plus_Name 
+				ON Ext_Alumni(Plus_Name ASC)
+				INCLUDE (
+				Plus_Constituent
+				, Plus_ActualGraduationDate
+				);
+			UPDATE STATISTICS dbo.Ext_Alumni 
+			' -- Ext_Where_Statement
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
 		, NULL -- Tier_4_Stage
@@ -17285,6 +17337,10 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Plus_Description NVARCHAR(4000)
 			, Lds_RecurringGiftRule UNIQUEIDENTIFIER
 			, Lds_RecurringGiftGroup UNIQUEIDENTIFIER
+			, Percent_Byu_Percent NVARCHAR(10) DEFAULT ''%BYU%''
+			, Percent_Byui_Percent NVARCHAR(10) DEFAULT ''%BYUI%''
+			, Percent_Byuh_Percent NVARCHAR(10) DEFAULT ''%BYUH%''
+			, Ldsbc_Dash_General NVARCHAR(20) DEFAULT ''LDSBC - GENERAL''
 			' -- Ext_Create_Fields
 		, 'New_ConstituentDonor
 			, New_OrganizationDonor
@@ -23891,6 +23947,323 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Ext_Select_Statement_6
 		, NULL -- Ext_Select_Statement_7
 		, NULL -- Ext_From_Statement_3
+		, NULL -- Ext_From_Statement_4
+		, NULL -- Ext_From_Statement_5
+		, NULL -- Ext_From_Statement_6
+		, NULL -- Ext_From_Statement_7
+		, NULL -- Ext_Where_Statement_4
+		, NULL -- Ext_Where_Statement_5
+		, NULL -- Ext_Where_Statement_6
+		, NULL -- Ext_Where_Statement_7
+		, NULL -- Extra_1
+		, NULL -- Extra_2
+		, NULL -- Extra_3
+		, NULL -- Extra_4
+		, NULL -- Extra_5
+		, NULL -- Extra_6
+		, NULL -- Extra_7
+		, NULL -- Extra_8
+		, NULL -- Extra_9
+		, NULL -- Extra_10
+	)
+,
+-- --------------------------
+-- _Affiliated_Dim
+-- --------------------------
+	( 4 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Affiliated_Dim' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, '	ContactId  NVARCHAR(100) 
+			, Affiliated_Key  INT  PRIMARY KEY
+			, Byu_Affiliated_Date DATE
+			, Byu_Donor_Affiliated_Date DATE
+			, Byu_Education_Affiliated_Date DATE
+			, Byu_Interest_Affiliated_Date DATE
+			, Byu_Employee_Affiliated_Date DATE
+			, Byui_Affiliated_Date DATE
+			, Byui_Donor_Affiliated_Date DATE
+			, Byui_Education_Affiliated_Date DATE
+			, Byui_Interest_Affiliated_Date DATE
+			, Byui_Employee_Affiliated_Date DATE
+			, Byuh_Affiliated_Date DATE
+			, Byuh_Donor_Affiliated_Date DATE
+			, Byuh_Education_Affiliated_Date DATE
+			, Byuh_Interest_Affiliated_Date DATE
+			, Byuh_Employee_Affiliated_Date DATE
+			, Ldsbc_Affiliated_Date DATE
+			, Ldsbc_Donor_Affiliated_Date DATE
+			, Ldsbc_Education_Affiliated_Date DATE
+			, Ldsbc_Interest_Affiliated_Date DATE
+			, Ldsbc_Employee_Affiliated_Date DATE
+		' -- Ext_Create_Fields
+		, 'ContactId 
+			, Affiliated_Key
+			, Byu_Affiliated_Date
+			, Byu_Donor_Affiliated_Date
+			, Byu_Education_Affiliated_Date
+			, Byu_Interest_Affiliated_Date
+			, Byu_Employee_Affiliated_Date
+			, Byui_Affiliated_Date
+			, Byui_Donor_Affiliated_Date
+			, Byui_Education_Affiliated_Date
+			, Byui_Interest_Affiliated_Date
+			, Byui_Employee_Affiliated_Date
+			, Byuh_Affiliated_Date
+			, Byuh_Donor_Affiliated_Date
+			, Byuh_Education_Affiliated_Date
+			, Byuh_Interest_Affiliated_Date
+			, Byuh_Employee_Affiliated_Date
+			, Ldsbc_Affiliated_Date
+			, Ldsbc_Donor_Affiliated_Date
+			, Ldsbc_Education_Affiliated_Date
+			, Ldsbc_Interest_Affiliated_Date
+			, Ldsbc_Employee_Affiliated_Date
+		' -- Ext_Insert_Fields
+		, 'ContactId
+			, ROW_NUMBER() OVER(ORDER BY ContactId) AS Affiliated_Key
+			, CASE WHEN Byu_Donor_Min_Date IS NOT NULL AND Byu_Donor_Min_Date < COALESCE(Byu_Education_Min_Date,GETDATE()) AND Byu_Donor_Min_Date < COALESCE(Byu_Interest_Min_Date,GETDATE()) AND Byu_Donor_Min_Date < COALESCE(Byu_Employment_Min_Date,GETDATE()) THEN CONVERT(VARCHAR(10),Byu_Donor_Min_Date,101)
+					WHEN Byu_Education_Min_Date IS NOT NULL AND Byu_Education_Min_Date < COALESCE(Byu_Donor_Min_Date,GETDATE()) AND Byu_Education_Min_Date < COALESCE(Byu_Interest_Min_Date,GETDATE()) AND Byu_Education_Min_Date < COALESCE(Byu_Employment_Min_Date,GETDATE()) THEN CONVERT(VARCHAR(10),Byu_Education_Min_Date,101)
+					WHEN Byu_Interest_Min_Date IS NOT NULL AND Byu_Interest_Min_Date < COALESCE(Byu_Donor_Min_Date,GETDATE()) AND Byu_Interest_Min_Date < COALESCE(Byu_Education_Min_Date,GETDATE()) AND Byu_Interest_Min_Date < COALESCE(Byu_Employment_Min_Date,GETDATE()) THEN CONVERT(VARCHAR(10),Byu_Interest_Min_Date,101)
+					WHEN Byu_Employment_Min_Date IS NOT NULL AND Byu_Employment_Min_Date < COALESCE(Byu_Donor_Min_Date,GETDATE()) AND Byu_Employment_Min_Date < COALESCE(Byu_Education_Min_Date,GETDATE()) AND Byu_Employment_Min_Date < COALESCE(Byu_Interest_Min_Date,GETDATE()) THEN CONVERT(VARCHAR(10),Byu_Employment_Min_Date,101)
+					ELSE NULL END AS Byu_Affiliated_Date
+			, CONVERT(VARCHAR(10),Byu_Donor_Min_Date,101) AS Byu_Donor_Affiliated_Date
+			, CONVERT(VARCHAR(10),Byu_Education_Min_Date,101) AS Byu_Education_Affiliated_Date
+			, CONVERT(VARCHAR(10),Byu_Interest_Min_Date,101) AS Byu_Interest_Affiliated_Date
+			, CONVERT(VARCHAR(10),Byu_Employment_Min_Date,101) AS Byu_Employee_Affiliated_Date
+			, CASE WHEN Byui_Donor_Min_Date IS NOT NULL AND Byui_Donor_Min_Date < COALESCE(Byui_Education_Min_Date,GETDATE()) AND Byui_Donor_Min_Date < COALESCE(Byui_Interest_Min_Date,GETDATE()) AND Byui_Donor_Min_Date < COALESCE(Byui_Employment_Min_Date,GETDATE()) THEN CONVERT(VARCHAR(10),Byui_Donor_Min_Date,101)
+					WHEN Byui_Education_Min_Date IS NOT NULL AND Byui_Education_Min_Date < COALESCE(Byui_Donor_Min_Date,GETDATE()) AND Byui_Education_Min_Date < COALESCE(Byui_Interest_Min_Date,GETDATE()) AND Byui_Education_Min_Date < COALESCE(Byui_Employment_Min_Date,GETDATE()) THEN CONVERT(VARCHAR(10),Byui_Education_Min_Date,101)
+					WHEN Byui_Interest_Min_Date IS NOT NULL AND Byui_Interest_Min_Date < COALESCE(Byui_Donor_Min_Date,GETDATE()) AND Byui_Interest_Min_Date < COALESCE(Byui_Education_Min_Date,GETDATE()) AND Byui_Interest_Min_Date < COALESCE(Byui_Employment_Min_Date,GETDATE()) THEN CONVERT(VARCHAR(10),Byui_Interest_Min_Date,101)
+					WHEN Byui_Employment_Min_Date IS NOT NULL AND Byui_Employment_Min_Date < COALESCE(Byui_Donor_Min_Date,GETDATE()) AND Byui_Employment_Min_Date < COALESCE(Byui_Education_Min_Date,GETDATE()) AND Byui_Employment_Min_Date < COALESCE(Byui_Interest_Min_Date,GETDATE()) THEN CONVERT(VARCHAR(10),Byui_Employment_Min_Date,101)
+					ELSE NULL END AS Byui_Affiliated_Date
+			, CONVERT(VARCHAR(10),Byui_Donor_Min_Date,101) AS Byui_Donor_Affiliated_Date
+			, CONVERT(VARCHAR(10),Byui_Education_Min_Date,101) AS Byui_Education_Affiliated_Date
+			, CONVERT(VARCHAR(10),Byui_Interest_Min_Date,101) AS Byui_Interest_Affiliated_Date
+			, CONVERT(VARCHAR(10),Byui_Employment_Min_Date,101) AS Byui_Employee_Affiliated_Date
+			' -- Ext_Select_Statement
+		, '(SELECT COALESCE(A.ContactId,D.ContactId) AS ContactId
+				, Byu_Donor_Min_Date
+				, Byui_Donor_Min_Date
+				, Byuh_Donor_Min_Date
+				, Ldsbc_Donor_Min_Date
+				, Byu_Education_Min_Date
+				, Byui_Education_Min_Date
+				, Byuh_Education_Min_Date
+				, Ldsbc_Education_Min_Date
+				, Byu_Interest_Min_Date
+				, Byui_Interest_Min_Date
+				, Byuh_Interest_Min_Date
+				, Ldsbc_Interest_Min_Date
+				, Byu_Employment_Min_Date
+				, Byui_Employment_Min_Date
+				, Byuh_Employment_Min_Date
+				, Ldsbc_Employment_Min_Date
+				FROM 
+					(SELECT COALESCE(A.ContactId,C.ContactId) AS ContactId
+						, Byu_Donor_Min_Date
+						, Byui_Donor_Min_Date
+						, Byuh_Donor_Min_Date
+						, Ldsbc_Donor_Min_Date
+						, Byu_Education_Min_Date
+						, Byui_Education_Min_Date
+						, Byuh_Education_Min_Date
+						, Ldsbc_Education_Min_Date
+						, Byu_Interest_Min_Date
+						, Byui_Interest_Min_Date
+						, Byuh_Interest_Min_Date
+						, Ldsbc_Interest_Min_Date
+						FROM
+							(SELECT COALESCE(A.ContactId,B.ContactId) AS ContactId
+								, Byu_Donor_Min_Date
+								, Byui_Donor_Min_Date
+								, Byuh_Donor_Min_Date
+								, Ldsbc_Donor_Min_Date
+								, Byu_Education_Min_Date
+								, Byui_Education_Min_Date
+								, Byuh_Education_Min_Date
+								, Ldsbc_Education_Min_Date
+								FROM					
+									(SELECT A.New_ConstituentDonor AS ContactId
+										, MIN(CASE WHEN UPPER(B.New_Name) LIKE [Percent_Byu_Percent] AND UPPER(B.New_Name) NOT LIKE [Percent_Byui_Percent] AND UPPER(B.New_Name) NOT LIKE [Percent_Byuh_Percent]
+												THEN A.New_ReceiptDate ELSE NULL END) AS Byu_Donor_Min_Date
+										, MIN(CASE WHEN UPPER(B.New_Name) LIKE [Percent_Byui_Percent]
+												THEN A.New_ReceiptDate ELSE NULL END) AS Byui_Donor_Min_Date
+										, MIN(CASE WHEN UPPER(B.New_Name) LIKE [Percent_Byuh_Percent]
+												THEN A.New_ReceiptDate ELSE NULL END) AS Byuh_Donor_Min_Date
+										, MIN(CASE WHEN UPPER(B.New_Name) = [Ldsbc_Dash_General]
+												THEN A.New_ReceiptDate ELSE NULL END) AS Ldsbc_Donor_Min_Date
+										FROM _Gift_ A
+											INNER JOIN Ext_Institution B ON A.New_InstitutionalHierarchyId = B.New_InstitutionId
+										GROUP BY A.New_ConstituentDonor
+									) A
+									FULL OUTER JOIN
+									(SELECT COALESCE(A.ContactId,B.ContactId) AS ContactId
+										, CASE WHEN B.Byu_Student_Min_Date IS NULL THEN A.Byu_Alumni_Min_Date
+												WHEN A.Byu_Alumni_Min_Date IS NULL THEN B.Byu_Student_Min_Date
+												WHEN A.Byu_Alumni_Min_Date < B.Byu_Student_Min_Date THEN A.Byu_Alumni_Min_Date
+												WHEN B.Byu_Student_Min_Date < A.Byu_Alumni_Min_Date THEN B.Byu_Student_Min_Date
+												WHEN A.Byu_Alumni_Min_Date = B.Byu_Student_Min_Date THEN A.Byu_Alumni_Min_Date
+												ELSE NULL END AS Byu_Education_Min_Date
+										, CASE WHEN B.Byui_Student_Min_Date IS NULL THEN A.Byui_Alumni_Min_Date
+												WHEN A.Byui_Alumni_Min_Date IS NULL THEN B.Byui_Student_Min_Date
+												WHEN A.Byui_Alumni_Min_Date < B.Byui_Student_Min_Date THEN A.Byui_Alumni_Min_Date
+												WHEN B.Byui_Student_Min_Date < A.Byui_Alumni_Min_Date THEN B.Byui_Student_Min_Date
+												WHEN A.Byui_Alumni_Min_Date = B.Byui_Student_Min_Date THEN A.Byui_Alumni_Min_Date
+												ELSE NULL END AS Byui_Education_Min_Date
+										, CASE WHEN B.Byuh_Student_Min_Date IS NULL THEN A.Byuh_Alumni_Min_Date
+												WHEN A.Byuh_Alumni_Min_Date IS NULL THEN B.Byuh_Student_Min_Date
+												WHEN A.Byuh_Alumni_Min_Date < B.Byuh_Student_Min_Date THEN A.Byuh_Alumni_Min_Date
+												WHEN B.Byuh_Student_Min_Date < A.Byuh_Alumni_Min_Date THEN B.Byuh_Student_Min_Date
+												WHEN A.Byuh_Alumni_Min_Date = B.Byuh_Student_Min_Date THEN A.Byuh_Alumni_Min_Date
+												ELSE NULL END AS Byuh_Education_Min_Date										 					
+			' -- Ext_From_Statement
+		, 'AND ContactId IS NOT NULL 
+			' -- Ext_Where_Statement	
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ', CASE WHEN Byuh_Donor_Min_Date IS NOT NULL AND Byuh_Donor_Min_Date < COALESCE(Byuh_Education_Min_Date,GETDATE()) AND Byuh_Donor_Min_Date < COALESCE(Byuh_Interest_Min_Date,GETDATE()) AND Byuh_Donor_Min_Date < COALESCE(Byuh_Employment_Min_Date,GETDATE()) THEN CONVERT(VARCHAR(10),Byuh_Donor_Min_Date,101)
+					WHEN Byuh_Education_Min_Date IS NOT NULL AND Byuh_Education_Min_Date < COALESCE(Byuh_Donor_Min_Date,GETDATE()) AND Byuh_Education_Min_Date < COALESCE(Byuh_Interest_Min_Date,GETDATE()) AND Byuh_Education_Min_Date < COALESCE(Byuh_Employment_Min_Date,GETDATE()) THEN CONVERT(VARCHAR(10),Byuh_Education_Min_Date,101)
+					WHEN Byuh_Interest_Min_Date IS NOT NULL AND Byuh_Interest_Min_Date < COALESCE(Byuh_Donor_Min_Date,GETDATE()) AND Byuh_Interest_Min_Date < COALESCE(Byuh_Education_Min_Date,GETDATE()) AND Byuh_Interest_Min_Date < COALESCE(Byuh_Employment_Min_Date,GETDATE()) THEN CONVERT(VARCHAR(10),Byuh_Interest_Min_Date,101)
+					WHEN Byuh_Employment_Min_Date IS NOT NULL AND Byuh_Employment_Min_Date < COALESCE(Byuh_Donor_Min_Date,GETDATE()) AND Byuh_Employment_Min_Date < COALESCE(Byuh_Education_Min_Date,GETDATE()) AND Byuh_Employment_Min_Date < COALESCE(Byuh_Interest_Min_Date,GETDATE()) THEN CONVERT(VARCHAR(10),Byuh_Employment_Min_Date,101)
+					ELSE NULL END AS Byuh_Affiliated_Date
+			, CONVERT(VARCHAR(10),Byuh_Donor_Min_Date,101) AS Byuh_Donor_Affiliated_Date
+			, CONVERT(VARCHAR(10),Byuh_Education_Min_Date,101) AS Byuh_Education_Affiliated_Date
+			, CONVERT(VARCHAR(10),Byuh_Interest_Min_Date,101) AS Byuh_Interest_Affiliated_Date
+			, CONVERT(VARCHAR(10),Byuh_Employment_Min_Date,101) AS Byuh_Employee_Affiliated_Date
+			, CASE WHEN Ldsbc_Donor_Min_Date IS NOT NULL AND Ldsbc_Donor_Min_Date < COALESCE(Ldsbc_Education_Min_Date,GETDATE()) AND Ldsbc_Donor_Min_Date < COALESCE(Ldsbc_Interest_Min_Date,GETDATE()) AND Ldsbc_Donor_Min_Date < COALESCE(Ldsbc_Employment_Min_Date,GETDATE()) THEN CONVERT(VARCHAR(10),Ldsbc_Donor_Min_Date,101)
+					WHEN Ldsbc_Education_Min_Date IS NOT NULL AND Ldsbc_Education_Min_Date < COALESCE(Ldsbc_Donor_Min_Date,GETDATE()) AND Ldsbc_Education_Min_Date < COALESCE(Ldsbc_Interest_Min_Date,GETDATE()) AND Ldsbc_Education_Min_Date < COALESCE(Ldsbc_Employment_Min_Date,GETDATE()) THEN CONVERT(VARCHAR(10),Ldsbc_Education_Min_Date,101)
+					WHEN Ldsbc_Interest_Min_Date IS NOT NULL AND Ldsbc_Interest_Min_Date < COALESCE(Ldsbc_Donor_Min_Date,GETDATE()) AND Ldsbc_Interest_Min_Date < COALESCE(Ldsbc_Education_Min_Date,GETDATE()) AND Ldsbc_Interest_Min_Date < COALESCE(Ldsbc_Employment_Min_Date,GETDATE()) THEN CONVERT(VARCHAR(10),Ldsbc_Interest_Min_Date,101)
+					WHEN Ldsbc_Employment_Min_Date IS NOT NULL AND Ldsbc_Employment_Min_Date < COALESCE(Ldsbc_Donor_Min_Date,GETDATE()) AND Ldsbc_Employment_Min_Date < COALESCE(Ldsbc_Education_Min_Date,GETDATE()) AND Ldsbc_Employment_Min_Date < COALESCE(Ldsbc_Interest_Min_Date,GETDATE()) THEN CONVERT(VARCHAR(10),Ldsbc_Employment_Min_Date,101)
+					ELSE NULL END AS Ldsbc_Affiliated_Date
+			, CONVERT(VARCHAR(10),Ldsbc_Donor_Min_Date,101) AS Ldsbc_Donor_Affiliated_Date
+			, CONVERT(VARCHAR(10),Ldsbc_Education_Min_Date,101) AS Ldsbc_Education_Affiliated_Date
+			, CONVERT(VARCHAR(10),Ldsbc_Interest_Min_Date,101) AS Ldsbc_Interest_Affiliated_Date
+			, CONVERT(VARCHAR(10),Ldsbc_Employment_Min_Date,101) AS Ldsbc_Employee_Affiliated_Date 
+			' -- Ext_Select_Statement_2
+		, '								, CASE WHEN B.Ldsbc_Student_Min_Date IS NULL THEN A.Ldsbc_Alumni_Min_Date
+												WHEN A.Ldsbc_Alumni_Min_Date IS NULL THEN B.Ldsbc_Student_Min_Date
+												WHEN A.Ldsbc_Alumni_Min_Date < B.Ldsbc_Student_Min_Date THEN A.Ldsbc_Alumni_Min_Date
+												WHEN B.Ldsbc_Student_Min_Date < A.Ldsbc_Alumni_Min_Date THEN B.Ldsbc_Student_Min_Date
+												WHEN A.Ldsbc_Alumni_Min_Date = B.Ldsbc_Student_Min_Date THEN A.Ldsbc_Alumni_Min_Date
+												ELSE NULL END AS Ldsbc_Education_Min_Date
+										FROM
+											(SELECT A.Plus_Constituent AS ContactId
+												, MIN(CASE WHEN A.Plus_AlumniStatus IN (100000000,100000001) AND B.New_University = [Byu]
+													THEN CONVERT(DATE,COALESCE(A.Plus_PreferredGraduationDate,A.Plus_ActualGraduationDate),101) ELSE NULL END) AS Byu_Alumni_Min_Date
+												, MIN(CASE WHEN A.Plus_AlumniStatus IN (100000000,100000001) AND B.New_University = [Byui]
+													THEN CONVERT(DATE,COALESCE(A.Plus_PreferredGraduationDate,A.Plus_ActualGraduationDate),101) ELSE NULL END) AS Byui_Alumni_Min_Date
+												, MIN(CASE WHEN A.Plus_AlumniStatus IN (100000000,100000001) AND B.New_University = [Byuh]
+													THEN CONVERT(DATE,COALESCE(A.Plus_PreferredGraduationDate,A.Plus_ActualGraduationDate),101) ELSE NULL END) AS Byuh_Alumni_Min_Date
+												, MIN(CASE WHEN A.Plus_AlumniStatus IN (100000000,100000001) AND B.New_University = [Ldsbc]
+													THEN CONVERT(DATE,COALESCE(A.Plus_PreferredGraduationDate,A.Plus_ActualGraduationDate),101) ELSE NULL END) AS Ldsbc_Alumni_Min_Date
+												FROM Ext_Alumni A
+													INNER JOIN Ext_University B ON A.Plus_University = B.New_UniversityId
+												GROUP BY A.Plus_Constituent
+											) A 
+											FULL OUTER JOIN
+											(SELECT New_StudentsAttendanceId AS ContactId
+												, MIN(CASE WHEN A.Attendance_Month IS NOT NULL AND A.Plus_Year IS NOT NULL AND A.New_University = [Byu] THEN
+														CONVERT(DATE,CONCAT(Attendance_Month,[Slash_1_Slash],Plus_Year),101) ELSE NULL END) AS Byu_Student_Min_Date
+												, MIN(CASE WHEN A.Attendance_Month IS NOT NULL AND A.Plus_Year IS NOT NULL AND A.New_University = [Byui] THEN
+														CONVERT(DATE,CONCAT(Attendance_Month,[Slash_1_Slash],Plus_Year),101) ELSE NULL END) AS Byui_Student_Min_Date
+												, MIN(CASE WHEN A.Attendance_Month IS NOT NULL AND A.Plus_Year IS NOT NULL AND A.New_University = [Byuh] THEN
+														CONVERT(DATE,CONCAT(Attendance_Month,[Slash_1_Slash],Plus_Year),101) ELSE NULL END) AS Byuh_Student_Min_Date
+												, MIN(CASE WHEN A.Attendance_Month IS NOT NULL AND A.Plus_Year IS NOT NULL AND A.New_University = [Ldsbc] THEN
+														CONVERT(DATE,CONCAT(Attendance_Month,[Slash_1_Slash],Plus_Year),101) ELSE NULL END) AS Ldsbc_Student_Min_Date
+												FROM
+
+			' -- Ext_From_Statement_2
+		, ' ' -- Ext_Create_Fields_2
+		, ' ' -- Ext_Create_Fields_3
+		, ' ' -- Ext_Where_Statement_2
+		, ' ' -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+		, NULL -- Ext_Select_Statement_3
+		, NULL -- Ext_Select_Statement_4
+		, NULL -- Ext_Select_Statement_5
+		, NULL -- Ext_Select_Statement_6
+		, NULL -- Ext_Select_Statement_7
+		, '													(SELECT A.New_StudentsAttendanceId
+														, A.New_Term
+														, CASE WHEN SUBSTRING(CONVERT(NVARCHAR(4),A.Plus_Year),1,1) IN ([N1],[N2])  
+																	AND LEN(A.Plus_Year) = 4 THEN A.Plus_Year
+															ELSE NULL END AS Plus_Year 
+														, B.New_University
+														, [Byu]
+														, [Byui]
+														, [Byuh]
+														, [Ldsbc]
+														, [Slash_1_Slash]
+														, CASE WHEN CONVERT(NVARCHAR(100),A.New_Term) LIKE [Winter_Percent] THEN 1
+																WHEN CONVERT(NVARCHAR(100),A.New_Term) LIKE [Spring_Percent] THEN 4
+																WHEN CONVERT(NVARCHAR(100),A.New_Term) LIKE [Summer_Percent] THEN 6
+																WHEN CONVERT(NVARCHAR(100),A.New_Term) LIKE [Fall_Percent] THEN 8
+																WHEN CONVERT(NVARCHAR(100),A.New_Term) IS NOT NULL THEN 1
+																ELSE NULL END AS Attendance_Month
+														FROM Ext_Student A
+															INNER JOIN Ext_University B ON A.New_University = B.New_UniversityId
+														WHERE 1 = 1
+															AND A.New_Term IS NOT NULL
+										
+													) A
+												GROUP BY A.New_StudentsAttendanceId
+											) B ON A.ContactId = B.ContactId
+									) B ON A.ContactId = B.ContactId
+							) A				
+							FULL OUTER JOIN
+							(SELECT A.New_InternationalExperiencesAId AS ContactId
+								, MIN(CASE WHEN A.New_Experience = 990260000 AND UPPER(B.New_Name) LIKE [Percent_Byu_Percent] AND UPPER(B.New_Name) NOT LIKE [Percent_Byui_Percent] AND UPPER(B.New_Name) NOT LIKE [Percent_Byuh_Percent]
+										THEN A.New_StartDate ELSE NULL END) AS Byu_Interest_Min_Date
+								, MIN(CASE WHEN A.New_Experience = 990260000 AND UPPER(B.New_Name) LIKE [Percent_Byui_Percent]
+										THEN A.New_StartDate ELSE NULL END) AS Byui_Interest_Min_Date
+								, MIN(CASE WHEN A.New_Experience = 990260000 AND UPPER(B.New_Name) LIKE [Percent_Byuh_Percent]
+										THEN A.New_StartDate ELSE NULL END) AS Byuh_Interest_Min_Date
+								, MIN(CASE WHEN A.New_Experience = 990260000 AND UPPER(B.New_Name)  = [Ldsbc_Dash_General]
+										THEN A.New_StartDate ELSE NULL END) AS Ldsbc_Interest_Min_Date
+								FROM Ext_International_Experience A
+									INNER JOIN Ext_Institution B ON A.Plus_InstitutionalHierarchy = B.New_InstitutionId
+								GROUP BY A.New_InternationalExperiencesAId
+							) C ON A.ContactId = C.ContactId
+					) A		
+					FULL OUTER JOIN
+					(SELECT A.New_EmploymentsId AS ContactId
+						, MIN(CASE WHEN A.New_Type = 100000000 AND UPPER(B.New_Name) LIKE [Percent_Byu_Percent]  AND UPPER(B.New_Name) NOT LIKE [Percent_Byui_Percent]  AND UPPER(B.New_Name) NOT LIKE [Percent_Byuh_Percent] 
+								THEN A.New_DateStarted ELSE NULL END) AS Byu_Employment_Min_Date
+						, MIN(CASE WHEN A.New_Type = 100000000 AND UPPER(B.New_Name) LIKE [Percent_Byui_Percent] 
+								THEN A.New_DateStarted ELSE NULL END) AS Byui_Employment_Min_Date
+						, MIN(CASE WHEN A.New_Type = 100000000 AND UPPER(B.New_Name) LIKE [Percent_Byuh_Percent] 
+								THEN A.New_DateStarted ELSE NULL END) AS Byuh_Employment_Min_Date
+						, MIN(CASE WHEN A.New_Type = 100000000 AND UPPER(B.New_Name) = [Ldsbc_Dash_General]
+								THEN A.New_DateStarted ELSE NULL END) AS Ldsbc_Employment_Min_Date
+						FROM Ext_Employment A
+							INNER JOIN Ext_Institution B ON A.New_InstitutionalHierarchyId = B.New_InstitutionId
+						GROUP BY A.New_EmploymentsId
+					) D  ON A.ContactId = D.ContactId
+			) A
+			'-- Ext_From_Statement_3
 		, NULL -- Ext_From_Statement_4
 		, NULL -- Ext_From_Statement_5
 		, NULL -- Ext_From_Statement_6
