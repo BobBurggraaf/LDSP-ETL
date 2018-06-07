@@ -234,6 +234,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Lds_QualifiedOn DATETIME
 			, Lds_QualifiedBy UNIQUEIDENTIFIER
 			, Zero NVARCHAR(1) DEFAULT ''0''
+			, Organization NVARCHAR(15) DEFAULT ''Organization''
 			' -- Ext_Create_Fields
 		, 'AccountId
 			, New_LdspId
@@ -1611,6 +1612,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, N30 NVARCHAR(2) DEFAULT ''30''
 			, N31 NVARCHAR(2) DEFAULT ''31''
 			, Zero NVARCHAR(1) DEFAULT ''0''
+			, Constituent NVARCHAR(15) DEFAULT ''Constituent''
 			' -- Ext_Create_Fields
 		, 'ContactId
 			, New_Ldspid
@@ -25377,6 +25379,380 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Tier_4_Stage_DateTime
 		, ' ' -- Ext_Select_Statement_2
 		, ' ' -- Ext_From_Statement_2
+		, ' ' -- Ext_Create_Fields_2
+		, ' ' -- Ext_Create_Fields_3
+		, ' ' -- Ext_Where_Statement_2
+		, ' ' -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+		, NULL -- Ext_Select_Statement_3
+		, NULL -- Ext_Select_Statement_4
+		, NULL -- Ext_Select_Statement_5
+		, NULL -- Ext_Select_Statement_6
+		, NULL -- Ext_Select_Statement_7
+		, NULL -- Ext_From_Statement_3
+		, NULL -- Ext_From_Statement_4
+		, NULL -- Ext_From_Statement_5
+		, NULL -- Ext_From_Statement_6
+		, NULL -- Ext_From_Statement_7
+		, NULL -- Ext_Where_Statement_4
+		, NULL -- Ext_Where_Statement_5
+		, NULL -- Ext_Where_Statement_6
+		, NULL -- Ext_Where_Statement_7
+		, NULL -- Extra_1
+		, NULL -- Extra_2
+		, NULL -- Extra_3
+		, NULL -- Extra_4
+		, NULL -- Extra_5
+		, NULL -- Extra_6
+		, NULL -- Extra_7
+		, NULL -- Extra_8
+		, NULL -- Extra_9
+		, NULL -- Extra_10
+	)
+	,
+-- --------------------------
+-- _Donor_Key_Dim
+-- --------------------------
+	( 6 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Donor_Key_Dim' -- Ext_Table
+		, '	' -- Dest_Create_Fields
+		, '	' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, '	Donor_Key NVARCHAR(100) PRIMARY KEY      
+			, Activity_Group_Key INT
+			, Address_Group_Key INT 
+			, Affiliated_Key INT
+			, Alumni_Group_Key INT 
+			, Association_Group_Key INT 
+			, Award_Group_Key INT 
+			, Connection_Group_Key INT
+			, Drop_Include_Group_Key INT 
+			, Email_Group_Key INT 
+			, Employment_Group_Key INT 
+			, Id_Group_Key INT
+			, Interest_Group_Key INT
+			, Language_Group_Key INT 
+			, Phone_Group_Key  INT
+			, Psa_Group_Key  INT
+			, Student_Group_Key INT
+			, Donor_Ldsp_Id NVARCHAR(100) 
+			, Donor_Contact_Type NVARCHAR(100) 
+			, Donor_Organization_Id NVARCHAR(100)
+			' -- Ext_Create_Fields
+		, '	Donor_Key      
+			, Activity_Group_Key 
+			, Address_Group_Key 
+			, Affiliated_Key
+			, Alumni_Group_Key 
+			, Association_Group_Key 
+			, Award_Group_Key 
+			, Connection_Group_Key
+			, Drop_Include_Group_Key 
+			, Email_Group_Key 
+			, Employment_Group_Key 
+			, Id_Group_Key
+			, Interest_Group_Key
+			, Language_Group_Key 
+			, Phone_Group_Key 
+			, Psa_Group_Key 
+			, Student_Group_Key
+			, Donor_Ldsp_Id 
+			, Donor_Contact_Type 
+			, Donor_Organization_Id
+			' -- Ext_Insert_Fields
+		, 'A.Donor_Key
+			, COALESCE(B.Activity_Group_Key,0) AS Activity_Group_Key
+			, COALESCE(C.Address_Group_Key,0) AS Address_Group_Key
+			, COALESCE(D.Affiliated_Key,0) AS Affiliated_Key
+			, COALESCE(E.Alumni_Group_Key,0) AS Alumni_Group_Key
+			, COALESCE(F.Association_Group_Key,0) AS Association_Group_Key
+			, COALESCE(G.Award_Group_Key,0) AS Award_Group_Key
+			, COALESCE(H.Connection_Group_Key,0) AS Connection_Group_Key 
+			, COALESCE(I.Drop_Include_Group_Key,0) AS Drop_Include_Group_Key 
+			, COALESCE(J.Email_Group_Key,0) AS Email_Group_Key
+			, COALESCE(K.Employment_Group_Key,0) AS Employment_Group_Key
+			, COALESCE(L.Id_Group_Key,0) AS Id_Group_Key  
+			, COALESCE(M.Interest_Group_Key,0) AS Interest_Group_Key
+			, COALESCE(N.Language_Group_Key,0) AS Language_Group_Key
+			, COALESCE(O.Phone_Group_Key,0) AS Phone_Group_Key
+			, COALESCE(P.Psa_Group_Key,0) AS Psa_Group_Key 
+			, COALESCE(Q.Student_Group_Key,0) AS Student_Group_Key
+			, R.Donor_Ldsp_Id
+			, R.Donor_Contact_Type
+			, R.Donor_Organization_Id  
+			' -- Ext_Select_Statement
+		, '_All_Donors_ A
+				LEFT JOIN 
+					(SELECT ContactId
+						, Activity_Group_Key
+						FROM
+							(SELECT ContactId
+								, ROW_NUMBER() OVER(PARTITION BY ContactId ORDER BY ContactId) AS Row_Num
+								, Activity_Group_Key
+								FROM _Activity_Bridge 
+								WHERE 1 = 1
+									AND ContactId IS NOT NULL
+							) A
+						WHERE 1 = 1
+							AND Row_Num = 1
+					) B ON A.Donor_Key = B.ContactId
+				LEFT JOIN 
+					(SELECT ContactId
+						, Address_Group_Key
+						FROM
+							(SELECT ContactId
+								, ROW_NUMBER() OVER(PARTITION BY ContactId ORDER BY ContactId) AS Row_Num
+								, Address_Group_Key
+								FROM _Address_Bridge 
+								WHERE 1 = 1
+									AND ContactId IS NOT NULL
+							) A
+						WHERE 1 = 1
+							AND Row_Num = 1
+					) C ON A.Donor_Key = C.ContactId
+				LEFT JOIN 
+					(SELECT ContactId
+						, Affiliated_Key
+						FROM
+							(SELECT ContactId
+								, ROW_NUMBER() OVER(PARTITION BY ContactId ORDER BY ContactId) AS Row_Num
+								, Affiliated_Key
+								FROM _Affiliated_Dim 
+								WHERE 1 = 1
+									AND ContactId IS NOT NULL
+							) A
+						WHERE 1 = 1
+							AND Row_Num = 1
+					) D ON A.Donor_Key = D.ContactId
+				LEFT JOIN 
+					(SELECT ContactId
+						, Alumni_Group_Key
+						FROM
+							(SELECT ContactId
+								, ROW_NUMBER() OVER(PARTITION BY ContactId ORDER BY ContactId) AS Row_Num
+								, Alumni_Group_Key
+								FROM _Alumni_Bridge 
+								WHERE 1 = 1
+									AND ContactId IS NOT NULL
+							) A
+						WHERE 1 = 1
+							AND Row_Num = 1
+					) E ON A.Donor_Key = E.ContactId
+				LEFT JOIN 
+					(SELECT ContactId
+						, Association_Group_Key
+						FROM
+							(SELECT ContactId
+								, ROW_NUMBER() OVER(PARTITION BY ContactId ORDER BY ContactId) AS Row_Num
+								, Association_Group_Key
+								FROM _Association_Bridge 
+								WHERE 1 = 1
+									AND ContactId IS NOT NULL
+							) A
+						WHERE 1 = 1
+							AND Row_Num = 1
+					) F ON A.Donor_Key = F.ContactId
+				LEFT JOIN 
+					(SELECT ContactId
+						, Award_Group_Key
+						FROM
+							(SELECT ContactId
+								, ROW_NUMBER() OVER(PARTITION BY ContactId ORDER BY ContactId) AS Row_Num
+								, Award_Group_Key
+								FROM _Award_Bridge 
+								WHERE 1 = 1
+									AND ContactId IS NOT NULL
+							) A
+						WHERE 1 = 1
+							AND Row_Num = 1
+					) G ON A.Donor_Key = G.ContactId
+				LEFT JOIN 
+					(SELECT ContactId
+						, Connection_Group_Key
+						FROM
+							(SELECT ContactId
+								, ROW_NUMBER() OVER(PARTITION BY ContactId ORDER BY ContactId) AS Row_Num
+								, Connection_Group_Key
+								FROM _Connection_Bridge 
+								WHERE 1 = 1
+									AND ContactId IS NOT NULL
+							) A
+						WHERE 1 = 1
+							AND Row_Num = 1
+					) H ON A.Donor_Key = H.ContactId
+				LEFT JOIN 
+					(SELECT ContactId
+						, Drop_Include_Group_Key
+						FROM
+							(SELECT ContactId
+								, ROW_NUMBER() OVER(PARTITION BY ContactId ORDER BY ContactId) AS Row_Num
+								, Drop_Include_Group_Key
+								FROM _Drop_Include_Bridge 
+								WHERE 1 = 1
+									AND ContactId IS NOT NULL
+							) A
+						WHERE 1 = 1
+							AND Row_Num = 1
+					) I ON A.Donor_Key = I.ContactId
+				LEFT JOIN 
+					(SELECT ContactId
+						, Email_Group_Key
+						FROM
+							(SELECT ContactId
+								, ROW_NUMBER() OVER(PARTITION BY ContactId ORDER BY ContactId) AS Row_Num
+								, Email_Group_Key
+								FROM _Email_Bridge 
+								WHERE 1 = 1
+									AND ContactId IS NOT NULL
+							) A
+						WHERE 1 = 1
+							AND Row_Num = 1
+					) J ON A.Donor_Key = J.ContactId				
+			' -- Ext_From_Statement
+		, ' ' -- Ext_Where_Statement
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, '		LEFT JOIN 
+					(SELECT ContactId
+						, Employment_Group_Key
+						FROM
+							(SELECT ContactId
+								, ROW_NUMBER() OVER(PARTITION BY ContactId ORDER BY ContactId) AS Row_Num
+								, Employment_Group_Key
+								FROM _Employment_Bridge 
+								WHERE 1 = 1
+									AND ContactId IS NOT NULL
+							) A
+						WHERE 1 = 1
+							AND Row_Num = 1
+					) K ON A.Donor_Key = K.ContactId
+				LEFT JOIN 
+					(SELECT ContactId
+						, Id_Group_Key
+						FROM
+							(SELECT ContactId
+								, ROW_NUMBER() OVER(PARTITION BY ContactId ORDER BY ContactId) AS Row_Num
+								, Id_Group_Key
+								FROM _Id_Bridge 
+								WHERE 1 = 1
+									AND ContactId IS NOT NULL
+							) A
+						WHERE 1 = 1
+							AND Row_Num = 1
+					) L ON A.Donor_Key = L.ContactId
+				LEFT JOIN 
+					(SELECT ContactId
+						, Interest_Group_Key
+						FROM
+							(SELECT ContactId
+								, ROW_NUMBER() OVER(PARTITION BY ContactId ORDER BY ContactId) AS Row_Num
+								, Interest_Group_Key
+								FROM _Interest_Bridge 
+								WHERE 1 = 1
+									AND ContactId IS NOT NULL
+							) A
+						WHERE 1 = 1
+							AND Row_Num = 1
+					) M ON A.Donor_Key = M.ContactId
+				LEFT JOIN 
+					(SELECT ContactId
+						, Language_Group_Key
+						FROM
+							(SELECT ContactId
+								, ROW_NUMBER() OVER(PARTITION BY ContactId ORDER BY ContactId) AS Row_Num
+								, Language_Group_Key
+								FROM _Language_Bridge 
+								WHERE 1 = 1
+									AND ContactId IS NOT NULL
+							) A
+						WHERE 1 = 1
+							AND Row_Num = 1
+					) N ON A.Donor_Key = N.ContactId
+				LEFT JOIN 
+					(SELECT ContactId
+						, Phone_Group_Key
+						FROM
+							(SELECT ContactId
+								, ROW_NUMBER() OVER(PARTITION BY ContactId ORDER BY ContactId) AS Row_Num
+								, Phone_Group_Key
+								FROM _Phone_Bridge 
+								WHERE 1 = 1
+									AND ContactId IS NOT NULL
+							) A
+						WHERE 1 = 1
+							AND Row_Num = 1
+					) O ON A.Donor_Key = O.ContactId
+				LEFT JOIN 
+					(SELECT ContactId
+						, Psa_Group_Key
+						FROM
+							(SELECT ContactId
+								, ROW_NUMBER() OVER(PARTITION BY ContactId ORDER BY ContactId) AS Row_Num
+								, Psa_Group_Key
+								FROM _Psa_Bridge 
+								WHERE 1 = 1
+									AND ContactId IS NOT NULL
+							) A
+						WHERE 1 = 1
+							AND Row_Num = 1
+					) P ON A.Donor_Key = P.ContactId
+				LEFT JOIN 
+					(SELECT ContactId
+						, Student_Group_Key
+						FROM
+							(SELECT ContactId
+								, ROW_NUMBER() OVER(PARTITION BY ContactId ORDER BY ContactId) AS Row_Num
+								, Student_Group_Key
+								FROM _Student_Bridge 
+								WHERE 1 = 1
+									AND ContactId IS NOT NULL
+							) A
+						WHERE 1 = 1
+							AND Row_Num = 1
+					) Q ON A.Donor_Key = Q.ContactId			
+				LEFT JOIN
+					(SELECT DISTINCT CONVERT(NVARCHAR(100),ContactId) AS ContactId
+						, COALESCE(New_LdspId,0) AS Donor_Ldsp_Id
+						, Donor_Contact_Type
+						, COALESCE(CONVERT(NVARCHAR(100),Donor_Organization_Id),'0') AS Donor_Organization_Id
+						FROM
+							(SELECT A.ContactId
+								, A.New_LdspId
+								, [Constituent] AS Donor_Contact_Type
+								, [Zero] AS Donor_Organization_Id
+								FROM Ext_Contact A
+							UNION
+							SELECT B.AccountId AS ContactId
+								, B.New_LdspId
+								, [Organization] AS Donor_Contact_Type
+								, CONVERT(NVARCHAR(100),B.AccountId) AS Donor_Organization_Id
+								FROM Ext_Account B
+							) A
+					) R ON A.Donor_Key = R.ContactId 
+			' -- Ext_From_Statement_2
 		, ' ' -- Ext_Create_Fields_2
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2

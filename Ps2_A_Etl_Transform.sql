@@ -19651,234 +19651,6 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 )
 ,
 -- --------------------------
--- View_Liaison_Initiative Table
--- --------------------------
-('View_Table' -- Dim_Object
-	, 'View_Liaison_Initiative' -- Table_Name
-	, '	Liaison_Initiative_Id INT IDENTITY(10000,1) --Key
-		, Liaison NVARCHAR(200) 
-		, Liaison_Role NVARCHAR(100) 
-		, Initiative_Id NVARCHAR(100)
-		, Initiative_Name NVARCHAR(600) 
-		, Initiative_Name_Donor_Name NVARCHAR(1000) 
-		, Ldsp_Id NVARCHAR(100)
-		, Donor_Name NVARCHAR(160) 
-		, Initiative_Stage NVARCHAR(400)
-		, Fund_Account_Name NVARCHAR(100)
-		, Proposal_Status NVARCHAR(400) 
-		, Proposal_Amt MONEY
-		, Total_Committed_Amt MONEY
-		, Total_Given_Amt MONEY
-		, Supporting_Liaison_Credit_Amt MONEY
-		' -- Create_Table
-	, '	Liaison
-		, Liaison_Role 
-		, Initiative_Id
-		, Initiative_Name
-		, Initiative_Name_Donor_Name
-		, Ldsp_Id 
-		, Donor_Name
-		, Initiative_Stage
-		, Fund_Account_Name
-		, Proposal_Status
-		, Proposal_Amt
-		, Total_Committed_Amt
-		, Total_Given_Amt
-		, Supporting_Liaison_Credit_Amt
-		' -- Insert_Fields
-	, ' ' -- From_Statement
-	, ' ' -- Where_Statement
-	, 'DECLARE @TABLE_NAME NVARCHAR(100)
-		SET @TABLE_NAME = ''View_Liaison_Initiative'' ; ------> HARDCODE <------
-		EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = @TABLE_NAME, @Alpha_Step_Number = ''166D'', @Alpha_Step_Name = ''Remove Indexes - Begin'', @Alpha_Result = 1;
-		EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = @TABLE_NAME, @Alpha_Step_Number = ''166D'', @Alpha_Step_Name = ''Remove Indexes - End'', @Alpha_Result = 1;
-		' -- Attribute_1
-	, '
-		' -- Attribute_2
-	, 'EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = @TABLE_NAME, @Alpha_Step_Number = ''166F'', @Alpha_Step_Name = ''Create Indexes - Begin'', @Alpha_Result = 1; 							
-		EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = @TABLE_NAME, @Alpha_Step_Number = ''166F'', @Alpha_Step_Name = ''Create Indexes - End'', @Alpha_Result = 1;
-		' -- Attribute_3
-	, '
-		BEGIN TRY
-			INSERT INTO View_Liaison_Initiative (
-				Liaison
-				, Liaison_Role 
-				, Initiative_Id
-				, Initiative_Name
-				, Initiative_Name_Donor_Name
-				, Ldsp_Id 
-				, Donor_Name
-				, Initiative_Stage
-				, Fund_Account_Name
-				, Proposal_Status
-				, Proposal_Amt
-				, Total_Committed_Amt
-				, Total_Given_Amt
-				, Supporting_Liaison_Credit_Amt
-			)
-			SELECT A.Liaison
-				, A.Liaison_Role
-				, A.Initiative_Id
-				, A.Initiative_Name
-				, A.Initiative_Name_Donor_Name
-				, A.Donor_Ldsp_Id
-				, A.Donor_Name
-				, A.Initiative_Stage
-				, A.Fund_Account_Name
-				, A.Proposal_Status
-				, CASE WHEN A.Liaison_Role != ''Supporting Liaison'' AND A.Row_Num = 1 THEN A.Proposal_Amt
-					ELSE NULL END AS Proposal_Amt
-				, CASE WHEN A.Liaison_Role != ''Supporting Liaison'' AND A.Row_Num = 1 THEN A.Total_Committed_Amt
-					ELSE NULL END AS Total_Committed_Amt
-				, CASE WHEN A.Liaison_Role != ''Supporting Liaison'' AND A.Row_Num = 1 THEN A.Total_Given_Amt
-					ELSE NULL END AS Total_Given_Amt
-				, A.Supporting_Liaison_Credit_Amt
-				FROM
-					(SELECT A.Initiative_Id
-						, A.Liaison
-						, A.Liaison_Role
-						, A.Initiative_Name
-						, A.Initiative_Name_Donor_Name
-						, A.Donor_Ldsp_Id
-						, A.Donor_Name
-						, A.Initiative_Stage
-						, A.Fund_Account_Name
-						, A.Proposal_Status
-						, A.Proposal_Amt
-						, A.Total_Committed_Amt
-						, A.Total_Given_Amt
-						, A.Supporting_Liaison_Credit_Amt
-						, ROW_NUMBER() OVER(PARTITION BY A.Initiative_Id, A.Liaison ORDER BY A.Liaison_Role DESC) AS Row_Num 
-						FROM
-							(SELECT A.Initiative_Id
-								, A.Liaison
-								, A.Liaison_Role
-								, B.Initiative_Name
-								, B.Initiative_Name_Donor_Name
-								, D.Donor_Ldsp_Id
-								, D.Donor_Name
-								, B.Initiative_Step_Name AS Initiative_Stage
-								, F.Fund_Name AS Fund_Account_Name
-								, B.Initiative_Proposal_Status AS Proposal_Status
-								, G.Initiative_Proposal_Amt AS Proposal_Amt
-								, H.Initiative_Total_Committed_Amt AS Total_Committed_Amt
-								, I.Initiative_Total_Given_Amt AS Total_Given_Amt
-								, CASE WHEN A.Liaison_Role = ''Supporting Liaison'' THEN I.Initiative_Total_Given_Amt
-									ELSE NULL END AS Supporting_Liaison_Credit_Amt 
-								FROM
-									(SELECT Initiative_Key AS Initiative_Id
-										, Initiative_Liaison AS Liaison
-										, ''Initiative Liaison'' AS Liaison_Role
-										FROM _Initiative_Dim
-										WHERE 1 = 1
-											AND Initiative_Liaison IS NOT NULL
-											AND Initiative_Key != ''0''
-									UNION
-									SELECT Initiative_Key AS Initiative_Id
-										, Initiative_Coordinating_Liaison AS Liaison
-										, ''Coordinating Liaison'' AS Liaison_Role
-										FROM _Initiative_Dim
-										WHERE 1 = 1
-											AND Initiative_Coordinating_Liaison IS NOT NULL
-											AND Initiative_Key != ''0''
-									UNION
-									SELECT CONVERT(NVARCHAR(100),C.OpportunityID) AS Initiative_Id
-										, COALESCE(B.FullName,E.FullName) AS Liaison
-										, ''Supporting Liaison'' AS Liaison_Role
-										FROM Ext_Connection A
-											INNER JOIN Ext_System_User B ON A.Record1Id = B.SystemUserId
-											INNER JOIN Ext_Opportunity C ON A.Record2Id = C.OpportunityId 
-											INNER JOIN Ext_Connection_Role D ON A.Record1RoleId = D.ConnectionRoleId 
-											INNER JOIN Ext_System_User E ON C.OwnerId = E.SystemUserId
-										WHERE 1 = 1
-											AND A.Record2ObjectTypeCode = 3
-											AND D.Name IN (''Supporting Liaison'')
-									) A --9249
-									LEFT JOIN _Initiative_Dim B ON A.Initiative_Id = B.Initiative_Key
-									LEFT JOIN 
-											(SELECT DISTINCT Initiative_Key
-													, Donor_Key
-													FROM _Initiative_Fact 
-													WHERE 1 = 1
-														AND Donor_Key != ''0''		
-											) C ON B.Initiative_Key = C.Initiative_Key
-									LEFT JOIN _Donor_Dim D ON C.Donor_Key = D.Donor_Key
-									LEFT JOIN 
-											(SELECT DISTINCT Initiative_Key
-													, Fund_Account_Key
-													FROM _Initiative_Fact 
-													WHERE 1 = 1
-														AND Fund_Account_Key != ''0''		
-											) E ON B.Initiative_Key = E.Initiative_Key
-									LEFT JOIN _Fund_Dim F ON E.Fund_Account_Key = F.Fund_Key
-									LEFT JOIN 
-											(SELECT DISTINCT Initiative_Key
-												, Initiative_Proposal_Amt
-												FROM _Initiative_Fact
-												WHERE 1 = 1
-													AND Initiative_Proposal_Amt IS NOT NULL
-											) G ON B.Initiative_Key = G.Initiative_Key
-									LEFT JOIN 
-											(SELECT DISTINCT Initiative_Key
-												, Initiative_Total_Committed_Amt
-												FROM _Initiative_Fact
-												WHERE 1 = 1
-													AND Initiative_Total_Committed_Amt IS NOT NULL
-											) H ON B.Initiative_Key = H.Initiative_Key
-									LEFT JOIN 
-											(SELECT DISTINCT Initiative_Key
-												, Initiative_Total_Given_Amt
-												FROM _Initiative_Fact
-												WHERE 1 = 1
-													AND Initiative_Total_Given_Amt IS NOT NULL
-											) I ON B.Initiative_Key = I.Initiative_Key
-							) A				
-					) A
-		END TRY 
-		BEGIN CATCH
-			DECLARE @ERROR_NUMBER INT
-			DECLARE @ERROR_SEVERITY INT
-			DECLARE @ERROR_STATE INT
-			DECLARE @ERROR_PROCEDURE NVARCHAR(500)
-			DECLARE @ERROR_LINE INT
-			DECLARE @ERROR_MESSAGE NVARCHAR(MAX)
-			SELECT @ERROR_NUMBER = (SELECT ERROR_NUMBER())
-			SELECT @ERROR_SEVERITY = (SELECT ERROR_SEVERITY())
-			SELECT @ERROR_STATE = (SELECT ERROR_STATE())
-			SELECT @ERROR_PROCEDURE = (SELECT ERROR_PROCEDURE())
-			SELECT @ERROR_LINE = (SELECT ERROR_LINE())
-			SELECT @ERROR_MESSAGE = (SELECT ERROR_MESSAGE())
-			EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''View_Liaison_Initiative'', @Alpha_Step_Number = ''166X'', @Alpha_Step_Name = ''View_Liaison_Initiative - Error'', @Alpha_Result = 0
-			, @ErrorNumber = @ERROR_NUMBER, @ErrorSeverity = @ERROR_SEVERITY, @ErrorState = @ERROR_STATE, @ErrorProcedure = @ERROR_PROCEDURE, @ErrorLine = @ERROR_LINE, @ErrorMessage = @ERROR_MESSAGE;  
-		END CATCH
-		' -- Attribute_4
-	, '
-		' -- Attribute_5
-	, '
-		' -- Attribute_6
-	, 'EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = @TABLE_NAME, @Alpha_Step_Number = ''166H'', @Alpha_Step_Name = ''End'', @Alpha_Result = 1; 
-		' -- Attribute_7
-	, ' ' -- Attribute_8
-	, ' ' -- Attribute_9
-	, ' ' -- Attribute_10
-	, ' ' -- Attribute_11
-	, ' ' -- Attribute_12
-	, ' ' -- Attribute_13
-	, ' ' -- Attribute_14
-	, ' ' -- Attribute_15
-	, ' ' -- Attribute_16
-	, ' ' -- Attribute_17
-	, ' ' -- Attribute_18
-	, ' ' -- Attribute_19
-	, ' ' -- Attribute_20
-	, 'EXEC dbo.usp_Transform_Data @Transform_Data_Table_Name = ''View_Liaison_Initiative''; ------> HARDCODE <------
-		' -- Attribute_21
-	, 1 -- Active
-	, GETDATE() -- Insert_Date
-	, NULL  -- Update_Date                
-)
-,
--- --------------------------
 -- View_Dl_Activities Table
 -- --------------------------
 ('View_Table' -- Dim_Object
@@ -19927,13 +19699,13 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 	, ' ' -- Where_Statement
 	, 'DECLARE @TABLE_NAME NVARCHAR(100)
 		SET @TABLE_NAME = ''View_Dl_Activities'' ; ------> HARDCODE <------
-		EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = @TABLE_NAME, @Alpha_Step_Number = ''165D'', @Alpha_Step_Name = ''Remove Indexes - Begin'', @Alpha_Result = 1;
-		EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = @TABLE_NAME, @Alpha_Step_Number = ''165D'', @Alpha_Step_Name = ''Remove Indexes - End'', @Alpha_Result = 1;
+		EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = @TABLE_NAME, @Alpha_Step_Number = ''166D'', @Alpha_Step_Name = ''Remove Indexes - Begin'', @Alpha_Result = 1;
+		EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = @TABLE_NAME, @Alpha_Step_Number = ''166D'', @Alpha_Step_Name = ''Remove Indexes - End'', @Alpha_Result = 1;
 		' -- Attribute_1
 	, '
 		' -- Attribute_2
-	, 'EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = @TABLE_NAME, @Alpha_Step_Number = ''165F'', @Alpha_Step_Name = ''Create Indexes - Begin'', @Alpha_Result = 1; 							
-		EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = @TABLE_NAME, @Alpha_Step_Number = ''165F'', @Alpha_Step_Name = ''Create Indexes - End'', @Alpha_Result = 1;
+	, 'EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = @TABLE_NAME, @Alpha_Step_Number = ''166F'', @Alpha_Step_Name = ''Create Indexes - Begin'', @Alpha_Result = 1; 							
+		EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = @TABLE_NAME, @Alpha_Step_Number = ''166F'', @Alpha_Step_Name = ''Create Indexes - End'', @Alpha_Result = 1;
 		' -- Attribute_3
 	, '
 		BEGIN TRY
@@ -20026,7 +19798,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 			SELECT @ERROR_PROCEDURE = (SELECT ERROR_PROCEDURE())
 			SELECT @ERROR_LINE = (SELECT ERROR_LINE())
 			SELECT @ERROR_MESSAGE = (SELECT ERROR_MESSAGE())
-			EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''View_Dl_Activities'', @Alpha_Step_Number = ''165X'', @Alpha_Step_Name = ''View_Dl_Activities - Error'', @Alpha_Result = 0
+			EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''View_Dl_Activities'', @Alpha_Step_Number = ''166X'', @Alpha_Step_Name = ''View_Dl_Activities - Error'', @Alpha_Result = 0
 			, @ErrorNumber = @ERROR_NUMBER, @ErrorSeverity = @ERROR_SEVERITY, @ErrorState = @ERROR_STATE, @ErrorProcedure = @ERROR_PROCEDURE, @ErrorLine = @ERROR_LINE, @ErrorMessage = @ERROR_MESSAGE;  
 		END CATCH
 		' -- Attribute_4
@@ -20034,7 +19806,7 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 		' -- Attribute_5
 	, '
 		' -- Attribute_6
-	, 'EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = @TABLE_NAME, @Alpha_Step_Number = ''165H'', @Alpha_Step_Name = ''End'', @Alpha_Result = 1; 
+	, 'EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = @TABLE_NAME, @Alpha_Step_Number = ''166H'', @Alpha_Step_Name = ''End'', @Alpha_Result = 1; 
 		' -- Attribute_7
 	, ' ' -- Attribute_8
 	, ' ' -- Attribute_9
@@ -20049,9 +19821,183 @@ INSERT INTO LDSPhilanthropiesDW.dbo.Create_Trans_Load_Tables
 	, ' ' -- Attribute_18
 	, ' ' -- Attribute_19
 	, ' ' -- Attribute_20
-	, 'EXEC dbo.usp_Transform_Data @Transform_Data_Table_Name = ''View_Dl_Activities''; ------> HARDCODE <------
-		' -- Attribute_21
+	, ' ' -- Attribute_21
 	, 1 -- Active
 	, GETDATE() -- Insert_Date
 	, NULL  -- Update_Date                
 )
+,
+-- --------------------------
+-- View_Dl_Initiatives Table
+-- --------------------------
+('View_Table' -- Dim_Object
+	, 'View_Dl_Initiatives' -- Table_Name
+	, '	Donor_Ldsp_Id NVARCHAR(100)
+		, Initiative_Key NVARCHAR(100)
+		, Initiative_Name_Donor_Name NVARCHAR(1000)
+		, Initiative_Step_Name NVARCHAR(400)
+		, Initiative_State_Code NVARCHAR(400)
+		, Initiative_Status_Code NVARCHAR(400)
+		, Initiative_Proposal_Status NVARCHAR(400)	
+		, Initiative_Liaison NVARCHAR(200)
+		, Initiative_New_Account NVARCHAR(400)
+		, Initiative_Proposal_Date DATE
+		, Initiative_Targeted_Commitment_Date DATE
+		, Initiative_Committed_Date DATE
+		, Initiative_Cultivation_Proc_Stg_1_Date DATE
+		, Initiative_Cultivation_Proc_Stg_2_Date DATE
+		, Initiative_Cultivation_Proc_Stg_3_Date DATE
+		, Initiative_Cultivation_Proc_Stg_4_Date DATE
+		, Initiative_Gift_Notice_Created_Date DATE
+		, Initiative_Proposal_Status_Change_Date DATE
+		, Initiative_Coordinating_Liaison NVARCHAR(200)
+		, Initiative_Supporting_Liaisons NVARCHAR(1000)
+		, Initiative_Primary_Initiative NVARCHAR(1)
+		, Initiative_Parent_Initiative NVARCHAR(600)
+		, Initiative_Proposal_Amt MONEY
+		, Initiative_Total_Committed_Amt MONEY
+		, Initiative_Total_Given_Amt MONEY
+		' -- Create_Table
+	, ' Donor_Ldsp_Id
+		, Initiative_Key
+		, Initiative_Name_Donor_Name
+		, Initiative_Step_Name
+		, Initiative_State_Code
+		, Initiative_Status_Code
+		, Initiative_Proposal_Status	
+		, Initiative_Liaison
+		, Initiative_New_Account
+		, Initiative_Proposal_Date
+		, Initiative_Targeted_Commitment_Date
+		, Initiative_Committed_Date
+		, Initiative_Cultivation_Proc_Stg_1_Date
+		, Initiative_Cultivation_Proc_Stg_2_Date
+		, Initiative_Cultivation_Proc_Stg_3_Date
+		, Initiative_Cultivation_Proc_Stg_4_Date
+		, Initiative_Gift_Notice_Created_Date
+		, Initiative_Proposal_Status_Change_Date
+		, Initiative_Coordinating_Liaison
+		, Initiative_Supporting_Liaisons
+		, Initiative_Primary_Initiative
+		, Initiative_Parent_Initiative
+		, Initiative_Proposal_Amt
+		, Initiative_Total_Committed_Amt
+		, Initiative_Total_Given_Amt
+		' -- Insert_Fields
+	, ' ' -- From_Statement
+	, ' ' -- Where_Statement
+	, 'DECLARE @TABLE_NAME NVARCHAR(100)
+		SET @TABLE_NAME = ''View_Dl_Initiatives'' ; ------> HARDCODE <------
+		EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = @TABLE_NAME, @Alpha_Step_Number = ''167D'', @Alpha_Step_Name = ''Remove Indexes - Begin'', @Alpha_Result = 1;
+		EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = @TABLE_NAME, @Alpha_Step_Number = ''167D'', @Alpha_Step_Name = ''Remove Indexes - End'', @Alpha_Result = 1;
+		' -- Attribute_1
+	, '
+		' -- Attribute_2
+	, 'EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = @TABLE_NAME, @Alpha_Step_Number = ''167F'', @Alpha_Step_Name = ''Create Indexes - Begin'', @Alpha_Result = 1; 							
+		EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = @TABLE_NAME, @Alpha_Step_Number = ''167F'', @Alpha_Step_Name = ''Create Indexes - End'', @Alpha_Result = 1;
+		' -- Attribute_3
+	, '
+		BEGIN TRY
+			INSERT INTO View_Dl_Initiatives (
+				Donor_Ldsp_Id
+				, Initiative_Key
+				, Initiative_Name_Donor_Name
+				, Initiative_Step_Name
+				, Initiative_State_Code
+				, Initiative_Status_Code
+				, Initiative_Proposal_Status	
+				, Initiative_Liaison
+				, Initiative_New_Account
+				, Initiative_Proposal_Date
+				, Initiative_Targeted_Commitment_Date
+				, Initiative_Committed_Date
+				, Initiative_Cultivation_Proc_Stg_1_Date
+				, Initiative_Cultivation_Proc_Stg_2_Date
+				, Initiative_Cultivation_Proc_Stg_3_Date
+				, Initiative_Cultivation_Proc_Stg_4_Date
+				, Initiative_Gift_Notice_Created_Date
+				, Initiative_Proposal_Status_Change_Date
+				, Initiative_Coordinating_Liaison
+				, Initiative_Supporting_Liaisons
+				, Initiative_Primary_Initiative
+				, Initiative_Parent_Initiative
+				, Initiative_Proposal_Amt
+				, Initiative_Total_Committed_Amt
+				, Initiative_Total_Given_Amt
+			)
+			SELECT C.Donor_Ldsp_Id
+				, A.Initiative_Key
+				, A.Initiative_Name_Donor_Name
+				, A.Initiative_Step_Name
+				, A.Initiative_State_Code
+				, A.Initiative_Status_Code
+				, A.Initiative_Proposal_Status	
+				, A.Initiative_Liaison
+				, A.Initiative_New_Account
+				, A.Initiative_Proposal_Date
+				, A.Initiative_Targeted_Commitment_Date
+				, A.Initiative_Committed_Date
+				, A.Initiative_Cultivation_Proc_Stg_1_Date
+				, A.Initiative_Cultivation_Proc_Stg_2_Date
+				, A.Initiative_Cultivation_Proc_Stg_3_Date
+				, A.Initiative_Cultivation_Proc_Stg_4_Date
+				, A.Initiative_Gift_Notice_Created_Date
+				, A.Initiative_Proposal_Status_Change_Date
+				, A.Initiative_Coordinating_Liaison
+				, A.Initiative_Supporting_Liaisons
+				, A.Initiative_Primary_Initiative
+				, A.Initiative_Parent_Initiative
+				, B.Initiative_Proposal_Amt
+				, B.Initiative_Total_Committed_Amt
+				, B.Initiative_Total_Given_Amt
+				FROM _Initiative_Dim A
+					INNER JOIN _Initiative_Fact B ON A.Initiative_Key = B.Initiative_Key
+					INNER JOIN _Donor_Dim C ON B.Donor_Key = C.Donor_Key
+				WHERE 1 = 1
+					AND Initiative_Liaison IS NOT NULL
+		END TRY 
+		BEGIN CATCH
+			DECLARE @ERROR_NUMBER INT
+			DECLARE @ERROR_SEVERITY INT
+			DECLARE @ERROR_STATE INT
+			DECLARE @ERROR_PROCEDURE NVARCHAR(500)
+			DECLARE @ERROR_LINE INT
+			DECLARE @ERROR_MESSAGE NVARCHAR(MAX)
+			SELECT @ERROR_NUMBER = (SELECT ERROR_NUMBER())
+			SELECT @ERROR_SEVERITY = (SELECT ERROR_SEVERITY())
+			SELECT @ERROR_STATE = (SELECT ERROR_STATE())
+			SELECT @ERROR_PROCEDURE = (SELECT ERROR_PROCEDURE())
+			SELECT @ERROR_LINE = (SELECT ERROR_LINE())
+			SELECT @ERROR_MESSAGE = (SELECT ERROR_MESSAGE())
+			EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = ''View_Dl_Initiatives'', @Alpha_Step_Number = ''167X'', @Alpha_Step_Name = ''View_Dl_Initiatives - Error'', @Alpha_Result = 0
+			, @ErrorNumber = @ERROR_NUMBER, @ErrorSeverity = @ERROR_SEVERITY, @ErrorState = @ERROR_STATE, @ErrorProcedure = @ERROR_PROCEDURE, @ErrorLine = @ERROR_LINE, @ErrorMessage = @ERROR_MESSAGE;  
+		END CATCH
+		' -- Attribute_4
+	, '
+		' -- Attribute_5
+	, '
+		' -- Attribute_6
+	, 'EXEC dbo.usp_Insert_Alpha_2 @Alpha_Stage = @TABLE_NAME, @Alpha_Step_Number = ''167H'', @Alpha_Step_Name = ''End'', @Alpha_Result = 1; 
+		' -- Attribute_7
+	, ' ' -- Attribute_8
+	, ' ' -- Attribute_9
+	, ' ' -- Attribute_10
+	, ' ' -- Attribute_11
+	, ' ' -- Attribute_12
+	, ' ' -- Attribute_13
+	, ' ' -- Attribute_14
+	, ' ' -- Attribute_15
+	, ' ' -- Attribute_16
+	, ' ' -- Attribute_17
+	, ' ' -- Attribute_18
+	, ' ' -- Attribute_19
+	, ' ' -- Attribute_20
+	, ' ' -- Attribute_21
+	, 1 -- Active
+	, GETDATE() -- Insert_Date
+	, NULL  -- Update_Date                
+)
+
+
+
+
