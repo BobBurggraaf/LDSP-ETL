@@ -17739,6 +17739,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 						) C ON A.New_ConstituentID = C.New_ConstituentID
 			' -- Ext_From_Statement
 		, 'AND A.StateCode != 1
+			INSERT INTO _Email_Dim
+				VALUES(NULL,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 			' -- Ext_Where_Statement	
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
@@ -17861,7 +17863,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_Select_Statement
 		, 'Ext_Institution A 
 			' -- Ext_From_Statement
-		, '
+		, 'INSERT INTO _Hier_Dim
+			VALUES(0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 			' -- Ext_Where_Statement	
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
@@ -17960,7 +17963,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_Select_Statement
 		, 'Ext_System_User
 			' -- Ext_From_Statement
-		, '
+		, 'Exec dbo.usp_User_Dim_Zero_Key
 			' -- Ext_Where_Statement	
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
@@ -18681,7 +18684,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 								FROM Ext_Employment) A
 					) B ON E.New_EmploymentsId = B.ContactId
 			' -- Ext_From_Statement
-		, '
+		, 'Exec dbo.usp_Employment_Dim_Zero_Key
 			' -- Ext_Where_Statement	
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
@@ -18914,7 +18917,9 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 							LEFT JOIN Uf_Address_City() CITY ON OA.New_AddressId = CITY.New_AddressId
 					) C ON A.New_AddressId = C.New_AddressId LEFT JOIN
 			' -- Ext_From_Statement
-		, NULL -- Ext_Where_Statement	
+		, 'INSERT INTO _Address_Dim
+			VALUES(NULL,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+			'-- Ext_Where_Statement	
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
 		, NULL -- Tier_4_Stage
@@ -19066,7 +19071,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 								FROM Ext_Recognition_Association) A
 					) A ON RA.New_Constituent = A.New_Constituent
 			' -- Ext_From_Statement
-		, '
+		, 'INSERT INTO _Award_Dim
+			VALUES(NULL,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 			' -- Ext_Where_Statement	
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
@@ -19209,6 +19215,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 					) E ON A.New_NumberId = E.New_NumberId
 			' -- Ext_From_Statement
 		, 'AND A.StatusCode = 100000002
+			INSERT INTO _Phone_Dim
+				VALUES(NULL,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 			' -- Ext_Where_Statement	
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
@@ -19364,7 +19372,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 								FROM Ext_Drop_Include) A
 					) I ON A.New_DropIncludesId = I.New_DropIncludesId
 			' -- Ext_From_Statement
-		, '
+		, 'INSERT INTO _Drop_Include_Dim
+				VALUES(0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 			' -- Ext_Where_Statement	
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
@@ -19497,7 +19506,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 								FROM Ext_Language) A
 					) F ON A.New_LanguageSAId = F.New_LanguageSAId
 			' -- Ext_From_Statement
-		, '
+		, 'INSERT INTO _Language_Dim
+			VALUES(NULL,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 			' -- Ext_Where_Statement	
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
@@ -19626,7 +19636,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 								FROM Ext_Association_Membership) A
 					) F ON COALESCE(A.New_ConstituentId, A.New_RelatedOrganization) = F.ContactId
 			' -- Ext_From_Statement
-		, '
+		, 'INSERT INTO _Association_Dim
+			VALUES(NULL,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 			' -- Ext_Where_Statement	
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
@@ -19835,7 +19846,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 						) A
 				) D ON A.Relationship_ContactId = D.Donor_Key
 			' -- Ext_From_Statement
-		, '
+		, 'INSERT INTO _Connection_Dim
+			VALUES(NULL,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 			' -- Ext_Where_Statement	
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
@@ -20135,6 +20147,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 						) D ON C.ContactId = D.ContactId
 			' -- Ext_From_Statement
 		, 'AND C.RowNumber = 1
+			INSERT INTO _Id_Dim
+				VALUES(NULL,0,0,NULL,NULL,NULL,NULL,NULL);
 			' -- Ext_Where_Statement	
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
@@ -20264,7 +20278,9 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 								) A
 						) C ON A.New_InternationalExperiencesAId = C.ContactId
 			' -- Ext_From_Statement
-		, ' ' -- Ext_Where_Statement	
+		, 'INSERT INTO _Interest_Dim
+			VALUES(0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL); 
+			' -- Ext_Where_Statement	
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
 		, NULL -- Tier_4_Stage
@@ -20478,7 +20494,9 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 												, A.[N]
 												
 			' -- Ext_From_Statement
-		, ' ' -- Ext_Where_Statement	
+		, 'INSERT INTO _Student_Dim
+			VALUES(0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL); 
+			' -- Ext_Where_Statement	
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
 		, NULL -- Tier_4_Stage
@@ -21047,7 +21065,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			LEFT JOIN _FundAccount_Plus_ReportFrequency_ I ON A.Plus_ReportFrequency = I.Column_Value
 			LEFT JOIN _FundAccount_StatusCode_ J ON A.StatusCode = J.Column_Value
 			' -- Ext_From_Statement
-		, '
+		, 'Exec dbo.usp_Fund_Dim_Zero_Key
 			' -- Ext_Where_Statement	
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
@@ -21273,7 +21291,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 								AND Plus_PendingLiaison IS NOT NULL										
 						) B ON A.SystemUserId = B.User_Pending_Liaison_Key
 			' -- Ext_From_Statement
-		, '
+		, 'Exec dbo.usp_User_Pending_Liaison_Dim_Zero_Key
 			' -- Ext_Where_Statement	
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
@@ -21386,7 +21404,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 								AND Plus_ConnectedLiaison IS NOT NULL
 						) B ON A.SystemUserId = B.User_Connected_Liaison_Key
 			' -- Ext_From_Statement
-		, '
+		, 'Exec dbo.usp_User_Connected_Liaison_Dim_Zero_Key
 			' -- Ext_Where_Statement	
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
@@ -21932,7 +21950,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_Select_Statement
 		, 'Ext_System_User
 			' -- Ext_From_Statement
-		, '
+		, 'Exec dbo.usp_Bio_Strat_Plan_CreatedBy_Dim_Zero_Key
 			' -- Ext_Where_Statement	
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
@@ -22019,7 +22037,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_Select_Statement
 		, 'Ext_System_User
 			' -- Ext_From_Statement
-		, '
+		, 'Exec dbo.usp_Bio_Strat_Plan_ModifiedBy_Dim_Zero_Key
 			' -- Ext_Where_Statement	
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
@@ -23507,7 +23525,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 							FROM Ext_Activity) A
 				) E ON A.ContactId = E.ContactId
 			' -- Ext_From_Statement
-		, '
+		, 'INSERT INTO _Activity_Dim
+			VALUES(0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 			' -- Ext_Where_Statement	
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
@@ -23821,7 +23840,9 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 											, S.New_LongDescription
 											, E.New_MajorName AS Emphasis             											
 			' -- Ext_From_Statement
-		, '	' -- Ext_Where_Statement	
+		, 'INSERT INTO _Alumni_Dim
+			VALUES(NULL,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);	
+			' -- Ext_Where_Statement	
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
 		, NULL -- Tier_4_Stage
@@ -24144,7 +24165,9 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 												WHEN A.Byuh_Alumni_Min_Date = B.Byuh_Student_Min_Date THEN A.Byuh_Alumni_Min_Date
 												ELSE NULL END AS Byuh_Education_Min_Date										 					
 			' -- Ext_From_Statement
-		, 'AND ContactId IS NOT NULL 
+		, 'AND ContactId IS NOT NULL
+			INSERT INTO _Affiliated_Dim
+				VALUES(NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 			' -- Ext_Where_Statement	
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
@@ -24652,7 +24675,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_Select_Statement
 		, '_Activity_Dim				
 			' -- Ext_From_Statement
-		, ' ' -- Ext_Where_Statement
+		, ' 
+			' -- Ext_Where_Statement
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
 		, NULL -- Tier_4_Stage
@@ -24972,7 +24996,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_Select_Statement
 		, '_Alumni_Dim				
 			' -- Ext_From_Statement
-		, ' ' -- Ext_Where_Statement
+		, ' 
+			' -- Ext_Where_Statement
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
 		, NULL -- Tier_4_Stage
@@ -25629,7 +25654,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 							AND Row_Num = 1
 					) J ON A.Donor_Key = J.ContactId				
 			' -- Ext_From_Statement
-		, ' ' -- Ext_Where_Statement
+		, 'AND A.Donor_Key IS NOT NULL 
+			' -- Ext_Where_Statement
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
 		, NULL -- Tier_4_Stage
@@ -25737,18 +25763,20 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 					(SELECT DISTINCT CONVERT(NVARCHAR(100),ContactId) AS ContactId
 						, COALESCE(New_LdspId,0) AS Donor_Ldsp_Id
 						, Donor_Contact_Type
-						, COALESCE(CONVERT(NVARCHAR(100),Donor_Organization_Id),'0') AS Donor_Organization_Id
+						, COALESCE(CONVERT(NVARCHAR(100),Donor_Organization_Id),[Zero]) AS Donor_Organization_Id
 						FROM
 							(SELECT A.ContactId
 								, A.New_LdspId
 								, [Constituent] AS Donor_Contact_Type
 								, [Zero] AS Donor_Organization_Id
+								, [Zero]
 								FROM Ext_Contact A
 							UNION
 							SELECT B.AccountId AS ContactId
 								, B.New_LdspId
 								, [Organization] AS Donor_Contact_Type
 								, CONVERT(NVARCHAR(100),B.AccountId) AS Donor_Organization_Id
+								, [Zero]
 								FROM Ext_Account B
 							) A
 					) R ON A.Donor_Key = R.ContactId 
