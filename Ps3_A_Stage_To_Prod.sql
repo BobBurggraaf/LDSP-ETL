@@ -3832,6 +3832,7 @@ INSERT INTO dbo.Stage_To_Prod
 			, Last_Month_Gift_Total MONEY
 			, Byu_Employee_Giving_Upgrade NVARCHAR(1)
 			, Byu_Employee_Giving_New NVARCHAR(1)
+			, Byu_Employee_Giving_Campus_Address NVARCHAR(100)
 			' -- Dest_Create_Fields
 		, 'Donor_Key
 			, Month_Before_Last_Month_Gift_Total
@@ -3842,7 +3843,312 @@ INSERT INTO dbo.Stage_To_Prod
 		, ' ' -- Dest_Where_Statement
 		, GETDATE()
 		, NULL
-	) 
+	)
+	,
+-- --------------------------
+-- View_Dl_Activities
+-- --------------------------
+	( 1 -- Tier
+		, 'dbo.View_Dl_Activities' -- Source_Table
+		, 'dbo.View_Dl_Activities' -- Destination_Table
+		,'Owner NVARCHAR(200)
+			, Donor_Ldsp_Id NVARCHAR(100)
+			, Donor_Display_Name NVARCHAR(100)
+			, Type NVARCHAR(100)
+			, Subject NVARCHAR(200)
+			, Regarding NVARCHAR(4000)
+			, Face_To_Face NVARCHAR(1)
+			, Scheduled_Start DATE
+			, Scheduled_End DATE
+			, Completed DATE
+			, CreatedOn DATE
+			, ModifiedOn DATE
+			, Description  NVARCHAR(4000)
+			, Attendees  NVARCHAR(4000)
+			, Source NVARCHAR(100)
+			, StateCode  NVARCHAR(400)
+			, StatusCode NVARCHAR(400)
+			, Donor_Key NVARCHAR(100)
+			, Activity_Id NVARCHAR(100)
+			' -- Dest_Create_Fields
+		, 'Owner
+			, Donor_Ldsp_Id
+			, Donor_Display_Name
+			, Type
+			, Subject
+			, Regarding
+			, Face_To_Face
+			, Scheduled_Start
+			, Scheduled_End
+			, Completed
+			, CreatedOn
+			, ModifiedOn
+			, Description
+			, Attendees
+			, Source
+			, StateCode
+			, StatusCode
+			, Donor_Key
+			, Activity_Id
+			' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- View_Dl_Initiatives
+-- --------------------------
+	( 1 -- Tier
+		, 'dbo.View_Dl_Initiatives' -- Source_Table
+		, 'dbo.View_Dl_Initiatives' -- Destination_Table
+		,'Donor_Ldsp_Id NVARCHAR(100)
+			, Initiative_Key NVARCHAR(100)
+			, Initiative_Name_Donor_Name NVARCHAR(1000)
+			, Initiative_Step_Name NVARCHAR(400)
+			, Initiative_State_Code NVARCHAR(400)
+			, Initiative_Status_Code NVARCHAR(400)
+			, Initiative_Proposal_Status NVARCHAR(400)	
+			, Initiative_Liaison NVARCHAR(200)
+			, Initiative_New_Account NVARCHAR(400)
+			, Initiative_Proposal_Date DATE
+			, Initiative_Targeted_Commitment_Date DATE
+			, Initiative_Committed_Date DATE
+			, Initiative_Cultivation_Proc_Stg_1_Date DATE
+			, Initiative_Cultivation_Proc_Stg_2_Date DATE
+			, Initiative_Cultivation_Proc_Stg_3_Date DATE
+			, Initiative_Cultivation_Proc_Stg_4_Date DATE
+			, Initiative_Gift_Notice_Created_Date DATE
+			, Initiative_Proposal_Status_Change_Date DATE
+			, Initiative_Coordinating_Liaison NVARCHAR(200)
+			, Initiative_Supporting_Liaisons NVARCHAR(1000)
+			, Initiative_Primary_Initiative NVARCHAR(1)
+			, Initiative_Parent_Initiative NVARCHAR(600)
+			, Initiative_Proposal_Amt MONEY
+			, Initiative_Total_Committed_Amt MONEY
+			, Initiative_Total_Given_Amt MONEY
+			' -- Dest_Create_Fields
+		, 'Donor_Ldsp_Id
+			, Initiative_Key
+			, Initiative_Name_Donor_Name
+			, Initiative_Step_Name
+			, Initiative_State_Code
+			, Initiative_Status_Code
+			, Initiative_Proposal_Status	
+			, Initiative_Liaison
+			, Initiative_New_Account
+			, Initiative_Proposal_Date
+			, Initiative_Targeted_Commitment_Date
+			, Initiative_Committed_Date
+			, Initiative_Cultivation_Proc_Stg_1_Date
+			, Initiative_Cultivation_Proc_Stg_2_Date
+			, Initiative_Cultivation_Proc_Stg_3_Date
+			, Initiative_Cultivation_Proc_Stg_4_Date
+			, Initiative_Gift_Notice_Created_Date
+			, Initiative_Proposal_Status_Change_Date
+			, Initiative_Coordinating_Liaison
+			, Initiative_Supporting_Liaisons
+			, Initiative_Primary_Initiative
+			, Initiative_Parent_Initiative
+			, Initiative_Proposal_Amt
+			, Initiative_Total_Committed_Amt
+			, Initiative_Total_Given_Amt
+			' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _Donor_Employment_Dim
+-- --------------------------
+	( 1 -- Tier
+		, 'dbo._Donor_Employment_Dim' -- Source_Table
+		, 'dbo._Donor_Employment_Dim' -- Destination_Table
+		,'Donor_Key NVARCHAR(100) PRIMARY KEY
+			, Byu_Employee_Giving_Campus_Address NVARCHAR(100)
+			' -- Dest_Create_Fields
+		, 'Donor_Key
+			, Byu_Employee_Giving_Campus_Address
+			' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _Total_Giving_Dim
+-- --------------------------
+	( 1 -- Tier
+		, 'dbo._Total_Giving_Dim' -- Source_Table
+		, 'dbo._Total_Giving_Dim' -- Destination_Table
+		,'Donor_Key NVARCHAR(100) PRIMARY KEY
+			, Total_Giving_Current_Year MONEY
+			, Total_Giving_Current_Year_Minus_1 MONEY
+			, Total_Giving_Current_Year_Minus_2 MONEY
+			, Total_Giving_Current_Year_Minus_3 MONEY
+			, Total_Giving_Current_Year_Minus_4 MONEY
+			, Total_Giving_Current_Year_Minus_5 MONEY
+			, Total_Giving_Current_Year_Byu MONEY
+			, Total_Giving_Current_Year_Minus_1_Byu MONEY
+			, Total_Giving_Current_Year_Minus_2_Byu MONEY
+			, Total_Giving_Current_Year_Minus_3_Byu MONEY
+			, Total_Giving_Current_Year_Minus_4_Byu MONEY
+			, Total_Giving_Current_Year_Minus_5_Byu MONEY
+			, Total_Giving_Current_Year_Byui MONEY
+			, Total_Giving_Current_Year_Minus_1_Byui MONEY
+			, Total_Giving_Current_Year_Minus_2_Byui MONEY
+			, Total_Giving_Current_Year_Minus_3_Byui MONEY
+			, Total_Giving_Current_Year_Minus_4_Byui MONEY
+			, Total_Giving_Current_Year_Minus_5_Byui MONEY
+			, Total_Giving_Current_Year_Byuh MONEY
+			, Total_Giving_Current_Year_Minus_1_Byuh MONEY
+			, Total_Giving_Current_Year_Minus_2_Byuh MONEY
+			, Total_Giving_Current_Year_Minus_3_Byuh MONEY
+			, Total_Giving_Current_Year_Minus_4_Byuh MONEY
+			, Total_Giving_Current_Year_Minus_5_Byuh MONEY
+			, Total_Giving_Current_Year_Ldsbc MONEY
+			, Total_Giving_Current_Year_Minus_1_Ldsbc MONEY
+			, Total_Giving_Current_Year_Minus_2_Ldsbc MONEY
+			, Total_Giving_Current_Year_Minus_3_Ldsbc MONEY
+			, Total_Giving_Current_Year_Minus_4_Ldsbc MONEY
+			, Total_Giving_Current_Year_Minus_5_Ldsbc MONEY
+			, Total_Giving_Current_Year_Church MONEY
+			, Total_Giving_Current_Year_Minus_1_Church MONEY
+			, Total_Giving_Current_Year_Minus_2_Church MONEY
+			, Total_Giving_Current_Year_Minus_3_Church MONEY
+			, Total_Giving_Current_Year_Minus_4_Church MONEY
+			, Total_Giving_Current_Year_Minus_5_Church MONEY
+			' -- Dest_Create_Fields
+		, 'Donor_Key
+			, Total_Giving_Current_Year
+			, Total_Giving_Current_Year_Minus_1
+			, Total_Giving_Current_Year_Minus_2
+			, Total_Giving_Current_Year_Minus_3
+			, Total_Giving_Current_Year_Minus_4
+			, Total_Giving_Current_Year_Minus_5
+			, Total_Giving_Current_Year_Byu
+			, Total_Giving_Current_Year_Minus_1_Byu
+			, Total_Giving_Current_Year_Minus_2_Byu
+			, Total_Giving_Current_Year_Minus_3_Byu
+			, Total_Giving_Current_Year_Minus_4_Byu
+			, Total_Giving_Current_Year_Minus_5_Byu
+			, Total_Giving_Current_Year_Byui
+			, Total_Giving_Current_Year_Minus_1_Byui
+			, Total_Giving_Current_Year_Minus_2_Byui
+			, Total_Giving_Current_Year_Minus_3_Byui
+			, Total_Giving_Current_Year_Minus_4_Byui
+			, Total_Giving_Current_Year_Minus_5_Byui
+			, Total_Giving_Current_Year_Byuh
+			, Total_Giving_Current_Year_Minus_1_Byuh
+			, Total_Giving_Current_Year_Minus_2_Byuh
+			, Total_Giving_Current_Year_Minus_3_Byuh
+			, Total_Giving_Current_Year_Minus_4_Byuh
+			, Total_Giving_Current_Year_Minus_5_Byuh
+			, Total_Giving_Current_Year_Ldsbc
+			, Total_Giving_Current_Year_Minus_1_Ldsbc
+			, Total_Giving_Current_Year_Minus_2_Ldsbc
+			, Total_Giving_Current_Year_Minus_3_Ldsbc
+			, Total_Giving_Current_Year_Minus_4_Ldsbc
+			, Total_Giving_Current_Year_Minus_5_Ldsbc
+			, Total_Giving_Current_Year_Church
+			, Total_Giving_Current_Year_Minus_1_Church
+			, Total_Giving_Current_Year_Minus_2_Church
+			, Total_Giving_Current_Year_Minus_3_Church
+			, Total_Giving_Current_Year_Minus_4_Church
+			, Total_Giving_Current_Year_Minus_5_Church
+			' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, GETDATE()
+		, NULL
+	)	
+	,
+-- --------------------------
+-- _Total_Giving_With_Matching_Dim
+-- --------------------------
+	( 1 -- Tier
+		, 'dbo._Total_Giving_With_Matching_Dim' -- Source_Table
+		, 'dbo._Total_Giving_With_Matching_Dim' -- Destination_Table
+		,'Donor_Key NVARCHAR(100) PRIMARY KEY
+			, Total_Giving_With_Matching_Current_Year MONEY
+			, Total_Giving_With_Matching_Current_Year_Minus_1 MONEY
+			, Total_Giving_With_Matching_Current_Year_Minus_2 MONEY
+			, Total_Giving_With_Matching_Current_Year_Minus_3 MONEY
+			, Total_Giving_With_Matching_Current_Year_Minus_4 MONEY
+			, Total_Giving_With_Matching_Current_Year_Minus_5 MONEY
+			, Total_Giving_With_Matching_Current_Year_Byu MONEY
+			, Total_Giving_With_Matching_Current_Year_Minus_1_Byu MONEY
+			, Total_Giving_With_Matching_Current_Year_Minus_2_Byu MONEY
+			, Total_Giving_With_Matching_Current_Year_Minus_3_Byu MONEY
+			, Total_Giving_With_Matching_Current_Year_Minus_4_Byu MONEY
+			, Total_Giving_With_Matching_Current_Year_Minus_5_Byu MONEY
+			, Total_Giving_With_Matching_Current_Year_Byui MONEY
+			, Total_Giving_With_Matching_Current_Year_Minus_1_Byui MONEY
+			, Total_Giving_With_Matching_Current_Year_Minus_2_Byui MONEY
+			, Total_Giving_With_Matching_Current_Year_Minus_3_Byui MONEY
+			, Total_Giving_With_Matching_Current_Year_Minus_4_Byui MONEY
+			, Total_Giving_With_Matching_Current_Year_Minus_5_Byui MONEY
+			, Total_Giving_With_Matching_Current_Year_Byuh MONEY
+			, Total_Giving_With_Matching_Current_Year_Minus_1_Byuh MONEY
+			, Total_Giving_With_Matching_Current_Year_Minus_2_Byuh MONEY
+			, Total_Giving_With_Matching_Current_Year_Minus_3_Byuh MONEY
+			, Total_Giving_With_Matching_Current_Year_Minus_4_Byuh MONEY
+			, Total_Giving_With_Matching_Current_Year_Minus_5_Byuh MONEY
+			, Total_Giving_With_Matching_Current_Year_Ldsbc MONEY
+			, Total_Giving_With_Matching_Current_Year_Minus_1_Ldsbc MONEY
+			, Total_Giving_With_Matching_Current_Year_Minus_2_Ldsbc MONEY
+			, Total_Giving_With_Matching_Current_Year_Minus_3_Ldsbc MONEY
+			, Total_Giving_With_Matching_Current_Year_Minus_4_Ldsbc MONEY
+			, Total_Giving_With_Matching_Current_Year_Minus_5_Ldsbc MONEY
+			, Total_Giving_With_Matching_Current_Year_Church MONEY
+			, Total_Giving_With_Matching_Current_Year_Minus_1_Church MONEY
+			, Total_Giving_With_Matching_Current_Year_Minus_2_Church MONEY
+			, Total_Giving_With_Matching_Current_Year_Minus_3_Church MONEY
+			, Total_Giving_With_Matching_Current_Year_Minus_4_Church MONEY
+			, Total_Giving_With_Matching_Current_Year_Minus_5_Church MONEY
+			' -- Dest_Create_Fields
+		, 'Donor_Key
+			, Total_Giving_With_Matching_Current_Year
+			, Total_Giving_With_Matching_Current_Year_Minus_1
+			, Total_Giving_With_Matching_Current_Year_Minus_2
+			, Total_Giving_With_Matching_Current_Year_Minus_3
+			, Total_Giving_With_Matching_Current_Year_Minus_4
+			, Total_Giving_With_Matching_Current_Year_Minus_5
+			, Total_Giving_With_Matching_Current_Year_Byu
+			, Total_Giving_With_Matching_Current_Year_Minus_1_Byu
+			, Total_Giving_With_Matching_Current_Year_Minus_2_Byu
+			, Total_Giving_With_Matching_Current_Year_Minus_3_Byu
+			, Total_Giving_With_Matching_Current_Year_Minus_4_Byu
+			, Total_Giving_With_Matching_Current_Year_Minus_5_Byu
+			, Total_Giving_With_Matching_Current_Year_Byui
+			, Total_Giving_With_Matching_Current_Year_Minus_1_Byui
+			, Total_Giving_With_Matching_Current_Year_Minus_2_Byui
+			, Total_Giving_With_Matching_Current_Year_Minus_3_Byui
+			, Total_Giving_With_Matching_Current_Year_Minus_4_Byui
+			, Total_Giving_With_Matching_Current_Year_Minus_5_Byui
+			, Total_Giving_With_Matching_Current_Year_Byuh
+			, Total_Giving_With_Matching_Current_Year_Minus_1_Byuh
+			, Total_Giving_With_Matching_Current_Year_Minus_2_Byuh
+			, Total_Giving_With_Matching_Current_Year_Minus_3_Byuh
+			, Total_Giving_With_Matching_Current_Year_Minus_4_Byuh
+			, Total_Giving_With_Matching_Current_Year_Minus_5_Byuh
+			, Total_Giving_With_Matching_Current_Year_Ldsbc
+			, Total_Giving_With_Matching_Current_Year_Minus_1_Ldsbc
+			, Total_Giving_With_Matching_Current_Year_Minus_2_Ldsbc
+			, Total_Giving_With_Matching_Current_Year_Minus_3_Ldsbc
+			, Total_Giving_With_Matching_Current_Year_Minus_4_Ldsbc
+			, Total_Giving_With_Matching_Current_Year_Minus_5_Ldsbc
+			, Total_Giving_With_Matching_Current_Year_Church
+			, Total_Giving_With_Matching_Current_Year_Minus_1_Church
+			, Total_Giving_With_Matching_Current_Year_Minus_2_Church
+			, Total_Giving_With_Matching_Current_Year_Minus_3_Church
+			, Total_Giving_With_Matching_Current_Year_Minus_4_Church
+			, Total_Giving_With_Matching_Current_Year_Minus_5_Church
+			' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, GETDATE()
+		, NULL
+	)
 ;	
 	
 	
