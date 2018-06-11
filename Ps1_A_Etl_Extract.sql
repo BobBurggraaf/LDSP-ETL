@@ -235,6 +235,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Lds_QualifiedBy UNIQUEIDENTIFIER
 			, Zero NVARCHAR(1) DEFAULT ''0''
 			, Organization NVARCHAR(15) DEFAULT ''Organization''
+			, Y NVARCHAR(1) DEFAULT ''Y''
+			, N NVARCHAR(1) DEFAULT ''N''
 			' -- Ext_Create_Fields
 		, 'AccountId
 			, New_LdspId
@@ -650,6 +652,9 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Web NVARCHAR(10) DEFAULT ''Web''
 			, N100000000 NVARCHAR(15) DEFAULT ''100000000''
 			, N100000001 NVARCHAR(15) DEFAULT ''100000001''
+			, Organization NVARCHAR(15) DEFAULT ''Organization''
+			, Constituent NVARCHAR(15) DEFAULT ''Constituent''
+			, Initiative NVARCHAR(15) DEFAULT ''Initiative''
 			' -- Ext_Create_Fields
 		, 'ActivityId
 			, ActivityTypeCode
@@ -1613,6 +1618,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, N31 NVARCHAR(2) DEFAULT ''31''
 			, Zero NVARCHAR(1) DEFAULT ''0''
 			, Constituent NVARCHAR(15) DEFAULT ''Constituent''
+			, Y NVARCHAR(1) DEFAULT ''Y''
+			, N NVARCHAR(1) DEFAULT ''N''
 			' -- Ext_Create_Fields
 		, 'ContactId
 			, New_Ldspid
@@ -23382,6 +23389,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, CreatedOn DATE
 			, ModifiedOn DATE
 			, DomainName NVARCHAR(1024)
+			, Regarding_Type NVARCHAR(15)
 		' -- Ext_Create_Fields
 		, 'Activity_Key
 			, Activity_Group_Key
@@ -23412,6 +23420,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, CreatedOn
 			, ModifiedOn
 			, DomainName
+			, Regarding_Type
 		' -- Ext_Insert_Fields
 		, 'ROW_NUMBER() OVER(ORDER BY Activity_Key) AS Activity_Key
 			, E.Activity_Group_Key
@@ -23442,6 +23451,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, CONVERT(VARCHAR(10),A.CreatedOn,101) AS CreatedOn
 			, CONVERT(VARCHAR(10),A.ModifiedOn,101) AS ModifiedOn
 			, DomainName
+			, Regarding_Type
 			' -- Ext_Select_Statement
 		, '	(SELECT DISTINCT A.Activity_Key		
 			, A.ActivityId AS Activity_Id
@@ -23468,6 +23478,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, A.CreatedOn
 			, A.ModifiedOn
 			, A.DomainName
+			, A.Regarding_Type
 			FROM
 				(SELECT  A.ActivityPartyId AS Activity_Key -- (Unique to all records)
 					, A.ActivityId -- Distinct Activity
@@ -23475,8 +23486,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 						ELSE NULL END AS ContactId -- (ContactId[2]\AccountId[1]\UserId[8])
 					, CASE WHEN A.PartyObjectTypeCode IN (1,2) THEN A.PartyIdName 
 						ELSE NULL END AS ContactName
-					, CASE WHEN A.PartyObjectTypeCode = 1 THEN [Organization]
-						WHEN A.PartyObjectTypeCode = 2 THEN [Constituent]
+					, CASE WHEN A.PartyObjectTypeCode = 1 THEN A.[Organization]
+						WHEN A.PartyObjectTypeCode = 2 THEN A.[Constituent]
 						ELSE NULL END AS Party_Object_Type
 					, F.Participation_Type
 					, G.[Type] 
@@ -23500,6 +23511,10 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 					, B.CreatedOn
 					, B.ModifiedOn
 					, D.DomainName
+					, CASE WHEN B.RegardingObjectTypeCode = 1 THEN B.[Organization]
+						WHEN B.RegardingObjectTypeCode = 2 THEN B.[Constituent]
+						WHEN B.RegardingObjectTypeCode = 3 THEN B.[Initiative] 
+							ELSE NULL END AS Regarding_Type
 					FROM Ext_Activity A -- People
 						LEFT JOIN Ext_Activity_Pointer B ON A.ActivityId = B.ActivityId  -- Activities
 						LEFT JOIN Ext_Appointment C ON A.ActivityId = C.ActivityId
@@ -23526,7 +23541,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 				) E ON A.ContactId = E.ContactId
 			' -- Ext_From_Statement
 		, 'INSERT INTO _Activity_Dim
-			VALUES(0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+			VALUES(0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 			' -- Ext_Where_Statement	
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
@@ -25811,6 +25826,462 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Ext_Select_Statement_7
 		, NULL -- Ext_From_Statement_3
 		, NULL -- Ext_From_Statement_4
+		, NULL -- Ext_From_Statement_5
+		, NULL -- Ext_From_Statement_6
+		, NULL -- Ext_From_Statement_7
+		, NULL -- Ext_Where_Statement_4
+		, NULL -- Ext_Where_Statement_5
+		, NULL -- Ext_Where_Statement_6
+		, NULL -- Ext_Where_Statement_7
+		, NULL -- Extra_1
+		, NULL -- Extra_2
+		, NULL -- Extra_3
+		, NULL -- Extra_4
+		, NULL -- Extra_5
+		, NULL -- Extra_6
+		, NULL -- Extra_7
+		, NULL -- Extra_8
+		, NULL -- Extra_9
+		, NULL -- Extra_10
+	)
+	,
+-- --------------------------
+-- _Donor_Detail_Dim
+-- --------------------------
+	( 6 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Donor_Detail_Dim' -- Ext_Table
+		, '	' -- Dest_Create_Fields
+		, '	' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, '	Donor_Key  NVARCHAR(100)  PRIMARY KEY      
+			, Donor_Marriage_Status NVARCHAR(400) 
+			, Donor_Gender NVARCHAR(400) 
+			, Donor_Lds_Member NVARCHAR(400) 
+			, Donor_Birth_Dt DATE
+			, Donor_Birth_Dt_Day NVARCHAR(100) 
+			, Donor_Birth_Dt_Month NVARCHAR(100) 
+			, Donor_Birth_Dt_Year NVARCHAR(100) 
+			, Donor_Deceased_Dt DATE
+			, Donor_Deceased_Dt_Day NVARCHAR(100)
+			, Donor_Deceased_Dt_Month NVARCHAR(100)
+			, Donor_Deceased_Dt_Year NVARCHAR(100) 
+			, Donor_Country NVARCHAR(100)
+			, Donor_Deceased_Yn NVARCHAR(1)
+			, Donor_Age INT
+			, General_Authority NVARCHAR(1)
+			, Emeritus_General_Authority NVARCHAR(1)
+			, Mission_President NVARCHAR(1)
+			, Temple_President NVARCHAR(1)
+			, Cell_Phone NVARCHAR(100)
+			, Donor_Ldsp_Text_Lines NVARCHAR(4000)
+			, Donor_Qualified NVARCHAR(1)
+			, Donor_Qualified_By NVARCHAR(200)
+			, Donor_Qualified_On DATE
+			' -- Ext_Create_Fields
+		, '	Donor_Key      
+			, Donor_Marriage_Status 
+			, Donor_Gender 
+			, Donor_Lds_Member 
+			, Donor_Birth_Dt 
+			, Donor_Birth_Dt_Day 
+			, Donor_Birth_Dt_Month 
+			, Donor_Birth_Dt_Year 
+			, Donor_Deceased_Dt
+			, Donor_Deceased_Dt_Day 
+			, Donor_Deceased_Dt_Month
+			, Donor_Deceased_Dt_Year 
+			, Donor_Country
+			, Donor_Deceased_Yn
+			, Donor_Age
+			, General_Authority
+			, Emeritus_General_Authority
+			, Mission_President
+			, Temple_President
+			, Cell_Phone
+			, Donor_Ldsp_Text_Lines
+			, Donor_Qualified
+			, Donor_Qualified_By
+			, Donor_Qualified_On
+			' -- Ext_Insert_Fields
+		, 'A.Donor_Key
+			, C.Column_Label AS Donor_Marriage_Status
+			, D.Column_Label AS Donor_Gender
+			, E.Column_Label AS Donor_Lds_Member
+			, CASE WHEN ISDATE(B.New_BirthDate) = 1 THEN B.New_Birthdate ELSE NULL END AS Donor_Birth_Dt
+			, B.New_BirthdateDay AS Donor_Birth_Dt_Day
+			, B.New_BirthdateMonth AS Donor_Birth_Dt_Month
+			, B.New_BirthdateYear AS Donor_Birth_Dt_Year
+			, CASE WHEN ISDATE(B.New_DeceasedDate) = 1 THEN B.New_DeceasedDate ELSE NULL END AS Donor_Deceased_Dt
+			, B.New_DeceasedDay AS Donor_Deceased_Dt_Day
+			, B.New_DeceasedMonth AS Donor_Deceased_Dt_Month
+			, B.New_DeceasedYear AS Donor_Deceased_Dt_Year
+			, F.New_Name AS Donor_Country
+			, CASE WHEN B.New_Deceased != 1 OR B.New_Deceased IS NULL THEN B.[N] ELSE B.[Y] END AS Donor_Deceased_Yn
+			, G.Donor_Age
+			, COALESCE(H.General_Authority,B.[N]) AS General_Authority
+			, COALESCE(H.Emeritus_General_Authority,B.[N]) AS Emeritus_General_Authority
+			, COALESCE(H.Mission_President,B.[N]) AS Mission_President
+			, COALESCE(H.Temple_President,B.[N]) AS Temple_President
+			, I.Cell_Phone
+			, B.Plus_I5TextLinesLdsp AS Donor_Ldsp_Text_Lines
+			, CASE WHEN COALESCE(B.Lds_IsQualified,J.Lds_IsQualified) IS NULL OR COALESCE(B.Lds_IsQualified,J.Lds_IsQualified) = 0 THEN COALESCE(B.[N],J.[N]) ELSE COALESCE(B.[Y],J.[Y])  END AS Donor_Qualified
+			, COALESCE(K.FullName,L.FullName) AS Donor_Qualified_By
+			, CONVERT(DATE,COALESCE(B.Lds_QualifiedOn,J.Lds_QualifiedOn)) AS Donor_Qualified_On 
+			' -- Ext_Select_Statement
+		, '_All_Donors_ A
+				LEFT JOIN Ext_Contact B ON A.Donor_Key = CONVERT(NVARCHAR(100),B.ContactId)
+				LEFT JOIN _Donor_Family_Status_ C ON B.FamilyStatusCode = C.Column_Value
+				LEFT JOIN _Donor_Gender_ D ON B.GenderCode = D.Column_Value
+				LEFT JOIN _Donor_Church_Member_ E ON B.Plus_ChurchMember = E.Column_Value
+				LEFT JOIN Ext_Country F ON B.New_HomeCountry = F.New_CountryId
+				LEFT JOIN
+					(SELECT Donor_Key 
+						, CASE WHEN DATEADD(YEAR, DATEDIFF (YEAR, Birthdate, GETDATE()), Birthdate) > GETDATE()
+							THEN DATEDIFF(YEAR, Birthdate, GETDATE()) - 1
+							ELSE DATEDIFF(YEAR, Birthdate, GETDATE()) END AS Donor_Age
+						FROM
+							(SELECT CONVERT(NVARCHAR(100),ContactId) AS Donor_Key
+								, CONVERT(NVARCHAR(20),CAST(New_Birthdate AS DATETIME),110) AS Birthdate
+								FROM Ext_Contact 
+								WHERE 1 = 1
+									AND SUBSTRING(New_Birthdate,4,2) <> [N00]
+									AND SUBSTRING(New_Birthdate,1,2) <> [N00]
+									AND SUBSTRING(New_Birthdate,4,2) <> [Number_Signs]
+									AND SUBSTRING(New_Birthdate,1,2) <> [Number_Signs]
+							) A
+					) G ON A.Donor_Key = G.Donor_Key
+				LEFT JOIN Uf_General_Authority() H ON A.Donor_Key = H.Donor_Key
+				LEFT JOIN 
+					(SELECT CONVERT(NVARCHAR(100),A.New_NumberId) AS Donor_Key
+						, A.New_PhoneNumber AS Cell_Phone
+						FROM
+							(SELECT A.New_NumberId
+								, A.New_PhoneNumber
+								, ROW_NUMBER() OVER(PARTITION BY A.New_NumberId ORDER BY A.New_NumberId) AS RowNumber
+								FROM 
+									(SELECT A.New_PhoneId
+										, A.New_NumberId
+										, A.New_PhoneNumber
+										, (COALESCE(B.Filter_Number,0) + COALESCE(C.Filter_Number,0) + COALESCE(D.Filter_Number,0) + COALESCE(E.Filter_Number,0)) AS Filter_Number
+										, A.ModifiedOn
+										FROM
+											(SELECT New_PhoneId
+												, New_NumberId
+												, New_PhoneNumber
+												, NULL AS Filter_Number
+												, ModifiedOn
+												FROM Ext_Phone
+												WHERE 1 = 1
+													AND Plus_LineType = 100000000
+													AND StatusCode = 100000002 
+											) A
+											LEFT JOIN
+											(SELECT New_PhoneId
+												, New_NumberId
+												, New_PhoneNumber
+												, 7 AS Filter_Number
+												FROM Ext_Phone
+												WHERE 1 = 1
+													AND Plus_LineType = 100000000
+													AND StatusCode = 100000002
+													AND New_Primary = 1
+											) B ON A.New_PhoneId = B.New_PhoneId
+											LEFT JOIN
+											(SELECT New_PhoneId
+												, New_NumberId
+												, New_PhoneNumber
+												, 3 AS Filter_Number
+												FROM Ext_Phone
+												WHERE 1 = 1
+													AND Plus_LineType = 100000000
+													AND New_Primary = 1
+													AND StatusCode = 100000002
+													AND New_Type = 100000000
+											) C ON A.New_PhoneId = C.New_PhoneId
+											LEFT JOIN
+											(SELECT New_PhoneId
+												, New_NumberId
+												, New_PhoneNumber
+												, 2 AS Filter_Number
+												FROM Ext_Phone
+												WHERE 1 = 1
+													AND Plus_LineType = 100000000
+													AND New_Primary = 1
+													AND StatusCode = 100000002
+													AND New_Type = 100000001
+											) D ON A.New_PhoneId = D.New_PhoneId
+											LEFT JOIN
+											(SELECT New_PhoneId
+												, New_NumberId
+												, New_PhoneNumber
+												, 1 AS Filter_Number
+												FROM Ext_Phone
+												WHERE 1 = 1
+													AND Plus_LineType = 100000000
+													AND New_Primary = 1
+													AND StatusCode = 100000002
+													AND New_Type = 100000003
+											) E ON A.New_PhoneId = E.New_PhoneId
+									) A														
+			' -- Ext_From_Statement
+		, 'AND A.Donor_Key IS NOT NULL 
+			' -- Ext_Where_Statement
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, '							INNER JOIN
+										(SELECT New_NumberId
+											, MAX(Filter_Number) AS Filter_Number
+											FROM 
+												(SELECT A.New_PhoneId
+													, A.New_NumberId
+													, A.New_PhoneNumber
+													, (COALESCE(B.Filter_Number,0) + COALESCE(C.Filter_Number,0) + COALESCE(D.Filter_Number,0) + COALESCE(E.Filter_Number,0)) AS Filter_Number
+													, A.ModifiedOn
+													FROM
+														(SELECT New_PhoneId
+															, New_NumberId
+															, New_PhoneNumber
+															, NULL AS Filter_Number
+															, ModifiedOn
+															FROM Ext_Phone
+															WHERE 1 = 1
+																AND Plus_LineType = 100000000
+																AND StatusCode = 100000002
+														) A
+														LEFT JOIN
+														(SELECT New_PhoneId
+															, New_NumberId
+															, New_PhoneNumber
+															, 7 AS Filter_Number
+															FROM Ext_Phone
+															WHERE 1 = 1
+																AND Plus_LineType = 100000000
+																AND StatusCode = 100000002
+																AND New_Primary = 1
+														) B ON A.New_PhoneId = B.New_PhoneId
+														LEFT JOIN
+														(SELECT New_PhoneId
+															, New_NumberId
+															, New_PhoneNumber
+															, 3 AS Filter_Number
+															FROM Ext_Phone
+															WHERE 1 = 1
+																AND Plus_LineType = 100000000
+																AND New_Primary = 1 
+																AND StatusCode = 100000002
+																AND New_Type = 100000000
+														) C ON A.New_PhoneId = C.New_PhoneId
+														LEFT JOIN
+														(SELECT New_PhoneId
+															, New_NumberId
+															, New_PhoneNumber
+															, 2 AS Filter_Number
+															FROM Ext_Phone
+															WHERE 1 = 1
+																AND Plus_LineType = 100000000 
+																AND New_Primary = 1
+																AND StatusCode = 100000002
+																AND New_Type = 100000001
+														) D ON A.New_PhoneId = D.New_PhoneId
+														LEFT JOIN
+														(SELECT New_PhoneId
+															, New_NumberId
+															, New_PhoneNumber
+															, 1 AS Filter_Number
+															FROM Ext_Phone
+															WHERE 1 = 1
+																AND Plus_LineType = 100000000
+																AND New_Primary = 1
+																AND StatusCode = 100000002
+																AND New_Type = 100000003
+														) E ON A.New_PhoneId = E.New_PhoneId
+												) A
+											GROUP BY New_NumberId
+										) B ON A.New_NumberId = B.New_NumberId AND A.Filter_Number = B.Filter_Number
+									INNER JOIN
+										(SELECT New_NumberId
+											, MAX(ModifiedOn) AS ModifiedOn
+											FROM 
+												(SELECT A.New_PhoneId
+													, A.New_NumberId
+													, A.New_PhoneNumber
+													, (COALESCE(B.Filter_Number,0) + COALESCE(C.Filter_Number,0) + COALESCE(D.Filter_Number,0) + COALESCE(E.Filter_Number,0)) AS Filter_Number
+													, A.ModifiedOn
+													FROM
+														(SELECT New_PhoneId
+															, New_NumberId
+															, New_PhoneNumber
+															, NULL AS Filter_Number
+															, ModifiedOn
+															FROM Ext_Phone
+															WHERE 1 = 1
+																AND Plus_LineType = 100000000
+																AND StatusCode = 100000002
+														) A
+														LEFT JOIN
+														(SELECT New_PhoneId
+															, New_NumberId
+															, New_PhoneNumber
+															, 7 AS Filter_Number
+															FROM Ext_Phone
+															WHERE 1 = 1
+																AND Plus_LineType = 100000000
+																AND StatusCode = 100000002
+																AND New_Primary = 1
+														) B ON A.New_PhoneId = B.New_PhoneId														
+			' -- Ext_From_Statement_2
+		, ' ' -- Ext_Create_Fields_2
+		, ' ' -- Ext_Create_Fields_3
+		, ' ' -- Ext_Where_Statement_2
+		, ' ' -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+		, NULL -- Ext_Select_Statement_3
+		, NULL -- Ext_Select_Statement_4
+		, NULL -- Ext_Select_Statement_5
+		, NULL -- Ext_Select_Statement_6
+		, NULL -- Ext_Select_Statement_7
+		, '											LEFT JOIN
+														(SELECT New_PhoneId
+															, New_NumberId
+															, New_PhoneNumber
+															, 3 AS Filter_Number
+															FROM Ext_Phone
+															WHERE 1 = 1
+																AND Plus_LineType = 100000000
+																AND New_Primary = 1
+																AND StatusCode = 100000002
+																AND New_Type = 100000000
+														) C ON A.New_PhoneId = C.New_PhoneId
+														LEFT JOIN
+														(SELECT New_PhoneId
+															, New_NumberId
+															, New_PhoneNumber
+															, 2 AS Filter_Number
+															FROM Ext_Phone
+															WHERE 1 = 1
+																AND Plus_LineType = 100000000
+																AND New_Primary = 1
+																AND StatusCode = 100000002
+																AND New_Type = 100000001
+														) D ON A.New_PhoneId = D.New_PhoneId
+														LEFT JOIN
+														(SELECT New_PhoneId
+															, New_NumberId
+															, New_PhoneNumber
+															, 1 AS Filter_Number
+															FROM Ext_Phone
+															WHERE 1 = 1
+																AND Plus_LineType = 100000000
+																AND New_Primary = 1
+																AND StatusCode = 100000002
+																AND New_Type = 100000003
+														) E ON A.New_PhoneId = E.New_PhoneId
+												) A
+											GROUP BY New_NumberId
+										) C ON A.New_NumberId = C.New_NumberId AND A.ModifiedOn = C.ModifiedOn
+									INNER JOIN
+										(SELECT New_NumberId
+											, MAX(New_PhoneNumber) AS New_PhoneNumber
+											FROM 
+												(SELECT A.New_PhoneId
+													, A.New_NumberId
+													, A.New_PhoneNumber
+													, (COALESCE(B.Filter_Number,0) + COALESCE(C.Filter_Number,0) + COALESCE(D.Filter_Number,0) + COALESCE(E.Filter_Number,0)) AS Filter_Number
+													, A.ModifiedOn
+													FROM
+														(SELECT New_PhoneId
+															, New_NumberId
+															, New_PhoneNumber
+															, NULL AS Filter_Number
+															, ModifiedOn
+															FROM Ext_Phone
+															WHERE 1 = 1
+																AND Plus_LineType = 100000000
+																AND StatusCode = 100000002
+														) A
+														LEFT JOIN
+														(SELECT New_PhoneId
+															, New_NumberId
+															, New_PhoneNumber
+															, 7 AS Filter_Number
+															FROM Ext_Phone
+															WHERE 1 = 1
+																AND Plus_LineType = 100000000 
+																AND StatusCode = 100000002
+																AND New_Primary = 1
+														) B ON A.New_PhoneId = B.New_PhoneId
+														LEFT JOIN
+														(SELECT New_PhoneId
+															, New_NumberId
+															, New_PhoneNumber
+															, 3 AS Filter_Number
+															FROM Ext_Phone
+															WHERE 1 = 1
+																AND Plus_LineType = 100000000
+																AND New_Primary = 1
+																AND StatusCode = 100000002
+																AND New_Type = 100000000
+														) C ON A.New_PhoneId = C.New_PhoneId
+														LEFT JOIN
+														(SELECT New_PhoneId
+															, New_NumberId
+															, New_PhoneNumber
+															, 2 AS Filter_Number
+															FROM Ext_Phone
+															WHERE 1 = 1
+																AND Plus_LineType = 100000000
+																AND New_Primary = 1 
+																AND StatusCode = 100000002
+																AND New_Type = 100000001
+														) D ON A.New_PhoneId = D.New_PhoneId														
+			' -- Ext_From_Statement_3
+		, '											LEFT JOIN
+														(SELECT New_PhoneId
+															, New_NumberId
+															, New_PhoneNumber
+															, 1 AS Filter_Number
+															FROM Ext_Phone
+															WHERE 1 = 1
+																AND Plus_LineType = 100000000
+																AND New_Primary = 1
+																AND StatusCode = 100000002
+																AND New_Type = 100000003
+														) E ON A.New_PhoneId = E.New_PhoneId
+												) A
+											GROUP BY New_NumberId
+										) D ON A.New_NumberId = D.New_NumberId AND A.New_PhoneNumber = D.New_PhoneNumber
+							) A
+						WHERE 1 = 1
+							AND RowNumber = 1
+					
+					) I ON A.Donor_Key = I.Donor_Key
+				LEFT JOIN Ext_Account J ON A.Donor_Key = CONVERT(NVARCHAR(100),J.AccountId)
+				LEFT JOIN Ext_System_User K ON B.Lds_QualifiedBy = K.SystemUserId 
+				LEFT JOIN Ext_System_User L ON J.Lds_QualifiedBy = L.SystemUserId
+			'-- Ext_From_Statement_4
 		, NULL -- Ext_From_Statement_5
 		, NULL -- Ext_From_Statement_6
 		, NULL -- Ext_From_Statement_7
