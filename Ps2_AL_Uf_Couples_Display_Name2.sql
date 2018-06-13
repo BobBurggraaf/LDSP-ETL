@@ -1,7 +1,9 @@
 /****************************************************
 
-	Name: Uf_Couples_Name1
-	Date: 06/12/2018
+	Name: Uf_Couples_Display_Name2
+	Date: 06/13/2018
+	
+
 
 ****************************************************/
 
@@ -13,13 +15,13 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE OR ALTER FUNCTION [dbo].[Uf_Couples_Name1]()
+CREATE OR ALTER FUNCTION [dbo].[Uf_Couples_Display_Name2]()
 RETURNS TABLE
 AS
 RETURN
 
-SELECT MAX(CONCAT(Husbands_First_Name,' & ',Wifes_First_Name,' ',Husbands_Last_Name)) AS Couples_Name
-	, Husbands_ContactId
+SELECT MAX(CONCAT(Husbands_Last_Name,', ',Husbands_First_Name,' & ',Wifes_First_Name)) AS Couples_Name
+	, Wifes_ContactId
 	FROM                                                                                                        
 		(SELECT CASE WHEN Primary_Gender = 'Male' THEN Primary_ContactId
 				ELSE Secondary_ContactId END AS Husbands_ContactId
@@ -70,4 +72,4 @@ SELECT MAX(CONCAT(Husbands_First_Name,' & ',Wifes_First_Name,' ',Husbands_Last_N
 						AND UPPER(C.Column_Label) NOT LIKE '%WIDOW%'
 				) B ON CONVERT(NVARCHAR(15),A.Primary_LdspId) = CONVERT(NVARCHAR(15),B.Secondary_Spouse_LdspId)
 		) B
-	GROUP BY Husbands_ContactId
+	GROUP BY Wifes_ContactId

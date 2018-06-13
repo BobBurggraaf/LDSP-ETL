@@ -1624,6 +1624,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Married NVARCHAR(10) DEFAULT ''Married''
 			, Space_Amp_Space NVARCHAR(5) DEFAULT '' & ''
 			, Space_And_Space NVARCHAR(10) DEFAULT '' and ''
+			, Comma_Space NVARCHAR(2) DEFAULT '', ''
 			' -- Ext_Create_Fields
 		, 'ContactId
 			, New_Ldspid
@@ -26854,6 +26855,208 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 						WHERE 1 = 1 
 							AND Association_Name = [LDSBC_Fox_Society]
 					) L ON A.Donor_Key = L.Donor_Key															
+			' -- Ext_From_Statement_3
+		, '
+			'-- Ext_From_Statement_4
+		, NULL -- Ext_From_Statement_5
+		, NULL -- Ext_From_Statement_6
+		, NULL -- Ext_From_Statement_7
+		, NULL -- Ext_Where_Statement_4
+		, NULL -- Ext_Where_Statement_5
+		, NULL -- Ext_Where_Statement_6
+		, NULL -- Ext_Where_Statement_7
+		, NULL -- Extra_1
+		, NULL -- Extra_2
+		, NULL -- Extra_3
+		, NULL -- Extra_4
+		, NULL -- Extra_5
+		, NULL -- Extra_6
+		, NULL -- Extra_7
+		, NULL -- Extra_8
+		, NULL -- Extra_9
+		, NULL -- Extra_10
+	)
+	,
+-- --------------------------
+-- _Donor_Connection_Dim
+-- --------------------------
+	( 6 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Donor_Connection_Dim' -- Ext_Table
+		, '	' -- Dest_Create_Fields
+		, '	' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, ' Donor_Key NVARCHAR(100)   
+			, All_Personal_Connections NVARCHAR(4000)
+			, Spouse_Name NVARCHAR(100)
+			, Spouse_LdspId INT
+			, Plus_SpousePreferredFirstName NVARCHAR(100)
+			, Plus_SpousePreferredMiddleName NVARCHAR(100)
+			, Plus_SpousePreferredLastName NVARCHAR(100)
+			, Plus_SpousePreferredFullName NVARCHAR(100)
+			, Spouse_Phone_Number NVARCHAR(100)
+			, Spouse_Email NVARCHAR(100) 
+			, Spouse_First_Name NVARCHAR(100)
+			, Spouse_Last_Name NVARCHAR(100)
+			, Spouse_Birth_Date DATE
+			, Spouse_Age INT
+			, Donor_Spouse_Middle_Name NVARCHAR(50)
+			, Donor_Spouse_Birth_Name NVARCHAR(100)
+			, Donor_Spouse_Coordinating_Liaison NVARCHAR(400)
+			, Donor_Spouse_Coordinating_Liaison_Domain_Name NVARCHAR(1024) 
+			, Donor_Liaison_Connections NVARCHAR(4000)
+			, Donor_Couple_Infor_Envel NVARCHAR(300)
+			, Donor_Couple_Form_Envel NVARCHAR(300)
+			, Donor_Spouses_Name NVARCHAR(100) 
+			, Donor_Total_Name_Display NVARCHAR(200)
+			' -- Ext_Create_Fields
+		, '	Donor_Key  
+			, All_Personal_Connections
+			, Spouse_Name
+			, Spouse_LdspId
+			, Plus_SpousePreferredFirstName
+			, Plus_SpousePreferredMiddleName
+			, Plus_SpousePreferredLastName
+			, Plus_SpousePreferredFullName
+			, Spouse_Phone_Number
+			, Spouse_Email 
+			, Spouse_First_Name
+			, Spouse_Last_Name
+			, Spouse_Birth_Date
+			, Spouse_Age
+			, Donor_Spouse_Middle_Name
+			, Donor_Spouse_Birth_Name
+			, Donor_Spouse_Coordinating_Liaison
+			, Donor_Spouse_Coordinating_Liaison_Domain_Name
+			, Donor_Liaison_Connections
+			, Donor_Couple_Infor_Envel 
+			, Donor_Couple_Form_Envel 
+			, Donor_Spouses_Name 
+			, Donor_Total_Name_Display
+			' -- Ext_Insert_Fields
+		, 'A.Donor_Key
+			, B.All_Personal_Connections
+			, C.Spouse_Name
+			, C.Spouse_LdspId
+			, D.Plus_SpousePreferredFirstName
+			, D.Plus_SpousePreferredMiddleName
+			, D.Plus_SpousePreferredLastName
+			, D.Plus_SpousePreferredFullName
+			, C.Spouse_Phone_Number
+			, C.Spouse_Email 
+			, C.Spouse_First_Name
+			, C.Spouse_Last_Name
+			, C.Spouse_Birth_Date
+			, C.Spouse_Age
+			, C.Donor_Spouse_Middle_Name
+			, C.Donor_Spouse_Birth_Name
+			, E.Donor_Spouse_Coordinating_Liaison
+			, E.Donor_Spouse_Coordinating_Liaison_Domain_Name
+			, F.Donor_Liaison_Connections
+			, G.Informal_Couple AS Donor_Couple_Infor_Envel 
+			, G.Formal_Couple AS Donor_Couple_Form_Envel
+			, D.SpousesName AS Donor_Spouses_Name
+			, CASE WHEN I.Wifes_ContactId IS NOT NULL THEN I.Couples_Name
+					WHEN H.Husbands_ContactId IS NOT NULL THEN H.Couples_Name
+					WHEN CONCAT(COALESCE(Plus_PreferredLastName,LastName),[Comma_Space],COALESCE(Plus_PreferredFirstName,FirstName)) = [Comma_Space] THEN D.Plus_DisplayName
+						ELSE CONCAT(COALESCE(Plus_PreferredLastName,LastName),[Comma_Space],COALESCE(Plus_PreferredFirstName,FirstName)) END AS Donor_Total_Name_Display
+			' -- Ext_Select_Statement
+		, ' _All_Donors_ A
+				LEFT JOIN Uf_All_Personal_Connections () B ON A.Donor_Key = B.Donor_Key
+				LEFT JOIN
+					(SELECT CONVERT(NVARCHAR(100),ContactId) AS Donor_Key
+						, MAX(CASE WHEN _Connection_Dim.Relationship = [Spouse] THEN Relationship_Name ELSE NULL END) AS Spouse_Name
+						, MAX(CASE WHEN _Connection_Dim.Relationship = [Spouse] THEN Relationship_LdspId ELSE NULL END) AS Spouse_LdspId
+						, MAX(CASE WHEN _Connection_Dim.Relationship = [Spouse] THEN Relationship_Phone_Number ELSE NULL END) AS Spouse_Phone_Number
+						, MAX(CASE WHEN _Connection_Dim.Relationship = [Spouse] THEN Relationship_Email ELSE NULL END) AS Spouse_Email 
+						, MAX(CASE WHEN _Connection_Dim.Relationship = [Spouse] THEN Relationship_First_Name ELSE NULL END) AS Spouse_First_Name
+						, MAX(CASE WHEN _Connection_Dim.Relationship = [Spouse] THEN Relationship_Last_Name ELSE NULL END) AS Spouse_Last_Name
+						, MAX(CASE WHEN _Connection_Dim.Relationship = [Spouse] THEN Relationship_Birth_Date ELSE NULL END) AS Spouse_Birth_Date
+						, MAX(CASE WHEN _Connection_Dim.Relationship = [Spouse] THEN Relationship_Age ELSE NULL END) AS Spouse_Age
+						, MAX(CASE WHEN _Connection_Dim.Relationship = [Spouse] THEN Relationship_Middle_Name ELSE NULL END) AS Donor_Spouse_Middle_Name
+						, MAX(CASE WHEN _Connection_Dim.Relationship = [Spouse] THEN Relationship_Birth_Name ELSE NULL END) AS Donor_Spouse_Birth_Name
+						FROM LDSPhilanthropiesDW.dbo._Connection_Dim
+						GROUP BY ContactId                          
+					) C ON A.Donor_Key = C.Donor_Key
+				LEFT JOIN Ext_Contact D ON A.Donor_Key = CONVERT(NVARCHAR(100),D.ContactId)
+				LEFT JOIN
+					 (SELECT B.ContactId
+						, C.FullName AS Donor_Spouse_Coordinating_Liaison
+						, C.DomainName AS Donor_Spouse_Coordinating_Liaison_Domain_Name
+						, CONVERT(NVARCHAR(100),CD.Relationship_ContactId) AS Donor_Key
+						FROM _Connection_Dim CD
+							INNER JOIN Ext_Contact B ON CD.ContactId = B.ContactId 
+							INNER JOIN Ext_System_User C ON B.Plus_CoordinatingLiaison = C.SystemUserId
+						WHERE 1 = 1 
+							AND EXISTS
+								(SELECT *
+									FROM Ext_Contact A
+									WHERE 1 = 1
+										AND Plus_CoordinatingLiaison IS NOT NULL
+										AND CD.ContactId = A.ContactId
+								) 
+							AND Relationship = [Spouse]
+							AND CD.Relationship_ContactId IS NOT NULL
+					) E ON A.Donor_Key = E.Donor_Key
+				LEFT JOIN Uf_Donor_Liaison_Connections() F ON A.Donor_Key = F.Donor_Key
+				LEFT JOIN
+					(SELECT CONVERT(NVARCHAR(100), ContactId) AS Donor_Key
+						, MAX(Informal_Couple) AS Informal_Couple
+						, MAX(Formal_Couple) AS Formal_Couple
+						FROM
+							(SELECT DISTINCT Y1.Plus_EnvelopeSalutationConstituent AS ContactId
+								, CASE WHEN Y1.Plus_Etiquette = 100000000 AND Y1.Plus_Household = 100000001  THEN Y1.Plus_SalutationEnvelopeName ELSE NULL END AS Informal_Couple
+								, CASE WHEN Y1.Plus_Etiquette = 100000001 AND Y1.Plus_Household = 100000001  THEN Y1.Plus_SalutationEnvelopeName ELSE NULL END AS Formal_Couple
+								FROM dbo.Ext_Envelope_Names_And_Salutations Y1
+									INNER JOIN dbo._Donor_Etiquette_ Y2 ON Y1.Plus_Etiquette = Y2.Column_Value
+								WHERE 1 = 1
+									AND Y1.StateCode = 0
+									AND Y1.Plus_NameType = 100000000
+							) A 
+						GROUP BY CONVERT(NVARCHAR(100), ContactId)
+					) G ON A.Donor_Key = G.Donor_Key
+				LEFT JOIN Uf_Couples_Display_Name1() H ON A.Donor_Key = CONVERT(NVARCHAR(100),H.Husbands_ContactId)
+				LEFT JOIN Uf_Couples_Display_Name2() I ON A.Donor_Key = CONVERT(NVARCHAR(100),I.Wifes_ContactId)														
+			' -- Ext_From_Statement
+		, 'AND A.Donor_Key IS NOT NULL 
+			' -- Ext_Where_Statement
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, '													
+			' -- Ext_From_Statement_2
+		, ' ' -- Ext_Create_Fields_2
+		, ' ' -- Ext_Create_Fields_3
+		, ' ' -- Ext_Where_Statement_2
+		, ' ' -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+		, NULL -- Ext_Select_Statement_3
+		, NULL -- Ext_Select_Statement_4
+		, NULL -- Ext_Select_Statement_5
+		, NULL -- Ext_Select_Statement_6
+		, NULL -- Ext_Select_Statement_7
+		, '															
 			' -- Ext_From_Statement_3
 		, '
 			'-- Ext_From_Statement_4

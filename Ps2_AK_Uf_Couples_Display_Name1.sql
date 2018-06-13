@@ -1,7 +1,7 @@
 /****************************************************
 
-	Name: Uf_Couples_Name1
-	Date: 06/12/2018
+	Name: Uf_Couples_Display_Name1
+	Date: 06/13/2018
 
 ****************************************************/
 
@@ -13,12 +13,12 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE OR ALTER FUNCTION [dbo].[Uf_Couples_Name1]()
+CREATE OR ALTER FUNCTION [dbo].[Uf_Couples_Display_Name1]()
 RETURNS TABLE
 AS
 RETURN
 
-SELECT MAX(CONCAT(Husbands_First_Name,' & ',Wifes_First_Name,' ',Husbands_Last_Name)) AS Couples_Name
+SELECT MAX(CONCAT(Husbands_Last_Name,', ',Husbands_First_Name,' & ',Wifes_First_Name)) AS Couples_Name
 	, Husbands_ContactId
 	FROM                                                                                                        
 		(SELECT CASE WHEN Primary_Gender = 'Male' THEN Primary_ContactId
