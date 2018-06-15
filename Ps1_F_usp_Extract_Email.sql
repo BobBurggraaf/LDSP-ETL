@@ -106,7 +106,7 @@ CREATE TABLE #Ext_Summary (
 	, @subject = '*DEV* LDSP Extract Completed'  -->>>>>> EMAIL SUBJECT <<<<<<<--
 	, @body = @body
 	, @body_format = 'HTML'
-	, @query = 'SELECT TOP 2500 * FROM LDSPhilanthropiesDW.Oa_Extract.Alpha_Table_1'  -- MAXES OUT MEMORY AND WON'T SEND EMAIL
+	, @query = 'SELECT TOP 500 * FROM LDSPhilanthropiesDW.Oa_Extract.Alpha_Table_1'  -- MAXES OUT MEMORY AND WON'T SEND EMAIL
 	, @query_result_header=1
 	, @query_no_truncate=1
 	, @attach_query_result_as_file=1

@@ -1228,6 +1228,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, ConnectionId UNIQUEIDENTIFIER
 			, Record1IdObjectTypeCode INT
 			, Record2IdObjectTypeCode INT
+			, Initiative_Liaison NVARCHAR(20) DEFAULT ''Initiative Liaison''
 			' -- Ext_Create_Fields
 		, 'Record1Id
 			, Record2Id
@@ -6649,6 +6650,9 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, OwnerId UNIQUEIDENTIFIER
 			, Lds_PrimaryInitiative BIT
 			, Plus_ParentInitiative UNIQUEIDENTIFIER
+			, Zero NVARCHAR(1) DEFAULT ''0''
+			, Posted NVARCHAR(10) DEFAULT ''Posted''
+			, Y NVARCHAR(1) DEFAULT ''Y''
 			' -- Ext_Create_Fields
 		, 'OpportunityId
 			, Plus_TotalAskAmount
@@ -27577,7 +27581,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			) A
 		LEFT JOIN _Donor_Key_Dim B ON A.Donor_Pre_Key = B.Donor_Key																
 			' -- Ext_From_Statement
-		, '
+		, '	CREATE NONCLUSTERED INDEX IX_Donor_Primary_Yn
+				ON dbo._Donation_Fact (Donor_Primary_Yn)
+				INCLUDE (Donation_Primary_Amt,Donation_Key,Initiative_Key,Expectancy_Key);
+			CREATE NONCLUSTERED INDEX IX_Donor_Primary_Yn_Initiative
+				ON dbo._Donation_Fact (Donor_Primary_Yn,Initiative_Key)
+				INCLUDE (Donation_Primary_Amt,Donation_Key,Expectancy_Key);
+			CREATE NONCLUSTERED INDEX IX_Don_Fact_Don_Key
+				ON dbo._Donation_Fact (Donation_Key)
+				INCLUDE (Donor_Key,Donor_Primary_Yn,Donation_Credit_Amt);
+			UPDATE STATISTICS dbo._Donation_Fact;
 			' -- Ext_Where_Statement
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
@@ -27684,6 +27697,512 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, '															
 			' -- Ext_From_Statement_3
 		, '
+			'-- Ext_From_Statement_4
+		, NULL -- Ext_From_Statement_5
+		, NULL -- Ext_From_Statement_6
+		, NULL -- Ext_From_Statement_7
+		, NULL -- Ext_Where_Statement_4
+		, NULL -- Ext_Where_Statement_5
+		, NULL -- Ext_Where_Statement_6
+		, NULL -- Ext_Where_Statement_7
+		, NULL -- Extra_1
+		, NULL -- Extra_2
+		, NULL -- Extra_3
+		, NULL -- Extra_4
+		, NULL -- Extra_5
+		, NULL -- Extra_6
+		, NULL -- Extra_7
+		, NULL -- Extra_8
+		, NULL -- Extra_9
+		, NULL -- Extra_10
+	)
+	,
+-- --------------------------
+-- _Initiative_Fact
+-- --------------------------
+	( 8 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Initiative_Fact' -- Ext_Table
+		, '	' -- Dest_Create_Fields
+		, '	' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, '	Initiative_Fact_Key INT IDENTITY(10000,1) PRIMARY KEY
+			, Initiative_Key NVARCHAR(100) 
+			, Donor_Key NVARCHAR(100) 
+			, Fund_Account_Key NVARCHAR(100) 
+			, Expectancy_Key NVARCHAR(100)  
+			, Donation_Key NVARCHAR(100) 
+			, Initiative_Proposal_Amt MONEY
+			, Initiative_Total_Given_Amt MONEY
+			, Initiative_Proposal_Date DATE
+			, Initiative_Targeted_Commitment_Date DATE
+			, Initiative_Committed_Date DATE
+			, Initiative_Cultivation_Proc_Stg_1_Date DATE
+			, Initiative_Cultivation_Proc_Stg_2_Date DATE
+			, Initiative_Cultivation_Proc_Stg_3_Date DATE
+			, Initiative_Cultivation_Proc_Stg_4_Date DATE
+			, Initiative_Gift_Notice_Created_Date DATE
+			, Initiative_Proposal_Status_Change_Date DATE
+			, Expectancy_Total_Pledged_Amt MONEY
+			, Expectancy_Balance_Due_Amt MONEY
+			, Expectancy_Total_Paid_Amt MONEY
+			, Expectancy_Installment_Amt MONEY
+			, Expectancy_Payment_Amt MONEY
+			, Expectancy_Annual_Amt MONEY
+			, Expectancy_PaymentsToMake INT
+			, Expectancy_PaymentsReceived INT
+			, Expectancy_BeginDate DATE
+			, Expectancy_EndDate DATE
+			, Expectancy_InstallmentDate DATE
+			, Expectancy_SignatureDate DATE
+			, Expectancy_NotificationDate DATE
+			, Expectancy_FundingDate DATE
+			, Expectancy_EstimatedMaturityDate DATE
+			, Expectancy_PaymentStartDate DATE
+			, Donation_Donor_Primary NVARCHAR(1)
+			, Donation_Primary_Amt MONEY
+			, Donation_Credit_Amt MONEY	
+			, Donation_Receipt_Date DATE
+			, Initiative_Total_Committed_Amt MONEY
+			, Hier_Key NVARCHAR(100)
+			, User_Initiative_Liaison_Key NVARCHAR(100) DEFAULT ''0''
+			, User_Coordinating_Liaison_Key NVARCHAR(100) DEFAULT ''0''
+			' -- Ext_Create_Fields
+		, '	Initiative_Key
+			, Donor_Key
+			, Fund_Account_Key
+			, Expectancy_Key
+			, Donation_Key
+			, Initiative_Proposal_Amt
+			, Initiative_Total_Given_Amt
+			, Initiative_Proposal_Date
+			, Initiative_Targeted_Commitment_Date
+			, Initiative_Committed_Date
+			, Initiative_Cultivation_Proc_Stg_1_Date
+			, Initiative_Cultivation_Proc_Stg_2_Date
+			, Initiative_Cultivation_Proc_Stg_3_Date
+			, Initiative_Cultivation_Proc_Stg_4_Date
+			, Initiative_Gift_Notice_Created_Date
+			, Initiative_Proposal_Status_Change_Date
+			, Expectancy_Total_Pledged_Amt
+			, Expectancy_Balance_Due_Amt
+			, Expectancy_Total_Paid_Amt
+			, Expectancy_Installment_Amt
+			, Expectancy_Payment_Amt
+			, Expectancy_Annual_Amt
+			, Expectancy_PaymentsToMake
+			, Expectancy_PaymentsReceived
+			, Expectancy_BeginDate
+			, Expectancy_EndDate
+			, Expectancy_InstallmentDate
+			, Expectancy_SignatureDate
+			, Expectancy_NotificationDate
+			, Expectancy_FundingDate
+			, Expectancy_EstimatedMaturityDate
+			, Expectancy_PaymentStartDate
+			, Donation_Donor_Primary
+			, Donation_Primary_Amt
+			, Donation_Credit_Amt
+			, Donation_Receipt_Date
+			, Initiative_Total_Committed_Amt
+			, Hier_Key
+			, User_Initiative_Liaison_Key
+			, User_Coordinating_Liaison_Key
+			' -- Ext_Insert_Fields
+		, 'CONVERT(NVARCHAR(100),A.Initiative_Key) AS Initiative_Key
+			, COALESCE(CONVERT(NVARCHAR(100),Donor_Key),A.[Zero]) AS Donor_Key
+			, COALESCE(CONVERT(NVARCHAR(100),Fund_Account_Key),A.[Zero]) AS Fund_Account_Key
+			, COALESCE(CONVERT(NVARCHAR(100),Expectancy_Key),A.[Zero]) AS Expectancy_Key
+			, COALESCE(CONVERT(NVARCHAR(100),Donation_Key),A.[Zero]) AS Donation_Key
+			, A.Plus_TotalAskAmount AS Initiative_Proposal_Amt
+			, A.Plus_TotalGiven AS Initiative_Total_Given_Amt
+			, CONVERT(VARCHAR(10),A.Plus_ProposalDate,101) AS Initiative_Proposal_Date
+			, CONVERT(VARCHAR(10),A.Plus_TargetedCommitment,101) AS Initiative_Targeted_Commitment_Date
+			, CONVERT(VARCHAR(10),A.Plus_CommittedDate,101) AS Initiative_Committed_Date
+			, CONVERT(VARCHAR(10),A.Plus_CultivationProcessStage1Date,101) AS Initiative_Cultivation_Proc_Stg_1_Date
+			, CONVERT(VARCHAR(10),A.Plus_CultivationProcessStage2Date,101) AS Initiative_Cultivation_Proc_Stg_2_Date
+			, CONVERT(VARCHAR(10),A.Plus_CultivationProcessStage3Date,101) AS Initiative_Cultivation_Proc_Stg_3_Date
+			, CONVERT(VARCHAR(10),A.Plus_CultivationProcessStage4Date,101) AS Initiative_Cultivation_Proc_Stg_4_Date
+			, CONVERT(VARCHAR(10),A.Plus_GiftNoticeCreatedOn,101) AS Initiative_Gift_Notice_Created_Date
+			, CONVERT(VARCHAR(10),A.Plus_ProposalStatusChangeDate,101) AS Initiative_Proposal_Status_Change_Date
+			, New_TotalPledged AS Expectancy_Total_Pledged_Amt
+			, New_BalanceDue_Base AS Expectancy_Balance_Due_Amt
+			, New_TotalPaid_Base AS Expectancy_Total_Paid_Amt
+			, New_InstallmentAmount_Base AS Expectancy_Installment_Amt
+			, Plus_PaymentAmount_Base AS Expectancy_Payment_Amt
+			, Plus_AnnualAmount_Base AS Expectancy_Annual_Amt
+			, New_PaymentsToMake AS Expectancy_PaymentsToMake
+			, New_PaymentsReceived AS Expectancy_PaymentsReceived
+			, CONVERT(VARCHAR(10), New_BeginDate,101) AS Expectancy_BeginDate
+			, CONVERT(VARCHAR(10), New_EndDate,101) AS Expectancy_EndDate
+			, CONVERT(VARCHAR(10), Plus_InstallmentDate,101) AS Expectancy_InstallmentDate
+			, CONVERT(VARCHAR(10), New_SignatureDate,101) AS Expectancy_SignatureDate
+			, CONVERT(VARCHAR(10), New_NotificationDate,101) AS Expectancy_NotificationDate
+			, CONVERT(VARCHAR(10), Plus_FundingDate,101) AS Expectancy_FundingDate
+			, CONVERT(VARCHAR(10), Plus_EstimatedMaturityDate,101) AS Expectancy_EstimatedMaturityDate
+			, CONVERT(VARCHAR(10), Plus_PaymentStartDate,101) AS Expectancy_PaymentStartDate
+			, Donor_Primary_Yn AS Donation_Donor_Primary
+			, Donation_Primary_Amt AS Donation_Primary_Amt
+			, Donation_Credit_Amt AS Donation_Credit_Amt
+			, New_ReceiptDate AS Donation_Receipt_Date
+			, A.Plus_TotalCommittedAmount AS Initiative_Total_Committed_Amt
+			, COALESCE(CONVERT(NVARCHAR(100),Hier_Key),A.[Zero]) AS Hier_Key
+			, CASE WHEN Donor_Key IS NOT NULL THEN COALESCE(B.User_Initiative_Liaison_Key,A.[Zero]) ELSE A.[Zero] END AS User_Initiative_Liaison_Key
+			, CASE WHEN Donor_Key IS NOT NULL THEN COALESCE(C.User_Coordinating_Liaison_Key,A.[Zero]) ELSE A.[Zero] END AS User_Coordinating_Liaison_Key
+			' -- Ext_Select_Statement
+		, '	(SELECT A.Initiative_Key
+				, CASE WHEN A.OpportunityId_RowNum = 1 THEN A.Donor_Key ELSE NULL END AS Donor_Key
+				, CASE WHEN A.OpportunityId_RowNum = 1 THEN A.Fund_Account_Key ELSE NULL END AS Fund_Account_Key
+				, CASE WHEN A.OpportunityId_RowNum = 1 THEN A.Plus_TotalAskAmount ELSE NULL END AS Plus_TotalAskAmount
+				, CASE WHEN A.OpportunityId_RowNum = 1 THEN A.Plus_TotalGiven ELSE NULL END AS Plus_TotalGiven
+				, A.Plus_ProposalDate
+				, A.Plus_TargetedCommitment
+				, A.Plus_CommittedDate
+				, A.Plus_CultivationProcessStage1Date
+				, A.Plus_CultivationProcessStage2Date
+				, A.Plus_CultivationProcessStage3Date
+				, A.Plus_CultivationProcessStage4Date
+				, A.Plus_GiftNoticeCreatedOn 
+				, A.Plus_ProposalStatusChangeDate
+				, A.Donation_Key
+				, Expectancy_Key
+				, CASE WHEN A.Donation_Key_RowNum = 1 THEN A.Donation_Primary_Amt ELSE NULL END AS Donation_Primary_Amt
+				, Donor_Primary_Yn
+				, CASE WHEN A.New_PledgeId_RowNum = 1 THEN A.New_TotalPledged ELSE NULL END AS New_TotalPledged
+				, CASE WHEN A.New_PledgeId_RowNum = 1 THEN A.New_BalanceDue_Base ELSE NULL END AS New_BalanceDue_Base
+				, CASE WHEN A.New_PledgeId_RowNum = 1 THEN A.New_TotalPaid_Base ELSE NULL END AS New_TotalPaid_Base
+				, CASE WHEN A.New_PledgeId_RowNum = 1 THEN A.New_InstallmentAmount_Base ELSE NULL END AS New_InstallmentAmount_Base
+				, CASE WHEN A.New_PledgeId_RowNum = 1 THEN A.Plus_PaymentAmount_Base ELSE NULL END AS Plus_PaymentAmount_Base
+				, CASE WHEN A.New_PledgeId_RowNum = 1 THEN A.Plus_AnnualAmount_Base ELSE NULL END AS Plus_AnnualAmount_Base
+				, CASE WHEN A.New_PledgeId_RowNum = 1 THEN A.New_PaymentsToMake ELSE NULL END AS New_PaymentsToMake
+				, CASE WHEN A.New_PledgeId_RowNum = 1 THEN A.New_PaymentsReceived ELSE NULL END AS New_PaymentsReceived
+				, A.New_BeginDate
+				, A.New_EndDate
+				, A.Plus_InstallmentDate 
+				, A.New_SignatureDate
+				, A.New_NotificationDate 
+				, A.Plus_FundingDate
+				, A.Plus_EstimatedMaturityDate
+				, A.Plus_PaymentStartDate
+				, A.New_PledgeId
+				, A.Donation_Credit_Amt
+				, A.New_ReceiptDate
+				, CASE WHEN A.OpportunityId_RowNum = 1 THEN A.Plus_TotalCommittedAmount ELSE NULL END AS Plus_TotalCommittedAmount
+				, CASE WHEN A.OpportunityId_RowNum = 1 THEN A.Hier_Key ELSE NULL END AS Hier_Key
+				, [Zero]
+				FROM
+					(SELECT A.Initiative_Key
+						, A.Donor_Key
+						, A.Fund_Account_Key
+						, A.Plus_TotalAskAmount
+						, A.Plus_TotalGiven
+						, A.Plus_ProposalDate
+						, A.Plus_TargetedCommitment
+						, A.Plus_CommittedDate
+						, A.Plus_CultivationProcessStage1Date
+						, A.Plus_CultivationProcessStage2Date
+						, A.Plus_CultivationProcessStage3Date
+						, A.Plus_CultivationProcessStage4Date
+						, A.Plus_GiftNoticeCreatedOn 
+						, A.Plus_ProposalStatusChangeDate
+						, A.Donation_Key
+						, COALESCE(CONVERT(NVARCHAR(100),A.New_PledgeId),A.Expectancy_Key) AS Expectancy_Key
+						, A.Donation_Primary_Amt
+						, CASE WHEN B.Donation_Credit_Amt IS NOT NULL THEN B.Donor_Primary_Yn ELSE A.Donor_Primary_Yn END AS Donor_Primary_Yn
+						, A.New_TotalPledged
+						, A.New_BalanceDue_Base
+						, A.New_TotalPaid_Base
+						, A.New_InstallmentAmount_Base
+						, A.Plus_PaymentAmount_Base
+						, A.Plus_AnnualAmount_Base
+						, A.New_PaymentsToMake
+						, A.New_PaymentsReceived
+						, A.New_BeginDate
+						, A.New_EndDate
+						, A.Plus_InstallmentDate 
+						, A.New_SignatureDate
+						, A.New_NotificationDate 
+						, A.Plus_FundingDate
+						, A.Plus_EstimatedMaturityDate
+						, A.Plus_PaymentStartDate
+						, A.New_PledgeId
+						, B.Donation_Credit_Amt
+						, C.New_ReceiptDate																
+			' -- Ext_From_Statement
+		, '
+			' -- Ext_Where_Statement
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, '				, ROW_NUMBER() OVER(PARTITION BY A.Initiative_Key ORDER BY (SELECT NULL)) AS OpportunityId_RowNum
+						, ROW_NUMBER() OVER(PARTITION BY A.New_PledgeId ORDER BY (SELECT NULL)) AS New_PledgeId_RowNum
+						, ROW_NUMBER() OVER(PARTITION BY A.Donation_Key ORDER BY (SELECT NULL)) AS Donation_Key_RowNum
+						, A.Plus_TotalCommittedAmount
+						, A.Hier_Key
+						, [Zero]
+						FROM
+							(SELECT A.OpportunityId AS Initiative_Key
+								, A.CustomerId AS Donor_Key
+								, A.Plus_FundAccount AS Fund_Account_Key
+								, A.Plus_TotalAskAmount 
+								, A.Plus_TotalGiven
+								, A.Plus_ProposalDate
+								, A.Plus_TargetedCommitment
+								, A.Plus_CommittedDate
+								, A.Plus_CultivationProcessStage1Date
+								, A.Plus_CultivationProcessStage2Date
+								, A.Plus_CultivationProcessStage3Date
+								, A.Plus_CultivationProcessStage4Date
+								, A.Plus_GiftNoticeCreatedOn 
+								, A.Plus_ProposalStatusChangeDate
+								, A.Donation_Key
+								, A.Expectancy_Key
+								, A.Donation_Primary_Amt
+								, A.Donor_Primary_Yn
+								, B.New_TotalPledged
+								, B.New_BalanceDue_Base
+								, B.New_TotalPaid_Base
+								, B.New_InstallmentAmount_Base
+								, B.Plus_PaymentAmount_Base
+								, B.Plus_AnnualAmount_Base
+								, B.New_PaymentsToMake
+								, B.New_PaymentsReceived
+								, B.New_BeginDate
+								, B.New_EndDate
+								, B.Plus_InstallmentDate 
+								, B.New_SignatureDate
+								, B.New_NotificationDate 
+								, B.Plus_FundingDate
+								, B.Plus_EstimatedMaturityDate
+								, B.Plus_PaymentStartDate
+								, B.New_PledgeId
+								, ROW_NUMBER() OVER(PARTITION BY A.Donation_Key ORDER BY (SELECT NULL)) AS Donation_Key_RowNum
+								, A.Plus_TotalCommittedAmount
+								, A.Hier_Key
+								, [Zero]
+								FROM
+									(SELECT OpportunityId
+										, CustomerId
+										, Plus_FundAccount
+										, Plus_TotalAskAmount
+										, Plus_TotalGiven
+										, Plus_ProposalDate
+										, Plus_TargetedCommitment
+										, Plus_CommittedDate
+										, Plus_CultivationProcessStage1Date
+										, Plus_CultivationProcessStage2Date
+										, Plus_CultivationProcessStage3Date
+										, Plus_CultivationProcessStage4Date
+										, Plus_GiftNoticeCreatedOn 
+										, Plus_ProposalStatusChangeDate
+										, Donation_Key
+										, Expectancy_Key
+										, Donation_Primary_Amt
+										, Donor_Primary_Yn
+										, ROW_NUMBER() OVER(PARTITION BY OpportunityId ORDER BY (SELECT NULL)) AS OpportunityId_RowNum
+										, Plus_TotalCommittedAmount
+										, Hier_Key
+										, [Zero]
+										FROM
+											(SELECT OpportunityId
+												, CustomerId
+												, Plus_FundAccount
+												, Plus_TotalAskAmount
+												, COALESCE(Plus_TotalGiven,0) AS Plus_TotalGiven
+												, Plus_ProposalDate
+												, Plus_TargetedCommitment
+												, Plus_CommittedDate
+												, Plus_CultivationProcessStage1Date
+												, Plus_CultivationProcessStage2Date
+												, Plus_CultivationProcessStage3Date
+												, Plus_CultivationProcessStage4Date
+												, Plus_GiftNoticeCreatedOn 
+												, Plus_ProposalStatusChangeDate
+												, Donation_Key
+												, Expectancy_Key
+												, Donation_Primary_Amt
+												, Donor_Primary_Yn
+												, Plus_TotalCommittedAmount
+												, Hier_Key
+												, [Zero]
+												FROM
+													(SELECT A.OpportunityId
+														, A.CustomerId
+														, A.Plus_FundAccount
+														, A.Plus_TotalAskAmount
+														, D.Plus_TotalGiven
+														, A.Plus_ProposalDate
+														, A.Plus_TargetedCommitment
+														, A.Plus_CommittedDate														
+			' -- Ext_From_Statement_2
+		, ' ' -- Ext_Create_Fields_2
+		, ' ' -- Ext_Create_Fields_3
+		, ' ' -- Ext_Where_Statement_2
+		, ' ' -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+		, NULL -- Ext_Select_Statement_3
+		, NULL -- Ext_Select_Statement_4
+		, NULL -- Ext_Select_Statement_5
+		, NULL -- Ext_Select_Statement_6
+		, NULL -- Ext_Select_Statement_7
+		, '												, A.Plus_CultivationProcessStage1Date
+														, A.Plus_CultivationProcessStage2Date
+														, A.Plus_CultivationProcessStage3Date
+														, A.Plus_CultivationProcessStage4Date
+														, A.Plus_GiftNoticeCreatedOn 
+														, A.Plus_ProposalStatusChangeDate
+														, B.Donation_Key
+														, B.Expectancy_Key
+														, B.Donation_Primary_Amt
+														, B.Donor_Primary_Yn
+														, A.Plus_TotalCommittedAmount
+														, E.Hier_Key
+														, A.[Zero]
+														FROM Ext_Opportunity A
+															LEFT JOIN Ext_Pledge C ON A.OpportunityId = C.New_Opportunity
+															LEFT JOIN _Donation_Fact B ON CONVERT(NVARCHAR(100),C.New_PledgeId) = B.Expectancy_Key
+															LEFT JOIN 
+																(
+																 SELECT A.OpportunityId
+																	, SUM(B.Donation_Primary_Amt) AS Plus_TotalGiven
+																	FROM Ext_Opportunity A
+																		LEFT JOIN Ext_Pledge C ON A.OpportunityId = C.New_Opportunity
+																		LEFT JOIN _Donation_Fact B ON CONVERT(NVARCHAR(100),C.New_PledgeId) = B.Expectancy_Key
+																		LEFT JOIN _Donation_Dim D ON B.Donation_Key = D.Donation_Key
+																	WHERE 1 = 1
+																		AND D.StatusCode = [Posted]
+																		AND B.Donation_Primary_Amt IS NOT NULL
+																	GROUP BY A.OpportunityId
+																) D ON A.OpportunityId = D.OpportunityId
+															LEFT JOIN
+																(SELECT A.OpportunityId
+																	, C.Hier_Key
+																	FROM Ext_Opportunity A
+																		LEFT JOIN _Fund_Dim B ON CONVERT(NVARCHAR(100),A.Plus_FundAccount) = B.Fund_Key
+																		LEFT JOIN _Hier_Dim C ON CONVERT(NVARCHAR(100),B.New_InstitutionalHierarchy) = C.Hier_Key														
+																) E ON A.OpportunityId = E.OpportunityId
+														WHERE 1 = 1
+															AND B.Donor_Primary_Yn = A.[Y]
+													) A
+											UNION
+											SELECT A.OpportunityId
+												, A.CustomerId
+												, A.Plus_FundAccount
+												, A.Plus_TotalAskAmount
+												, COALESCE(D.Plus_TotalGiven,0) AS Plus_TotalGiven
+												, A.Plus_ProposalDate
+												, A.Plus_TargetedCommitment
+												, A.Plus_CommittedDate
+												, A.Plus_CultivationProcessStage1Date
+												, A.Plus_CultivationProcessStage2Date
+												, A.Plus_CultivationProcessStage3Date
+												, A.Plus_CultivationProcessStage4Date
+												, A.Plus_GiftNoticeCreatedOn 
+												, A.Plus_ProposalStatusChangeDate
+												, NULL AS Donation_Key
+												, NULL AS Expectancy_Key
+												, NULL AS Donation_Primary_Amt
+												, NULL AS Donor_Primary_Yn
+												, A.Plus_TotalCommittedAmount
+												, E.Hier_Key
+												, A.[Zero]
+												FROM Ext_Opportunity A
+													LEFT JOIN 
+														(
+														 SELECT A.OpportunityId
+															, SUM(B.Donation_Primary_Amt) AS Plus_TotalGiven
+															FROM Ext_Opportunity A
+																LEFT JOIN Ext_Pledge C ON A.OpportunityId = C.New_Opportunity
+																LEFT JOIN _Donation_Fact B ON CONVERT(NVARCHAR(100),C.New_PledgeId) = B.Expectancy_Key
+																LEFT JOIN _Donation_Dim D ON B.Donation_Key = D.Donation_Key
+															WHERE 1 = 1
+																AND D.StatusCode = [Posted]
+																AND B.Donation_Primary_Amt IS NOT NULL
+															GROUP BY A.OpportunityId
+														) D ON A.OpportunityId = D.OpportunityId
+													LEFT JOIN																											
+			' -- Ext_From_Statement_3
+		, '												(SELECT A.OpportunityId
+															, C.Hier_Key
+															FROM Ext_Opportunity A
+																LEFT JOIN _Fund_Dim B ON CONVERT(NVARCHAR(100),A.Plus_FundAccount) = B.Fund_Key
+																LEFT JOIN _Hier_Dim C ON CONVERT(NVARCHAR(100),B.New_InstitutionalHierarchy) = C.Hier_Key														
+														) E ON A.OpportunityId = D.OpportunityId
+												WHERE 1 = 1
+													AND A.OpportunityId NOT IN 
+														(
+														SELECT DISTINCT A.OpportunityId
+															FROM Ext_Opportunity A
+																LEFT JOIN Ext_Pledge C ON A.OpportunityId = C.New_Opportunity
+																LEFT JOIN _Donation_Fact B ON CONVERT(NVARCHAR(100),C.New_PledgeId) = B.Expectancy_Key 
+															WHERE 1 = 1
+																AND Donor_Primary_Yn = A.[Y]  
+														) 
+											) A
+									) A
+									LEFT JOIN 
+										(SELECT New_PledgeId
+											, New_TotalPledged
+											, New_BalanceDue_Base
+											, New_TotalPaid_Base
+											, New_InstallmentAmount_Base
+											, Plus_PaymentAmount_Base
+											, Plus_AnnualAmount_Base
+											, New_PaymentsToMake
+											, New_PaymentsReceived
+											, New_BeginDate
+											, New_EndDate
+											, Plus_InstallmentDate 
+											, New_SignatureDate
+											, New_NotificationDate 
+											, Plus_FundingDate
+											, Plus_EstimatedMaturityDate
+											, Plus_PaymentStartDate
+											, New_Opportunity
+											FROM Ext_Pledge
+											WHERE 1 = 1
+												AND New_Opportunity IS NOT NULL
+										) B ON A.OpportunityId = CONVERT(NVARCHAR(100),B.New_Opportunity) AND (A.OpportunityId_RowNum = 1 OR A.Expectancy_Key = CONVERT(NVARCHAR(100),B.New_PledgeId))
+							) A				
+							LEFT JOIN _Donation_Fact B ON A.Donation_Key = B.Donation_Key AND Donation_Key_RowNum = 1
+							LEFT JOIN _Donation_Dim C ON A.Donation_Key = C.Donation_Key
+					) A
+			) A
+			LEFT JOIN
+				(SELECT C.OpportunityID AS Initiative_Key
+					, CONVERT(NVARCHAR(100),B.SystemUserId) AS User_Initiative_Liaison_Key
+					FROM Ext_Connection A 
+						INNER JOIN Ext_System_User B ON A.Record1Id = B.SystemUserId 
+						INNER JOIN Ext_Opportunity C ON A.Record2Id = C.OpportunityId AND A.Record2ObjectTypeCode = 3 
+						INNER JOIN Ext_Connection_Role D ON A.Record1RoleId = D.ConnectionRoleId AND D.Name IN ([Initiative_Liaison])
+				) B ON A.Initiative_Key = B.Initiative_Key
+			LEFT JOIN
+				(SELECT A.OpportunityId AS Initiative_Key
+					, CONVERT(NVARCHAR(100),B.SystemUserId) AS User_Coordinating_Liaison_Key
+					FROM Ext_Opportunity A
+						INNER JOIN Ext_System_User B ON A.Plus_CoordinatingLiaisonId = B.SystemUserId
+				) C ON A.Initiative_Key = C.Initiative_Key		
 			'-- Ext_From_Statement_4
 		, NULL -- Ext_From_Statement_5
 		, NULL -- Ext_From_Statement_6
