@@ -392,6 +392,7 @@ INSERT INTO dbo.Stage_To_Prod
 			, CreatedOn DATE
 			, ModifiedOn DATE
 			, DomainName NVARCHAR(1024)
+			, Regarding_Type NVARCHAR(15)
 			' -- Dest_Create_Fields
 		, 'Activity_Key
 			, Activity_Group_Key
@@ -422,6 +423,7 @@ INSERT INTO dbo.Stage_To_Prod
 			, CreatedOn
 			, ModifiedOn
 			, DomainName
+			, Regarding_Type
 			' -- Dest_Insert_Fields
 		, ' ' -- Dest_Where_Statement
 		, GETDATE()
@@ -4149,7 +4151,156 @@ INSERT INTO dbo.Stage_To_Prod
 		, GETDATE()
 		, NULL
 	)
+	,
+-- --------------------------
+-- _Donor_Detail_Dim
+-- --------------------------
+	( 1 -- Tier
+		, 'dbo._Donor_Detail_Dim' -- Source_Table
+		, 'dbo._Donor_Detail_Dim' -- Destination_Table
+		,'	Donor_Key  NVARCHAR(100)  PRIMARY KEY      
+			, Donor_Marriage_Status NVARCHAR(400) 
+			, Donor_Gender NVARCHAR(400) 
+			, Donor_Lds_Member NVARCHAR(400) 
+			, Donor_Birth_Dt DATE
+			, Donor_Birth_Dt_Day NVARCHAR(100) 
+			, Donor_Birth_Dt_Month NVARCHAR(100) 
+			, Donor_Birth_Dt_Year NVARCHAR(100) 
+			, Donor_Deceased_Dt DATE
+			, Donor_Deceased_Dt_Day NVARCHAR(100)
+			, Donor_Deceased_Dt_Month NVARCHAR(100)
+			, Donor_Deceased_Dt_Year NVARCHAR(100) 
+			, Donor_Country NVARCHAR(100)
+			, Donor_Deceased_Yn NVARCHAR(1)
+			, Donor_Age INT
+			, General_Authority NVARCHAR(1)
+			, Emeritus_General_Authority NVARCHAR(1)
+			, Mission_President NVARCHAR(1)
+			, Temple_President NVARCHAR(1)
+			, Cell_Phone NVARCHAR(100)
+			, Donor_Ldsp_Text_Lines NVARCHAR(4000)
+			, Donor_Qualified NVARCHAR(1)
+			, Donor_Qualified_By NVARCHAR(200)
+			, Donor_Qualified_On DATE
+			' -- Dest_Create_Fields
+		, '	Donor_Key      
+			, Donor_Marriage_Status 
+			, Donor_Gender 
+			, Donor_Lds_Member 
+			, Donor_Birth_Dt
+			, Donor_Birth_Dt_Day 
+			, Donor_Birth_Dt_Month 
+			, Donor_Birth_Dt_Year
+			, Donor_Deceased_Dt
+			, Donor_Deceased_Dt_Day
+			, Donor_Deceased_Dt_Month
+			, Donor_Deceased_Dt_Year 
+			, Donor_Country
+			, Donor_Deceased_Yn
+			, Donor_Age
+			, General_Authority
+			, Emeritus_General_Authority
+			, Mission_President
+			, Temple_President
+			, Cell_Phone
+			, Donor_Ldsp_Text_Lines
+			, Donor_Qualified
+			, Donor_Qualified_By
+			, Donor_Qualified_On
+			' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _Donor_Connection_Dim
+-- --------------------------
+	( 1 -- Tier
+		, 'dbo._Donor_Connection_Dim' -- Source_Table
+		, 'dbo._Donor_Connection_Dim' -- Destination_Table
+		,'	Donor_Key NVARCHAR(100)   
+			, All_Personal_Connections NVARCHAR(4000)
+			, Spouse_Name NVARCHAR(100)
+			, Spouse_LdspId INT
+			, Plus_SpousePreferredFirstName NVARCHAR(100)
+			, Plus_SpousePreferredMiddleName NVARCHAR(100)
+			, Plus_SpousePreferredLastName NVARCHAR(100)
+			, Plus_SpousePreferredFullName NVARCHAR(100)
+			, Spouse_Phone_Number NVARCHAR(100)
+			, Spouse_Email NVARCHAR(100) 
+			, Spouse_First_Name NVARCHAR(100)
+			, Spouse_Last_Name NVARCHAR(100)
+			, Spouse_Birth_Date DATE
+			, Spouse_Age INT
+			, Donor_Spouse_Middle_Name NVARCHAR(50)
+			, Donor_Spouse_Birth_Name NVARCHAR(100)
+			, Donor_Spouse_Coordinating_Liaison NVARCHAR(400)
+			, Donor_Spouse_Coordinating_Liaison_Domain_Name NVARCHAR(1024) 
+			, Donor_Liaison_Connections NVARCHAR(4000)
+			, Donor_Couple_Infor_Envel NVARCHAR(300)
+			, Donor_Couple_Form_Envel NVARCHAR(300)
+			, Donor_Spouses_Name NVARCHAR(100) 
+			, Donor_Total_Name_Display NVARCHAR(200)
+			' -- Dest_Create_Fields
+		, '	Donor_Key   
+			, All_Personal_Connections
+			, Spouse_Name
+			, Spouse_LdspId
+			, Plus_SpousePreferredFirstName
+			, Plus_SpousePreferredMiddleName
+			, Plus_SpousePreferredLastName
+			, Plus_SpousePreferredFullName
+			, Spouse_Phone_Number
+			, Spouse_Email
+			, Spouse_First_Name
+			, Spouse_Last_Name
+			, Spouse_Birth_Date
+			, Spouse_Age
+			, Donor_Spouse_Middle_Name
+			, Donor_Spouse_Birth_Name
+			, Donor_Spouse_Coordinating_Liaison
+			, Donor_Spouse_Coordinating_Liaison_Domain_Name 
+			, Donor_Liaison_Connections
+			, Donor_Couple_Infor_Envel
+			, Donor_Couple_Form_Envel
+			, Donor_Spouses_Name 
+			, Donor_Total_Name_Display
+			' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- View_Qualifieds
+-- --------------------------
+	( 1 -- Tier
+		, 'dbo.View_Qualifieds' -- Source_Table
+		, 'dbo.View_Qualifieds' -- Destination_Table
+		,'	Ldsp_Id NVARCHAR(100)
+			, Donor_Full_Name NVARCHAR(160)
+			, Is_Qualified  NVARCHAR(1)
+			, Qualified_By NVARCHAR(200)
+			, Qualified_On DATE
+			, Coordinating_Liaison NVARCHAR(200)
+			, Pending_Liaison NVARCHAR(200)
+			' -- Dest_Create_Fields
+		, '	Ldsp_Id
+			, Donor_Full_Name
+			, Is_Qualified
+			, Qualified_By
+			, Qualified_On
+			, Coordinating_Liaison
+			, Pending_Liaison
+			' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, GETDATE()
+		, NULL
+	)
 ;	
+
+
 	
 	
 	

@@ -6334,7 +6334,14 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Oa_Extract.New_StudentAttendanceBase A
 				LEFT JOIN dbo._MDT_Conversion_Dim B ON YEAR(A.New_ExpectedGraduationDate) = B.Date_Year
 			' -- Ext_From_Statement
-		, ' ' -- Ext_Where_Statement
+		, 'CREATE NONCLUSTERED INDEX IX_Ext_Student_1 
+					ON Ext_Student(Plus_Year)
+					INCLUDE (
+					New_StudentsAttendanceId
+					, New_University
+					); 
+			UPDATE STATISTICS dbo.Ext_Student
+			' -- Ext_Where_Statement
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
 		, NULL -- Tier_4_Stage
@@ -8554,6 +8561,15 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 								AND Row_Num = 1
 								AND A.New_RecognitionCreditId = Z.New_RecognitionCreditId
 						)
+				CREATE NONCLUSTERED INDEX IX_Recogn_Crdt_1 
+					ON _Gift_Credit_(Plus_Type,Plus_SubType,New_ReceiptDate)
+					INCLUDE (
+					New_RelatedConstituent
+					, New_OrganizationId
+					, New_CreditAmount
+					, Plus_InstitutionalHieararchy
+					);
+				UPDATE STATISTICS dbo._Gift_Credit_;
 			' -- Ext_Where_Statement	
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
@@ -17799,6 +17815,18 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'AND A.StateCode != 1
 			INSERT INTO _Email_Dim
 				VALUES(NULL,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+			CREATE NONCLUSTERED INDEX IX_Email_Primary_Yn 
+					ON _Email_Dim(Email_Primary_Yn ASC)
+						INCLUDE (
+							ContactId
+							, Email_Address
+							, Email_Type
+							, Email_Type_Value
+							, Email_Active_Yn
+							, Email_Confirmed_Yn
+							, Email_Confidential_Yn
+						);
+			UPDATE STATISTICS dbo._Email_Dim;
 			' -- Ext_Where_Statement	
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
@@ -18977,6 +19005,38 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'INSERT INTO _Address_Dim
 			VALUES(NULL,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+			CREATE NONCLUSTERED INDEX IX_Address_Primary_Yn 
+					ON _Address_Dim(Address_Primary_Yn ASC)
+						INCLUDE (
+							ContactId
+							, Address_Street_1
+							, Address_Street_2
+							, Address_Street_3
+							, Address_City
+							, Address_County
+							, Address_County_Code
+							, Address_County_Id
+							, Address_State_Province
+							, Address_State_Code
+							, Address_Country
+							, Address_Post_Code_Full
+							, Address_Post_Code_Last_4
+							, Address_Printing_Line_1
+							, Address_Printing_Line_2
+							, Address_Display
+							, Address_Quality_Status
+							, Address_Quality_Status_Value
+							, Address_Longitude
+							, Address_Latitude
+							, Address_Active_Yn
+							, Address_Confirmed_Yn
+							, Address_Confidential_Yn
+							, Address_Type
+							, Address_Type_Value
+							, Address_Printing_Line_3
+							, Address_Printing_Line_4
+						);
+			UPDATE STATISTICS dbo._Address_Dim;
 			'-- Ext_Where_Statement	
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
@@ -19275,6 +19335,25 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'AND A.StatusCode = 100000002
 			INSERT INTO _Phone_Dim
 				VALUES(NULL,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+			CREATE NONCLUSTERED INDEX IX_Phone_Primary_Yn 
+					ON _Phone_Dim(Phone_Primary_Yn ASC)
+						INCLUDE (
+							ContactId
+							, Phone_Number
+							, Phone_Country_Code
+							, Phone_Extension
+							, Phone_Active_Yn
+							, Phone_Confirmed_Yn
+							, Phone_Recieve_Text_Yn
+							, Phone_Confidential_Yn
+							, Phone_Type
+							, Phone_Line_Type
+							, Phone_Preferred_Time
+							, Phone_Type_Value
+							, Phone_Line_Type_Value
+							, Phone_Preferred_Time_Value
+						);
+			UPDATE STATISTICS dbo._Phone_Dim;
 			' -- Ext_Where_Statement	
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
@@ -23922,7 +24001,30 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 											, E.New_MajorName AS Emphasis             											
 			' -- Ext_From_Statement
 		, 'INSERT INTO _Alumni_Dim
-			VALUES(NULL,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);	
+			VALUES(NULL,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+			CREATE NONCLUSTERED INDEX IX_New_University 
+				ON _Alumni_Dim(New_University ASC)
+					INCLUDE (
+						ContactId
+						, Plus_AlumniStatus
+						, Plus_ActualGraduationDate
+						, New_DegreeCode
+						, Program
+					);
+				CREATE NONCLUSTERED INDEX IX_Alumni_ContactId 
+				ON _Alumni_Dim(ContactId ASC)
+					INCLUDE (
+					New_University 
+						, Plus_AlumniStatus
+						, Plus_ActualGraduationDate
+						, New_DegreeCode
+						, Program 
+					)
+					;
+				CREATE NONCLUSTERED INDEX IX_Alumni_ContactId2 
+				ON _Alumni_Dim(ContactId ASC)
+					;
+				UPDATE STATISTICS dbo._Alumni_Dim
 			' -- Ext_Where_Statement	
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
