@@ -6660,6 +6660,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Zero NVARCHAR(1) DEFAULT ''0''
 			, Posted NVARCHAR(10) DEFAULT ''Posted''
 			, Y NVARCHAR(1) DEFAULT ''Y''
+			, N NVARCHAR(1) DEFAULT ''N''
+			, Space_Dash_Space NVARCHAR(5) DEFAULT '' - ''
 			' -- Ext_Create_Fields
 		, 'OpportunityId
 			, Plus_TotalAskAmount
@@ -27870,6 +27872,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Hier_Key NVARCHAR(100)
 			, User_Initiative_Liaison_Key NVARCHAR(100) DEFAULT ''0''
 			, User_Coordinating_Liaison_Key NVARCHAR(100) DEFAULT ''0''
+			, Y NVARCHAR(1) DEFAULT ''Y''
+			, Zero NVARCHAR(1) DEFAULT ''0''
 			' -- Ext_Create_Fields
 		, '	Initiative_Key
 			, Donor_Key
@@ -28306,6 +28310,241 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 						INNER JOIN Ext_System_User B ON A.Plus_CoordinatingLiaisonId = B.SystemUserId
 				) C ON A.Initiative_Key = C.Initiative_Key		
 			'-- Ext_From_Statement_4
+		, NULL -- Ext_From_Statement_5
+		, NULL -- Ext_From_Statement_6
+		, NULL -- Ext_From_Statement_7
+		, NULL -- Ext_Where_Statement_4
+		, NULL -- Ext_Where_Statement_5
+		, NULL -- Ext_Where_Statement_6
+		, NULL -- Ext_Where_Statement_7
+		, NULL -- Extra_1
+		, NULL -- Extra_2
+		, NULL -- Extra_3
+		, NULL -- Extra_4
+		, NULL -- Extra_5
+		, NULL -- Extra_6
+		, NULL -- Extra_7
+		, NULL -- Extra_8
+		, NULL -- Extra_9
+		, NULL -- Extra_10
+	)
+	,
+-- --------------------------
+-- _Initiative_Dim
+-- --------------------------
+	( 9 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Initiative_Dim' -- Ext_Table
+		, '	' -- Dest_Create_Fields
+		, '	' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, '	Initiative_Key NVARCHAR(100) PRIMARY KEY
+			, Initiative_Name NVARCHAR(600)
+			, Initiative_Step_Name NVARCHAR(400)
+			, Initiative_State_Code NVARCHAR(400)
+			, Initiative_Status_Code NVARCHAR(400)
+			, Initiative_Proposal_Status NVARCHAR(400)
+			, Initiative_New_Account NVARCHAR(400)
+			, Initiative_Liaison NVARCHAR(200)
+			, Initiative_Supporting_Liaisons NVARCHAR(1000)
+			, Initiative_Gift_Planning_Serv_Team NVARCHAR(1000)
+			, Initiative_Team NVARCHAR(1000)
+			, Initiative_Coordinating_Liaison NVARCHAR(200)
+			, Initiative_Name_Donor_Name NVARCHAR(1000)
+			, Initiative_Proposal_Date DATE
+			, Initiative_Targeted_Commitment_Date DATE
+			, Initiative_Committed_Date DATE
+			, Initiative_Cultivation_Proc_Stg_1_Date DATE
+			, Initiative_Cultivation_Proc_Stg_2_Date DATE
+			, Initiative_Cultivation_Proc_Stg_3_Date DATE
+			, Initiative_Cultivation_Proc_Stg_4_Date DATE
+			, Initiative_Gift_Notice_Created_Date DATE
+			, Initiative_Proposal_Status_Change_Date DATE
+			, Initiative_Primary_Initiative NVARCHAR(1)
+			, Initiative_Parent_Initiative NVARCHAR(600)
+			, Initiative_Has_Expectancy NVARCHAR(1)
+			' -- Ext_Create_Fields
+		, '	Initiative_Key
+			, Initiative_Name
+			, Initiative_Step_Name
+			, Initiative_State_Code
+			, Initiative_Status_Code
+			, Initiative_Proposal_Status
+			, Initiative_New_Account
+			, Initiative_Liaison
+			, Initiative_Supporting_Liaisons
+			, Initiative_Gift_Planning_Serv_Team
+			, Initiative_Team 
+			, Initiative_Coordinating_Liaison
+			, Initiative_Name_Donor_Name
+			, Initiative_Proposal_Date
+			, Initiative_Targeted_Commitment_Date
+			, Initiative_Committed_Date
+			, Initiative_Cultivation_Proc_Stg_1_Date
+			, Initiative_Cultivation_Proc_Stg_2_Date
+			, Initiative_Cultivation_Proc_Stg_3_Date
+			, Initiative_Cultivation_Proc_Stg_4_Date
+			, Initiative_Gift_Notice_Created_Date
+			, Initiative_Proposal_Status_Change_Date
+			, Initiative_Primary_Initiative
+			, Initiative_Parent_Initiative
+			, Initiative_Has_Expectancy
+			' -- Ext_Insert_Fields
+		, 'CONVERT(NVARCHAR(100),A.OpportunityId) AS Initiative_Key
+			, A.Name AS Initiative_Name
+			, A.StepName AS Initiative_Step_Name
+			, F.Column_Label AS Initiative_State_Code
+			, G.Column_Label AS Initiative_Status_Code
+			, H.Column_Label AS Initiative_Proposal_Status
+			, I.Column_Label AS Initiative_New_Account
+			, B.Initiative_Liaison
+			, C.Initiative_Supporting_Liaisons
+			, D.Initiative_Gift_Planning_Serv_Team
+			, E.Initiative_Team 
+			, J.Initiative_Coordinating_Liaison
+			, K.Initiative_Name_Donor_Name
+			, CONVERT(VARCHAR(10),A.Plus_ProposalDate,101) AS Initiative_Proposal_Date
+			, CONVERT(VARCHAR(10),A.Plus_TargetedCommitment,101) AS Initiative_Targeted_Commitment_Date
+			, CONVERT(VARCHAR(10),A.Plus_CommittedDate,101) AS Initiative_Committed_Date
+			, CONVERT(VARCHAR(10),A.Plus_CultivationProcessStage1Date,101) AS Initiative_Cultivation_Proc_Stg_1_Date
+			, CONVERT(VARCHAR(10),A.Plus_CultivationProcessStage2Date,101) AS Initiative_Cultivation_Proc_Stg_2_Date
+			, CONVERT(VARCHAR(10),A.Plus_CultivationProcessStage3Date,101) AS Initiative_Cultivation_Proc_Stg_3_Date
+			, CONVERT(VARCHAR(10),A.Plus_CultivationProcessStage4Date,101) AS Initiative_Cultivation_Proc_Stg_4_Date
+			, CONVERT(VARCHAR(10),A.Plus_GiftNoticeCreatedOn,101) AS Initiative_Gift_Notice_Created_Date
+			, CONVERT(VARCHAR(10),A.Plus_ProposalStatusChangeDate,101) AS Initiative_Proposal_Status_Change_Date
+			, L.Initiative_Primary_Initiative
+			, L.Initiative_Parent_Initiative
+			, CASE WHEN M.Initiative_Has_Expectancy IS NULL OR M.Initiative_Has_Expectancy = A.[N] THEN A.[N] ELSE A.[Y] END AS Initiative_Has_Expectancy
+			' -- Ext_Select_Statement
+		, 'Ext_Opportunity A
+			LEFT JOIN
+				(
+				SELECT C.OpportunityID
+					,COALESCE(B.FullName,E.FullName) AS Initiative_Liaison
+					FROM Ext_Connection A
+						INNER JOIN Ext_System_User B ON A.Record1Id = B.SystemUserId
+						INNER JOIN Ext_Opportunity C ON A.Record2Id = C.OpportunityId 
+						INNER JOIN Ext_Connection_Role D ON A.Record1RoleId = D.ConnectionRoleId 
+						INNER JOIN Ext_System_User E ON C.OwnerId = E.SystemUserId
+					WHERE 1 = 1
+						AND A.Record2ObjectTypeCode = 3
+						AND D.Name IN ([Initiative_Liaison])
+				) B ON A.OpportunityId = B.OpportunityId
+			LEFT JOIN Uf_Initiative_Supporting_Liaisons() C ON A.OpportunityId = C.OpportunityId
+			LEFT JOIN Uf_Initiative_Gift_Planning_Serv_Team() D ON A.OpportunityId = D.OpportunityId
+			LEFT JOIN Uf_Initiative_Team() E ON A.OpportunityId = E.OpportunityId
+			LEFT JOIN _Opportunity_StateCode_ F ON A.StateCode = F.Column_Value
+			LEFT JOIN _Opportunity_StatusCode_ G ON A.StatusCode = G.Column_Value
+			LEFT JOIN _Opportunity_ProposalStatus_ H ON A.Plus_ProposalStatus = H.Column_Value
+			LEFT JOIN _Opportunity_Plus_NewAccount_ I ON A.Plus_NewAccount = I.Column_Value
+			LEFT JOIN 
+				(SELECT DISTINCT A.OpportunityId
+					, B.FullName AS Initiative_Coordinating_Liaison
+					FROM Ext_Opportunity A
+						INNER JOIN Ext_System_User B ON A.Plus_CoordinatingLiaisonId = B.SystemUserId								
+				) J ON A.OpportunityId = J.OpportunityId
+			LEFT JOIN						
+				(SELECT A.OpportunityId
+					, Initiative_Name_Donor_Name
+					FROM
+						(SELECT A.OpportunityId
+							, CONCAT(A.Name,A.[Space_Dash_Space],C.Donor_Name) AS Initiative_Name_Donor_Name
+							, ROW_NUMBER() OVER(PARTITION BY A.OpportunityId ORDER BY B.Donation_Primary_Amt DESC) AS Row_Num
+							FROM Ext_Opportunity A
+								INNER JOIN _Initiative_Fact B ON CONVERT(NVARCHAR(100),A.OpportunityId) = B.Initiative_Key
+								INNER JOIN _Donor_Name_Dim C ON B.Donor_Key = C.Donor_Key	
+						) A
+					WHERE 1 = 1
+						AND Row_Num = 1	
+				) K ON A.OpportunityId = K.OpportunityId
+			LEFT JOIN
+				(SELECT A.OpportunityId
+					, CASE WHEN A.Lds_PrimaryInitiative = 0 THEN A.[N]
+							WHEN A.Lds_PrimaryInitiative = 1 THEN A.[Y]
+							ELSE NULL END AS Initiative_Primary_Initiative
+					, B.Name AS Initiative_Parent_Initiative
+					FROM Ext_Opportunity A
+						LEFT JOIN Ext_Opportunity B ON A.Plus_ParentInitiative = B.OpportunityId							
+				) L ON A.OpportunityId = L.OpportunityId
+			LEFT JOIN
+				(SELECT A.Initiative_Key
+					, A.[Y] AS Initiative_Has_Expectancy
+					FROM _Initiative_Fact A
+						LEFT JOIN _Expectancy_Dim B ON A.Expectancy_Key = B.Expectancy_Key
+					WHERE 1 = 1
+						AND A.Expectancy_Key != A.[Zero]
+						AND A.Donor_Key != A.[Zero]
+						AND B.New_BeginDate IS NOT NULL
+				) M ON CONVERT(NVARCHAR(100),A.OpportunityId) = M.Initiative_Key															
+			' -- Ext_From_Statement
+		, 'INSERT INTO [LDSPhilanthropiesDW].[dbo]._Initiative_Dim
+				(Initiative_Key
+				, Initiative_Name
+				, Initiative_Step_Name
+				, Initiative_State_Code
+				, Initiative_Status_Code
+				, Initiative_Proposal_Status
+				, Initiative_New_Account
+				, Initiative_Liaison
+				, Initiative_Supporting_Liaisons
+				, Initiative_Gift_Planning_Serv_Team
+				, Initiative_Team 
+				, Initiative_Coordinating_Liaison
+				, Initiative_Name_Donor_Name
+				, Initiative_Proposal_Date
+				, Initiative_Targeted_Commitment_Date
+				, Initiative_Committed_Date
+				, Initiative_Cultivation_Proc_Stg_1_Date
+				, Initiative_Cultivation_Proc_Stg_2_Date
+				, Initiative_Cultivation_Proc_Stg_3_Date
+				, Initiative_Cultivation_Proc_Stg_4_Date
+				, Initiative_Gift_Notice_Created_Date
+				, Initiative_Proposal_Status_Change_Date
+				, Initiative_Primary_Initiative
+				, Initiative_Parent_Initiative
+				, Initiative_Has_Expectancy
+				)
+				VALUES(0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+			' -- Ext_Where_Statement
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
+		, ' ' -- Ext_Create_Fields_2
+		, ' ' -- Ext_Create_Fields_3
+		, ' ' -- Ext_Where_Statement_2
+		, ' ' -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+		, NULL -- Ext_Select_Statement_3
+		, NULL -- Ext_Select_Statement_4
+		, NULL -- Ext_Select_Statement_5
+		, NULL -- Ext_Select_Statement_6
+		, NULL -- Ext_Select_Statement_7
+		, '																											
+			' -- Ext_From_Statement_3
+		, '		
+			' -- Ext_From_Statement_4
 		, NULL -- Ext_From_Statement_5
 		, NULL -- Ext_From_Statement_6
 		, NULL -- Ext_From_Statement_7
