@@ -3872,6 +3872,7 @@ INSERT INTO dbo.Stage_To_Prod
 			, StatusCode NVARCHAR(400)
 			, Donor_Key NVARCHAR(100)
 			, Activity_Id NVARCHAR(100)
+			, Regarding_Type NVARCHAR(15)
 			' -- Dest_Create_Fields
 		, 'Owner
 			, Donor_Ldsp_Id
@@ -3892,6 +3893,7 @@ INSERT INTO dbo.Stage_To_Prod
 			, StatusCode
 			, Donor_Key
 			, Activity_Id
+			, Regarding_Type
 			' -- Dest_Insert_Fields
 		, ' ' -- Dest_Where_Statement
 		, GETDATE()
