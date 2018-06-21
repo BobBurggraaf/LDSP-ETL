@@ -7055,6 +7055,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, CreatedBy UNIQUEIDENTIFIER
 			, ModifiedOn DATETIME
 			, ModifiedBy UNIQUEIDENTIFIER
+			, OwnerId UNIQUEIDENTIFIER
+			, Plus_RelatedOpportunity UNIQUEIDENTIFIER
 		' -- Dest_Create_Fields
 		, 'Plus_ConstituentNoteId
 			, Plus_RelatedConstituent
@@ -7069,6 +7071,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, CreatedBy
 			, ModifiedOn
 			, ModifiedBy
+			, OwnerId 
+			, Plus_RelatedOpportunity
 		' -- Dest_Insert_Fields
 		, ' ' -- Dest_Where_Statement
 		, 'Plus_ConstituentNoteId UNIQUEIDENTIFIER
@@ -7084,6 +7088,9 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, CreatedBy UNIQUEIDENTIFIER
 			, ModifiedOn DATETIME
 			, ModifiedBy UNIQUEIDENTIFIER
+			, OwnerId UNIQUEIDENTIFIER
+			, Plus_RelatedOpportunity UNIQUEIDENTIFIER
+			, Zero NVARCHAR(1) DEFAULT ''0''
 		' -- Ext_Create_Fields
 		, 'Plus_ConstituentNoteId
 			, Plus_RelatedConstituent
@@ -7098,6 +7105,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, CreatedBy
 			, ModifiedOn
 			, ModifiedBy
+			, OwnerId 
+			, Plus_RelatedOpportunity
 		' -- Ext_Insert_Fields
 		, 'Plus_ConstituentNoteId
 			, Plus_RelatedConstituent
@@ -7115,6 +7124,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, CASE WHEN DATENAME(dy,A.ModifiedOn) BETWEEN D.Mdt_Begin_Date_Number AND D.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.ModifiedOn)
 					ELSE DATEADD(hh,-7,A.ModifiedOn) END AS ModifiedOn
 			, ModifiedBy
+			, OwnerId 
+			, Plus_RelatedOpportunity
 			' -- Ext_Select_Statement
 		, 'Oa_Extract.Plus_ConstituentNoteBase A
 				LEFT JOIN dbo._MDT_Conversion_Dim B ON YEAR(A.Plus_Date) = B.Date_Year
@@ -17817,7 +17828,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND A.StateCode != 1
 			INSERT INTO _Email_Dim
-				VALUES(NULL,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+				VALUES(NULL,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 			CREATE NONCLUSTERED INDEX IX_Email_Primary_Yn 
 					ON _Email_Dim(Email_Primary_Yn ASC)
 						INCLUDE (
@@ -18489,6 +18500,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, CreatedBy NVARCHAR(100)
 			, ModifiedOn DATE
 			, ModifiedBy NVARCHAR(100)
+			, OwnerId NVARCHAR(100)
+			, Plus_RelatedOpportunity NVARCHAR(100)
 		' -- Ext_Create_Fields
 		, 'Donor_Key
 			, Plus_ConstituentNoteId 
@@ -18496,13 +18509,17 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, CreatedBy
 			, ModifiedOn
 			, ModifiedBy
+			, OwnerId
+			, Plus_RelatedOpportunity
 		' -- Ext_Insert_Fields
 		, 'COALESCE(CONVERT(NVARCHAR(100),A.Plus_RelatedConstituent), CONVERT(NVARCHAR(100),A.Plus_RelatedOrganization)) AS Donor_Key
 			, CONVERT(NVARCHAR(100),A.Plus_ConstituentNoteId) AS Plus_ConstituentNoteId
 			, CONVERT(VARCHAR(10),A.CreatedOn,101) AS CreatedOn	
-			, CONVERT(NVARCHAR(100),A.CreatedBy) AS CreatedBy
+			, COALESCE(CONVERT(NVARCHAR(100),A.CreatedBy),A.[Zero]) AS CreatedBy
 			, CONVERT(VARCHAR(10),A.ModifiedOn,101) AS ModifiedOn
-			, CONVERT(NVARCHAR(100),A.ModifiedBy) AS ModifiedBy
+			, COALESCE(CONVERT(NVARCHAR(100),A.ModifiedBy),A.[Zero]) AS ModifiedBy
+			, COALESCE(CONVERT(NVARCHAR(100),A.OwnerId),A.[Zero]) AS OwnerId
+			, COALESCE(CONVERT(NVARCHAR(100),A.Plus_RelatedOpportunity),A.[Zero]) AS Plus_RelatedOpportunity
 			' -- Ext_Select_Statement
 		, 'Ext_Constituent_Note A
 			' -- Ext_From_Statement
@@ -19008,7 +19025,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 					) C ON A.New_AddressId = C.New_AddressId LEFT JOIN
 			' -- Ext_From_Statement
 		, 'INSERT INTO _Address_Dim
-			VALUES(NULL,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+			VALUES(NULL,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 			CREATE NONCLUSTERED INDEX IX_Address_Primary_Yn 
 					ON _Address_Dim(Address_Primary_Yn ASC)
 						INCLUDE (
@@ -19339,7 +19356,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND A.StatusCode = 100000002
 			INSERT INTO _Phone_Dim
-				VALUES(NULL,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+				VALUES(NULL,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 			CREATE NONCLUSTERED INDEX IX_Phone_Primary_Yn 
 					ON _Phone_Dim(Phone_Primary_Yn ASC)
 						INCLUDE (
@@ -19448,17 +19465,17 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, New_Inst NVARCHAR(100)
 			, Hier_Name NVARCHAR(100)
 			, ContactId NVARCHAR(100)
-			, Drop NVARCHAR(5) DEFAULT ''Drop''
+			, [Drop] NVARCHAR(5) DEFAULT ''Drop''
 			, BYU NVARCHAR(5) DEFAULT ''BYU''
 			, BYUI NVARCHAR(5) DEFAULT ''BYUI''
 			, BYUH NVARCHAR(5) DEFAULT ''BYUH''
 			, LDSBC NVARCHAR(5) DEFAULT ''LDSBC''
 			, Y NVARCHAR(1) DEFAULT ''Y''
-			, All NVARCHAR(5) DEFAULT ''All''
+			, [All] NVARCHAR(5) DEFAULT ''All''
 			, Solicitations NVARCHAR(20) DEFAULT ''Solicitations''
 			, Institution NVARCHAR(20) DEFAULT ''Institution''
 			, OneAccord NVARCHAR(20) DEFAULT ''OneAccord''
-			, Gift_Acknowledgements NVARCHAR(20) DEFAULT ''Gift Acknowledgements''
+			, Gift_Acknowledgements NVARCHAR(25) DEFAULT ''Gift Acknowledgements''
 			, Church NVARCHAR(10) DEFAULT ''Church''
 			, PCC NVARCHAR(5) DEFAULT ''PCC''
 			' -- Ext_Create_Fields
@@ -19528,7 +19545,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 					) I ON A.New_DropIncludesId = I.New_DropIncludesId
 			' -- Ext_From_Statement
 		, 'INSERT INTO _Drop_Include_Dim
-				VALUES(0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+				VALUES(0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 			' -- Ext_Where_Statement	
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
@@ -22204,6 +22221,93 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Ext_System_User
 			' -- Ext_From_Statement
 		, 'Exec dbo.usp_Bio_Strat_Plan_ModifiedBy_Dim_Zero_Key
+			' -- Ext_Where_Statement	
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
+		, ' ' -- Ext_Create_Fields_2
+		, ' ' -- Ext_Create_Fields_3
+		, ' ' -- Ext_Where_Statement_2
+		, ' ' -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+		, NULL -- Ext_Select_Statement_3
+		, NULL -- Ext_Select_Statement_4
+		, NULL -- Ext_Select_Statement_5
+		, NULL -- Ext_Select_Statement_6
+		, NULL -- Ext_Select_Statement_7
+		, NULL -- Ext_From_Statement_3
+		, NULL -- Ext_From_Statement_4
+		, NULL -- Ext_From_Statement_5
+		, NULL -- Ext_From_Statement_6
+		, NULL -- Ext_From_Statement_7
+		, NULL -- Ext_Where_Statement_4
+		, NULL -- Ext_Where_Statement_5
+		, NULL -- Ext_Where_Statement_6
+		, NULL -- Ext_Where_Statement_7
+		, NULL -- Extra_1
+		, NULL -- Extra_2
+		, NULL -- Extra_3
+		, NULL -- Extra_4
+		, NULL -- Extra_5
+		, NULL -- Extra_6
+		, NULL -- Extra_7
+		, NULL -- Extra_8
+		, NULL -- Extra_9
+		, NULL -- Extra_10
+	)
+,
+-- --------------------------
+-- _Bio_Strat_Plan_OwnerId_Dim
+-- --------------------------
+	( 4 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Bio_Strat_Plan_OwnerId_Dim' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Bio_Strat_Plan_OwnerId_Key NVARCHAR(100) PRIMARY KEY
+			, Bio_Strat_Plan_OwnerId_Full_Name NVARCHAR(200)
+			, Bio_Strat_Plan_OwnerId_First_Name NVARCHAR(64)
+			, Bio_Strat_Plan_OwnerId_Last_Name NVARCHAR(64)
+			, Bio_Strat_Plan_OwnerId_Domain_Name NVARCHAR(1024)
+			' -- Ext_Create_Fields
+		, 'Bio_Strat_Plan_OwnerId_Key
+			, Bio_Strat_Plan_OwnerId_Full_Name
+			, Bio_Strat_Plan_OwnerId_First_Name
+			, Bio_Strat_Plan_OwnerId_Last_Name
+			, Bio_Strat_Plan_OwnerId_Domain_Name
+			' -- Ext_Insert_Fields
+		, 'DISTINCT CONVERT(NVARCHAR(100),SystemUserId) AS Bio_Strat_Plan_OwnerId_Key
+			, FullName AS Bio_Strat_Plan_OwnerId_Full_Name
+			, FirstName AS Bio_Strat_Plan_OwnerId_First_Name
+			, LastName AS Bio_Strat_Plan_OwnerId_Last_Name
+			, DomainName AS Bio_Strat_Plan_OwnerId_Domain_Name   				
+			' -- Ext_Select_Statement
+		, 'Ext_System_User
+			' -- Ext_From_Statement
+		, 'Exec dbo.usp_Bio_Strat_Plan_OwnerId_Dim_Zero_Key
 			' -- Ext_Where_Statement	
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
@@ -25940,6 +26044,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Donor_Organization_Id NVARCHAR(100)
 			, Zero NVARCHAR(1) DEFAULT ''0''
 			, N NVARCHAR(1) DEFAULT ''N''
+			, Y NVARCHAR(1) DEFAULT ''Y''
 			' -- Ext_Create_Fields
 		, '	Donor_Key      
 			, Activity_Group_Key 
@@ -28195,24 +28300,24 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Drop_Byui_Email_Acknowledgement
 			' -- Ext_Insert_Fields
 		, '	A.Donor_Key
-			, B.Drop_Byu_Mail_Ag 
-			, C.Drop_Byui_Mail_Ag
-			, D.Drop_Byuh_Mail_Ag
-			, E.Drop_Ldsbc_Mail_Ag
-			, F.Drop_Byu_Email_Ag
-			, G.Drop_Byui_Email_Ag
-			, H.Drop_Byuh_Email_Ag
-			, I.Drop_Ldsbc_Email_Ag
-			, J.Drop_Byu_Phone_Ag
-			, K.Drop_Byui_Phone_Ag
-			, L.Drop_Byuh_Phone_Ag
-			, M.Drop_Ldsbc_Phone_Ag
-			, N.Drop_Byu_Mail_Acknowledgement
-			, O.Drop_Byui_Mail_Acknowledgement
-			, P.Drop_Byuh_Mail_Acknowledgement
-			, Q.Drop_Ldsbc_Mail_Acknowledgement
-			, R.Drop_Byu_Email_Acknowledgement
-			, S.Drop_Byui_Email_Acknowledgement
+			, COALESCE(B.Drop_Byu_Mail_Ag,A.[Y]) AS Drop_Byu_Mail_Ag 
+			, COALESCE(C.Drop_Byui_Mail_Ag,A.[Y]) AS Drop_Byui_Mail_Ag
+			, COALESCE(D.Drop_Byuh_Mail_Ag,A.[Y]) AS Drop_Byuh_Mail_Ag
+			, COALESCE(E.Drop_Ldsbc_Mail_Ag,A.[Y]) AS Drop_Ldsbc_Mail_Ag
+			, COALESCE(F.Drop_Byu_Email_Ag,A.[Y]) AS Drop_Byu_Email_Ag
+			, COALESCE(G.Drop_Byui_Email_Ag,A.[Y]) AS Drop_Byui_Email_Ag
+			, COALESCE(H.Drop_Byuh_Email_Ag,A.[Y]) AS Drop_Byuh_Email_Ag
+			, COALESCE(I.Drop_Ldsbc_Email_Ag,A.[Y]) AS Drop_Ldsbc_Email_Ag
+			, COALESCE(J.Drop_Byu_Phone_Ag,A.[Y]) AS Drop_Byu_Phone_Ag
+			, COALESCE(K.Drop_Byui_Phone_Ag,A.[Y]) AS Drop_Byui_Phone_Ag
+			, COALESCE(L.Drop_Byuh_Phone_Ag,A.[Y]) AS Drop_Byuh_Phone_Ag
+			, COALESCE(M.Drop_Ldsbc_Phone_Ag,A.[Y]) AS Drop_Ldsbc_Phone_Ag
+			, COALESCE(N.Drop_Byu_Mail_Acknowledgement,A.[Y]) AS Drop_Byu_Mail_Acknowledgement
+			, COALESCE(O.Drop_Byui_Mail_Acknowledgement,A.[Y]) AS Drop_Byui_Mail_Acknowledgement
+			, COALESCE(P.Drop_Byuh_Mail_Acknowledgement,A.[Y]) AS Drop_Byuh_Mail_Acknowledgement
+			, COALESCE(Q.Drop_Ldsbc_Mail_Acknowledgement,A.[Y]) AS Drop_Ldsbc_Mail_Acknowledgement
+			, COALESCE(R.Drop_Byu_Email_Acknowledgement,A.[Y]) AS Drop_Byu_Email_Acknowledgement
+			, COALESCE(S.Drop_Byui_Email_Acknowledgement,A.[Y]) AS Drop_Byui_Email_Acknowledgement
 			' -- Ext_Select_Statement
 		, '	_Donor_Key_Dim A
 				LEFT JOIN
@@ -28830,25 +28935,25 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Drop_Byui_Email_All
 			' -- Ext_Insert_Fields
 		, '	A.Donor_Key
-			, T.Drop_Byuh_Email_Acknowledgement
-			, U.Drop_Ldsbc_Email_Acknowledgement
-			, V.Drop_Byu_Phone_Acknowledgement
-			, W.Drop_Byui_Phone_Acknowledgement
-			, X.Drop_Byuh_Phone_Acknowledgement
-			, Y.Drop_Ldsbc_Phone_Acknowledgement
-			, Z.Drop_Church_Mail_Acknowledgement
-			, AA.Drop_Church_Email_Acknowledgement
-			, AB.Drop_Church_Phone_Acknowledgement
-			, AC.Drop_Pcc_Mail_Acknowledgement
-			, AD.Drop_Pcc_Email_Acknowledgement
-			, AE.Drop_Pcc_Phone_Acknowledgement
-			, AF.Drop_Byu_Mail_All
-			, AG.Drop_Byui_Mail_All
-			, AH.Drop_Byuh_Mail_All
-			, AI.Drop_Ldsbc_Mail_All
-			, AJ.Drop_Church_Mail_All
-			, AK.Drop_Byu_Email_All
-			, AL.Drop_Byui_Email_All
+			, COALESCE(T.Drop_Byuh_Email_Acknowledgement,A.[Y]) AS Drop_Byuh_Email_Acknowledgement
+			, COALESCE(U.Drop_Ldsbc_Email_Acknowledgement,A.[Y]) AS Drop_Ldsbc_Email_Acknowledgement
+			, COALESCE(V.Drop_Byu_Phone_Acknowledgement,A.[Y]) AS Drop_Byu_Phone_Acknowledgement
+			, COALESCE(W.Drop_Byui_Phone_Acknowledgement,A.[Y]) AS Drop_Byui_Phone_Acknowledgement
+			, COALESCE(X.Drop_Byuh_Phone_Acknowledgement,A.[Y]) AS Drop_Byuh_Phone_Acknowledgement
+			, COALESCE(Y.Drop_Ldsbc_Phone_Acknowledgement,A.[Y]) AS Drop_Ldsbc_Phone_Acknowledgement
+			, COALESCE(Z.Drop_Church_Mail_Acknowledgement,A.[Y]) AS Drop_Church_Mail_Acknowledgement
+			, COALESCE(AA.Drop_Church_Email_Acknowledgement,A.[Y]) AS Drop_Church_Email_Acknowledgement
+			, COALESCE(AB.Drop_Church_Phone_Acknowledgement,A.[Y]) AS Drop_Church_Phone_Acknowledgement
+			, COALESCE(AC.Drop_Pcc_Mail_Acknowledgement,A.[Y]) AS Drop_Pcc_Mail_Acknowledgement
+			, COALESCE(AD.Drop_Pcc_Email_Acknowledgement,A.[Y]) AS Drop_Pcc_Email_Acknowledgement
+			, COALESCE(AE.Drop_Pcc_Phone_Acknowledgement,A.[Y]) AS Drop_Pcc_Phone_Acknowledgement
+			, COALESCE(AF.Drop_Byu_Mail_All,A.[Y]) AS Drop_Byu_Mail_All
+			, COALESCE(AG.Drop_Byui_Mail_All,A.[Y]) AS Drop_Byui_Mail_All
+			, COALESCE(AH.Drop_Byuh_Mail_All,A.[Y]) AS Drop_Byuh_Mail_All
+			, COALESCE(AI.Drop_Ldsbc_Mail_All,A.[Y]) AS Drop_Ldsbc_Mail_All
+			, COALESCE(AJ.Drop_Church_Mail_All,A.[Y]) AS Drop_Church_Mail_All
+			, COALESCE(AK.Drop_Byu_Email_All,A.[Y]) AS Drop_Byu_Email_All
+			, COALESCE(AL.Drop_Byui_Email_All,A.[Y]) AS Drop_Byui_Email_All
 			' -- Ext_Select_Statement
 		, '	_Donor_Key_Dim A
 				LEFT JOIN
@@ -29482,19 +29587,19 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Drop_Church_Overall
 			' -- Ext_Insert_Fields
 		, '	A.Donor_Key
-			, AM.Drop_Byuh_Email_All
-			, AN.Drop_Ldsbc_Email_All
-			, AO.Drop_Church_Email_All
-			, AP.Drop_Byu_Phone_All
-			, AQ.Drop_Byui_Phone_All
-			, AR.Drop_Byuh_Phone_All
-			, AU.Drop_Ldsbc_Phone_All
-			, AV.Drop_Church_Phone_All
-			, AW.Drop_Byu_Overall
-			, AX.Drop_Byui_Overall
-			, AY.Drop_Byuh_Overall
-			, AZ.Drop_Ldsbc_Overall
-			, BA.Drop_Church_Overall
+			, COALESCE(AM.Drop_Byuh_Email_All,A.[Y]) AS Drop_Byuh_Email_All
+			, COALESCE(AN.Drop_Ldsbc_Email_All,A.[Y]) AS Drop_Ldsbc_Email_All
+			, COALESCE(AO.Drop_Church_Email_All,A.[Y]) AS Drop_Church_Email_All
+			, COALESCE(AP.Drop_Byu_Phone_All,A.[Y]) AS Drop_Byu_Phone_All
+			, COALESCE(AQ.Drop_Byui_Phone_All,A.[Y]) AS Drop_Byui_Phone_All
+			, COALESCE(AR.Drop_Byuh_Phone_All,A.[Y]) AS Drop_Byuh_Phone_All
+			, COALESCE(AU.Drop_Ldsbc_Phone_All,A.[Y]) AS Drop_Ldsbc_Phone_All
+			, COALESCE(AV.Drop_Church_Phone_All,A.[Y]) AS Drop_Church_Phone_All
+			, COALESCE(AW.Drop_Byu_Overall,A.[Y]) AS Drop_Byu_Overall
+			, COALESCE(AX.Drop_Byui_Overall,A.[Y]) AS Drop_Byui_Overall
+			, COALESCE(AY.Drop_Byuh_Overall,A.[Y]) AS Drop_Byuh_Overall
+			, COALESCE(AZ.Drop_Ldsbc_Overall,A.[Y]) AS Drop_Ldsbc_Overall
+			, COALESCE(BA.Drop_Church_Overall,A.[Y]) AS Drop_Church_Overall
 			' -- Ext_Select_Statement
 		, '	_Donor_Key_Dim A
 				LEFT JOIN
@@ -30107,8 +30212,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_Select_Statement
 		, '_Donor_Key_Dim A
 				LEFT JOIN _Drop_Logic_Dim_1 B ON A.Donor_Key = B.Donor_Key
-				LEFT JOIN _Drop_Logic_Dim_1 C ON A.Donor_Key = C.Donor_Key
-				LEFT JOIN _Drop_Logic_Dim_1 D ON A.Donor_Key = D.Donor_Key																					
+				LEFT JOIN _Drop_Logic_Dim_2 C ON A.Donor_Key = C.Donor_Key
+				LEFT JOIN _Drop_Logic_Dim_3 D ON A.Donor_Key = D.Donor_Key																					
 			' -- Ext_From_Statement
 		, 'AND A.Donor_Key IS NOT NULL
 			' -- Ext_Where_Statement
