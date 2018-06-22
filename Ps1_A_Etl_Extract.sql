@@ -17427,6 +17427,11 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Zero NVARCHAR(1) DEFAULT ''0''
 			, Y NVARCHAR(1) DEFAULT ''Y''
 			, N NVARCHAR(1) DEFAULT ''N''
+			, Gift NVARCHAR(5) DEFAULT ''Gift''
+			, i5_delete NVARCHAR(10) DEFAULT ''i5 delete''
+			, Processing NVARCHAR(15) DEFAULT ''Processing''
+			, Void NVARCHAR(5) DEFAULT ''Void''
+			, Posted NVARCHAR(10) DEFAULT ''Posted''
 			' -- Ext_Create_Fields
 		, 'New_ConstituentDonor
 			, New_OrganizationDonor
@@ -17650,6 +17655,10 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, New_GiftHistoryId UNIQUEIDENTIFIER
 			, Plus_GiftNumber NVARCHAR(50)
 			, Plus_PostDate DATETIME
+			, History NVARCHAR(10) DEFAULT ''History''
+			, Original NVARCHAR(10) DEFAULT ''Original''
+			, Reversal NVARCHAR(10) DEFAULT ''Reversal''
+			, Zero NVARCHAR(1) DEFAULT ''0''
 			' -- Ext_Create_Fields
 		, 'New_RelatedGift
 			, Plus_Constituent
@@ -24616,6 +24625,280 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 					) D  ON A.ContactId = D.ContactId
 			) A
 			'-- Ext_From_Statement_3
+		, NULL -- Ext_From_Statement_4
+		, NULL -- Ext_From_Statement_5
+		, NULL -- Ext_From_Statement_6
+		, NULL -- Ext_From_Statement_7
+		, NULL -- Ext_Where_Statement_4
+		, NULL -- Ext_Where_Statement_5
+		, NULL -- Ext_Where_Statement_6
+		, NULL -- Ext_Where_Statement_7
+		, NULL -- Extra_1
+		, NULL -- Extra_2
+		, NULL -- Extra_3
+		, NULL -- Extra_4
+		, NULL -- Extra_5
+		, NULL -- Extra_6
+		, NULL -- Extra_7
+		, NULL -- Extra_8
+		, NULL -- Extra_9
+		, NULL -- Extra_10
+	)
+	,
+-- --------------------------
+-- _Accounting_Fact_Prep_
+-- --------------------------
+	( 5 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Accounting_Fact_Prep_' -- Ext_Table
+		, '	' -- Dest_Create_Fields
+		, '	' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, '	Accounting_Fact_Key BIGINT IDENTITY(1000000000,1) PRIMARY KEY
+			, ContactId NVARCHAR(100)
+			, Accounting_Key NVARCHAR(100)
+			, Fund_Key NVARCHAR(100)
+			, User_Key NVARCHAR(100)
+			, Donation_Key NVARCHAR(100)
+			, Accounting_Amt MONEY
+			, New_AccountingDate DATE
+			, Table_Source NVARCHAR(100)
+			, Record_Status NVARCHAR(100)
+			, Zero NVARCHAR(1) DEFAULT ''0''
+			' -- Ext_Create_Fields
+		, '	ContactId
+			, Accounting_Key
+			, Fund_Key
+			, User_Key
+			, Donation_Key
+			, Accounting_Amt
+			, New_AccountingDate
+			, Table_Source
+			, Record_Status
+			' -- Ext_Insert_Fields
+		, 'ContactId
+			, COALESCE(CONVERT(NVARCHAR(100),A.Accounting_Key),[Zero]) AS Accounting_Key
+			, COALESCE(CONVERT(NVARCHAR(100),A.New_FundAccount),[Zero]) AS Fund_Key
+			, COALESCE(CONVERT(NVARCHAR(100),A.OwnerId),[Zero]) AS User_Key
+			, CONVERT(NVARCHAR(100),A.New_GiftId) AS Donation_Key
+			, A.Accounting_Amt
+			, CONVERT(VARCHAR(10),A.New_AccountingDate,101) AS New_AccountingDate
+			, A.Table_Source
+			, A.Record_Status 
+			' -- Ext_Select_Statement
+		, '	(SELECT New_GiftId
+				, CONVERT(NVARCHAR(100),COALESCE(New_ConstituentDonor,New_OrganizationDonor)) AS ContactId 
+				, New_FundAccount
+				, OwnerId
+				, New_AccountingDate
+				, [Gift] AS Table_Source
+				, CASE WHEN StatusCode = 100000003 THEN [i5_delete] 
+						WHEN StatusCode = 1 THEN [Processing] 
+						WHEN StatusCode = 2 THEN [Void] 
+						WHEN StatusCode = 100000002 THEN [Posted] 
+					END AS Record_Status	
+				, New_GiftAmount AS Accounting_Amt
+				, NULL AS Accounting_Key
+				, [Zero]
+				FROM
+					(SELECT B.ContactId
+						, New_ConstituentDonor
+						, New_OrganizationDonor
+						, B.New_FundAccount
+						, New_InstitutionalHierarchyId
+						, New_AssociatedPledge
+						, OpportunityId
+						, New_GiftAmount
+						, New_BatchNumber
+						, New_GiftId
+						, OwnerId
+						, Plus_EntitledBenefitValue
+						, New_RelatedConstituent
+						, New_OrganizationId
+						, New_RelatedGift
+						, New_RecognitionCreditId
+						, New_CreditAmount
+						, Plus_Type
+						, Plus_SubType
+						, Plus_Appeal
+						, New_AccountingDate
+						, StatusCode
+						, [Zero]
+						, [Gift]
+						, [i5_delete]
+						, [Processing]
+						, [Void]
+						, [Posted]
+						FROM  
+								(SELECT CONVERT(NVARCHAR(100),COALESCE(New_ConstituentDonor,New_OrganizationDonor)) AS ContactId
+									, New_ConstituentDonor
+									, New_OrganizationDonor
+									, New_FundAccount
+									, New_InstitutionalHierarchyId
+									, New_AssociatedPledge
+									, OpportunityId
+									, New_GiftAmount
+									, New_BatchNumber
+									, New_GiftId
+									, OwnerId
+									, Plus_EntitledBenefitValue
+									, Plus_Appeal
+									, New_AccountingDate
+									, StatusCode
+									, [Zero]
+									, [Gift]
+									, [i5_delete]
+									, [Processing]
+									, [Void]
+									, [Posted]
+									FROM dbo._Gift_ A
+									WHERE 1 = 1 
+										AND StatusCode != 100000003
+										AND StatusCode != 1
+										AND StatusCode != 100000006
+										AND StatusCode != 100000005
+								) B
+							LEFT JOIN 
+								(SELECT New_RelatedConstituent
+									, New_OrganizationId
+									, New_RelatedGift
+									, New_RecognitionCreditId
+									, New_CreditAmount
+									, Plus_Type
+									, Plus_SubType
+									FROM _Gift_Credit_	
+									WHERE 1 = 1
+										AND Plus_Type = 100000000
+								) C ON B.New_GiftId = C.New_RelatedGift
+						WHERE 1 = 1
+							AND B.ContactId IS NOT NULL
+					) A
+				WHERE 1 = 1 
+					AND StatusCode != 100000003
+					AND StatusCode != 1
+					AND StatusCode != 100000006
+					AND StatusCode != 100000005
+					AND New_AccountingDate IS NOT NULL
+					AND (New_ConstituentDonor IS NOT NULL
+							OR New_OrganizationDonor IS NOT NULL
+						)
+			UNION ALL				
+			' -- Ext_From_Statement
+		, ' ' -- Ext_Where_Statement
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, 'SELECT A.New_RelatedGift AS New_GiftId 
+				, CONVERT(NVARCHAR(100),COALESCE(A.Plus_Constituent,A.Plus_Organization)) AS ContactId
+				, A.Plus_FundAccount AS New_FundAccount
+				, A.OwnerId
+				, A.Plus_AccountingDate AS New_AccountingDate
+				, [History] AS Table_Source
+				, CASE WHEN A.StatusCode = 1 THEN [Original]
+						WHEN A.StatusCode = 100000002 THEN [Reversal] 
+					END AS Record_Status
+				, A.New_Amount AS Accounting_Amt
+				, A.New_GiftHistoryId AS Accounting_Key
+				, A.[Zero]
+				FROM dbo._Gift_Hist_ A
+					INNER JOIN 
+						(SELECT New_RelatedGift
+							FROM
+								(SELECT B.New_RelatedGift	
+									, CASE WHEN B.New_Amount = 0 THEN [Y]
+										WHEN A.New_GiftAmount = B.New_Amount THEN [N]
+										ELSE [N] END AS Matching
+									, CASE WHEN C.New_RelatedGift IS NOT NULL THEN [Y] ELSE [N] END AS Accounting_Date_Null
+									, CASE WHEN D.New_GiftId IS NOT NULL THEN [Y] ELSE [N] END AS Gift_Status_I5_Delete
+									, A.New_GiftAmount
+									, B.New_Amount
+									, [Y]
+									, [N]
+									FROM 
+										(SELECT New_GiftId
+											, [Y]
+											, [N]
+											, SUM(New_GiftAmount) AS New_GiftAmount
+											FROM dbo._Gift_ A
+												INNER JOIN 
+													(SELECT DISTINCT New_RelatedGift
+														FROM dbo._Gift_Hist_ B
+														WHERE 1 = 1
+															AND B.New_RelatedGift IS NOT NULL
+															AND B.StatusCode != 100000001
+															AND B.Plus_AccountingDate IS NOT NULL
+													) B ON A.New_GiftId = B.New_RelatedGift
+											WHERE 1 = 1 
+												AND A.StatusCode != 100000003
+												AND A.StatusCode != 1
+												AND A.StatusCode != 100000006
+												AND A.StatusCode != 100000005
+											GROUP BY New_GiftId
+												, [Y]
+												, [N]
+										) A
+										LEFT JOIN
+										(SELECT New_RelatedGift
+											, SUM(New_Amount) AS New_Amount 
+											FROM _Gift_Hist_
+											WHERE 1 = 1
+												AND New_RelatedGift IS NOT NULL
+												AND StatusCode != 100000001
+												AND Plus_AccountingDate IS NOT NULL
+											GROUP BY New_RelatedGift
+										) B ON A.New_GiftId = B.New_RelatedGift
+										LEFT JOIN
+										(SELECT DISTINCT New_RelatedGift
+											FROM _Gift_Hist_
+											WHERE 1 = 1
+												AND Plus_AccountingDate IS NULL
+										) C ON A.New_GiftId = C.New_RelatedGift
+										LEFT JOIN
+										(SELECT DISTINCT New_GiftId
+											FROM dbo._Gift_ A
+											WHERE 1 = 1
+												AND StatusCode = 100000003
+										) D ON A.New_GiftId = D.New_GiftId
+								) A
+							WHERE 1 = 1
+								AND A.Matching = [Y]
+								AND A.Accounting_Date_Null = [N]
+								AND A.Gift_Status_I5_Delete = [N]
+						) B ON A.New_RelatedGift = B.New_RelatedGift				
+			) A 
+			' -- Ext_From_Statement_2
+		, ' ' -- Ext_Create_Fields_2
+		, ' ' -- Ext_Create_Fields_3
+		, ' ' -- Ext_Where_Statement_2
+		, ' ' -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+		, NULL -- Ext_Select_Statement_3
+		, NULL -- Ext_Select_Statement_4
+		, NULL -- Ext_Select_Statement_5
+		, NULL -- Ext_Select_Statement_6
+		, NULL -- Ext_Select_Statement_7
+		, NULL -- Ext_From_Statement_3
 		, NULL -- Ext_From_Statement_4
 		, NULL -- Ext_From_Statement_5
 		, NULL -- Ext_From_Statement_6
