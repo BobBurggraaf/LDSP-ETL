@@ -17907,6 +17907,119 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 	)	
 	,
 -- --------------------------
+-- _Psa_Dim
+-- --------------------------
+	( 3 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Psa_Dim' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'ContactId  NVARCHAR(100) 
+			, Psa_Key  INT  PRIMARY KEY
+			, Psa_Group_Key  INT 
+			, Psa_Code  NVARCHAR(50) 
+			, Psa_Eff_From  DATE 
+			, Psa_Eff_Thru  DATE 
+			, Psa_Act_Src  NVARCHAR(100) 
+			, Psa_Entered_Dt  DATE 
+			, Psa_Change_Dt  DATE 
+			, Psa_Type  VARCHAR(100) 
+			, Psa_Text_Line  NVARCHAR(100)
+			' -- Ext_Create_Fields
+		, 'ContactId 
+			, Psa_Key 
+			, Psa_Group_Key 
+			, Psa_Code 
+			, Psa_Eff_From 
+			, Psa_Eff_Thru 
+			, Psa_Act_Src 
+			, Psa_Entered_Dt 
+			, Psa_Change_Dt 
+			, Psa_Type 
+			, Psa_Text_Line
+			' -- Ext_Insert_Fields
+		, 'DISTINCT CONVERT(NVARCHAR(100),A.ContactId) AS ContactId
+			, ROW_NUMBER() OVER(ORDER BY A.Psa_Key) AS Psa_Key 
+			, B.Psa_Group_Key 
+			, A.Psa_Code 
+			, CONVERT(VARCHAR(10),A.Psa_Eff_From,101) AS Psa_Eff_From 
+			, CONVERT(VARCHAR(10),A.Psa_Eff_Thru,101) AS Psa_Eff_Thru 
+			, A.Psa_Act_Src 
+			, CONVERT(VARCHAR(10),A.Psa_Entered_Dt,101) AS Psa_Entered_Dt 
+			, CONVERT(VARCHAR(10),A.Psa_Change_Dt,101) AS Psa_Change_Dt 
+			, A.Psa_Type 
+			, A.Psa_Text_Line   				
+			' -- Ext_Select_Statement
+		, 'Ext_Psa A
+				LEFT JOIN 
+						(
+						SELECT ContactId
+							, ROW_NUMBER() OVER(ORDER BY ContactId) AS Psa_Group_Key 
+							FROM
+								(SELECT DISTINCT ContactId   
+									FROM Ext_Psa) A
+						) B ON A.ContactId = B.ContactId
+			' -- Ext_From_Statement
+		, '
+			' -- Ext_Where_Statement	
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
+		, ' ' -- Ext_Create_Fields_2
+		, ' ' -- Ext_Create_Fields_3
+		, ' ' -- Ext_Where_Statement_2
+		, ' ' -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+		, NULL -- Ext_Select_Statement_3
+		, NULL -- Ext_Select_Statement_4
+		, NULL -- Ext_Select_Statement_5
+		, NULL -- Ext_Select_Statement_6
+		, NULL -- Ext_Select_Statement_7
+		, NULL -- Ext_From_Statement_3
+		, NULL -- Ext_From_Statement_4
+		, NULL -- Ext_From_Statement_5
+		, NULL -- Ext_From_Statement_6
+		, NULL -- Ext_From_Statement_7
+		, NULL -- Ext_Where_Statement_4
+		, NULL -- Ext_Where_Statement_5
+		, NULL -- Ext_Where_Statement_6
+		, NULL -- Ext_Where_Statement_7
+		, NULL -- Extra_1
+		, NULL -- Extra_2
+		, NULL -- Extra_3
+		, NULL -- Extra_4
+		, NULL -- Extra_5
+		, NULL -- Extra_6
+		, NULL -- Extra_7
+		, NULL -- Extra_8
+		, NULL -- Extra_9
+		, NULL -- Extra_10
+	)
+,
+-- --------------------------
 -- _Hier_Dim
 -- --------------------------
 	( 3 -- Tier
