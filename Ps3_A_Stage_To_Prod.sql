@@ -2503,6 +2503,7 @@ INSERT INTO dbo.Stage_To_Prod
 			, Initiative_Proposal_Status_Change_Date DATE
 			, Initiative_Primary_Initiative NVARCHAR(1)
 			, Initiative_Parent_Initiative NVARCHAR(600)
+			, Initiative_Has_Expectancy NVARCHAR(1)
 			' -- Dest_Create_Fields
 		, 'Initiative_Key
 			, Initiative_Name
@@ -2528,6 +2529,7 @@ INSERT INTO dbo.Stage_To_Prod
 			, Initiative_Proposal_Status_Change_Date
 			, Initiative_Primary_Initiative
 			, Initiative_Parent_Initiative
+			, Initiative_Has_Expectancy
 			' -- Dest_Insert_Fields
 		, ' ' -- Dest_Where_Statement
 		, GETDATE()
@@ -3732,6 +3734,8 @@ INSERT INTO dbo.Stage_To_Prod
 			, CreatedBy NVARCHAR(100)
 			, ModifiedOn DATE
 			, ModifiedBy NVARCHAR(100)
+			, OwnerId NVARCHAR(100)
+			, Plus_RelatedOpportunity NVARCHAR(100)
 			' -- Dest_Create_Fields
 		, 'Bio_Strat_Plan_Key 
 			, Donor_Key 
@@ -3740,6 +3744,8 @@ INSERT INTO dbo.Stage_To_Prod
 			, CreatedBy
 			, ModifiedOn
 			, ModifiedBy
+			, OwnerId
+			, Plus_RelatedOpportunity
 			' -- Dest_Insert_Fields
 		, ' ' -- Dest_Where_Statement
 		, GETDATE()
@@ -4295,6 +4301,29 @@ INSERT INTO dbo.Stage_To_Prod
 			, Qualified_On
 			, Coordinating_Liaison
 			, Pending_Liaison
+			' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _Bio_Strat_Plan_OwnerId_Dim
+-- --------------------------
+	( 1 -- Tier
+		, 'dbo._Bio_Strat_Plan_OwnerId_Dim' -- Source_Table
+		, 'dbo._Bio_Strat_Plan_OwnerId_Dim' -- Destination_Table
+		,'	Bio_Strat_Plan_OwnerId_Key NVARCHAR(100) PRIMARY KEY
+			, Bio_Strat_Plan_OwnerId_Full_Name NVARCHAR(200)
+			, Bio_Strat_Plan_OwnerId_First_Name NVARCHAR(64)
+			, Bio_Strat_Plan_OwnerId_Last_Name NVARCHAR(64)
+			, Bio_Strat_Plan_OwnerId_Domain_Name NVARCHAR(1024)
+			' -- Dest_Create_Fields
+		, '	Bio_Strat_Plan_OwnerId_Key
+			, Bio_Strat_Plan_OwnerId_Full_Name
+			, Bio_Strat_Plan_OwnerId_First_Name
+			, Bio_Strat_Plan_OwnerId_Last_Name
+			, Bio_Strat_Plan_OwnerId_Domain_Name
 			' -- Dest_Insert_Fields
 		, ' ' -- Dest_Where_Statement
 		, GETDATE()

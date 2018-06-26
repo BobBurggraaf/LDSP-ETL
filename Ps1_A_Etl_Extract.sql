@@ -182,6 +182,11 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Lds_IsQualified BIT
 			, Lds_QualifiedOn DATETIME
 			, Lds_QualifiedBy UNIQUEIDENTIFIER
+			, EmailAddress1 NVARCHAR(100)
+			, CreatedOn DATETIME
+			, ModifiedOn DATETIME
+			, StateCode INT
+			, StatusCode INT
 			' -- Dest_Create_Fields
 		, 'AccountId
 			, New_LdspId
@@ -207,6 +212,11 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Lds_IsQualified
 			, Lds_QualifiedOn
 			, Lds_QualifiedBy
+			, EmailAddress1
+			, CreatedOn
+			, ModifiedOn
+			, StateCode
+			, StatusCode
 			' -- Dest_Insert_Fields
 		, ' ' -- Dest_Where_Statement
 		,'AccountId UNIQUEIDENTIFIER
@@ -237,6 +247,11 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Organization NVARCHAR(15) DEFAULT ''Organization''
 			, Y NVARCHAR(1) DEFAULT ''Y''
 			, N NVARCHAR(1) DEFAULT ''N''
+			, EmailAddress1 NVARCHAR(100)
+			, CreatedOn DATETIME
+			, ModifiedOn DATETIME
+			, StateCode INT
+			, StatusCode INT
 			' -- Ext_Create_Fields
 		, 'AccountId
 			, New_LdspId
@@ -262,6 +277,11 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Lds_IsQualified
 			, Lds_QualifiedOn
 			, Lds_QualifiedBy
+			, EmailAddress1
+			, CreatedOn
+			, ModifiedOn
+			, StateCode
+			, StatusCode
 			' -- Ext_Insert_Fields
 		, 'AccountId
 			, New_LdspId
@@ -288,9 +308,18 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, CASE WHEN DATENAME(dy,A.Lds_QualifiedOn) BETWEEN B.Mdt_Begin_Date_Number AND B.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.Lds_QualifiedOn)
 					ELSE DATEADD(hh,-7,A.Lds_QualifiedOn) END AS Lds_QualifiedOn
 			, Lds_QualifiedBy
+			, EmailAddress1
+			, CASE WHEN DATENAME(dy,A.CreatedOn) BETWEEN C.Mdt_Begin_Date_Number AND C.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.CreatedOn)
+					ELSE DATEADD(hh,-7,A.CreatedOn) END AS CreatedOn
+			, CASE WHEN DATENAME(dy,A.ModifiedOn) BETWEEN D.Mdt_Begin_Date_Number AND D.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.ModifiedOn)
+					ELSE DATEADD(hh,-7,A.ModifiedOn) END AS ModifiedOn
+			, StateCode
+			, StatusCode
 			' -- Ext_Select_Statement
 		, 'Oa_Extract.AccountBase A
 			LEFT JOIN dbo._MDT_Conversion_Dim B ON YEAR(A.Lds_QualifiedOn) = B.Date_Year
+			LEFT JOIN dbo._MDT_Conversion_Dim C ON YEAR(A.CreatedOn) = C.Date_Year
+			LEFT JOIN dbo._MDT_Conversion_Dim D ON YEAR(A.ModifiedOn) = D.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, NULL -- Tier_3_Stage
@@ -1463,6 +1492,11 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Lds_QualifiedOn DATETIME
 			, Lds_QualifiedBy UNIQUEIDENTIFIER
 			, Lds_TelefundNotes NVARCHAR(MAX)
+			, EmailAddress1 NVARCHAR(150)
+			, Lds_LinkedLdsAccount BIT
+			, CreatedOn DATETIME
+			, ModifiedOn DATETIME
+			, StateCode INT
 			' -- Dest_Create_Fields
 		, 'ContactId
 			, New_Ldspid
@@ -1523,6 +1557,11 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Lds_QualifiedOn
 			, Lds_QualifiedBy
 			, Lds_TelefundNotes
+			, EmailAddress1
+			, Lds_LinkedLdsAccount
+			, CreatedOn
+			, ModifiedOn
+			, StateCode INT
 			' -- Dest_Insert_Fields
 		, ' ' -- Dest_Where_Statement
 		, 'ContactId UNIQUEIDENTIFIER
@@ -1626,6 +1665,11 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Space_Amp_Space NVARCHAR(5) DEFAULT '' & ''
 			, Space_And_Space NVARCHAR(10) DEFAULT '' and ''
 			, Comma_Space NVARCHAR(2) DEFAULT '', ''
+			, EmailAddress1 NVARCHAR(150)
+			, Lds_LinkedLdsAccount BIT
+			, CreatedOn DATETIME
+			, ModifiedOn DATETIME
+			, StateCode INT
 			' -- Ext_Create_Fields
 		, 'ContactId
 			, New_Ldspid
@@ -1686,6 +1730,11 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Lds_QualifiedOn
 			, Lds_QualifiedBy
 			, Lds_TelefundNotes
+			, EmailAddress1
+			, Lds_LinkedLdsAccount
+			, CreatedOn
+			, ModifiedOn
+			, StateCode
 			' -- Ext_Insert_Fields
 		, 'ContactId
 			, New_Ldspid
@@ -1748,10 +1797,19 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 					ELSE DATEADD(hh,-7,A.Lds_QualifiedOn) END AS Lds_QualifiedOn
 			, Lds_QualifiedBy
 			, CONVERT(NVARCHAR(4000),SUBSTRING(Lds_TelefundNotes,1,4000)) AS Lds_TelefundNotes
+			, EmailAddress1
+			, Lds_LinkedLdsAccount
+			, CASE WHEN DATENAME(dy,A.CreatedOn) BETWEEN D.Mdt_Begin_Date_Number AND D.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.CreatedOn)
+					ELSE DATEADD(hh,-7,A.CreatedOn) END AS CreatedOn
+			, CASE WHEN DATENAME(dy,A.ModifiedOn) BETWEEN E.Mdt_Begin_Date_Number AND E.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.ModifiedOn)
+					ELSE DATEADD(hh,-7,A.ModifiedOn) END AS ModifiedOn
+			, StateCode INT
 			' -- Ext_Select_Statement
 		, 'Oa_Extract.ContactBase A
 				LEFT JOIN dbo._MDT_Conversion_Dim B ON YEAR(A.Plus_WealthDate) = B.Date_Year
 				LEFT JOIN dbo._MDT_Conversion_Dim C ON YEAR(A.Lds_QualifiedOn) = C.Date_Year
+				LEFT JOIN dbo._MDT_Conversion_Dim D ON YEAR(A.CreatedOn) = D.Date_Year
+				LEFT JOIN dbo._MDT_Conversion_Dim E ON YEAR(A.ModifiedOn) = E.Date_Year
 			' -- Ext_From_Statement
 		, 'CREATE NONCLUSTERED INDEX IX_Contact_C_L_F 
 			ON Ext_Contact(ContactId)
@@ -1845,6 +1903,274 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, EntityId
 			' -- Ext_Select_Statement
 		, 'Oa_Extract.Entity
+			' -- Ext_From_Statement
+		, ' ' -- Ext_Where_Statement
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
+		, ' ' -- Ext_Create_Fields_2
+		, ' ' -- Ext_Create_Fields_3
+		, ' ' -- Ext_Where_Statement_2
+		, ' ' -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+		, NULL -- Ext_Select_Statement_3
+		, NULL -- Ext_Select_Statement_4
+		, NULL -- Ext_Select_Statement_5
+		, NULL -- Ext_Select_Statement_6
+		, NULL -- Ext_Select_Statement_7
+		, NULL -- Ext_From_Statement_3
+		, NULL -- Ext_From_Statement_4
+		, NULL -- Ext_From_Statement_5
+		, NULL -- Ext_From_Statement_6
+		, NULL -- Ext_From_Statement_7
+		, NULL -- Ext_Where_Statement_4
+		, NULL -- Ext_Where_Statement_5
+		, NULL -- Ext_Where_Statement_6
+		, NULL -- Ext_Where_Statement_7
+		, NULL -- Extra_1
+		, NULL -- Extra_2
+		, NULL -- Extra_3
+		, NULL -- Extra_4
+		, NULL -- Extra_5
+		, NULL -- Extra_6
+		, NULL -- Extra_7
+		, NULL -- Extra_8
+		, NULL -- Extra_9
+		, NULL -- Extra_10
+	)
+	,
+-- --------------------------
+-- Lds_WebSubscriptionBase (Ext_WebSubscription)
+-- --------------------------
+	( 1 -- Tier
+		, 'dbo.Lds_WebSubscriptionBase' -- Source_Table
+		, 'Oa_Extract.Lds_WebSubscriptionBase' -- Destination_Table
+		, 'Ext_WebSubscription' -- Ext_Table
+		, 'Lds_WebSubscriptionId UNIQUEIDENTIFIER
+			, Lds_AddressMatch INT
+			, Lds_Appeal NVARCHAR(10)
+			, Lds_Cde2 NVARCHAR(200)
+			, Lds_Cid NVARCHAR(200) 
+			, Lds_Comments  NVARCHAR(1000)
+			, Lds_ConstituentMatchStatus INT
+			, Lds_DataEntryStatus INT
+			, Lds_DonorAddressCity NVARCHAR(100)
+			, Lds_DonorAddressCountry NVARCHAR(100)
+			, Lds_DonorAddressLine1 NVARCHAR(100)
+			, Lds_DonorAddressLine2 NVARCHAR(100)
+			, Lds_DonorAddressState NVARCHAR(100)
+			, Lds_DonorAddressZipCode NVARCHAR(100)
+			, Lds_DonorEmailAddress NVARCHAR(100)
+			, Lds_DonorFirstName NVARCHAR(100)
+			, Lds_DonorLastName NVARCHAR(100)
+			, Lds_DonorMiddleName NVARCHAR(100)
+			, Lds_DonorPhoneNumber NVARCHAR(100)
+			, Lds_DonorType INT
+			, Lds_LinkedLdsAccount BIT
+			, Lds_Name NVARCHAR(100)
+			, Lds_NextPaymentDate DATETIME
+			, Lds_OptInToEmailCommunication BIT
+			, Lds_PaymentType INT
+			, Lds_ReceiptDate DATETIME
+			, Lds_RecurringDonationStartDate DATETIME
+			, Lds_RecurringDonationStopDate DATETIME
+			, Lds_TeleFundComments NVARCHAR(MAX)
+			, Lds_TenderName INT
+			, Lds_TransactionId NVARCHAR(100)
+			, Lds_TransactionTotal MONEY
+			, Lds_TypeOfDonation INT
+			, CreatedOn DATETIME
+			, ModifiedOn DATETIME
+			, StateCode INT
+			, StatusCode INT
+			' -- Dest_Create_Fields
+		, 'Lds_WebSubscriptionId
+			, Lds_AddressMatch
+			, Lds_Appeal
+			, Lds_Cde2
+			, Lds_Cid 
+			, Lds_Comments
+			, Lds_ConstituentMatchStatus
+			, Lds_DataEntryStatus
+			, Lds_DonorAddressCity
+			, Lds_DonorAddressCountry
+			, Lds_DonorAddressLine1
+			, Lds_DonorAddressLine2
+			, Lds_DonorAddressState
+			, Lds_DonorAddressZipCode
+			, Lds_DonorEmailAddress
+			, Lds_DonorFirstName
+			, Lds_DonorLastName
+			, Lds_DonorMiddleName
+			, Lds_DonorPhoneNumber
+			, Lds_DonorType
+			, Lds_LinkedLdsAccount
+			, Lds_Name
+			, Lds_NextPaymentDate
+			, Lds_OptInToEmailCommunication
+			, Lds_PaymentType
+			, Lds_ReceiptDate
+			, Lds_RecurringDonationStartDate
+			, Lds_RecurringDonationStopDate
+			, Lds_TeleFundComments
+			, Lds_TenderName
+			, Lds_TransactionId
+			, Lds_TransactionTotal
+			, Lds_TypeOfDonation
+			, CreatedOn
+			, ModifiedOn
+			, StateCode
+			, StatusCode
+			' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Lds_WebSubscriptionId UNIQUEIDENTIFIER
+			, Lds_AddressMatch INT
+			, Lds_Appeal NVARCHAR(10)
+			, Lds_Cde2 NVARCHAR(200)
+			, Lds_Cid NVARCHAR(200) 
+			, Lds_Comments  NVARCHAR(1000)
+			, Lds_ConstituentMatchStatus INT
+			, Lds_DataEntryStatus INT
+			, Lds_DonorAddressCity NVARCHAR(100)
+			, Lds_DonorAddressCountry NVARCHAR(100)
+			, Lds_DonorAddressLine1 NVARCHAR(100)
+			, Lds_DonorAddressLine2 NVARCHAR(100)
+			, Lds_DonorAddressState NVARCHAR(100)
+			, Lds_DonorAddressZipCode NVARCHAR(100)
+			, Lds_DonorEmailAddress NVARCHAR(100)
+			, Lds_DonorFirstName NVARCHAR(100)
+			, Lds_DonorLastName NVARCHAR(100)
+			, Lds_DonorMiddleName NVARCHAR(100)
+			, Lds_DonorPhoneNumber NVARCHAR(100)
+			, Lds_DonorType INT
+			, Lds_LinkedLdsAccount BIT
+			, Lds_Name NVARCHAR(100)
+			, Lds_NextPaymentDate DATETIME
+			, Lds_OptInToEmailCommunication BIT
+			, Lds_PaymentType INT
+			, Lds_ReceiptDate DATETIME
+			, Lds_RecurringDonationStartDate DATETIME
+			, Lds_RecurringDonationStopDate DATETIME
+			, Lds_TeleFundComments NVARCHAR(4000)
+			, Lds_TenderName INT
+			, Lds_TransactionId NVARCHAR(100)
+			, Lds_TransactionTotal MONEY
+			, Lds_TypeOfDonation INT
+			, CreatedOn DATETIME
+			, ModifiedOn DATETIME
+			, StateCode INT
+			, StatusCode INT
+			' -- Ext_Create_Fields
+		, 'Lds_WebSubscriptionId
+			, Lds_AddressMatch
+			, Lds_Appeal
+			, Lds_Cde2
+			, Lds_Cid 
+			, Lds_Comments
+			, Lds_ConstituentMatchStatus
+			, Lds_DataEntryStatus
+			, Lds_DonorAddressCity
+			, Lds_DonorAddressCountry
+			, Lds_DonorAddressLine1
+			, Lds_DonorAddressLine2
+			, Lds_DonorAddressState
+			, Lds_DonorAddressZipCode
+			, Lds_DonorEmailAddress
+			, Lds_DonorFirstName
+			, Lds_DonorLastName
+			, Lds_DonorMiddleName
+			, Lds_DonorPhoneNumber
+			, Lds_DonorType
+			, Lds_LinkedLdsAccount
+			, Lds_Name
+			, Lds_NextPaymentDate
+			, Lds_OptInToEmailCommunication
+			, Lds_PaymentType
+			, Lds_ReceiptDate
+			, Lds_RecurringDonationStartDate
+			, Lds_RecurringDonationStopDate
+			, Lds_TeleFundComments
+			, Lds_TenderName
+			, Lds_TransactionId
+			, Lds_TransactionTotal
+			, Lds_TypeOfDonation
+			, CreatedOn
+			, ModifiedOn
+			, StateCode
+			, StatusCode
+			' -- Ext_Insert_Fields
+		, 'Lds_WebSubscriptionId
+			, Lds_AddressMatch
+			, Lds_Appeal
+			, Lds_Cde2
+			, Lds_Cid 
+			, Lds_Comments
+			, Lds_ConstituentMatchStatus
+			, Lds_DataEntryStatus
+			, Lds_DonorAddressCity
+			, Lds_DonorAddressCountry
+			, Lds_DonorAddressLine1
+			, Lds_DonorAddressLine2
+			, Lds_DonorAddressState
+			, Lds_DonorAddressZipCode
+			, Lds_DonorEmailAddress
+			, Lds_DonorFirstName
+			, Lds_DonorLastName
+			, Lds_DonorMiddleName
+			, Lds_DonorPhoneNumber
+			, Lds_DonorType
+			, Lds_LinkedLdsAccount
+			, Lds_Name
+			, CASE WHEN DATENAME(dy,A.Lds_NextPaymentDate) BETWEEN B.Mdt_Begin_Date_Number AND B.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.Lds_NextPaymentDate)
+					ELSE DATEADD(hh,-7,A.Lds_NextPaymentDate) END AS Lds_NextPaymentDate					
+			, Lds_OptInToEmailCommunication
+			, Lds_PaymentType
+			, CASE WHEN DATENAME(dy,A.Lds_ReceiptDate) BETWEEN C.Mdt_Begin_Date_Number AND C.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.Lds_ReceiptDate)
+					ELSE DATEADD(hh,-7,A.Lds_ReceiptDate) END AS Lds_ReceiptDate
+			, CASE WHEN DATENAME(dy,A.Lds_RecurringDonationStartDate) BETWEEN D.Mdt_Begin_Date_Number AND D.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.Lds_RecurringDonationStartDate)
+					ELSE DATEADD(hh,-7,A.Lds_RecurringDonationStartDate) END AS Lds_RecurringDonationStartDate
+			, CASE WHEN DATENAME(dy,A.Lds_RecurringDonationStopDate) BETWEEN E.Mdt_Begin_Date_Number AND E.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.Lds_RecurringDonationStopDate)
+					ELSE DATEADD(hh,-7,A.Lds_RecurringDonationStopDate) END AS Lds_RecurringDonationStopDate
+			, CONVERT(NVARCHAR(4000),SUBSTRING(Lds_TeleFundComments,1,4000)) AS Lds_TeleFundComments
+			, Lds_TenderName
+			, Lds_TransactionId
+			, Lds_TransactionTotal
+			, Lds_TypeOfDonation
+			, CASE WHEN DATENAME(dy,A.CreatedOn) BETWEEN F.Mdt_Begin_Date_Number AND F.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.CreatedOn)
+					ELSE DATEADD(hh,-7,A.CreatedOn) END AS CreatedOn
+			, CASE WHEN DATENAME(dy,A.ModifiedOn) BETWEEN G.Mdt_Begin_Date_Number AND G.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.ModifiedOn)
+					ELSE DATEADD(hh,-7,A.ModifiedOn) END AS ModifiedOn
+			, StateCode
+			, StatusCode
+			' -- Ext_Select_Statement
+		, 'Oa_Extract.Lds_WebSubscriptionBase A
+				LEFT JOIN dbo._MDT_Conversion_Dim B ON YEAR(A.Lds_NextPaymentDate) = B.Date_Year
+				LEFT JOIN dbo._MDT_Conversion_Dim C ON YEAR(A.Lds_ReceiptDate) = C.Date_Year
+				LEFT JOIN dbo._MDT_Conversion_Dim D ON YEAR(A.Lds_RecurringDonationStartDate) = D.Date_Year				
+				LEFT JOIN dbo._MDT_Conversion_Dim E ON YEAR(A.Lds_RecurringDonationStopDate) = E.Date_Year
+				LEFT JOIN dbo._MDT_Conversion_Dim F ON YEAR(A.CreatedOn) = F.Date_Year
+				LEFT JOIN dbo._MDT_Conversion_Dim G ON YEAR(A.ModifiedOn) = G.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, NULL -- Tier_3_Stage
@@ -3412,6 +3738,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Plus_ReportFrequency INT
 			, StatusCode INT
 			, New_AllowGifts BIT
+			, Plus_OnlinePublicName NVARCHAR(100)
+			, Plus_OnlineApproved BIT
 			' -- Dest_Create_Fields
 		, 'New_FundAccountId
 			, New_Name
@@ -3458,6 +3786,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Plus_ReportFrequency
 			, StatusCode
 			, New_AllowGifts
+			, Plus_OnlinePublicName
+			, Plus_OnlineApproved
 			' -- Dest_Insert_Fields
 		, ' ' -- Dest_Where_Statement
 		, 'New_FundAccountId UNIQUEIDENTIFIER
@@ -3507,6 +3837,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, New_AllowGifts BIT
 			, Y NVARCHAR(1) DEFAULT ''Y''
 			, N NVARCHAR(1) DEFAULT ''N''
+			, Plus_OnlinePublicName NVARCHAR(100)
+			, Plus_OnlineApproved BIT
 			' -- Ext_Create_Fields
 		, 'New_FundAccountId
 			, New_Name
@@ -3553,6 +3885,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Plus_ReportFrequency
 			, StatusCode
 			, New_AllowGifts
+			, Plus_OnlinePublicName
+			, Plus_OnlineApproved
 			' -- Ext_Insert_Fields
 		, 'New_FundAccountId
 			, New_Name
@@ -3601,6 +3935,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Plus_ReportFrequency
 			, StatusCode
 			, New_AllowGifts
+			, Plus_OnlinePublicName
+			, Plus_OnlineApproved
 			' -- Ext_Select_Statement
 		, 'Oa_Extract.New_FundAccountBase A
 				LEFT JOIN dbo._MDT_Conversion_Dim B ON YEAR(A.Plus_EffectiveFrom) = B.Date_Year
@@ -3711,6 +4047,13 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Lds_RecurringGiftRule UNIQUEIDENTIFIER
 			, Lds_RecurringGiftGroup UNIQUEIDENTIFIER
 			, Plus_ParentGift UNIQUEIDENTIFIER
+			, Plus_DonorType INT
+			, Lds_TelefundGift BIT
+			, Plus_Cid NVARCHAR(200)
+			, Plus_Cde2 NVARCHAR(200)
+			, CreatedOn DATETIME
+			, ModifiedOn DATETIME
+			, StateCode INT
 			' -- Dest_Create_Fields
 		, 'New_ConstituentDonor
 			, New_OrganizationDonor
@@ -3754,6 +4097,13 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Lds_RecurringGiftRule
 			, Lds_RecurringGiftGroup
 			, Plus_ParentGift
+			, Plus_DonorType
+			, Lds_TelefundGift
+			, Plus_Cid
+			, Plus_Cde2
+			, CreatedOn
+			, ModifiedOn
+			, StateCode
 			' -- Dest_Insert_Fields
 		, ' ' -- Dest_Where_Statement
 		, 'New_ConstituentDonor UNIQUEIDENTIFIER
@@ -3798,6 +4148,13 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Plus_Description NVARCHAR(4000)
 			, Lds_RecurringGiftRule UNIQUEIDENTIFIER
 			, Lds_RecurringGiftGroup UNIQUEIDENTIFIER
+			, Plus_DonorType INT
+			, Lds_TelefundGift BIT
+			, Plus_Cid NVARCHAR(200)
+			, Plus_Cde2 NVARCHAR(200)
+			, CreatedOn DATETIME
+			, ModifiedOn DATETIME
+			, StateCode INT
 			' -- Ext_Create_Fields
 		, 'New_ConstituentDonor
 			, New_OrganizationDonor
@@ -3841,6 +4198,13 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Plus_Description
 			, Lds_RecurringGiftRule
 			, Lds_RecurringGiftGroup
+			, Plus_DonorType
+			, Lds_TelefundGift
+			, Plus_Cid
+			, Plus_Cde2
+			, CreatedOn
+			, ModifiedOn
+			, StateCode
 			' -- Ext_Insert_Fields
 		, 'New_ConstituentDonor
 			, New_OrganizationDonor
@@ -3887,11 +4251,23 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, CONVERT(NVARCHAR(4000),SUBSTRING(Plus_Description,1,4000)) AS Plus_Description
 			, Lds_RecurringGiftRule
 			, Lds_RecurringGiftGroup
+			, Plus_DonorType
+			, Lds_TelefundGift
+			, Plus_Cid
+			, Plus_Cde2
+			, CASE WHEN DATENAME(dy,A.CreatedOn) BETWEEN E.Mdt_Begin_Date_Number AND E.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.CreatedOn)
+					ELSE DATEADD(hh,-7,A.CreatedOn) END AS CreatedOn
+			, CASE WHEN DATENAME(dy,A.ModifiedOn) BETWEEN F.Mdt_Begin_Date_Number AND F.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.ModifiedOn)
+					ELSE DATEADD(hh,-7,A.ModifiedOn) END AS ModifiedOn
+			, StateCode
 			' -- Ext_Select_Statement
 		, 'Oa_Extract.New_GiftBase A
 				LEFT JOIN dbo._MDT_Conversion_Dim B ON YEAR(A.New_AccountingDate) = B.Date_Year
 				LEFT JOIN dbo._MDT_Conversion_Dim C ON YEAR(A.New_ReceiptDate) = C.Date_Year
 				LEFT JOIN dbo._MDT_Conversion_Dim D ON YEAR(A.New_PostDate) = D.Date_Year
+				
+				LEFT JOIN dbo._MDT_Conversion_Dim E ON YEAR(A.CreatedOn) = E.Date_Year
+				LEFT JOIN dbo._MDT_Conversion_Dim F ON YEAR(A.ModifiedOn) = F.Date_Year
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, NULL -- Tier_3_Stage
@@ -7717,6 +8093,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Plus_Type INT
 			, Plus_Organization UNIQUEIDENTIFIER
 			, CreatedOn DATETIME
+			, Plus_DonationFrom INT
 			' -- Dest_Create_Fields
 		, 'Plus_RecurringGiftRulesId
 			, Plus_Constituent
@@ -7733,6 +8110,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Plus_Type
 			, Plus_Organization
 			, CreatedOn
+			, Plus_DonationFrom
 			' -- Dest_Insert_Fields
 		, ' ' -- Dest_Where_Statement
 		, 'Plus_RecurringGiftRulesId UNIQUEIDENTIFIER
@@ -7751,6 +8129,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Plus_Organization UNIQUEIDENTIFIER
 			, CreatedOn DATETIME
 			, Zero NVARCHAR(5) DEFAULT ''0''
+			, Plus_DonationFrom INT
 			' -- Ext_Create_Fields
 		, 'Plus_RecurringGiftRulesId
 			, Plus_Constituent
@@ -7767,6 +8146,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Plus_Type
 			, Plus_Organization
 			, CreatedOn
+			, Plus_DonationFrom
 			' -- Ext_Insert_Fields
 		, 'Plus_RecurringGiftRulesId
 			, Plus_Constituent
@@ -7786,11 +8166,411 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Plus_Organization
 			, CASE WHEN DATENAME(dy,A.CreatedOn) BETWEEN C.Mdt_Begin_Date_Number AND C.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.CreatedOn)
 					ELSE DATEADD(hh,-7,A.CreatedOn) END AS CreatedOn
+			, Plus_DonationFrom
 			' -- Ext_Select_Statement
 		, 'Oa_Extract.Plus_RecurringGiftRulesBase A
 				LEFT JOIN dbo._MDT_Conversion_Dim B ON YEAR(A.Plus_PaymentStart) = B.Date_Year
 				LEFT JOIN dbo._MDT_Conversion_Dim C ON YEAR(A.Plus_PaymentStop) = C.Date_Year
 				LEFT JOIN dbo._MDT_Conversion_Dim D ON YEAR(A.CreatedOn) = D.Date_Year
+			' -- Ext_From_Statement
+		, ' ' -- Ext_Where_Statement
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
+		, ' ' -- Ext_Create_Fields_2
+		, ' ' -- Ext_Create_Fields_3
+		, ' ' -- Ext_Where_Statement_2
+		, ' ' -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+		, NULL -- Ext_Select_Statement_3
+		, NULL -- Ext_Select_Statement_4
+		, NULL -- Ext_Select_Statement_5
+		, NULL -- Ext_Select_Statement_6
+		, NULL -- Ext_Select_Statement_7
+		, NULL -- Ext_From_Statement_3
+		, NULL -- Ext_From_Statement_4
+		, NULL -- Ext_From_Statement_5
+		, NULL -- Ext_From_Statement_6
+		, NULL -- Ext_From_Statement_7
+		, NULL -- Ext_Where_Statement_4
+		, NULL -- Ext_Where_Statement_5
+		, NULL -- Ext_Where_Statement_6
+		, NULL -- Ext_Where_Statement_7
+		, NULL -- Extra_1
+		, NULL -- Extra_2
+		, NULL -- Extra_3
+		, NULL -- Extra_4
+		, NULL -- Extra_5
+		, NULL -- Extra_6
+		, NULL -- Extra_7
+		, NULL -- Extra_8
+		, NULL -- Extra_9
+		, NULL -- Extra_10
+	)
+	,
+-- --------------------------
+-- Plus_WebBatchBase (Ext_WebBatch)
+-- --------------------------
+	( 1 -- Tier
+		, 'dbo.Plus_WebBatchBase' -- Source_Table
+		, 'Oa_Extract.Plus_WebBatchBase' -- Destination_Table
+		, 'Ext_WebBatch' -- Ext_Table
+		, ' Plus_WebBatchId UNIQUEIDENTIFIER
+			, Plus_AggregateScore NVARCHAR(100)
+			, Plus_ProcessedDate DATETIME
+			, Plus_TotalAmount MONEY
+			, Plus_TotalRecordCount INT
+			, StateCode INT
+			, StatusCode INT
+			, CreatedOn DATETIME
+			, ModifiedOn DATETIME
+			' -- Dest_Create_Fields
+		, '  Plus_WebBatchId
+			, Plus_AggregateScore
+			, Plus_ProcessedDate
+			, Plus_TotalAmount
+			, Plus_TotalRecordCount
+			, StateCode
+			, StatusCode
+			, CreatedOn
+			, ModifiedOn
+			' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, ' Plus_WebBatchId UNIQUEIDENTIFIER
+			, Plus_AggregateScore NVARCHAR(100)
+			, Plus_ProcessedDate DATETIME
+			, Plus_TotalAmount MONEY
+			, Plus_TotalRecordCount INT
+			, StateCode INT
+			, StatusCode INT
+			, CreatedOn DATETIME
+			, ModifiedOn DATETIME
+			' -- Ext_Create_Fields
+		, ' Plus_WebBatchId
+			, Plus_AggregateScore
+			, Plus_ProcessedDate
+			, Plus_TotalAmount
+			, Plus_TotalRecordCount
+			, StateCode
+			, StatusCode
+			, CreatedOn
+			, ModifiedOn
+			' -- Ext_Insert_Fields
+		, ' Plus_WebBatchId
+			, Plus_AggregateScore
+			, CASE WHEN DATENAME(dy,A.Plus_ProcessedDate) BETWEEN B.Mdt_Begin_Date_Number AND B.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.Plus_ProcessedDate)
+					ELSE DATEADD(hh,-7,A.Plus_ProcessedDate) END AS Plus_ProcessedDate
+			, Plus_TotalAmount
+			, Plus_TotalRecordCount
+			, StateCode
+			, StatusCode
+			, CASE WHEN DATENAME(dy,A.CreatedOn) BETWEEN C.Mdt_Begin_Date_Number AND C.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.CreatedOn)
+					ELSE DATEADD(hh,-7,A.CreatedOn) END AS CreatedOn
+			, CASE WHEN DATENAME(dy,A.ModifiedOn) BETWEEN D.Mdt_Begin_Date_Number AND D.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.ModifiedOn)
+					ELSE DATEADD(hh,-7,A.ModifiedOn) END AS ModifiedOn
+			' -- Ext_Select_Statement
+		, 'Oa_Extract.Plus_WebBatchBase A
+				LEFT JOIN dbo._MDT_Conversion_Dim B ON YEAR(A.Plus_ProcessedDate) = B.Date_Year
+				LEFT JOIN dbo._MDT_Conversion_Dim C ON YEAR(A.CreatedOn) = C.Date_Year
+				LEFT JOIN dbo._MDT_Conversion_Dim D ON YEAR(A.ModifiedOn) = D.Date_Year				
+			' -- Ext_From_Statement
+		, ' ' -- Ext_Where_Statement
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
+		, ' ' -- Ext_Create_Fields_2
+		, ' ' -- Ext_Create_Fields_3
+		, ' ' -- Ext_Where_Statement_2
+		, ' ' -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+		, NULL -- Ext_Select_Statement_3
+		, NULL -- Ext_Select_Statement_4
+		, NULL -- Ext_Select_Statement_5
+		, NULL -- Ext_Select_Statement_6
+		, NULL -- Ext_Select_Statement_7
+		, NULL -- Ext_From_Statement_3
+		, NULL -- Ext_From_Statement_4
+		, NULL -- Ext_From_Statement_5
+		, NULL -- Ext_From_Statement_6
+		, NULL -- Ext_From_Statement_7
+		, NULL -- Ext_Where_Statement_4
+		, NULL -- Ext_Where_Statement_5
+		, NULL -- Ext_Where_Statement_6
+		, NULL -- Ext_Where_Statement_7
+		, NULL -- Extra_1
+		, NULL -- Extra_2
+		, NULL -- Extra_3
+		, NULL -- Extra_4
+		, NULL -- Extra_5
+		, NULL -- Extra_6
+		, NULL -- Extra_7
+		, NULL -- Extra_8
+		, NULL -- Extra_9
+		, NULL -- Extra_10
+	)
+	,
+-- --------------------------
+-- Plus_WebTransactionBase (Ext_WebTransaction)
+-- --------------------------
+	( 1 -- Tier
+		, 'dbo.Plus_WebTransactionBase' -- Source_Table
+		, 'Oa_Extract.Plus_WebTransactionBase' -- Destination_Table
+		, 'Ext_WebTransaction' -- Ext_Table
+		, ' Plus_WebTransactionId UNIQUEIDENTIFIER
+			, Plus_TransactionId NVARCHAR(100)
+			, Lds_DataEntryStatus INT
+			, Lds_DonorMiddleName NVARCHAR(100)
+			, Lds_LinkedLdsAccount BIT
+			, Lds_TelefundComments  NVARCHAR(MAX)
+			, Plus_AddressMatch INT
+			, Plus_Appeal NVARCHAR(10)
+			, Plus_Cde2 NVARCHAR(200)
+			, Plus_Cid NVARCHAR(200)
+			, Plus_Comment NVARCHAR(1000)
+			, Plus_DonorAddressCity NVARCHAR(100)
+			, Plus_DonorAddressCountry NVARCHAR(100)
+			, Plus_DonorAddressLine1 NVARCHAR(100)
+			, Plus_DonorAddressLine2 NVARCHAR(100)
+			, Plus_DonorAddressState NVARCHAR(100)
+			, Plus_DonorAddressZipCode NVARCHAR(100)
+			, Plus_DonorEmailAddress NVARCHAR(255)
+			, Plus_DonorFirstName NVARCHAR(100)
+			, Plus_DonorLastName NVARCHAR(100)
+			, Plus_DonorPhoneNumber NVARCHAR(100)
+			, Plus_HonoreeName NVARCHAR(100)
+			, Plus_InMemoriamFlag BIT
+			, Plus_InMemoryOfType BIT
+			, Plus_NotifyByCardFlag BIT
+			, Plus_NotifyByEmailFlag BIT
+			, Plus_NotifyFamilyFriendsFlag BIT
+			, Plus_NotifyPersonFlag BIT
+			, Plus_OptinToEmailCommunication BIT
+			, Plus_PaymentType INT
+			, Plus_ReceiptDate DATETIME
+			, Plus_RecurredDonationStatus INT
+			, Plus_Score NVARCHAR(100)
+			, Plus_TenderName INT
+			, Plus_TransactionTotal MONEY
+			, Plus_TypeOfDonation INT
+			, StateCode INT
+			, StatusCode INT
+			, CreatedOn DATETIME
+			, ModifiedOn DATETIME
+			' -- Dest_Create_Fields
+		, ' Plus_WebTransactionId
+			, Plus_TransactionId
+			, Lds_DataEntryStatus
+			, Lds_DonorMiddleName
+			, Lds_LinkedLdsAccount
+			, Lds_TelefundComments
+			, Plus_AddressMatch
+			, Plus_Appeal
+			, Plus_Cde2
+			, Plus_Cid
+			, Plus_Comment
+			, Plus_DonorAddressCity
+			, Plus_DonorAddressCountry
+			, Plus_DonorAddressLine1
+			, Plus_DonorAddressLine2
+			, Plus_DonorAddressState
+			, Plus_DonorAddressZipCode
+			, Plus_DonorEmailAddress
+			, Plus_DonorFirstName
+			, Plus_DonorLastName
+			, Plus_DonorPhoneNumber
+			, Plus_HonoreeName
+			, Plus_InMemoriamFlag
+			, Plus_InMemoryOfType
+			, Plus_NotifyByCardFlag
+			, Plus_NotifyByEmailFlag
+			, Plus_NotifyFamilyFriendsFlag
+			, Plus_NotifyPersonFlag
+			, Plus_OptinToEmailCommunication
+			, Plus_PaymentType
+			, Plus_ReceiptDate
+			, Plus_RecurredDonationStatus
+			, Plus_Score
+			, Plus_TenderName
+			, Plus_TransactionTotal
+			, Plus_TypeOfDonation
+			, StateCode
+			, StatusCode
+			, CreatedOn
+			, ModifiedOn
+			' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, ' Plus_WebTransactionId UNIQUEIDENTIFIER
+			, Plus_TransactionId NVARCHAR(100)
+			, Lds_DataEntryStatus INT
+			, Lds_DonorMiddleName NVARCHAR(100)
+			, Lds_LinkedLdsAccount BIT
+			, Lds_TelefundComments  NVARCHAR(4000)
+			, Plus_AddressMatch INT
+			, Plus_Appeal NVARCHAR(10)
+			, Plus_Cde2 NVARCHAR(200)
+			, Plus_Cid NVARCHAR(200)
+			, Plus_Comment NVARCHAR(1000)
+			, Plus_DonorAddressCity NVARCHAR(100)
+			, Plus_DonorAddressCountry NVARCHAR(100)
+			, Plus_DonorAddressLine1 NVARCHAR(100)
+			, Plus_DonorAddressLine2 NVARCHAR(100)
+			, Plus_DonorAddressState NVARCHAR(100)
+			, Plus_DonorAddressZipCode NVARCHAR(100)
+			, Plus_DonorEmailAddress NVARCHAR(255)
+			, Plus_DonorFirstName NVARCHAR(100)
+			, Plus_DonorLastName NVARCHAR(100)
+			, Plus_DonorPhoneNumber NVARCHAR(100)
+			, Plus_HonoreeName NVARCHAR(100)
+			, Plus_InMemoriamFlag BIT
+			, Plus_InMemoryOfType BIT
+			, Plus_NotifyByCardFlag BIT
+			, Plus_NotifyByEmailFlag BIT
+			, Plus_NotifyFamilyFriendsFlag BIT
+			, Plus_NotifyPersonFlag BIT
+			, Plus_OptinToEmailCommunication BIT
+			, Plus_PaymentType INT
+			, Plus_ReceiptDate DATETIME
+			, Plus_RecurredDonationStatus INT
+			, Plus_Score NVARCHAR(100)
+			, Plus_TenderName INT
+			, Plus_TransactionTotal MONEY
+			, Plus_TypeOfDonation INT
+			, StateCode INT
+			, StatusCode INT
+			, CreatedOn DATETIME
+			, ModifiedOn DATETIME
+			' -- Ext_Create_Fields
+		, ' Plus_WebTransactionId
+			, Plus_TransactionId
+			, Lds_DataEntryStatus
+			, Lds_DonorMiddleName
+			, Lds_LinkedLdsAccount
+			, Lds_TelefundComments
+			, Plus_AddressMatch
+			, Plus_Appeal
+			, Plus_Cde2
+			, Plus_Cid
+			, Plus_Comment
+			, Plus_DonorAddressCity
+			, Plus_DonorAddressCountry
+			, Plus_DonorAddressLine1
+			, Plus_DonorAddressLine2
+			, Plus_DonorAddressState
+			, Plus_DonorAddressZipCode
+			, Plus_DonorEmailAddress
+			, Plus_DonorFirstName
+			, Plus_DonorLastName
+			, Plus_DonorPhoneNumber
+			, Plus_HonoreeName
+			, Plus_InMemoriamFlag
+			, Plus_InMemoryOfType
+			, Plus_NotifyByCardFlag
+			, Plus_NotifyByEmailFlag
+			, Plus_NotifyFamilyFriendsFlag
+			, Plus_NotifyPersonFlag
+			, Plus_OptinToEmailCommunication
+			, Plus_PaymentType
+			, Plus_ReceiptDate
+			, Plus_RecurredDonationStatus
+			, Plus_Score
+			, Plus_TenderName
+			, Plus_TransactionTotal
+			, Plus_TypeOfDonation
+			, StateCode
+			, StatusCode
+			, CreatedOn
+			, ModifiedOn
+			' -- Ext_Insert_Fields
+		, ' Plus_WebTransactionId
+			, Plus_TransactionId
+			, Lds_DataEntryStatus
+			, Lds_DonorMiddleName
+			, Lds_LinkedLdsAccount
+			, CONVERT(NVARCHAR(4000),SUBSTRING(Lds_TeleFundComments,1,4000)) AS Lds_TeleFundComments
+			, Plus_AddressMatch
+			, Plus_Appeal
+			, Plus_Cde2
+			, Plus_Cid
+			, Plus_Comment
+			, Plus_DonorAddressCity
+			, Plus_DonorAddressCountry
+			, Plus_DonorAddressLine1
+			, Plus_DonorAddressLine2
+			, Plus_DonorAddressState
+			, Plus_DonorAddressZipCode
+			, Plus_DonorEmailAddress
+			, Plus_DonorFirstName
+			, Plus_DonorLastName
+			, Plus_DonorPhoneNumber
+			, Plus_HonoreeName
+			, Plus_InMemoriamFlag
+			, Plus_InMemoryOfType
+			, Plus_NotifyByCardFlag
+			, Plus_NotifyByEmailFlag
+			, Plus_NotifyFamilyFriendsFlag
+			, Plus_NotifyPersonFlag
+			, Plus_OptinToEmailCommunication
+			, Plus_PaymentType
+			, CASE WHEN DATENAME(dy,A.Plus_ReceiptDate) BETWEEN B.Mdt_Begin_Date_Number AND B.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.Plus_ReceiptDate)
+					ELSE DATEADD(hh,-7,A.Plus_ReceiptDate) END AS Plus_ReceiptDate
+			, Plus_RecurredDonationStatus
+			, Plus_Score
+			, Plus_TenderName
+			, Plus_TransactionTotal
+			, Plus_TypeOfDonation
+			, StateCode
+			, StatusCode
+			, CASE WHEN DATENAME(dy,A.CreatedOn) BETWEEN C.Mdt_Begin_Date_Number AND C.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.CreatedOn)
+					ELSE DATEADD(hh,-7,A.CreatedOn) END AS CreatedOn
+			, CASE WHEN DATENAME(dy,A.ModifiedOn) BETWEEN D.Mdt_Begin_Date_Number AND D.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.ModifiedOn)
+					ELSE DATEADD(hh,-7,A.ModifiedOn) END AS ModifiedOn
+			' -- Ext_Select_Statement
+		, 'Oa_Extract.Plus_WebTransactionBase A
+				LEFT JOIN dbo._MDT_Conversion_Dim B ON YEAR(A.Plus_ReceiptDate) = B.Date_Year
+				LEFT JOIN dbo._MDT_Conversion_Dim C ON YEAR(A.CreatedOn) = C.Date_Year
+				LEFT JOIN dbo._MDT_Conversion_Dim D ON YEAR(A.ModifiedOn) = D.Date_Year				
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, NULL -- Tier_3_Stage
@@ -25055,6 +25835,86 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Address_Group_Key  
 			' -- Ext_Select_Statement
 		, '_Address_Dim				
+			' -- Ext_From_Statement
+		, ' ' -- Ext_Where_Statement
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
+		, ' ' -- Ext_Create_Fields_2
+		, ' ' -- Ext_Create_Fields_3
+		, ' ' -- Ext_Where_Statement_2
+		, ' ' -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+		, NULL -- Ext_Select_Statement_3
+		, NULL -- Ext_Select_Statement_4
+		, NULL -- Ext_Select_Statement_5
+		, NULL -- Ext_Select_Statement_6
+		, NULL -- Ext_Select_Statement_7
+		, NULL -- Ext_From_Statement_3
+		, NULL -- Ext_From_Statement_4
+		, NULL -- Ext_From_Statement_5
+		, NULL -- Ext_From_Statement_6
+		, NULL -- Ext_From_Statement_7
+		, NULL -- Ext_Where_Statement_4
+		, NULL -- Ext_Where_Statement_5
+		, NULL -- Ext_Where_Statement_6
+		, NULL -- Ext_Where_Statement_7
+		, NULL -- Extra_1
+		, NULL -- Extra_2
+		, NULL -- Extra_3
+		, NULL -- Extra_4
+		, NULL -- Extra_5
+		, NULL -- Extra_6
+		, NULL -- Extra_7
+		, NULL -- Extra_8
+		, NULL -- Extra_9
+		, NULL -- Extra_10
+	)
+	,
+-- --------------------------
+-- _Psa_Bridge
+-- --------------------------
+	( 5 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Psa_Bridge' -- Ext_Table
+		, '	' -- Dest_Create_Fields
+		, '	' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, '	ContactId NVARCHAR(100)
+			, Psa_Key INT PRIMARY KEY
+			, Psa_Group_Key INT
+			' -- Ext_Create_Fields
+		, '	ContactId
+			, Psa_Key
+			, Psa_Group_Key
+			' -- Ext_Insert_Fields
+		, 'DISTINCT ContactId
+			, Psa_Key
+			, Psa_Group_Key  
+			' -- Ext_Select_Statement
+		, '_Psa_Dim				
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, NULL -- Tier_3_Stage
