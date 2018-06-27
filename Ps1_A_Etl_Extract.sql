@@ -18439,6 +18439,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Original NVARCHAR(10) DEFAULT ''Original''
 			, Reversal NVARCHAR(10) DEFAULT ''Reversal''
 			, Zero NVARCHAR(1) DEFAULT ''0''
+			, Y NVARCHAR(1) DEFAULT ''Y''
+			, N NVARCHAR(1) DEFAULT ''N''
 			' -- Ext_Create_Fields
 		, 'New_RelatedGift
 			, Plus_Constituent
@@ -21198,7 +21200,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 									, C.ContactId AS ConstituentId
 									, A.AccountId
 									, O.New_Id  -- Type
-									, MAX(ModifiedOn) AS ModifiedOn
+									, MAX(O.ModifiedOn) AS ModifiedOn
 									FROM Ext_Other_Identifiers O
 										LEFT JOIN Ext_Contact C ON O.New_EmploymentId = C.ContactId
 										LEFT JOIN Ext_Account A ON O.New_OtherIdentifiers = A.AccountId
@@ -29147,6 +29149,212 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 					WHERE 1 = 1
 						AND B.Donor_Primary_Yn = [Y]
 				) D ON A.Donation_Key = D.New_GiftId
+			' -- Ext_From_Statement_2
+		, ' ' -- Ext_Create_Fields_2
+		, ' ' -- Ext_Create_Fields_3
+		, ' ' -- Ext_Where_Statement_2
+		, ' ' -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+		, NULL -- Ext_Select_Statement_3
+		, NULL -- Ext_Select_Statement_4
+		, NULL -- Ext_Select_Statement_5
+		, NULL -- Ext_Select_Statement_6
+		, NULL -- Ext_Select_Statement_7
+		, '															
+			' -- Ext_From_Statement_3
+		, '
+			'-- Ext_From_Statement_4
+		, NULL -- Ext_From_Statement_5
+		, NULL -- Ext_From_Statement_6
+		, NULL -- Ext_From_Statement_7
+		, NULL -- Ext_Where_Statement_4
+		, NULL -- Ext_Where_Statement_5
+		, NULL -- Ext_Where_Statement_6
+		, NULL -- Ext_Where_Statement_7
+		, NULL -- Extra_1
+		, NULL -- Extra_2
+		, NULL -- Extra_3
+		, NULL -- Extra_4
+		, NULL -- Extra_5
+		, NULL -- Extra_6
+		, NULL -- Extra_7
+		, NULL -- Extra_8
+		, NULL -- Extra_9
+		, NULL -- Extra_10
+	)
+	,
+-- --------------------------
+-- _Accounting_Dim
+-- --------------------------
+	( 7 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Accounting_Dim' -- Ext_Table
+		, '	' -- Dest_Create_Fields
+		, '	' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, '	Accounting_Dim_Key INT IDENTITY(1,1) PRIMARY KEY
+			, Donation_Key NVARCHAR(100)
+			, Accounting_Key NVARCHAR(100)
+			, Accounting_Date DATE
+			, Accounting_Receipt_Date DATE
+			, Accounting_Post_Date DATE
+			, Accounting_Gift_Number NVARCHAR(50)
+			, Accounting_Related_Gift_Number NVARCHAR(50)
+			, Accounting_Fact_Key BIGINT
+			, Accounting_Gift_Source NVARCHAR(400)
+			, Accounting_Adjustment_Yn NVARCHAR(1)
+			, Accounting_Same_Month_Adj_Yn NVARCHAR(1)
+			, Accounting_Current_Year_Adj_Yn NVARCHAR(1)
+			, Accounting_Recognition_Credit_Recipients NVARCHAR(4000)
+			, Y NVARCHAR(1) DEFAULT ''Y''
+			, N NVARCHAR(1) DEFAULT ''N''
+			' -- Ext_Create_Fields
+		, '	Donation_Key
+			, Accounting_Key
+			, Accounting_Date
+			, Accounting_Receipt_Date
+			, Accounting_Post_Date
+			, Accounting_Gift_Number
+			, Accounting_Related_Gift_Number
+			, Accounting_Fact_Key
+			, Accounting_Gift_Source
+			, Accounting_Adjustment_Yn
+			, Accounting_Same_Month_Adj_Yn
+			, Accounting_Current_Year_Adj_Yn
+			, Accounting_Recognition_Credit_Recipients
+			' -- Ext_Insert_Fields
+		, 'A.Donation_Key
+			, A.Accounting_Key
+			, A.Accounting_Date
+			, A.Accounting_Receipt_Date
+			, A.Accounting_Post_Date
+			, A.Accounting_Gift_Number
+			, A.Accounting_Related_Gift_Number
+			, A.[Zero] AS Accounting_Fact_Key
+			, A.Accounting_Gift_Source
+			, A.Accounting_Adjustment_Yn
+			, A.Accounting_Same_Month_Adj_Yn
+			, A.Accounting_Current_Year_Adj_Yn
+			, B.Accounting_Recognition_Credit_Recipients
+			' -- Ext_Select_Statement
+		, '	(SELECT CONVERT(NVARCHAR(100),A.New_RelatedGift) AS Donation_Key
+				, CONVERT(NVARCHAR(100),A.New_GiftHistoryId) AS Accounting_Key
+				, CONVERT(VARCHAR(10), A.Plus_AccountingDate,101) AS Accounting_Date
+				, CONVERT(VARCHAR(10), A.New_ReceiptDate,101) AS Accounting_Receipt_Date
+				, CONVERT(VARCHAR(10), A.Plus_PostDate,101) AS Accounting_Post_Date
+				, A.Plus_GiftNumber AS Accounting_Gift_Number
+				, B.New_GiftNumber AS Accounting_Related_Gift_Number
+				, B.Plus_GiftSource AS Accounting_Gift_Source
+				, A.[N] AS Accounting_Adjustment_Yn
+				, A.[N] AS Accounting_Same_Month_Adj_Yn
+				, A.[N] AS Accounting_Current_Year_Adj_Yn
+				, NULL AS Accounting_Recognition_Credit_Recipients
+				, A.[Zero]
+				FROM dbo._Gift_Hist_ A
+					LEFT JOIN _Donation_Dim B ON A.New_RelatedGift = B.Donation_Key
+			UNION ALL
+			SELECT CONVERT(NVARCHAR(100), A.New_GiftId) AS Donation_Key  
+				, [Zero] AS Accounting_Key
+				, CONVERT(VARCHAR(10), A.New_AccountingDate,101) AS Accounting_Date
+				, CONVERT(VARCHAR(10), A.New_ReceiptDate,101) AS Accounting_Receipt_Date
+				, CONVERT(VARCHAR(10), A.New_PostDate,101) AS Accounting_Post_Date
+				, NULL AS Accounting_Gift_Number
+				, A.New_GiftNumber AS Accounting_Related_Gift_Number
+				, C.Column_Label AS Accounting_Gift_Source
+				, A.[N] AS Accounting_Adjustment_Yn
+				, A.[N] AS Accounting_Same_Month_Adj_Yn
+				, A.[N] AS Accounting_Current_Year_Adj_Yn
+				, NULL AS Accounting_Recognition_Credit_Recipients
+				, A.[Zero]
+				FROM dbo._Gift_ A
+					LEFT JOIN _Donation_GiftSource_ C ON A.Plus_GiftSource = C.Column_Value
+			) A 
+			LEFT JOIN Uf_Accounting_Recognition_Credit_Recipients() B ON A.Donation_Key = B.Donation_Key																
+			' -- Ext_From_Statement
+		, ' MERGE INTO _Accounting_Dim T
+				USING (
+						SELECT Donation_Key
+							, CASE WHEN SUBSTRING(CONVERT(NVARCHAR(10),Min_Accounting_Date,112),1,4) = YEAR(GETDATE()) THEN [Y]
+								ELSE [N] END AS Accounting_Current_Year_Adj_Yn
+							FROM
+								(SELECT Donation_Key
+									, [Y]
+									, [N]
+									, MIN(Accounting_Date) AS Min_Accounting_Date
+									, MAX(Accounting_Date) AS Max_Accounting_Date
+									FROM _Accounting_Dim A
+									WHERE 1 = 1
+										AND EXISTS
+											(SELECT DISTINCT Donation_Key
+												FROM _Accounting_Dim B
+												WHERE 1 = 1
+													AND A.Accounting_Dim_Key = B.Accounting_Dim_Key
+													AND Accounting_Adjustment_Yn = [Y]
+											) 
+									GROUP BY Donation_Key
+										, [Y]
+										, [N]
+								) A
+					) S ON T.Donation_Key = S.Donation_Key
+				WHEN MATCHED THEN 
+					UPDATE
+						SET T.Accounting_Current_Year_Adj_Yn = S.Accounting_Current_Year_Adj_Yn
+						;
+			MERGE INTO _Accounting_Dim T
+				USING (
+						SELECT Donation_Key
+							, CASE WHEN SUBSTRING(CONVERT(NVARCHAR(10),Min_Accounting_Date,112),1,6) = SUBSTRING(CONVERT(NVARCHAR(10),Max_Accounting_Date,112),1,6) THEN [Y] 
+								ELSE [N] END AS Accounting_Same_Month_Adj_Yn
+							FROM
+								(SELECT Donation_Key
+									, [Y]
+									, [N]
+									, MIN(Accounting_Date) AS Min_Accounting_Date
+									, MAX(Accounting_Date) AS Max_Accounting_Date
+									FROM _Accounting_Dim A
+									WHERE 1 = 1
+										AND EXISTS
+											(SELECT DISTINCT Donation_Key
+												FROM _Accounting_Dim B
+												WHERE 1 = 1
+													AND A.Accounting_Dim_Key = B.Accounting_Dim_Key
+													AND Accounting_Adjustment_Yn = [Y]
+											) 
+									GROUP BY Donation_Key
+										, [Y]
+										, [N]
+								) A
+					) S ON T.Donation_Key = S.Donation_Key
+				WHEN MATCHED THEN 
+					UPDATE
+						SET T.Accounting_Same_Month_Adj_Yn = S.Accounting_Same_Month_Adj_Yn
+			;
+			' -- Ext_Where_Statement
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, '
 			' -- Ext_From_Statement_2
 		, ' ' -- Ext_Create_Fields_2
 		, ' ' -- Ext_Create_Fields_3
