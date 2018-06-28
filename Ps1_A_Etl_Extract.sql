@@ -29348,6 +29348,530 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 					UPDATE
 						SET T.Accounting_Same_Month_Adj_Yn = S.Accounting_Same_Month_Adj_Yn
 			;
+			SET IDENTITY_INSERT [LDSPhilanthropiesDW].[dbo]._Accounting_Dim ON;				
+			INSERT INTO [LDSPhilanthropiesDW].[dbo]._Accounting_Dim
+				(Accounting_Dim_Key
+				, Donation_Key
+				, Accounting_Key
+				, Accounting_Date
+				, Accounting_Receipt_Date
+				, Accounting_Post_Date
+				, Accounting_Gift_Number
+				, Accounting_Related_Gift_Number
+				, Accounting_Fact_Key
+				, Accounting_Gift_Source
+				, Accounting_Adjustment_Yn
+				, Accounting_Same_Month_Adj_Yn
+				, Accounting_Current_Year_Adj_Yn
+				, Accounting_Recognition_Credit_Recipients
+				)
+			VALUES(0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+			' -- Ext_Where_Statement
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, '
+			' -- Ext_From_Statement_2
+		, ' ' -- Ext_Create_Fields_2
+		, ' ' -- Ext_Create_Fields_3
+		, ' ' -- Ext_Where_Statement_2
+		, ' ' -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+		, NULL -- Ext_Select_Statement_3
+		, NULL -- Ext_Select_Statement_4
+		, NULL -- Ext_Select_Statement_5
+		, NULL -- Ext_Select_Statement_6
+		, NULL -- Ext_Select_Statement_7
+		, '															
+			' -- Ext_From_Statement_3
+		, '
+			'-- Ext_From_Statement_4
+		, NULL -- Ext_From_Statement_5
+		, NULL -- Ext_From_Statement_6
+		, NULL -- Ext_From_Statement_7
+		, NULL -- Ext_Where_Statement_4
+		, NULL -- Ext_Where_Statement_5
+		, NULL -- Ext_Where_Statement_6
+		, NULL -- Ext_Where_Statement_7
+		, NULL -- Extra_1
+		, NULL -- Extra_2
+		, NULL -- Extra_3
+		, NULL -- Extra_4
+		, NULL -- Extra_5
+		, NULL -- Extra_6
+		, NULL -- Extra_7
+		, NULL -- Extra_8
+		, NULL -- Extra_9
+		, NULL -- Extra_10
+	)
+	,
+-- --------------------------
+-- _Accounting_Tender_Type_Dim
+-- --------------------------
+	( 7 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Accounting_Tender_Type_Dim' -- Ext_Table
+		, '	' -- Dest_Create_Fields
+		, '	' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, '	Accounting_Tender_Type_Key INT
+			, Accounting_Tender_Type_Id INT
+			, Accounting_Tender_Type_Desc NVARCHAR(400)
+			, Donation_Key NVARCHAR(100)
+			, Accounting_Key NVARCHAR(100)
+			' -- Ext_Create_Fields
+		, '	Accounting_Tender_Type_Key
+			, Accounting_Tender_Type_Id
+			, Accounting_Tender_Type_Desc
+			, Donation_Key
+			, Accounting_Key
+			' -- Ext_Insert_Fields
+		, ' B.Accounting_Tender_Type_Key
+			, A.Accounting_Tender_Type_Id
+			, A.Accounting_Tender_Type_Desc
+			, A.Donation_Key
+			, A.Accounting_Key
+			' -- Ext_Select_Statement
+		, '	(SELECT A.Donation_Key
+				, A.Accounting_Key
+				, A.Accounting_Tender_Type_Id
+				, A.Accounting_Tender_Type_Desc
+				FROM
+					(SELECT CONVERT(NVARCHAR(100),A.New_RelatedGift) AS Donation_Key
+						, CONVERT(NVARCHAR(100),A.New_GiftHistoryId) AS Accounting_Key 
+						, A.New_TenderType AS Accounting_Tender_Type_Id
+						, C.Column_Label AS Accounting_Tender_Type_Desc
+						FROM dbo._Gift_Hist_ A
+							LEFT JOIN _Plus_Tender_Type_ C ON A.New_TenderType = C.Column_Value
+					UNION ALL
+					SELECT CONVERT(NVARCHAR(100), A.New_GiftId) AS Donation_Key  
+						,  [Zero] AS Accounting_Key 
+						, A.New_TenderType
+						, C.Column_Label AS Accounting_Tender_Type
+						FROM dbo._Gift_ A
+							LEFT JOIN _Plus_Tender_Type_ C ON A.New_TenderType = C.Column_Value
+					) A
+			) A
+			LEFT JOIN
+				(SELECT ROW_NUMBER() OVER(ORDER BY Accounting_Tender_Type_Id) AS Accounting_Tender_Type_Key
+					, Accounting_Tender_Type_Id
+					, Accounting_Tender_Type_Desc
+					FROM
+						(SELECT DISTINCT A.New_TenderType AS Accounting_Tender_Type_Id
+							, C.Column_Label AS Accounting_Tender_Type_Desc
+							FROM dbo._Gift_Hist_ A
+								LEFT JOIN _Plus_Tender_Type_ C ON A.New_TenderType = C.Column_Value
+						UNION
+						SELECT DISTINCT A.New_TenderType
+							, C.Column_Label AS Accounting_Tender_Type
+							FROM dbo._Gift_ A
+								LEFT JOIN _Plus_Tender_Type_ C ON A.New_TenderType = C.Column_Value
+						) A
+					WHERE 1 = 1
+						AND Accounting_Tender_Type_Id IS NOT NULL
+				) B ON A.Accounting_Tender_Type_Id = B.Accounting_Tender_Type_Id																
+			' -- Ext_From_Statement
+		, ' AND Accounting_Tender_Type_Key IS NOT NULL		
+			INSERT INTO [LDSPhilanthropiesDW].[dbo]._Accounting_Tender_Type_Dim
+				VALUES(0,NULL,NULL,NULL,NULL);
+			' -- Ext_Where_Statement
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, '
+			' -- Ext_From_Statement_2
+		, ' ' -- Ext_Create_Fields_2
+		, ' ' -- Ext_Create_Fields_3
+		, ' ' -- Ext_Where_Statement_2
+		, ' ' -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+		, NULL -- Ext_Select_Statement_3
+		, NULL -- Ext_Select_Statement_4
+		, NULL -- Ext_Select_Statement_5
+		, NULL -- Ext_Select_Statement_6
+		, NULL -- Ext_Select_Statement_7
+		, '															
+			' -- Ext_From_Statement_3
+		, '
+			'-- Ext_From_Statement_4
+		, NULL -- Ext_From_Statement_5
+		, NULL -- Ext_From_Statement_6
+		, NULL -- Ext_From_Statement_7
+		, NULL -- Ext_Where_Statement_4
+		, NULL -- Ext_Where_Statement_5
+		, NULL -- Ext_Where_Statement_6
+		, NULL -- Ext_Where_Statement_7
+		, NULL -- Extra_1
+		, NULL -- Extra_2
+		, NULL -- Extra_3
+		, NULL -- Extra_4
+		, NULL -- Extra_5
+		, NULL -- Extra_6
+		, NULL -- Extra_7
+		, NULL -- Extra_8
+		, NULL -- Extra_9
+		, NULL -- Extra_10
+	)
+	,
+-- --------------------------
+-- _Accounting_Kind_Dim
+-- --------------------------
+	( 7 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Accounting_Kind_Dim' -- Ext_Table
+		, '	' -- Dest_Create_Fields
+		, '	' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, '	Accounting_Kind_Key INT
+			, Accounting_Kind_Id INT
+			, Accounting_Kind_Desc NVARCHAR(400)
+			, Donation_Key NVARCHAR(100)
+			, Accounting_Key NVARCHAR(100)
+			' -- Ext_Create_Fields
+		, '	Accounting_Kind_Key
+			, Accounting_Kind_Id
+			, Accounting_Kind_Desc
+			, Donation_Key
+			, Accounting_Key
+			' -- Ext_Insert_Fields
+		, '  B.Accounting_Kind_Key
+			, A.Accounting_Kind_Id
+			, A.Accounting_Kind_Desc
+			, A.Donation_Key
+			, A.Accounting_Key
+			' -- Ext_Select_Statement
+		, '	(SELECT A.Donation_Key
+				, A.Accounting_Key
+				, A.Accounting_Kind_Id
+				, A.Accounting_Kind_Desc
+				FROM
+					(SELECT CONVERT(NVARCHAR(100),A.New_RelatedGift) AS Donation_Key
+						, CONVERT(NVARCHAR(100),A.New_GiftHistoryId) AS Accounting_Key
+						, A.Plus_Kind AS Accounting_Kind_Id
+						, D.Column_Label AS Accounting_Kind_Desc
+						FROM dbo._Gift_Hist_ A
+							LEFT JOIN _Donation_Dim B ON A.New_RelatedGift = B.Donation_Key 
+							LEFT JOIN _Plus_Kind_ D ON A.Plus_Kind = D.Column_Value
+					UNION ALL
+					SELECT CONVERT(NVARCHAR(100), A.New_GiftId) AS Donation_Key  
+						,  A.[Zero] AS Accounting_Key
+						, A.Plus_Kind AS Accounting_Kind_Id
+						, D.Column_Label AS Accounting_Kind_Desc
+						FROM dbo._Gift_ A
+							LEFT JOIN _Plus_Kind_ D ON A.Plus_Kind = D.Column_Value
+					) A
+				WHERE 1 = 1
+			) A
+			LEFT JOIN
+				(SELECT ROW_NUMBER() OVER(ORDER BY Accounting_Kind_Id) AS Accounting_Kind_Key
+					, Accounting_Kind_Id
+					, Accounting_Kind_Desc
+					FROM
+						(SELECT DISTINCT A.Plus_Kind AS Accounting_Kind_Id
+							, D.Column_Label AS Accounting_Kind_Desc
+							FROM dbo._Gift_Hist_ A
+								LEFT JOIN _Donation_Dim B ON A.New_RelatedGift = B.Donation_Key 
+								LEFT JOIN _Plus_Kind_ D ON A.Plus_Kind = D.Column_Value
+						UNION
+						SELECT DISTINCT A.Plus_Kind AS Accounting_Kind_Id
+							, D.Column_Label AS Accounting_Kind_Desc
+							FROM dbo._Gift_ A
+								LEFT JOIN _Plus_Kind_ D ON A.Plus_Kind = D.Column_Value
+						) A
+					WHERE 1 = 1
+						AND Accounting_Kind_Id IS NOT NULL
+				) B ON A.Accounting_Kind_Id = B.Accounting_Kind_Id																
+			' -- Ext_From_Statement
+		, ' AND Accounting_Kind_Key IS NOT NULL
+			INSERT INTO [LDSPhilanthropiesDW].[dbo]._Accounting_Kind_Dim
+				VALUES(0,NULL,NULL,NULL,NULL);
+			' -- Ext_Where_Statement
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, '
+			' -- Ext_From_Statement_2
+		, ' ' -- Ext_Create_Fields_2
+		, ' ' -- Ext_Create_Fields_3
+		, ' ' -- Ext_Where_Statement_2
+		, ' ' -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+		, NULL -- Ext_Select_Statement_3
+		, NULL -- Ext_Select_Statement_4
+		, NULL -- Ext_Select_Statement_5
+		, NULL -- Ext_Select_Statement_6
+		, NULL -- Ext_Select_Statement_7
+		, '															
+			' -- Ext_From_Statement_3
+		, '
+			' -- Ext_From_Statement_4
+		, NULL -- Ext_From_Statement_5
+		, NULL -- Ext_From_Statement_6
+		, NULL -- Ext_From_Statement_7
+		, NULL -- Ext_Where_Statement_4
+		, NULL -- Ext_Where_Statement_5
+		, NULL -- Ext_Where_Statement_6
+		, NULL -- Ext_Where_Statement_7
+		, NULL -- Extra_1
+		, NULL -- Extra_2
+		, NULL -- Extra_3
+		, NULL -- Extra_4
+		, NULL -- Extra_5
+		, NULL -- Extra_6
+		, NULL -- Extra_7
+		, NULL -- Extra_8
+		, NULL -- Extra_9
+		, NULL -- Extra_10
+	)
+	,
+-- --------------------------
+-- _Accounting_Transmitted_Dim
+-- --------------------------
+	( 7 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Accounting_Transmitted_Dim' -- Ext_Table
+		, '	' -- Dest_Create_Fields
+		, '	' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, '	Accounting_Transmitted_Key INT
+			, Accounting_Transmitted_Id INT
+			, Accounting_Transmitted_Desc NVARCHAR(400)
+			, Donation_Key NVARCHAR(100)
+			, Accounting_Key NVARCHAR(100)
+			' -- Ext_Create_Fields
+		, '	Accounting_Transmitted_Key
+			, Accounting_Transmitted_Id
+			, Accounting_Transmitted_Desc
+			, Donation_Key
+			, Accounting_Key
+			' -- Ext_Insert_Fields
+		, ' B.Accounting_Transmitted_Key
+			, A.Accounting_Transmitted_Id
+			, A.Accounting_Transmitted_Desc
+			, A.Donation_Key
+			, A.Accounting_Key
+			' -- Ext_Select_Statement
+		, '	(SELECT A.Donation_Key
+				, A.Accounting_Key
+				, A.Accounting_Transmitted_Id
+				, A.Accounting_Transmitted_Desc
+				FROM
+					(SELECT CONVERT(NVARCHAR(100),A.New_RelatedGift) AS Donation_Key
+						, CONVERT(NVARCHAR(100),A.New_GiftHistoryId) AS Accounting_Key
+						, A.Plus_Transmitted AS Accounting_Transmitted_Id
+						, CASE WHEN A.Plus_Transmitted = 0 THEN A.[N]
+							ELSE A.[Y] END AS Accounting_Transmitted_Desc
+						FROM dbo._Gift_Hist_ A
+					UNION ALL
+					SELECT CONVERT(NVARCHAR(100), A.New_GiftId) AS Donation_Key  
+						, A.[Zero] AS Accounting_Key
+						, A.New_Transmitted AS Accounting_Transmitted_Id
+						, CASE WHEN A.New_Transmitted = 0 THEN A.[N]
+							ELSE A.[Y] END AS Accounting_Transmitted_Desc
+						FROM dbo._Gift_ A
+					) A
+			) A
+			LEFT JOIN
+				(SELECT ROW_NUMBER() OVER(ORDER BY Accounting_Transmitted_Id) AS Accounting_Transmitted_Key
+					, Accounting_Transmitted_Id
+					, Accounting_Transmitted_Desc
+					FROM
+						(SELECT DISTINCT A.Plus_Transmitted AS Accounting_Transmitted_Id
+							, CASE WHEN A.Plus_Transmitted = 0 THEN A.[N]
+								ELSE A.[Y] END AS Accounting_Transmitted_Desc
+							FROM dbo._Gift_Hist_ A
+						UNION
+						SELECT DISTINCT A.New_Transmitted AS Accounting_Transmitted_Id
+							, CASE WHEN A.New_Transmitted = 0 THEN A.[N]
+								ELSE A.[Y] END AS Accounting_Transmitted_Desc
+							FROM dbo._Gift_ A
+						) A
+					WHERE 1 = 1
+						AND Accounting_Transmitted_Id IS NOT NULL
+				) B ON A.Accounting_Transmitted_Id = B.Accounting_Transmitted_Id																
+			' -- Ext_From_Statement
+		, 'AND B.Accounting_Transmitted_Key IS NOT NULL 
+			INSERT INTO [LDSPhilanthropiesDW].[dbo]._Accounting_Transmitted_Dim
+				VALUES(0,NULL,NULL,NULL,NULL);
+			' -- Ext_Where_Statement
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, '
+			' -- Ext_From_Statement_2
+		, ' ' -- Ext_Create_Fields_2
+		, ' ' -- Ext_Create_Fields_3
+		, ' ' -- Ext_Where_Statement_2
+		, ' ' -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+		, NULL -- Ext_Select_Statement_3
+		, NULL -- Ext_Select_Statement_4
+		, NULL -- Ext_Select_Statement_5
+		, NULL -- Ext_Select_Statement_6
+		, NULL -- Ext_Select_Statement_7
+		, '															
+			' -- Ext_From_Statement_3
+		, '
+			'-- Ext_From_Statement_4
+		, NULL -- Ext_From_Statement_5
+		, NULL -- Ext_From_Statement_6
+		, NULL -- Ext_From_Statement_7
+		, NULL -- Ext_Where_Statement_4
+		, NULL -- Ext_Where_Statement_5
+		, NULL -- Ext_Where_Statement_6
+		, NULL -- Ext_Where_Statement_7
+		, NULL -- Extra_1
+		, NULL -- Extra_2
+		, NULL -- Extra_3
+		, NULL -- Extra_4
+		, NULL -- Extra_5
+		, NULL -- Extra_6
+		, NULL -- Extra_7
+		, NULL -- Extra_8
+		, NULL -- Extra_9
+		, NULL -- Extra_10
+	)
+	,
+-- --------------------------
+-- _Accounting_Text_Dim
+-- --------------------------
+	( 7 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Accounting_Text_Dim' -- Ext_Table
+		, '	' -- Dest_Create_Fields
+		, '	' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, '	Accounting_Text_Key INT
+			, Accounting_Text_Description_Text NVARCHAR(4000)
+			, Accounting_Text_Receipt_Text NVARCHAR(4000)
+			, Accounting_Text_Gift_Adjustment_Text NVARCHAR(4000)
+			, Donation_Key NVARCHAR(100)
+			, Accounting_Key NVARCHAR(100)
+			' -- Ext_Create_Fields
+		, '	Accounting_Text_Key
+			, Accounting_Text_Description_Text
+			, Accounting_Text_Receipt_Text
+			, Accounting_Text_Gift_Adjustment_Text
+			, Donation_Key
+			, Accounting_Key
+			' -- Ext_Insert_Fields
+		, ' ROW_NUMBER() OVER(ORDER BY Donation_Key, Accounting_Key) AS Accounting_Text_Key
+			, Accounting_Text_Description_Text
+			, Accounting_Text_Receipt_Text
+			, Accounting_Text_Gift_Adjustment_Text
+			, Donation_Key
+			, Accounting_Key
+			' -- Ext_Select_Statement
+		, '	(SELECT CONVERT(NVARCHAR(100),A.New_GiftId) AS Donation_Key
+				, A.[Zero] AS Accounting_Key
+				, A.Plus_Description AS Accounting_Text_Description_Text
+				, A.Plus_ReceiptText AS Accounting_Text_Receipt_Text
+				, NULL AS Accounting_Text_Gift_Adjustment_Text
+				FROM _Gift_ A
+				WHERE 1 = 1
+					AND (A.Plus_Description IS NOT NULL	
+						OR A.Plus_ReceiptText IS NOT NULL
+						)
+			UNION
+			SELECT CONVERT(NVARCHAR(100),B.New_RelatedGift) AS Donation_Key
+				, CONVERT(NVARCHAR(100),B.New_GiftHistoryId) AS Accounting_Key
+				, B.Plus_Description AS Accounting_Text_Description_Text
+				, B.Plus_ReceiptText AS Accounting_Text_Receipt_Text
+				, B.Plus_GiftAdjustmentNote AS Accounting_Text_Gift_Adjustment_Text
+				FROM _Gift_Hist_ B
+				WHERE 1 = 1
+					AND (B.Plus_Description IS NOT NULL
+						OR B.Plus_ReceiptText IS NOT NULL
+						OR B.Plus_GiftAdjustmentNote IS NOT NULL
+						)
+			) A																
+			' -- Ext_From_Statement
+		, '	INSERT INTO [LDSPhilanthropiesDW].[dbo]._Accounting_Text_Dim
+					VALUES(0,NULL,NULL,NULL,NULL,NULL);
 			' -- Ext_Where_Statement
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
