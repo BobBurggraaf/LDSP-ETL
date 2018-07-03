@@ -25815,6 +25815,100 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 	)
 	,
 -- --------------------------
+-- _Education_Summary_
+-- --------------------------
+	( 5 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Education_Summary_' -- Ext_Table
+		, '	' -- Dest_Create_Fields
+		, '	' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, '	Order_Number INT
+			, ContactId NVARCHAR(100)
+			, New_University NVARCHAR(100)
+			, Plus_AlumniStatus NVARCHAR(400)
+			, Plus_PreferredGraduationDate DATE
+			, New_DegreeCode NVARCHAR(100)
+			, Program NVARCHAR(100)
+			' -- Ext_Create_Fields
+		, '	Order_Number
+			, ContactId
+			, New_University
+			, Plus_AlumniStatus
+			, Plus_PreferredGraduationDate
+			, New_DegreeCode
+			, Program
+			' -- Ext_Insert_Fields
+		, 'ROW_NUMBER() OVER(PARTITION BY ContactId ORDER BY ContactId, Plus_PreferredGraduationDate DESC) AS Order_Number  
+			, ContactId
+			, New_University
+			, Plus_AlumniStatus
+			, Plus_PreferredGraduationDate
+			, New_DegreeCode
+			, Program 
+			' -- Ext_Select_Statement
+		, '	_Alumni_Dim				
+			' -- Ext_From_Statement
+		, ' AND ContactId IS NOT NULL
+			' -- Ext_Where_Statement
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' 
+			' -- Ext_From_Statement_2
+		, ' ' -- Ext_Create_Fields_2
+		, ' ' -- Ext_Create_Fields_3
+		, ' ' -- Ext_Where_Statement_2
+		, ' ' -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+		, NULL -- Ext_Select_Statement_3
+		, NULL -- Ext_Select_Statement_4
+		, NULL -- Ext_Select_Statement_5
+		, NULL -- Ext_Select_Statement_6
+		, NULL -- Ext_Select_Statement_7
+		, NULL -- Ext_From_Statement_3
+		, NULL -- Ext_From_Statement_4
+		, NULL -- Ext_From_Statement_5
+		, NULL -- Ext_From_Statement_6
+		, NULL -- Ext_From_Statement_7
+		, NULL -- Ext_Where_Statement_4
+		, NULL -- Ext_Where_Statement_5
+		, NULL -- Ext_Where_Statement_6
+		, NULL -- Ext_Where_Statement_7
+		, NULL -- Extra_1
+		, NULL -- Extra_2
+		, NULL -- Extra_3
+		, NULL -- Extra_4
+		, NULL -- Extra_5
+		, NULL -- Extra_6
+		, NULL -- Extra_7
+		, NULL -- Extra_8
+		, NULL -- Extra_9
+		, NULL -- Extra_10
+	)
+	,
+-- --------------------------
 -- _Address_Bridge
 -- --------------------------
 	( 5 -- Tier
@@ -28675,6 +28769,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Donor_Couple_Form_Envel NVARCHAR(300)
 			, Donor_Spouses_Name NVARCHAR(100) 
 			, Donor_Total_Name_Display NVARCHAR(200)
+			, Spouse_Education_Summary NVARCHAR(2000)
 			' -- Ext_Create_Fields
 		, '	Donor_Key  
 			, All_Personal_Connections
@@ -28699,6 +28794,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Donor_Couple_Form_Envel 
 			, Donor_Spouses_Name 
 			, Donor_Total_Name_Display
+			, Spouse_Education_Summary
 			' -- Ext_Insert_Fields
 		, 'A.Donor_Key
 			, B.All_Personal_Connections
@@ -28726,22 +28822,25 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 					WHEN H.Husbands_ContactId IS NOT NULL THEN H.Couples_Name
 					WHEN CONCAT(COALESCE(Plus_PreferredLastName,LastName),[Comma_Space],COALESCE(Plus_PreferredFirstName,FirstName)) = [Comma_Space] THEN D.Plus_DisplayName
 						ELSE CONCAT(COALESCE(Plus_PreferredLastName,LastName),[Comma_Space],COALESCE(Plus_PreferredFirstName,FirstName)) END AS Donor_Total_Name_Display
+			, C.Spouse_Education_Summary
 			' -- Ext_Select_Statement
 		, ' _All_Donors_ A
 				LEFT JOIN Uf_All_Personal_Connections () B ON A.Donor_Key = B.Donor_Key
 				LEFT JOIN
-					(SELECT CONVERT(NVARCHAR(100),ContactId) AS Donor_Key
-						, MAX(CASE WHEN _Connection_Dim.Relationship = [Spouse] THEN Relationship_Name ELSE NULL END) AS Spouse_Name
-						, MAX(CASE WHEN _Connection_Dim.Relationship = [Spouse] THEN Relationship_LdspId ELSE NULL END) AS Spouse_LdspId
-						, MAX(CASE WHEN _Connection_Dim.Relationship = [Spouse] THEN Relationship_Phone_Number ELSE NULL END) AS Spouse_Phone_Number
-						, MAX(CASE WHEN _Connection_Dim.Relationship = [Spouse] THEN Relationship_Email ELSE NULL END) AS Spouse_Email 
-						, MAX(CASE WHEN _Connection_Dim.Relationship = [Spouse] THEN Relationship_First_Name ELSE NULL END) AS Spouse_First_Name
-						, MAX(CASE WHEN _Connection_Dim.Relationship = [Spouse] THEN Relationship_Last_Name ELSE NULL END) AS Spouse_Last_Name
-						, MAX(CASE WHEN _Connection_Dim.Relationship = [Spouse] THEN Relationship_Birth_Date ELSE NULL END) AS Spouse_Birth_Date
-						, MAX(CASE WHEN _Connection_Dim.Relationship = [Spouse] THEN Relationship_Age ELSE NULL END) AS Spouse_Age
-						, MAX(CASE WHEN _Connection_Dim.Relationship = [Spouse] THEN Relationship_Middle_Name ELSE NULL END) AS Donor_Spouse_Middle_Name
-						, MAX(CASE WHEN _Connection_Dim.Relationship = [Spouse] THEN Relationship_Birth_Name ELSE NULL END) AS Donor_Spouse_Birth_Name
-						FROM LDSPhilanthropiesDW.dbo._Connection_Dim
+					(SELECT CONVERT(NVARCHAR(100),A.ContactId) AS Donor_Key
+						, MAX(CASE WHEN A.Relationship = [Spouse] THEN Relationship_Name ELSE NULL END) AS Spouse_Name
+						, MAX(CASE WHEN A.Relationship = [Spouse] THEN Relationship_LdspId ELSE NULL END) AS Spouse_LdspId
+						, MAX(CASE WHEN A.Relationship = [Spouse] THEN Relationship_Phone_Number ELSE NULL END) AS Spouse_Phone_Number
+						, MAX(CASE WHEN A.Relationship = [Spouse] THEN Relationship_Email ELSE NULL END) AS Spouse_Email 
+						, MAX(CASE WHEN A.Relationship = [Spouse] THEN Relationship_First_Name ELSE NULL END) AS Spouse_First_Name
+						, MAX(CASE WHEN A.Relationship = [Spouse] THEN Relationship_Last_Name ELSE NULL END) AS Spouse_Last_Name
+						, MAX(CASE WHEN A.Relationship = [Spouse] THEN Relationship_Birth_Date ELSE NULL END) AS Spouse_Birth_Date
+						, MAX(CASE WHEN A.Relationship = [Spouse] THEN Relationship_Age ELSE NULL END) AS Spouse_Age
+						, MAX(CASE WHEN A.Relationship = [Spouse] THEN Relationship_Middle_Name ELSE NULL END) AS Donor_Spouse_Middle_Name
+						, MAX(CASE WHEN A.Relationship = [Spouse] THEN Relationship_Birth_Name ELSE NULL END) AS Donor_Spouse_Birth_Name
+						, MAX(CASE WHEN A.Relationship = [Spouse] THEN B.Spouse_Education_Summary ELSE NULL END) AS Spouse_Education_Summary
+						FROM LDSPhilanthropiesDW.dbo._Connection_Dim A 
+							LEFT JOIN Uf_Spouse_Education_Summary() B ON A.Relationship_ContactId = B.Donor_Key
 						GROUP BY ContactId                          
 					) C ON A.Donor_Key = C.Donor_Key
 				LEFT JOIN Ext_Contact D ON A.Donor_Key = CONVERT(NVARCHAR(100),D.ContactId)
@@ -28782,7 +28881,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 						GROUP BY CONVERT(NVARCHAR(100), ContactId)
 					) G ON A.Donor_Key = G.Donor_Key
 				LEFT JOIN Uf_Couples_Display_Name1() H ON A.Donor_Key = CONVERT(NVARCHAR(100),H.Husbands_ContactId)
-				LEFT JOIN Uf_Couples_Display_Name2() I ON A.Donor_Key = CONVERT(NVARCHAR(100),I.Wifes_ContactId)														
+				LEFT JOIN Uf_Couples_Display_Name2() I ON A.Donor_Key = CONVERT(NVARCHAR(100),I.Wifes_ContactId)
 			' -- Ext_From_Statement
 		, 'AND A.Donor_Key IS NOT NULL 
 			' -- Ext_Where_Statement
