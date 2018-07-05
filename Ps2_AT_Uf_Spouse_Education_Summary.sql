@@ -16,7 +16,7 @@ SELECT DISTINCT ContactId AS Donor_Key
 	, STUFF(( SELECT  ' // ' + Spouse_Education_Summary 
 					FROM 
 						(SELECT DISTINCT ContactId
-							, COALESCE(REPLACE(New_University,'&','and'),' ') + ' | ' + COALESCE(Plus_AlumniStatus,' ') + ' | ' + RTRIM(COALESCE(CONVERT(NVARCHAR(10),Plus_PreferredGraduationDate,1),NULL)) + ' | ' + RTRIM(COALESCE(New_DegreeCode,' ') + ' | ' + RTRIM(COALESCE(REPLACE(Program,'&','and'),' '))) AS Spouse_Education_Summary
+							, COALESCE(REPLACE(New_University,'&','and'),' ') + ' | ' + COALESCE(Plus_AlumniStatus,' ') + ' | ' + REPLACE(RTRIM(CONVERT(NVARCHAR(10),COALESCE(Plus_PreferredGraduationDate,'1900-01-01'),101)),'01/01/1900',' ') + ' | ' + RTRIM(COALESCE(New_DegreeCode,' ') + ' | ' + RTRIM(COALESCE(REPLACE(Program,'&','and'),' '))) AS Spouse_Education_Summary
 							, Order_Number
 							FROM _Education_Summary_
 						) A
@@ -27,6 +27,8 @@ SELECT DISTINCT ContactId AS Donor_Key
 	FROM _Education_Summary_ B
 	WHERE 1 = 1
 		AND ContactId IS NOT NULL
+		
+		
 
 
 

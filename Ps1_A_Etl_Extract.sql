@@ -19624,6 +19624,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, N NVARCHAR(1) DEFAULT ''N''
 			, BYU NVARCHAR(3) DEFAULT ''BYU''
 			, [Current] NVARCHAR(10) DEFAULT ''Current''
+			, Alternate_Organization_Name NVARCHAR(100)
+			, Employment_Organization NVARCHAR(160)
 			' -- Ext_Create_Fields
 		, 'ContactId 
 			, Employment_Key 
@@ -19647,6 +19649,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, StatusCode
 			, Employment_Modified_On_Date
 			, Employment_Lds_CampusAddress
+			, Alternate_Organization_Name
+			, Employment_Organization
 			' -- Ext_Insert_Fields
 		, 'DISTINCT CONVERT(NVARCHAR(100),E.New_EmploymentsId) AS ContactId  
 			, ROW_NUMBER() OVER(ORDER BY E.New_EmploymentId) AS Employment_Key
@@ -19675,7 +19679,9 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, A.New_LdspId AS Employer_Ldsp_Id
 			, S.Column_Label AS StatusCode
 			, E.ModifiedOn AS Employment_Modified_On_Date
-			, E.Lds_CampusAddress AS Employment_Lds_CampusAddress										
+			, E.Lds_CampusAddress AS Employment_Lds_CampusAddress
+			, E.Plus_AlternateOrganizationName AS Alternate_Organization_Name
+			, A.Name AS Employment_Organization
 			' -- Ext_Select_Statement
 		, 'Ext_Employment E
 				LEFT JOIN Ext_Source NS ON E.New_Source = NS.New_SourceId
@@ -24814,6 +24820,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Byu NVARCHAR(5) DEFAULT ''BYU''
 			, Law_School NVARCHAR(50) DEFAULT ''Law School, J. Reuben Clark''
 			, Graduated NVARCHAR(50) DEFAULT ''Graduated''
+			, Not_Graduated NVARCHAR(50) DEFAULT ''Not Graduated''
 			' -- Ext_Create_Fields
 		, 'ContactId
 			, Alumni_Key
@@ -25027,7 +25034,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 											, E.New_MajorName AS Emphasis             											
 			' -- Ext_From_Statement
 		, 'INSERT INTO _Alumni_Dim
-			VALUES(NULL,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+			VALUES(NULL,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 			CREATE NONCLUSTERED INDEX IX_New_University 
 				ON _Alumni_Dim(New_University ASC)
 					INCLUDE (
@@ -25844,7 +25851,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, ContactId
 			, New_University
 			, Plus_AlumniStatus
-			, Plus_PreferredGraduationDate
+			, CASE WHEN Plus_AlumniStatus = [Not_Graduated] THEN NULL ELSE Plus_PreferredGraduationDate END AS Plus_PreferredGraduationDate
 			, New_DegreeCode
 			, Program 
 			' -- Ext_Select_Statement
