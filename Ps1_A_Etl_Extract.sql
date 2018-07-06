@@ -25687,7 +25687,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 						)
 			UNION ALL				
 			' -- Ext_From_Statement
-		, ' ' -- Ext_Where_Statement
+		, ' EXEC dbo.usp_Accounting_Week ' -- Ext_Where_Statement
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
 		, NULL -- Tier_4_Stage
