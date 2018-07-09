@@ -2071,6 +2071,8 @@ INSERT INTO dbo.Stage_To_Prod
 			, StatusCode NVARCHAR(400)
 			, Employment_Modified_On_Date DATE
 			, Employment_Lds_CampusAddress NVARCHAR(100)
+			, Alternate_Organization_Name NVARCHAR(100)
+			, Employment_Organization NVARCHAR(160)
 			' -- Dest_Create_Fields
 		, 'ContactId 
 			, Employment_Key 
@@ -2094,6 +2096,8 @@ INSERT INTO dbo.Stage_To_Prod
 			, StatusCode
 			, Employment_Modified_On_Date
 			, Employment_Lds_CampusAddress
+			, Alternate_Organization_Name
+			, Employment_Organization
 			' -- Dest_Insert_Fields
 		, ' ' -- Dest_Where_Statement
 		, GETDATE()
@@ -4250,6 +4254,7 @@ INSERT INTO dbo.Stage_To_Prod
 			, Donor_Couple_Form_Envel NVARCHAR(300)
 			, Donor_Spouses_Name NVARCHAR(100) 
 			, Donor_Total_Name_Display NVARCHAR(200)
+			, Spouse_Education_Summary NVARCHAR(2000)
 			' -- Dest_Create_Fields
 		, '	Donor_Key   
 			, All_Personal_Connections
@@ -4274,6 +4279,7 @@ INSERT INTO dbo.Stage_To_Prod
 			, Donor_Couple_Form_Envel
 			, Donor_Spouses_Name 
 			, Donor_Total_Name_Display
+			, Spouse_Education_Summary
 			' -- Dest_Insert_Fields
 		, ' ' -- Dest_Where_Statement
 		, GETDATE()
