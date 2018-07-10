@@ -25568,6 +25568,9 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Table_Source NVARCHAR(100)
 			, Record_Status NVARCHAR(100)
 			, Zero NVARCHAR(1) DEFAULT ''0''
+			, Period NVARCHAR(1) DEFAULT ''.''
+			, Blank_Space NVARCHAR(1) DEFAULT ''''
+			, Hard NVARCHAR(4) DEFAULT ''Hard''
 			' -- Ext_Create_Fields
 		, '	ContactId
 			, Accounting_Key
@@ -28998,7 +29001,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Expectancy_Key NVARCHAR(100)
 			, User_Coordinating_Liaison_Key NVARCHAR(100) DEFAULT ''0''
 			, User_Pending_Liaison_Key NVARCHAR(100) DEFAULT ''0''
-			, User_Connected_Liaison_Key NVARCHAR(100) DEFAULT ''0''
+			, User_Connected_Liaison_Key NVARCHAR(100) DEFAULT ''0''			
 			' -- Ext_Create_Fields
 		, '	Donor_Key
 			, Acitivity_Group_Key 
@@ -32859,6 +32862,638 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 				) C ON A.Initiative_Key = C.Initiative_Key		
 			'-- Ext_From_Statement_4
 		, NULL -- Ext_From_Statement_5
+		, NULL -- Ext_From_Statement_6
+		, NULL -- Ext_From_Statement_7
+		, NULL -- Ext_Where_Statement_4
+		, NULL -- Ext_Where_Statement_5
+		, NULL -- Ext_Where_Statement_6
+		, NULL -- Ext_Where_Statement_7
+		, NULL -- Extra_1
+		, NULL -- Extra_2
+		, NULL -- Extra_3
+		, NULL -- Extra_4
+		, NULL -- Extra_5
+		, NULL -- Extra_6
+		, NULL -- Extra_7
+		, NULL -- Extra_8
+		, NULL -- Extra_9
+		, NULL -- Extra_10
+	)
+	,
+-- --------------------------
+-- _Accounting_Key_Fact
+-- --------------------------
+	( 8 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Accounting_Key_Fact' -- Ext_Table
+		, '	' -- Dest_Create_Fields
+		, '	' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, '	Accounting_Fact_Key BIGINT IDENTITY PRIMARY KEY
+			, Accounting_Key NVARCHAR(100)
+			, Donor_Key  NVARCHAR(100) 
+			, Fund_Key  NVARCHAR(100) 
+			, User_Key  NVARCHAR(100) 
+			, Donation_Key NVARCHAR(100)
+			, Hier_Key NVARCHAR(100)
+			, Accounting_Dim_Key INT
+			, Accounting_Tender_Type_Key INT
+			, Accounting_Kind_Key INT
+			, Accounting_Transmitted_Key INT
+			, Accounting_Text_Key INT
+			, Accounting_Month_Key INT
+			, Reporting_Group_Key INT
+			, Reporting_All_Group_Key INT
+			, Accounting_Week_Key INT
+			, Appeal_Key NVARCHAR(100)
+			, Accounting_Amt  MONEY 	
+			, New_AccountingDate DATE
+			, Table_Source NVARCHAR(100)
+			, Record_Status NVARCHAR(100)
+			, Cut_Off_Date NVARCHAR(10) DEFAULT ''2002-01-01''
+			, Space NVARCHAR(1) DEFAULT '' ''
+			, Zero NVARCHAR(1) DEFAULT ''0''
+			, N01 NVARCHAR(2) DEFAULT ''01''
+			, Dash NVARCHAR(1) DEFAULT ''-''
+			' -- Ext_Create_Fields
+		, '	Accounting_Key
+			, Donor_Key 
+			, Fund_Key 
+			, User_Key
+			, Donation_Key
+			, Hier_Key
+			, Accounting_Dim_Key
+			, Accounting_Tender_Type_Key
+			, Accounting_Kind_Key
+			, Accounting_Transmitted_Key
+			, Accounting_Text_Key
+			, Accounting_Month_Key
+			, Reporting_Group_Key
+			, Reporting_All_Group_Key
+			, Accounting_Week_Key
+			, Appeal_Key
+			, Accounting_Amt	
+			, New_AccountingDate
+			, Table_Source
+			, Record_Status
+			' -- Ext_Insert_Fields
+		, ' COALESCE(A.Accounting_Key,[Zero]) AS Accounting_Key
+			, COALESCE(A.ContactId,[Zero]) AS Donor_Key
+			, COALESCE(A.Fund_Key,[Zero]) AS Fund_Key
+			, COALESCE(A.User_Key,[Zero]) AS User_Key
+			, A.Donation_Key 
+			, COALESCE(B.Hier_Key,C.Hier_Key,[Zero]) AS Hier_Key
+			, D.Accounting_Dim_Key
+			, E.Accounting_Tender_Type_Key
+			, F.Accounting_Kind_Key
+			, G.Accounting_Transmitted_Key
+			, COALESCE(H.Accounting_Text_Key,0) AS Accounting_Text_Key
+			, SUBSTRING(REPLACE(CONVERT(NVARCHAR(10),New_AccountingDate,102),[Period],[Blank_Space]),1,6) AS Accounting_Month_Key
+			, I.Reporting_Group_Key
+			, 100000 AS Reporting_All_Group_Key  -- This is not updated in the ETL
+			, COALESCE(J.Accounting_Week_Key,0) AS Accounting_Week_Key
+			, K.Appeal_Key
+			, A.Accounting_Amt
+			, CONVERT(VARCHAR(10),A.New_AccountingDate,101) AS New_AccountingDate 
+			, A.Table_Source
+			, A.Record_Status
+			' -- Ext_Select_Statement
+		, '	_Accounting_Fact_Prep_ A
+				LEFT JOIN
+					(SELECT DISTINCT CONVERT(NVARCHAR(100),A.New_GiftHistoryId) AS Accounting_Key
+						, CONVERT(NVARCHAR(100),C.Hier_Key) AS Hier_Key
+						FROM dbo._Gift_Hist_ A
+							INNER JOIN _Fund_Dim B ON CONVERT(NVARCHAR(100),A.Plus_FundAccount) = B.Fund_Key
+							INNER JOIN _Hier_Dim C ON B.New_InstitutionalHierarchy = C.Hier_Key
+					) B ON A.Accounting_Key = B.Accounting_Key
+				LEFT JOIN
+					(SELECT DISTINCT CONVERT(NVARCHAR(100),A.Donation_Key) AS Donation_Key
+						, CONVERT(NVARCHAR(100),B.New_InstitutionalHierarchyId) AS Hier_Key
+						FROM _Accounting_Fact_Prep_ A
+							INNER JOIN dbo._Gift_ B ON A.Donation_Key = B.New_GiftId
+						WHERE 1 = 1
+							AND B.StatusCode != 1
+					) C ON A.Donation_Key = C.Donation_Key
+				LEFT JOIN _Accounting_Dim D ON CONCAT(A.Donation_Key,COALESCE(A.Accounting_Key,[Zero])) = CONCAT(D.Donation_Key,D.Accounting_Key)
+				LEFT JOIN _Accounting_Tender_Type_Dim E ON CONCAT(A.Donation_Key,COALESCE(A.Accounting_Key,[Zero])) = CONCAT(E.Donation_Key,E.Accounting_Key)
+				LEFT JOIN _Accounting_Kind_Dim F ON CONCAT(A.Donation_Key,COALESCE(A.Accounting_Key,[Zero])) = CONCAT(F.Donation_Key,F.Accounting_Key)
+				LEFT JOIN _Accounting_Transmitted_Dim G ON CONCAT(A.Donation_Key,COALESCE(A.Accounting_Key,[Zero])) = CONCAT(G.Donation_Key,G.Accounting_Key)
+				LEFT JOIN _Accounting_Text_Dim H ON CONCAT(A.Donation_Key,COALESCE(A.Accounting_Key,[Zero])) = CONCAT(H.Donation_Key,H.Accounting_Key)
+				LEFT JOIN Uf_Reporting_Group_Key() I ON CONCAT(A.Donation_Key,COALESCE(A.Accounting_Key,[Zero])) = CONCAT(I.Donation_Key,I.Accounting_Key)
+				LEFT JOIN _Accounting_Week J ON A.New_AccountingDate = J.Accounting_Week_Date
+				LEFT JOIN _Donation_Fact K ON A.Donation_Key = K.Donation_Key AND K.Plus_Type = [Hard]															
+			' -- Ext_From_Statement
+		, '
+			' -- Ext_Where_Statement
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, '														
+			' -- Ext_From_Statement_2
+		, ' ' -- Ext_Create_Fields_2
+		, ' ' -- Ext_Create_Fields_3
+		, ' ' -- Ext_Where_Statement_2
+		, ' ' -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+		, NULL -- Ext_Select_Statement_3
+		, NULL -- Ext_Select_Statement_4
+		, NULL -- Ext_Select_Statement_5
+		, NULL -- Ext_Select_Statement_6
+		, NULL -- Ext_Select_Statement_7
+		, '																												
+			' -- Ext_From_Statement_3
+		, '		
+			'-- Ext_From_Statement_4
+		, NULL -- Ext_From_Statement_5
+		, NULL -- Ext_From_Statement_6
+		, NULL -- Ext_From_Statement_7
+		, NULL -- Ext_Where_Statement_4
+		, NULL -- Ext_Where_Statement_5
+		, NULL -- Ext_Where_Statement_6
+		, NULL -- Ext_Where_Statement_7
+		, NULL -- Extra_1
+		, NULL -- Extra_2
+		, NULL -- Extra_3
+		, NULL -- Extra_4
+		, NULL -- Extra_5
+		, NULL -- Extra_6
+		, NULL -- Extra_7
+		, NULL -- Extra_8
+		, NULL -- Extra_9
+		, NULL -- Extra_10
+	)
+	,
+-- --------------------------
+-- _Accounting_Reporting_Dim
+-- --------------------------
+	( 9 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Accounting_Reporting_Dim' -- Ext_Table
+		, '	' -- Dest_Create_Fields
+		, '	' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, '	Accounting_Fact_Key BIGINT PRIMARY KEY
+			, Accounting_Through_Previous_Month_Current_Year_Amt MONEY
+			, Accounting_Through_Previous_Month_Previous_Year_Amt MONEY
+			, Accounting_Previous_Year_Amt MONEY
+			, Accounting_Through_Previous_Month_Two_Years_Ago_Amt MONEY
+			, Accounting_Two_Years_Ago_Amt MONEY
+			, Net_Recorded MONEY
+			, Net_Not_Recorded MONEY
+			, Net_Recorded_Monthly MONEY
+			, Net_Not_Recorded_Monthly MONEY
+			, Net_Recorded_Ytd MONEY
+			, Net_Not_Recorded_Ytd MONEY
+			, Net_Recorded_Prior_Years MONEY
+			, Net_Not_Recorded_Prior_Years MONEY
+			, Accounting_Month_Date DATE
+			, Accounting_Month_All_Goal MONEY
+			, Accounting_Month_Goal MONEY
+			, Accounting_Last_Week_Ytd_Amt MONEY
+			, Accounting_Last_Week_Minus_1_Ytd_Amt MONEY
+			, Accounting_Last_Week_Last_Year_Ytd_Amt MONEY
+			' -- Ext_Create_Fields
+		, '	Accounting_Fact_Key
+			, Accounting_Through_Previous_Month_Current_Year_Amt
+			, Accounting_Through_Previous_Month_Previous_Year_Amt
+			, Accounting_Previous_Year_Amt
+			, Accounting_Through_Previous_Month_Two_Years_Ago_Amt
+			, Accounting_Two_Years_Ago_Amt
+			, Net_Recorded
+			, Net_Not_Recorded
+			, Net_Recorded_Monthly
+			, Net_Not_Recorded_Monthly
+			, Net_Recorded_Ytd
+			, Net_Not_Recorded_Ytd
+			, Net_Recorded_Prior_Years
+			, Net_Not_Recorded_Prior_Years
+			, Accounting_Month_Date
+			, Accounting_Month_All_Goal
+			, Accounting_Month_Goal
+			, Accounting_Last_Week_Ytd_Amt
+			, Accounting_Last_Week_Minus_1_Ytd_Amt
+			, Accounting_Last_Week_Last_Year_Ytd_Amt
+			' -- Ext_Insert_Fields
+		, '  A.Accounting_Fact_Key
+			, CASE WHEN CONVERT(DATE,New_AccountingDate,112) BETWEEN CONVERT(DATE,DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE())-1,0),112)
+																	AND CONVERT(DATE,DATEADD(MONTH, DATEDIFF(MONTH, -1, GETDATE())-1,-1),112) 
+					THEN Accounting_Amt ELSE NULL END AS Accounting_Through_Previous_Month_Current_Year_Amt
+			, CASE WHEN CONVERT(DATE,New_AccountingDate,112) BETWEEN CONVERT(DATE,DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE())-2,0),112)
+																	AND CONVERT(DATE,DATEADD(yy, -1, DATEADD(MONTH, DATEDIFF(MONTH, -1, GETDATE())-1,-1)),112) 
+					THEN Accounting_Amt ELSE NULL END AS Accounting_Through_Previous_Month_Previous_Year_Amt
+			, CASE WHEN CONVERT(DATE,New_AccountingDate,112) BETWEEN CONVERT(DATE,DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE())-2,0),112)
+																	AND CONVERT(DATE,CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -1, GETDATE())-1,-1),112)) 
+					THEN Accounting_Amt ELSE NULL END AS Accounting_Previous_Year_Amt
+			, CASE WHEN CONVERT(DATE,New_AccountingDate,112) BETWEEN CONVERT(DATE,DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE())-3,0),112)
+																	AND CONVERT(DATE,DATEADD(yy, -2, DATEADD(MONTH, DATEDIFF(MONTH, -1, GETDATE())-1,-1)),112) 
+					THEN Accounting_Amt ELSE NULL END AS Accounting_Through_Previous_Month_Two_Years_Ago_Amt
+			, CASE WHEN CONVERT(DATE,New_AccountingDate,112) BETWEEN CONVERT(DATE,DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE())-3,0),112)
+																	AND CONVERT(DATE,CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -1, GETDATE())-2,-1),112)) 
+					THEN Accounting_Amt ELSE NULL END AS Accounting_Two_Years_Ago_Amt
+			, B.Net_Recorded
+			, B.Net_Not_Recorded
+			, C.Net_Recorded_Monthly
+			, C.Net_Not_Recorded_Monthly
+			, D.Net_Recorded_Ytd
+			, D.Net_Not_Recorded_Ytd
+			, E.Net_Recorded_Prior_Years
+			, E.Net_Not_Recorded_Prior_Years
+			, CONVERT(DATE,CONCAT(CONVERT(NVARCHAR(4),YEAR(A.New_AccountingDate))
+													, CONVERT(NVARCHAR(2),REPLACE(STR(MONTH(A.New_AccountingDate),2),[Space],[Zero]))
+													,[N01]
+												)) AS Accounting_Month_Date
+			, F.Accounting_Month_All_Goal
+			, G.Accounting_Month_Goal
+			, H.Accounting_Last_Week_Ytd_Amt
+			, I.Accounting_Last_Week_Minus_1_Ytd_Amt
+			, J.Accounting_Last_Week_Last_Year_Ytd_Amt
+			' -- Ext_Select_Statement
+		, ' _Accounting_Key_Fact A
+				LEFT JOIN
+					(SELECT A.Accounting_Fact_Key
+							, B.Net_Recorded
+							, B.Net_Not_Recorded
+							FROM 
+								(SELECT A.Accounting_Fact_Key
+									, A.Donation_Key
+									, A.New_AccountingDate
+									, ROW_NUMBER() OVER(PARTITION BY Donation_Key,New_AccountingDate ORDER BY New_AccountingDate,Record_Status) AS Adjustment_Number
+									FROM _Accounting_Key_Fact A
+								) A
+								LEFT JOIN
+									(SELECT A.Adjustment_Key
+										, LEFT(A.Adjustment_Key,36) AS Donation_Key
+										, RIGHT(A.Adjustment_Key,10) AS New_AccountingDate
+										, (COALESCE(A.Original,A.Void,0) + COALESCE(A.Posted,0))/B.Date_Cnt AS Net_Recorded	
+										, COALESCE((-1 * ((COALESCE(A.Original,A.Void,0) + COALESCE(A.Posted,0)) - (-1 * A.Reversal))),0)/B.Date_Cnt AS Net_Not_Recorded
+										FROM
+											(SELECT *
+												FROM
+													(SELECT CONCAT(A.Donation_Key,[Dash],A.New_AccountingDate) AS Adjustment_Key
+														, A.Record_Status
+														, A.Accounting_Amt
+														, A.New_AccountingDate
+														FROM _Accounting_Key_Fact A
+													) A
+											PIVOT
+												( SUM(Accounting_Amt)
+												FOR Record_Status
+												IN ([Original],[Posted],[Reversal],[Void])
+												) AS _Pivot
+											) A
+											LEFT JOIN
+											(SELECT CONCAT(A.Donation_Key,[Dash],A.New_AccountingDate) AS Adjustment_Key
+												, CASE WHEN Date_Cnt > 0 THEN Date_Cnt 
+													ELSE 1 END AS Date_Cnt
+												FROM
+													(SELECT Donation_Key
+														, New_AccountingDate
+														, [Dash]
+														, (COUNT(*)/2) AS Date_Cnt
+														FROM _Accounting_Key_Fact
+														GROUP BY Donation_Key, New_AccountingDate, [Dash]
+													) A
+											)B ON A.Adjustment_Key = B.Adjustment_Key 
+									) B ON A.Donation_Key = B.Donation_Key AND A.New_AccountingDate = B.New_AccountingDate AND A.Adjustment_Number = 1	
+					) B ON A.Accounting_Fact_Key = B.Accounting_Fact_Key				
+				LEFT JOIN
+				
+					(SELECT A.Accounting_Fact_Key
+						, B.Net_Recorded_Monthly
+						, B.Net_Not_Recorded_Monthly
+						FROM 
+							(SELECT A.Accounting_Fact_Key
+								, A.Donation_Key
+								, A.New_AccountingDate
+								, ROW_NUMBER() OVER(PARTITION BY Donation_Key,SUBSTRING(CONVERT(NVARCHAR (10),A.New_AccountingDate,112),1,6) ORDER BY SUBSTRING(CONVERT(NVARCHAR (10),A.New_AccountingDate,112),1,6),Record_Status) AS Adjustment_Number
+								FROM _Accounting_Key_Fact A
+							) A
+							LEFT JOIN
+								(SELECT A.Adjustment_Key
+									, LEFT(A.Adjustment_Key,36) AS Donation_Key
+									, RIGHT(A.Adjustment_Key,6) AS New_AccountingDate
+									, (COALESCE(A.Original,A.Void,0) + COALESCE(A.Posted,0))/B.Date_Cnt AS Net_Recorded_Monthly	
+									, COALESCE((-1 * ((COALESCE(A.Original,A.Void,0) + COALESCE(A.Posted,0)) - (-1 * A.Reversal + B.Date_Cnt_3))),0)/B.Date_Cnt_2 AS Net_Not_Recorded_Monthly
+									FROM
+										(SELECT *
+											FROM
+												(SELECT CONCAT(A.Donation_Key,[Dash],SUBSTRING(CONVERT(NVARCHAR (10),A.New_AccountingDate,112),1,6)) AS Adjustment_Key
+													, A.Record_Status
+													, A.Accounting_Amt
+													FROM _Accounting_Key_Fact A
+												) A
+										PIVOT
+											( SUM(Accounting_Amt)
+											FOR Record_Status
+											IN ([Original],[Posted],[Reversal],[Void])
+											) AS _Pivot
+										) A																									
+			' -- Ext_From_Statement
+		, '
+			' -- Ext_Where_Statement
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, '                         LEFT JOIN
+										(SELECT CONCAT(A.Donation_Key,[Dash],SUBSTRING(CONVERT(NVARCHAR (10),A.New_AccountingDate,112),1,6)) AS Adjustment_Key
+											, CASE WHEN Date_Cnt > 0 THEN Date_Cnt 
+												ELSE 1 END AS Date_Cnt
+											, CASE WHEN Date_Cnt != Date_Cnt_2 THEN 1 
+												ELSE Date_Cnt END AS Date_Cnt_2
+											, CASE WHEN Date_Cnt != Date_Cnt_2 THEN C.Posted 
+												ELSE 0 END AS Date_Cnt_3
+											FROM
+												(SELECT Donation_Key
+													, SUBSTRING(CONVERT(NVARCHAR (10),New_AccountingDate,112),1,6) AS New_AccountingDate
+													, [Dash]
+													, ROUND((CONVERT(FLOAT,COUNT(*))/2),0) AS Date_Cnt
+													, (COUNT(*)/2) AS Date_Cnt_2
+													FROM _Accounting_Key_Fact
+													GROUP BY Donation_Key, SUBSTRING(CONVERT(NVARCHAR (10),New_AccountingDate,112),1,6), [Dash]
+												) A
+												LEFT JOIN
+													(SELECT Donation_Key
+														, Posted
+														FROM
+															(SELECT A.Donation_Key
+																, A.Record_Status
+																, A.Accounting_Amt
+																FROM _Accounting_Key_Fact A
+															) A
+													PIVOT
+														( SUM(Accounting_Amt)
+														FOR Record_Status
+														IN ([Original],[Posted],[Reversal],[Void])
+														) AS _Pivot
+													) C ON A.Donation_Key = C.Donation_Key
+										)B ON A.Adjustment_Key = B.Adjustment_Key 					
+								) B ON A.Donation_Key = B.Donation_Key AND SUBSTRING(CONVERT(NVARCHAR (10),A.New_AccountingDate,112),1,6) = B.New_AccountingDate AND A.Adjustment_Number = 1		
+					) C ON A.Accounting_Fact_Key = C.Accounting_Fact_Key
+				LEFT JOIN
+					(SELECT A.Accounting_Fact_Key
+						, B.Net_Recorded_Ytd
+						, B.Net_Not_Recorded_Ytd
+						FROM 
+							(SELECT A.Accounting_Fact_Key
+								, A.Donation_Key
+								, A.New_AccountingDate
+								, ROW_NUMBER() OVER(PARTITION BY Donation_Key,SUBSTRING(CONVERT(NVARCHAR (10),A.New_AccountingDate,112),1,4) ORDER BY SUBSTRING(CONVERT(NVARCHAR (10),A.New_AccountingDate,112),1,4),Record_Status) AS Adjustment_Number
+								FROM _Accounting_Key_Fact A
+								WHERE 1 = 1
+									AND SUBSTRING(CONVERT(NVARCHAR (10),A.New_AccountingDate,112),1,4) = YEAR(GETDATE())
+							) A
+							LEFT JOIN
+								(SELECT A.Adjustment_Key
+									, LEFT(A.Adjustment_Key,36) AS Donation_Key
+									, RIGHT(A.Adjustment_Key,4) AS New_AccountingDate
+									, (COALESCE(A.Original,A.Void,0) + COALESCE(A.Posted,0))/B.Date_Cnt AS Net_Recorded_Ytd	
+									, COALESCE((-1 * ((COALESCE(A.Original,A.Void,0) + COALESCE(A.Posted,0)) - (-1 * A.Reversal + B.Date_Cnt_3))),0)/B.Date_Cnt_2 AS Net_Not_Recorded_Ytd
+									FROM
+										(SELECT *
+											FROM
+												(SELECT CONCAT(A.Donation_Key,[Dash],SUBSTRING(CONVERT(NVARCHAR (10),A.New_AccountingDate,112),1,4)) AS Adjustment_Key
+													, A.Record_Status
+													, A.Accounting_Amt
+													FROM _Accounting_Key_Fact A
+													WHERE 1 = 1
+														AND SUBSTRING(CONVERT(NVARCHAR (10),A.New_AccountingDate,112),1,4) = YEAR(GETDATE())
+												) A
+										PIVOT
+											( SUM(Accounting_Amt)
+											FOR Record_Status
+											IN ([Original],[Posted],[Reversal],[Void])
+											) AS _Pivot
+										) A																								
+			' -- Ext_From_Statement_2
+		, ' ' -- Ext_Create_Fields_2
+		, ' ' -- Ext_Create_Fields_3
+		, ' ' -- Ext_Where_Statement_2
+		, ' ' -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+		, NULL -- Ext_Select_Statement_3
+		, NULL -- Ext_Select_Statement_4
+		, NULL -- Ext_Select_Statement_5
+		, NULL -- Ext_Select_Statement_6
+		, NULL -- Ext_Select_Statement_7
+		, '							LEFT JOIN
+										(SELECT CONCAT(A.Donation_Key,[Dash],SUBSTRING(CONVERT(NVARCHAR (10),A.New_AccountingDate,112),1,4)) AS Adjustment_Key
+											, CASE WHEN Date_Cnt > 0 THEN Date_Cnt 
+												ELSE 1 END AS Date_Cnt
+											, CASE WHEN Date_Cnt != Date_Cnt_2 THEN 1 
+												ELSE Date_Cnt END AS Date_Cnt_2
+											, CASE WHEN Date_Cnt != Date_Cnt_2 THEN C.Posted 
+												ELSE 0 END AS Date_Cnt_3
+											FROM
+												(SELECT Donation_Key
+													, SUBSTRING(CONVERT(NVARCHAR (10),New_AccountingDate,112),1,4) AS New_AccountingDate
+													, [Dash]
+													, ROUND((CONVERT(FLOAT,COUNT(*))/2),0) AS Date_Cnt
+													, (COUNT(*)/2) AS Date_Cnt_2
+													FROM _Accounting_Key_Fact
+													WHERE 1 = 1
+														AND SUBSTRING(CONVERT(NVARCHAR (10),New_AccountingDate,112),1,4) = YEAR(GETDATE())
+													GROUP BY Donation_Key, SUBSTRING(CONVERT(NVARCHAR (10),New_AccountingDate,112),1,4), [Dash]
+												) A
+												LEFT JOIN
+													(SELECT Donation_Key
+														, Posted
+														FROM
+															(SELECT A.Donation_Key
+																, A.Record_Status
+																, A.Accounting_Amt
+																FROM _Accounting_Key_Fact A
+																WHERE 1 = 1
+																	AND SUBSTRING(CONVERT(NVARCHAR (10),New_AccountingDate,112),1,4) = YEAR(GETDATE())
+															) A
+													PIVOT
+														( SUM(Accounting_Amt)
+														FOR Record_Status
+														IN ([Original],[Posted],[Reversal],[Void])
+														) AS _Pivot
+													) C ON A.Donation_Key = C.Donation_Key
+										)B ON A.Adjustment_Key = B.Adjustment_Key 					
+						) B ON A.Donation_Key = B.Donation_Key AND SUBSTRING(CONVERT(NVARCHAR (10),A.New_AccountingDate,112),1,4) = B.New_AccountingDate AND A.Adjustment_Number = 1
+					) D ON A.Accounting_Fact_Key = D.Accounting_Fact_Key
+				LEFT JOIN
+					(SELECT A.Accounting_Fact_Key
+						, B.Net_Recorded_Prior_Years
+						, B.Net_Not_Recorded_Prior_Years
+						FROM 
+							(SELECT A.Accounting_Fact_Key
+								, A.Donation_Key
+								, A.New_AccountingDate
+								, ROW_NUMBER() OVER(PARTITION BY Donation_Key,SUBSTRING(CONVERT(NVARCHAR (10),A.New_AccountingDate,112),1,4) ORDER BY SUBSTRING(CONVERT(NVARCHAR (10),A.New_AccountingDate,112),1,4),Record_Status) AS Adjustment_Number
+								FROM _Accounting_Key_Fact A
+								WHERE 1 = 1
+									AND SUBSTRING(CONVERT(NVARCHAR (10),A.New_AccountingDate,112),1,4) != YEAR(GETDATE())
+							) A
+							LEFT JOIN
+								(SELECT A.Adjustment_Key
+									, LEFT(A.Adjustment_Key,36) AS Donation_Key
+									, RIGHT(A.Adjustment_Key,4) AS New_AccountingDate
+									, (COALESCE(A.Original,A.Void,0) + COALESCE(A.Posted,0))/B.Date_Cnt AS Net_Recorded_Prior_Years	
+									, COALESCE((-1 * ((COALESCE(A.Original,A.Void,0) + COALESCE(A.Posted,0)) - (-1 * A.Reversal + B.Date_Cnt_3))),0)/B.Date_Cnt_2 AS Net_Not_Recorded_Prior_Years
+									FROM
+										(SELECT *
+											FROM
+												(SELECT CONCAT(A.Donation_Key,[Dash],SUBSTRING(CONVERT(NVARCHAR (10),A.New_AccountingDate,112),1,4)) AS Adjustment_Key
+													, A.Record_Status
+													, A.Accounting_Amt
+													FROM _Accounting_Key_Fact A
+													WHERE 1 = 1
+														AND SUBSTRING(CONVERT(NVARCHAR (10),A.New_AccountingDate,112),1,4) != YEAR(GETDATE())
+												) A
+										PIVOT
+											( SUM(Accounting_Amt)
+											FOR Record_Status
+											IN ([Original],[Posted],[Reversal],[Void])
+											) AS _Pivot
+										) A																																						
+			' -- Ext_From_Statement_3
+		, '							LEFT JOIN
+										(SELECT CONCAT(A.Donation_Key,[Dash],SUBSTRING(CONVERT(NVARCHAR (10),A.New_AccountingDate,112),1,4)) AS Adjustment_Key
+											, CASE WHEN Date_Cnt > 0 THEN Date_Cnt 
+												ELSE 1 END AS Date_Cnt
+											, CASE WHEN Date_Cnt != Date_Cnt_2 THEN 1 
+												ELSE Date_Cnt END AS Date_Cnt_2
+											, CASE WHEN Date_Cnt != Date_Cnt_2 THEN C.Posted 
+												ELSE 0 END AS Date_Cnt_3
+											FROM
+												(SELECT Donation_Key
+													, SUBSTRING(CONVERT(NVARCHAR (10),New_AccountingDate,112),1,4) AS New_AccountingDate
+													, [Dash]
+													, ROUND((CONVERT(FLOAT,COUNT(*))/2),0) AS Date_Cnt
+													, (COUNT(*)/2) AS Date_Cnt_2
+													FROM _Accounting_Key_Fact
+													WHERE 1 = 1
+														AND SUBSTRING(CONVERT(NVARCHAR (10),New_AccountingDate,112),1,4) != YEAR(GETDATE())
+													GROUP BY Donation_Key, SUBSTRING(CONVERT(NVARCHAR (10),New_AccountingDate,112),1,4), [Dash]
+												) A
+												LEFT JOIN
+													(SELECT Donation_Key
+														, Posted
+														FROM
+															(SELECT A.Donation_Key
+																, A.Record_Status
+																, A.Accounting_Amt
+																FROM _Accounting_Key_Fact A
+																WHERE 1 = 1
+																	AND SUBSTRING(CONVERT(NVARCHAR (10),New_AccountingDate,112),1,4) != YEAR(GETDATE())
+															) A
+													PIVOT
+														( SUM(Accounting_Amt)
+														FOR Record_Status
+														IN ([Original],[Posted],[Reversal],[Void])
+														) AS _Pivot
+													) C ON A.Donation_Key = C.Donation_Key
+										)B ON A.Adjustment_Key = B.Adjustment_Key 					
+						) B ON A.Donation_Key = B.Donation_Key AND SUBSTRING(CONVERT(NVARCHAR (10),A.New_AccountingDate,112),1,4) = B.New_AccountingDate AND A.Adjustment_Number = 1
+					) E ON A.Accounting_Fact_Key = E.Accounting_Fact_Key
+				LEFT JOIN
+					(SELECT MIN(Accounting_Fact_Key) AS Accounting_Fact_Key
+						, CONVERT(DATE,CONCAT(CONVERT(NVARCHAR(4),YEAR(A.New_AccountingDate))
+								, CONVERT(NVARCHAR(2),REPLACE(STR(MONTH(A.New_AccountingDate),2),[Space],[Zero]))
+								, [N01]
+								)) AS Accounting_Month_Date
+						, Accounting_All_Groups_Goal AS Accounting_Month_All_Goal
+						FROM _Accounting_Key_Fact A
+							INNER JOIN _Accounting_All_Groups_Goals_Dim B ON A.Accounting_Month_Key = B.Accounting_All_Groups_Month_Key
+																	AND A.Reporting_All_Group_Key = B.Reporting_All_Group_Key
+						GROUP BY CONVERT(DATE,CONCAT(CONVERT(NVARCHAR(4),YEAR(A.New_AccountingDate))
+								, CONVERT(NVARCHAR(2),REPLACE(STR(MONTH(A.New_AccountingDate),2),[Space],[Zero]))
+								, [N01]
+								))
+							, Accounting_All_Groups_Goal
+					) F ON A.Accounting_Fact_Key = F.Accounting_Fact_Key
+				LEFT JOIN
+					(SELECT MIN(Accounting_Fact_Key) AS Accounting_Fact_Key
+						, CONVERT(DATE,CONCAT(CONVERT(NVARCHAR(4),YEAR(A.New_AccountingDate))
+								, CONVERT(NVARCHAR(2),REPLACE(STR(MONTH(A.New_AccountingDate),2),[Space],[Zero]))
+								, [N01]
+								)) AS Accounting_Month_Date
+						, Accounting_Group_Key
+						, Accounting_Goal AS Accounting_Month_Goal
+						FROM _Accounting_Key_Fact A
+							INNER JOIN _Accounting_Goals_Dim B ON A.Accounting_Month_Key = B.Accounting_Month_Key
+																	AND A.Reporting_Group_Key = B.Accounting_Group_Key
+						GROUP BY CONVERT(DATE,CONCAT(CONVERT(NVARCHAR(4),YEAR(A.New_AccountingDate))
+								, CONVERT(NVARCHAR(2),REPLACE(STR(MONTH(A.New_AccountingDate),2),[Space],[Zero]))
+								, [N01]
+								))
+							, Accounting_Group_Key
+							, Accounting_Goal
+					) G ON A.Accounting_Fact_Key = G.Accounting_Fact_Key						
+			'-- Ext_From_Statement_4
+		, '		LEFT JOIN
+					(SELECT Accounting_Fact_Key
+						, Accounting_Amt AS Accounting_Last_Week_Ytd_Amt 
+						FROM _Accounting_Key_Fact A
+							INNER JOIN _Accounting_Week B ON A.Accounting_Week_Key = B.Accounting_Week_Key
+						WHERE 1 = 1
+							AND YEAR(B.Accounting_Week_Date) = YEAR(GETDATE())
+							AND Accounting_Week_Number < DATEPART(WEEK,GETDATE())
+					) H ON A.Accounting_Fact_Key = H.Accounting_Fact_Key
+				LEFT JOIN
+					(SELECT Accounting_Fact_Key
+						, Accounting_Amt AS Accounting_Last_Week_Minus_1_Ytd_Amt 
+						FROM _Accounting_Key_Fact A
+							INNER JOIN _Accounting_Week B ON A.Accounting_Week_Key = B.Accounting_Week_Key
+						WHERE 1 = 1
+							AND YEAR(B.Accounting_Week_Date) = YEAR(GETDATE())
+							AND Accounting_Week_Number < DATEPART(WEEK,GETDATE()-7)
+					) I ON A.Accounting_Fact_Key = I.Accounting_Fact_Key
+				LEFT JOIN
+					(SELECT Accounting_Fact_Key
+						, Accounting_Amt AS Accounting_Last_Week_Last_Year_Ytd_Amt 
+						FROM _Accounting_Key_Fact A
+							INNER JOIN _Accounting_Week B ON A.Accounting_Week_Key = B.Accounting_Week_Key
+						WHERE 1 = 1
+							AND YEAR(B.Accounting_Week_Date) = YEAR(GETDATE() -365)
+							AND Accounting_Week_Number < DATEPART(WEEK,GETDATE())
+					) J ON A.Accounting_Fact_Key = J.Accounting_Fact_Key
+			'-- Ext_From_Statement_5
 		, NULL -- Ext_From_Statement_6
 		, NULL -- Ext_From_Statement_7
 		, NULL -- Ext_Where_Statement_4
