@@ -270,6 +270,114 @@ INSERT INTO dbo.Stage_To_Prod
 	)
 	,
 -- --------------------------
+-- _Accounting_Key_Fact
+-- --------------------------
+	( 1 -- Tier
+		, 'dbo._Accounting_Key_Fact' -- Source_Table
+		, 'dbo._Accounting_Key_Fact' -- Destination_Table
+		,'Accounting_Fact_Key BIGINT 
+			, Accounting_Key NVARCHAR(100)
+			, Donor_Key  NVARCHAR(100) 
+			, Fund_Key  NVARCHAR(100) 
+			, User_Key  NVARCHAR(100) 
+			, Donation_Key NVARCHAR(100)
+			, Hier_Key NVARCHAR(100)
+			, Accounting_Dim_Key INT
+			, Accounting_Tender_Type_Key INT
+			, Accounting_Kind_Key INT
+			, Accounting_Transmitted_Key INT
+			, Accounting_Text_Key INT
+			, Accounting_Month_Key INT
+			, Reporting_Group_Key INT
+			, Reporting_All_Group_Key INT
+			, Accounting_Week_Key INT
+			, Appeal_Key NVARCHAR(100)
+			, Accounting_Amt  MONEY 	
+			, New_AccountingDate DATE
+			, Table_Source NVARCHAR(100)
+			, Record_Status NVARCHAR(100)
+			' -- Dest_Create_Fields
+		, 'Accounting_Fact_Key
+			, Accounting_Key
+			, Donor_Key 
+			, Fund_Key 
+			, User_Key
+			, Donation_Key
+			, Hier_Key
+			, Accounting_Dim_Key
+			, Accounting_Tender_Type_Key
+			, Accounting_Kind_Key
+			, Accounting_Transmitted_Key
+			, Accounting_Text_Key
+			, Accounting_Month_Key
+			, Reporting_Group_Key
+			, Reporting_All_Group_Key
+			, Accounting_Week_Key
+			, Appeal_Key
+			, Accounting_Amt	
+			, New_AccountingDate
+			, Table_Source
+			, Record_Status
+			' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _Accounting_Reporting_Dim
+-- --------------------------
+	( 1 -- Tier
+		, 'dbo._Accounting_Reporting_Dim' -- Source_Table
+		, 'dbo._Accounting_Reporting_Dim' -- Destination_Table
+		,'Accounting_Fact_Key BIGINT
+			, Accounting_Through_Previous_Month_Current_Year_Amt MONEY
+			, Accounting_Through_Previous_Month_Previous_Year_Amt MONEY
+			, Accounting_Previous_Year_Amt MONEY
+			, Accounting_Through_Previous_Month_Two_Years_Ago_Amt MONEY
+			, Accounting_Two_Years_Ago_Amt MONEY
+			, Net_Recorded MONEY
+			, Net_Not_Recorded MONEY
+			, Net_Recorded_Monthly MONEY
+			, Net_Not_Recorded_Monthly MONEY
+			, Net_Recorded_Ytd MONEY
+			, Net_Not_Recorded_Ytd MONEY
+			, Net_Recorded_Prior_Years MONEY
+			, Net_Not_Recorded_Prior_Years MONEY
+			, Accounting_Month_Date DATE
+			, Accounting_Month_All_Goal MONEY
+			, Accounting_Month_Goal MONEY
+			, Accounting_Last_Week_Ytd_Amt MONEY
+			, Accounting_Last_Week_Minus_1_Ytd_Amt MONEY
+			, Accounting_Last_Week_Last_Year_Ytd_Amt MONEY
+			' -- Dest_Create_Fields
+		, 'Accounting_Fact_Key
+			, Accounting_Through_Previous_Month_Current_Year_Amt
+			, Accounting_Through_Previous_Month_Previous_Year_Amt
+			, Accounting_Previous_Year_Amt
+			, Accounting_Through_Previous_Month_Two_Years_Ago_Amt
+			, Accounting_Two_Years_Ago_Amt
+			, Net_Recorded
+			, Net_Not_Recorded
+			, Net_Recorded_Monthly
+			, Net_Not_Recorded_Monthly
+			, Net_Recorded_Ytd
+			, Net_Not_Recorded_Ytd
+			, Net_Recorded_Prior_Years
+			, Net_Not_Recorded_Prior_Years
+			, Accounting_Month_Date
+			, Accounting_Month_All_Goal
+			, Accounting_Month_Goal
+			, Accounting_Last_Week_Ytd_Amt
+			, Accounting_Last_Week_Minus_1_Ytd_Amt
+			, Accounting_Last_Week_Last_Year_Ytd_Amt
+			' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
 -- _Accounting_Tender_Type_Dim
 -- --------------------------
 	( 1 -- Tier
