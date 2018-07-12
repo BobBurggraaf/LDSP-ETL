@@ -423,7 +423,7 @@ INSERT INTO dbo.Stage_To_Prod
 	( 1 -- Tier
 		, 'dbo._Accounting_Transmitted_Dim' -- Source_Table
 		, 'dbo._Accounting_Transmitted_Dim' -- Destination_Table
-		,'Accounting_Transmitted_Key INT PRIMARY KEY
+		,'Accounting_Transmitted_Key INT
 			, Accounting_Transmitted_Id INT
 			, Accounting_Transmitted_Desc NVARCHAR(400)
 			' -- Dest_Create_Fields
