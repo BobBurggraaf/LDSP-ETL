@@ -34609,7 +34609,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, C.Accounting_Current_Year_Adj_Yn
 			, C.Accounting_Recognition_Credit_Recipients
 			' -- Ext_Select_Statement
-		, '	FROM View_Accounting_Data_1 A
+		, '	View_Accounting_Data_1 A
 				LEFT JOIN View_Accounting_Data_2 B ON A.Accounting_Fact_Key = B.Accounting_Fact_Key
 				LEFT JOIN View_Accounting_Data_3 C ON A.Accounting_Fact_Key = C.Accounting_Fact_Key														
 			' -- Ext_From_Statement
