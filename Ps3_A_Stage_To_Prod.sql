@@ -4049,6 +4049,7 @@ INSERT INTO dbo.Stage_To_Prod
 			, Initiative_Proposal_Amt MONEY
 			, Initiative_Total_Committed_Amt MONEY
 			, Initiative_Total_Given_Amt MONEY
+			, Initiative_Has_Expectancy NVARCHAR(1)
 			' -- Dest_Create_Fields
 		, 'Donor_Ldsp_Id
 			, Initiative_Key
@@ -4075,6 +4076,7 @@ INSERT INTO dbo.Stage_To_Prod
 			, Initiative_Proposal_Amt
 			, Initiative_Total_Committed_Amt
 			, Initiative_Total_Given_Amt
+			, Initiative_Has_Expectancy
 			' -- Dest_Insert_Fields
 		, ' ' -- Dest_Where_Statement
 		, GETDATE()
@@ -4438,6 +4440,109 @@ INSERT INTO dbo.Stage_To_Prod
 			, Bio_Strat_Plan_OwnerId_First_Name
 			, Bio_Strat_Plan_OwnerId_Last_Name
 			, Bio_Strat_Plan_OwnerId_Domain_Name
+			' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- View_Accounting_Data
+-- --------------------------
+	( 1 -- Tier
+		, 'dbo.View_Accounting_Data' -- Source_Table
+		, 'dbo.View_Accounting_Data' -- Destination_Table
+		,'	Accounting_Fact_Key BIGINT
+			, Donor_Ldsp_Id NVARCHAR(100)
+			, Donor_Contact_Type NVARCHAR(100)
+			, Donor_Name NVARCHAR(160)
+			, Donor_First_Name NVARCHAR(50)
+			, Donor_Last_Name NVARCHAR(50)
+			, Address_Street_1 NVARCHAR(100)
+			, Address_Street_2 NVARCHAR(100)
+			, Address_City NVARCHAR(100)
+			, Address_State_Code NVARCHAR(100)
+			, Address_Post_Code_Full NVARCHAR(100)
+			, Address_Post_Code_Last_4 NVARCHAR(15)
+			, Address_Country NVARCHAR(100)
+			, Address_State_Province  NVARCHAR(50)
+			, Address_County NVARCHAR(100)
+			, Record_Status NVARCHAR(100)
+			, New_AccountingDate DATE
+			, Accounting_Amt MONEY
+			, Hier_Name NVARCHAR(100)
+			, New_Inst NVARCHAR(100)
+			, Hier_Level_1 NVARCHAR(100)
+			, Hier_Level_2 NVARCHAR(100)
+			, Hier_Level_3 NVARCHAR(100)
+			, Fund_Account_Number NVARCHAR(100)
+			, Fund_Name NVARCHAR(100)
+			, New_InstitutionAccountNumber NVARCHAR(100)
+			, Plus_Unrestricted NVARCHAR(1)
+			, New_BatchNumber NVARCHAR(100)
+			, Lds_BatchType NVARCHAR(400)
+			, Appeal_Code NVARCHAR(20)
+			, Appeal_Name NVARCHAR(100)
+			, Accounting_Kind_Desc NVARCHAR(400)
+			, Accounting_Tender_Type_Desc NVARCHAR(400)
+			, Accounting_Transmitted_Desc  NVARCHAR(400)
+			, Accounting_Text_Description_Text  NVARCHAR(4000)
+			, Accounting_Text_Gift_Adjustment_Text  NVARCHAR(4000)
+			, Accounting_Text_Receipt_Text  NVARCHAR(4000)
+			, Accounting_Receipt_Date DATE
+			, Accounting_Post_Date DATE
+			, Accounting_Related_Gift_Number NVARCHAR(50)
+			, Accounting_Gift_Source NVARCHAR(400)
+			, Accounting_Adjustment_Yn NVARCHAR(1)
+			, Accounting_Same_Month_Adj_Yn NVARCHAR(1)
+			, Accounting_Current_Year_Adj_Yn NVARCHAR(1)
+			, Accounting_Recognition_Credit_Recipients NVARCHAR(4000)
+			' -- Dest_Create_Fields
+		, '	Accounting_Fact_Key
+			, Donor_Ldsp_Id
+			, Donor_Contact_Type
+			, Donor_Name
+			, Donor_First_Name
+			, Donor_Last_Name
+			, Address_Street_1
+			, Address_Street_2
+			, Address_City
+			, Address_State_Code
+			, Address_Post_Code_Full
+			, Address_Post_Code_Last_4
+			, Address_Country
+			, Address_State_Province
+			, Address_County
+			, Record_Status
+			, New_AccountingDate
+			, Accounting_Amt
+			, Hier_Name
+			, New_Inst
+			, Hier_Level_1
+			, Hier_Level_2
+			, Hier_Level_3
+			, Fund_Account_Number
+			, Fund_Name
+			, New_InstitutionAccountNumber
+			, Plus_Unrestricted
+			, New_BatchNumber
+			, Lds_BatchType
+			, Appeal_Code
+			, Appeal_Name
+			, Accounting_Kind_Desc
+			, Accounting_Tender_Type_Desc
+			, Accounting_Transmitted_Desc
+			, Accounting_Text_Description_Text
+			, Accounting_Text_Gift_Adjustment_Text
+			, Accounting_Text_Receipt_Text
+			, Accounting_Receipt_Date
+			, Accounting_Post_Date
+			, Accounting_Related_Gift_Number
+			, Accounting_Gift_Source
+			, Accounting_Adjustment_Yn
+			, Accounting_Same_Month_Adj_Yn
+			, Accounting_Current_Year_Adj_Yn
+			, Accounting_Recognition_Credit_Recipients
 			' -- Dest_Insert_Fields
 		, ' ' -- Dest_Where_Statement
 		, GETDATE()
