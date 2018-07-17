@@ -4206,60 +4206,60 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, ModifiedOn
 			, StateCode
 			' -- Ext_Insert_Fields
-		, 'New_ConstituentDonor
-			, New_OrganizationDonor
-			, New_FundAccount
-			, New_InstitutionalHierarchyId
-			, New_AssociatedPledge
-			, New_GiftAmount
-			, New_BatchNumber
-			, New_GiftId
-			, OwnerId
-			, New_GiftNumber
-			, StatusCode
-			, CONVERT(NVARCHAR(4000),SUBSTRING(Plus_ReceiptText,1,4000)) AS Plus_ReceiptText
-			, CONVERT(NVARCHAR(4000),SUBSTRING(Plus_SpecialGiftInstructions,1,4000)) AS Plus_SpecialGiftInstructions
-			, Plus_CheckNumber
-			, Plus_GiftSource
-			, Plus_Kind
-			, New_TenderType
+		, 'A.New_ConstituentDonor
+			, A.New_OrganizationDonor
+			, A.New_FundAccount
+			, A.New_InstitutionalHierarchyId
+			, A.New_AssociatedPledge
+			, A.New_GiftAmount
+			, A.New_BatchNumber
+			, A.New_GiftId
+			, A.OwnerId
+			, A.New_GiftNumber
+			, A.StatusCode
+			, CONVERT(NVARCHAR(4000),SUBSTRING(A.Plus_ReceiptText,1,4000)) AS Plus_ReceiptText
+			, CONVERT(NVARCHAR(4000),SUBSTRING(A.Plus_SpecialGiftInstructions,1,4000)) AS Plus_SpecialGiftInstructions
+			, A.Plus_CheckNumber
+			, A.Plus_GiftSource
+			, A.Plus_Kind
+			, A.New_TenderType
 			, CASE WHEN DATENAME(dy,A.New_AccountingDate) BETWEEN B.Mdt_Begin_Date_Number AND B.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.New_AccountingDate)
 					ELSE DATEADD(hh,-7,A.New_AccountingDate) END AS New_AccountingDate
 			, CASE WHEN DATENAME(dy,A.New_ReceiptDate) BETWEEN C.Mdt_Begin_Date_Number AND C.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.New_ReceiptDate)
 					ELSE DATEADD(hh,-7,A.New_ReceiptDate) END AS New_ReceiptDate
 			, CASE WHEN DATENAME(dy,A.New_PostDate) BETWEEN D.Mdt_Begin_Date_Number AND D.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.New_PostDate)
 					ELSE DATEADD(hh,-7,A.New_PostDate) END AS New_PostDate
-			, Plus_PlannedGift
-			, New_Transmitted
-			, Plus_AnonymousGift
-			, Plus_ReceiptDeliveryMethod
-			, CONVERT(NVARCHAR(4000),SUBSTRING(Plus_GiftInstructions,1,4000)) AS Plus_GiftInstructions
-			, CONVERT(NVARCHAR(4000),SUBSTRING(Plus_AcknowledgementInstructions,1,4000)) AS Plus_AcknowledgementInstructions
-			, Plus_ExcludeFromReport
-			, Plus_IncludeOnYearEndReceipt
-			, Plus_GoodsServicesProvided
-			, Plus_EntitledBenefitValue
-			, Plus_AcknowledgeContact
-			, Plus_ContactRole
-			, Plus_Salutation
-			, Plus_Signer
-			, Plus_NoAcknowledgement
-			, Plus_ParentGift AS Match_Gift_Number
-			, Plus_Appeal
-			, Plus_MatchExpected
-			, New_Batch
-			, CONVERT(NVARCHAR(4000),SUBSTRING(Plus_Description,1,4000)) AS Plus_Description
-			, Lds_RecurringGiftRule
-			, Lds_RecurringGiftGroup
-			, Plus_DonorType
-			, Lds_TelefundGift
-			, Plus_Cid
-			, Plus_Cde2
+			, A.Plus_PlannedGift
+			, A.New_Transmitted
+			, A.Plus_AnonymousGift
+			, A.Plus_ReceiptDeliveryMethod
+			, CONVERT(NVARCHAR(4000),SUBSTRING(A.Plus_GiftInstructions,1,4000)) AS Plus_GiftInstructions
+			, CONVERT(NVARCHAR(4000),SUBSTRING(A.Plus_AcknowledgementInstructions,1,4000)) AS Plus_AcknowledgementInstructions
+			, A.Plus_ExcludeFromReport
+			, A.Plus_IncludeOnYearEndReceipt
+			, A.Plus_GoodsServicesProvided
+			, A.Plus_EntitledBenefitValue
+			, A.Plus_AcknowledgeContact
+			, A.Plus_ContactRole
+			, A.Plus_Salutation
+			, A.Plus_Signer
+			, A.Plus_NoAcknowledgement
+			, G.New_GiftNumber AS Match_Gift_Number
+			, A.Plus_Appeal
+			, A.Plus_MatchExpected
+			, A.New_Batch
+			, CONVERT(NVARCHAR(4000),SUBSTRING(A.Plus_Description,1,4000)) AS Plus_Description
+			, A.Lds_RecurringGiftRule
+			, A.Lds_RecurringGiftGroup
+			, A.Plus_DonorType
+			, A.Lds_TelefundGift
+			, A.Plus_Cid
+			, A.Plus_Cde2
 			, CASE WHEN DATENAME(dy,A.CreatedOn) BETWEEN E.Mdt_Begin_Date_Number AND E.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.CreatedOn)
 					ELSE DATEADD(hh,-7,A.CreatedOn) END AS CreatedOn
 			, CASE WHEN DATENAME(dy,A.ModifiedOn) BETWEEN F.Mdt_Begin_Date_Number AND F.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.ModifiedOn)
 					ELSE DATEADD(hh,-7,A.ModifiedOn) END AS ModifiedOn
-			, StateCode
+			, A.StateCode
 			' -- Ext_Select_Statement
 		, 'Oa_Extract.New_GiftBase A
 				LEFT JOIN dbo._MDT_Conversion_Dim B ON YEAR(A.New_AccountingDate) = B.Date_Year
@@ -4268,6 +4268,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 				
 				LEFT JOIN dbo._MDT_Conversion_Dim E ON YEAR(A.CreatedOn) = E.Date_Year
 				LEFT JOIN dbo._MDT_Conversion_Dim F ON YEAR(A.ModifiedOn) = F.Date_Year
+				LEFT JOIN Oa_Extract.New_GiftBase G ON A.Plus_ParentGift = G.New_GiftId
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, NULL -- Tier_3_Stage
