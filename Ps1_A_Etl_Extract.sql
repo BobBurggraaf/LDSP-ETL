@@ -9431,6 +9431,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Dest_Insert_Fields
 		, ' ' -- Dest_Where_Statement
 		, 'Donor_Key NVARCHAR(100)
+			, Y NVARCHAR(1) DEFAULT ''Y''
+			, N NVARCHAR(1) DEFAULT ''N''
 			' -- Ext_Create_Fields
 		, 'Donor_Key
 			' -- Ext_Insert_Fields
@@ -18825,6 +18827,10 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Hier_Association_Usage_Yn  NVARCHAR(1) 
 			, Hier_Donation_Usage_Yn  NVARCHAR(1)
 			, New_Inst NVARCHAR(100)
+			, BYU NVARCHAR(5) DEFAULT ''BYU''
+			, BYUI NVARCHAR(5) DEFAULT ''BYUI''
+			, BYUH NVARCHAR(5) DEFAULT ''BYUH''
+			, LDSBC NVARCHAR(5) DEFAULT ''LDSBC''			
 			' -- Ext_Create_Fields
 		, 'Hier_Key 
 			, Hier_Name
@@ -18869,7 +18875,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Ext_Institution A 
 			' -- Ext_From_Statement
 		, 'INSERT INTO _Hier_Dim
-			VALUES(0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+			VALUES(0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 			' -- Ext_Where_Statement	
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
@@ -21164,6 +21170,17 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, ConstituentId NVARCHAR(100)
 			, AccountId NVARCHAR(100)
 			, New_Id NVARCHAR(100)
+			, BYU_Student_ID NVARCHAR(30) DEFAULT ''BYU Student ID''
+			, BYU_Idaho_Student_ID NVARCHAR(30) DEFAULT ''BYU Idaho Student ID''
+			, BYU_Hawaii_Student_ID NVARCHAR(30) DEFAULT ''BYU Hawaii Student ID''
+			, LDSBC_Student_ID NVARCHAR(30) DEFAULT ''LDSBC Student ID''
+			, BYU_Employee_ID NVARCHAR(30) DEFAULT ''BYU Employee ID''
+			, BYU_Idaho_Employee_ID NVARCHAR(30) DEFAULT ''BYU Idaho Employee ID''
+			, BYU_Hawaii_Employee_ID NVARCHAR(30) DEFAULT ''BYU Hawaii Employee ID''
+			, LDSBC_Employee_ID NVARCHAR(30) DEFAULT ''LDSBC Employee''
+			, CES_ID NVARCHAR(30) DEFAULT ''CES ID''
+			, Church_Payroll_ID NVARCHAR(30) DEFAULT ''Church Payroll ID''
+			, Star NVARCHAR(1) DEFAULT ''*''
 			' -- Ext_Create_Fields
 		, 'ContactId 
 			, Id_Key 
@@ -21242,7 +21259,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND C.RowNumber = 1
 			INSERT INTO _Id_Dim
-				VALUES(NULL,0,0,NULL,NULL,NULL,NULL,NULL);
+				VALUES(NULL,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 			' -- Ext_Where_Statement	
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
@@ -21459,6 +21476,11 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Graduated_In_Current_Academic_Year NVARCHAR(1)
 			, Current_Year_Plus_4_Student NVARCHAR(1)
 			, Current_Year_Plus_4_Graduate NVARCHAR(1)
+			, Y NVARCHAR(1) DEFAULT ''Y''
+			, BYU NVARCHAR(5) DEFAULT ''BYU''
+			, BYUI NVARCHAR(5) DEFAULT ''BYUI''
+			, BYUH NVARCHAR(5) DEFAULT ''BYUH''
+			, LDSBC NVARCHAR(5) DEFAULT ''LDSBC''
 			' -- Ext_Create_Fields
 		, 'Student_Key
 			, Student_Group_Key
@@ -21589,7 +21611,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 												
 			' -- Ext_From_Statement
 		, 'INSERT INTO _Student_Dim
-			VALUES(0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL); 
+			VALUES(0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL); 
 			' -- Ext_Where_Statement	
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
@@ -24822,6 +24844,9 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Law_School NVARCHAR(50) DEFAULT ''Law School, J. Reuben Clark''
 			, Graduated NVARCHAR(50) DEFAULT ''Graduated''
 			, Not_Graduated NVARCHAR(50) DEFAULT ''Not Graduated''
+			, N234064 NVARCHAR(10) DEFAULT ''234064''
+			, N234060 NVARCHAR(10) DEFAULT ''234060''
+			, Current_Student NVARCHAR(25) DEFAULT ''Current Student''
 			' -- Ext_Create_Fields
 		, 'ContactId
 			, Alumni_Key
@@ -25035,7 +25060,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 											, E.New_MajorName AS Emphasis             											
 			' -- Ext_From_Statement
 		, 'INSERT INTO _Alumni_Dim
-			VALUES(NULL,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+			VALUES(NULL,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 			CREATE NONCLUSTERED INDEX IX_New_University 
 				ON _Alumni_Dim(New_University ASC)
 					INCLUDE (
@@ -25869,6 +25894,236 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Tier_4_Stage_DateTime
 		, ' ' -- Ext_Select_Statement_2
 		, ' 
+			' -- Ext_From_Statement_2
+		, ' ' -- Ext_Create_Fields_2
+		, ' ' -- Ext_Create_Fields_3
+		, ' ' -- Ext_Where_Statement_2
+		, ' ' -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+		, NULL -- Ext_Select_Statement_3
+		, NULL -- Ext_Select_Statement_4
+		, NULL -- Ext_Select_Statement_5
+		, NULL -- Ext_Select_Statement_6
+		, NULL -- Ext_Select_Statement_7
+		, NULL -- Ext_From_Statement_3
+		, NULL -- Ext_From_Statement_4
+		, NULL -- Ext_From_Statement_5
+		, NULL -- Ext_From_Statement_6
+		, NULL -- Ext_From_Statement_7
+		, NULL -- Ext_Where_Statement_4
+		, NULL -- Ext_Where_Statement_5
+		, NULL -- Ext_Where_Statement_6
+		, NULL -- Ext_Where_Statement_7
+		, NULL -- Tier_10_Stage
+		, NULL -- Tier_10_Stage_DateTime
+		, NULL -- Tier_11_Stage
+		, NULL -- Tier_11_Stage_DateTime
+		, NULL -- Tier_12_Stage
+		, NULL -- Tier_12_Stage_DateTime
+		, NULL -- Extra_7
+		, NULL -- Extra_8
+		, NULL -- Extra_9
+		, NULL -- Extra_10
+	)
+	,
+-- --------------------------
+-- _Donor_Education_Dim
+-- --------------------------
+	( 5 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Donor_Education_Dim' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, '	Donor_Key NVARCHAR(100) PRIMARY KEY
+			, Byu_Student_Id NVARCHAR(100)
+			, ByuI_Student_Id NVARCHAR(100)
+			, ByuH_Student_Id NVARCHAR(100)
+			, Ldsbc_Student_Id NVARCHAR(100)
+			, Byu_Employee_Id NVARCHAR(100)
+			, ByuI_Employee_Id NVARCHAR(100)
+			, ByuH_Employee_Id NVARCHAR(100)
+			, Ldsbc_Employee_Id NVARCHAR(100)
+			, Ces_Id NVARCHAR(100)
+			, Byu_Degrees NVARCHAR(4000)
+			, ByuI_Degrees NVARCHAR(4000)
+			, ByuH_Degrees NVARCHAR(4000)
+			, Ldsbc_Degrees NVARCHAR(4000)
+			, Donor_Any_School_Current_Student NVARCHAR(1)
+			, Donor_BYU_Current_Student NVARCHAR(1)
+			, Donor_BYUI_Current_Student NVARCHAR(1)
+			, Donor_BYUH_Current_Student NVARCHAR(1)
+			, Donor_LDSBC_Current_Student NVARCHAR(1)
+			, Donor_Current_Student_Yn NVARCHAR(1) 
+			, Byu_Mba_Class_Year NVARCHAR(20)
+		' -- Ext_Create_Fields
+		, ' Donor_Key      
+			, Byu_Student_Id
+			, ByuI_Student_Id
+			, ByuH_Student_Id
+			, Ldsbc_Student_Id
+			, Byu_Employee_Id
+			, ByuI_Employee_Id
+			, ByuH_Employee_Id
+			, Ldsbc_Employee_Id
+			, Ces_Id
+			, Byu_Degrees
+			, ByuI_Degrees
+			, ByuH_Degrees
+			, Ldsbc_Degrees
+			, Donor_Any_School_Current_Student
+			, Donor_BYU_Current_Student
+			, Donor_BYUI_Current_Student
+			, Donor_BYUH_Current_Student
+			, Donor_LDSBC_Current_Student
+			, Donor_Current_Student_Yn 
+			, Byu_Mba_Class_Year
+		' -- Ext_Insert_Fields
+		, ' A.Donor_Key
+			, B.Byu_Student_Id
+			, B.ByuI_Student_Id
+			, B.ByuH_Student_Id
+			, B.Ldsbc_Student_Id
+			, B.Byu_Employee_Id
+			, B.ByuI_Employee_Id
+			, B.ByuH_Employee_Id
+			, B.Ldsbc_Employee_Id
+			, B.Ces_Id
+			, C.Byu_Degrees
+			, D.ByuI_Degrees
+			, E.ByuH_Degrees
+			, F.Ldsbc_Degrees
+			, CASE WHEN G.Donor_Any_School_Current_Student IS NULL THEN A.[N] ELSE G.Donor_Any_School_Current_Student END AS Donor_Any_School_Current_Student
+			, CASE WHEN H.Donor_BYU_Current_Student IS NULL THEN A.[N] ELSE H.Donor_BYU_Current_Student END AS Donor_BYU_Current_Student
+			, CASE WHEN I.Donor_BYUI_Current_Student IS NULL THEN A.[N] ELSE I.Donor_BYUI_Current_Student END AS Donor_BYUI_Current_Student
+			, CASE WHEN J.Donor_BYUH_Current_Student IS NULL THEN A.[N] ELSE J.Donor_BYUH_Current_Student END AS Donor_BYUH_Current_Student
+			, CASE WHEN K.Donor_LDSBC_Current_Student IS NULL THEN A.[N] ELSE K.Donor_LDSBC_Current_Student END AS Donor_LDSBC_Current_Student
+			, CASE WHEN L.Plus_CurrentStudent = 1 THEN A.[Y] ELSE A.[N] END AS Donor_Current_Student_Yn
+			, M.Byu_Mba_Class_Year
+		' -- Ext_Select_Statement
+		, ' _All_Donors_ A
+				LEFT JOIN 
+					(SELECT ContactId
+						, CASE WHEN Byu_Student_Id = [Star] THEN NULL ELSE Byu_Student_Id END AS Byu_Student_Id
+						, CASE WHEN ByuI_Student_Id = [Star] THEN NULL ELSE ByuI_Student_Id END AS ByuI_Student_Id
+						, CASE WHEN ByuH_Student_Id = [Star] THEN NULL ELSE ByuH_Student_Id END AS ByuH_Student_Id
+						, CASE WHEN Ldsbc_Student_Id = [Star] THEN NULL ELSE Ldsbc_Student_Id END AS Ldsbc_Student_Id
+						, CASE WHEN Byu_Employee_Id = [Star] THEN NULL ELSE Byu_Employee_Id END AS Byu_Employee_Id
+						, CASE WHEN ByuI_Employee_Id = [Star] THEN NULL ELSE ByuI_Employee_Id END AS ByuI_Employee_Id
+						, CASE WHEN ByuH_Employee_Id = [Star] THEN NULL ELSE ByuH_Employee_Id END AS ByuH_Employee_Id
+						, CASE WHEN Ldsbc_Employee_Id = [Star] THEN NULL ELSE Ldsbc_Employee_Id END AS Ldsbc_Employee_Id
+						, CASE WHEN Ces_Id = [Star] THEN NULL ELSE Ces_Id END AS Ces_Id
+						, CASE WHEN Church_Payroll_Id = [Star] THEN NULL ELSE Church_Payroll_Id END AS Church_Payroll_Id
+						FROM 
+							(SELECT DISTINCT CONVERT(NVARCHAR(100),ContactId) AS ContactId
+									, [Star]
+									, MAX(CASE WHEN New_Type = [BYU_Student_ID] THEN Plus_Id ELSE [Star] END) AS Byu_Student_Id
+									, MAX(CASE WHEN New_Type = [BYU_Idaho_Student_ID] THEN Plus_Id ELSE [Star] END) AS ByuI_Student_Id
+									, MAX(CASE WHEN New_Type = [BYU_Hawaii_Student_ID] THEN Plus_Id ELSE [Star] END) AS ByuH_Student_Id
+									, MAX(CASE WHEN New_Type = [LDSBC_Student_ID] THEN Plus_Id ELSE [Star] END) AS Ldsbc_Student_Id
+									, MAX(CASE WHEN New_Type = [BYU_Employee_ID] THEN Plus_Id ELSE [Star] END) AS Byu_Employee_Id
+									, MAX(CASE WHEN New_Type = [BYU_Idaho_Employee_ID] THEN Plus_Id ELSE [Star] END) AS ByuI_Employee_Id
+									, MAX(CASE WHEN New_Type = [BYU_Hawaii_Employee_ID] THEN Plus_Id ELSE [Star] END) AS ByuH_Employee_Id
+									, MAX(CASE WHEN New_Type = [LDSBC_Employee_ID] THEN Plus_Id ELSE [Star] END) AS Ldsbc_Employee_Id
+									, MAX(CASE WHEN New_Type = [CES_ID] THEN Plus_Id ELSE [Star] END) AS Ces_Id
+									, MAX(CASE WHEN New_Type = [Church_Payroll_ID] THEN Plus_Id ELSE [Star] END) AS Church_Payroll_Id     
+								FROM LDSPhilanthropiesDW.dbo._Id_Dim 
+								GROUP BY CONVERT(NVARCHAR(100),ContactId)
+								, [Star] 
+							) A
+					) B ON A.Donor_Key = B.ContactId
+				LEFT JOIN Uf_Byu_Degrees() C ON A.Donor_Key = C.Donor_Key
+				LEFT JOIN Uf_Byui_Degrees() D ON A.Donor_Key = D.Donor_Key
+				LEFT JOIN Uf_Byuh_Degrees() E ON A.Donor_Key = E.Donor_Key
+				LEFT JOIN Uf_Ldsbc_Degrees() F ON A.Donor_Key = F.Donor_Key				
+			' -- Ext_From_Statement
+		, ' AND A.Donor_Key IS NOT NULL
+			' -- Ext_Where_Statement
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, '		LEFT JOIN 
+					(
+					SELECT DISTINCT A.New_StudentsAttendanceId AS Donor_Key
+						, [Y] AS Donor_Any_School_Current_Student
+						FROM Ext_Student A
+						WHERE 1 = 1
+							AND A.Plus_Year = CONVERT(NVARCHAR(10),YEAR(GETDATE()-1))
+					) G ON A.Donor_Key = G.Donor_Key
+				LEFT JOIN
+					(
+					SELECT DISTINCT ContactId AS Donor_Key
+						, [Y] AS Donor_BYU_Current_Student
+						FROM _Student_Dim
+						WHERE 1 = 1
+							AND Current_Year_Plus_4_Student = [Y]
+							AND New_University = [BYU]
+					) H ON A.Donor_Key = H.Donor_Key
+				LEFT JOIN
+					(
+					SELECT DISTINCT ContactId AS Donor_Key
+						, [Y] AS Donor_BYUI_Current_Student
+						FROM _Student_Dim
+						WHERE 1 = 1
+							AND Current_Year_Plus_4_Student = [Y]
+							AND New_University = [BYUI]
+					) I ON A.Donor_Key = I.Donor_Key
+				LEFT JOIN
+					(
+					SELECT DISTINCT ContactId AS Donor_Key
+						, [Y] AS Donor_BYUH_Current_Student
+						FROM _Student_Dim
+						WHERE 1 = 1
+							AND Current_Year_Plus_4_Student = [Y]
+							AND New_University = [BYUH]
+					) J ON A.Donor_Key = J.Donor_Key
+				LEFT JOIN
+					(
+					SELECT DISTINCT ContactId AS Donor_Key
+						, [Y] AS Donor_LDSBC_Current_Student
+						FROM _Student_Dim
+						WHERE 1 = 1
+							AND Current_Year_Plus_4_Student = [Y]
+							AND New_University = [LDSBC]
+					) K ON A.Donor_Key = K.Donor_Key
+				LEFT JOIN Ext_Contact L ON A.Donor_Key = CONVERT(NVARCHAR(100),L.ContactId)
+				LEFT JOIN
+					(SELECT A.ContactId
+						, CASE WHEN A.Plus_ActualGraduationDate IS NULL THEN [Current_Student] ELSE CONVERT(NVARCHAR(4),YEAR(A.Plus_ActualGraduationDate)) END AS Byu_Mba_Class_Year
+						FROM
+							(SELECT ROW_NUMBER () OVER(PARTITION BY A.ContactId ORDER BY A.Plus_ActualGraduationDate DESC) AS Row_Num
+								, A.ContactId
+								, A.Plus_ActualGraduationDate
+								, A.[Current_Student]
+								FROM _Alumni_Dim A
+								WHERE 1 = 1
+									AND A.Program_Code IN ([N234064],[N234060])
+									AND A.ContactId IS NOT NULL
+							) A
+						WHERE 1 = 1
+							AND A.Row_Num = 1
+					) M ON A.Donor_Key = M.ContactId 
 			' -- Ext_From_Statement_2
 		, ' ' -- Ext_Create_Fields_2
 		, ' ' -- Ext_Create_Fields_3
@@ -29272,7 +29527,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 									FROM dbo._Gift_ A
 									WHERE 1 = 1
 										AND StatusCode != 100000003 -- i5 Deleted
-								) B ON A.ContactId = B.ContactId
+								) B ON A.Donor_Key = B.ContactId
 							LEFT JOIN 
 								(SELECT New_RelatedConstituent
 									, New_OrganizationId
@@ -32474,6 +32729,202 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement_3
 		, '		
 			'-- Ext_From_Statement_4
+		, NULL -- Ext_From_Statement_5
+		, NULL -- Ext_From_Statement_6
+		, NULL -- Ext_From_Statement_7
+		, NULL -- Ext_Where_Statement_4
+		, NULL -- Ext_Where_Statement_5
+		, NULL -- Ext_Where_Statement_6
+		, NULL -- Ext_Where_Statement_7
+		, NULL -- Tier_10_Stage
+		, NULL -- Tier_10_Stage_DateTime
+		, NULL -- Tier_11_Stage
+		, NULL -- Tier_11_Stage_DateTime
+		, NULL -- Tier_12_Stage
+		, NULL -- Tier_12_Stage_DateTime
+		, NULL -- Extra_7
+		, NULL -- Extra_8
+		, NULL -- Extra_9
+		, NULL -- Extra_10
+	)
+	,
+-- --------------------------
+-- _Donor_Financial_Dim
+-- --------------------------
+	( 8 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Donor_Financial_Dim' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, '	Donor_Key NVARCHAR(100)
+			, Donor_Wealth_Dt DATE
+			, Donor_Major_Gift_Propen  NVARCHAR(400)
+			, Donor_Annual_Gift NVARCHAR(400) 
+			, Donor_Planned_Gift NVARCHAR(400)
+			, Donor_Gift_Capacity_Enp NVARCHAR(400)
+			, Donor_Gift_Capacity_En NVARCHAR(400) 
+			, Donor_Philan_Cap_Rating NVARCHAR(400) 
+			, Donor_Est_Household_Income NVARCHAR(400) 
+			, Donor_Est_Home_Market_Val NVARCHAR(400) 
+			, Donor_Block_Clusters NVARCHAR(400)
+			, Donor_Total_Donation NVARCHAR(50)
+			, Byu_Donor NVARCHAR(1)
+			, ByuI_Donor NVARCHAR(1)
+			, ByuH_Donor NVARCHAR(1)
+			, Ldsbc_Donor NVARCHAR(1)
+		' -- Ext_Create_Fields
+		, ' Donor_Key      
+			, Donor_Wealth_Dt
+			, Donor_Major_Gift_Propen 
+			, Donor_Annual_Gift 
+			, Donor_Planned_Gift
+			, Donor_Gift_Capacity_Enp 
+			, Donor_Gift_Capacity_En 
+			, Donor_Philan_Cap_Rating 
+			, Donor_Est_Household_Income 
+			, Donor_Est_Home_Market_Val 
+			, Donor_Block_Clusters
+			, Donor_Total_Donation
+			, Byu_Donor
+			, ByuI_Donor
+			, ByuH_Donor
+			, Ldsbc_Donor
+		' -- Ext_Insert_Fields
+		, '  A.Donor_Key
+			, CONVERT(VARCHAR(10),B.Plus_WealthDate,101) AS Donor_Wealth_Dt
+			, C.Column_Label AS Donor_Major_Gift_Propen
+			, D.Column_Label AS Donor_Annual_Gift
+			, E.Column_Label AS Donor_Planned_Gift
+			, F.Column_Label AS Donor_Gift_Capacity_Enp
+			, G.Column_Label AS Donor_Gift_Capacity_En
+			, H.Column_Label AS Donor_Philan_Cap_Rating
+			, I.Column_Label AS Donor_Est_Household_Income
+			, J.Column_Label AS Donor_Est_Home_Market_Val 
+			, K.Column_Label AS Donor_Block_Clusters
+			, L.Donor_Total_Donation
+			, M.Byu_Donor
+			, M.ByuI_Donor
+			, M.ByuH_Donor
+			, M.Ldsbc_Donor
+		' -- Ext_Select_Statement
+		, ' _All_Donors_ A
+			LEFT JOIN Ext_Contact B ON A.Donor_Key = CONVERT(NVARCHAR(100),ContactId)
+			LEFT JOIN LDSPhilanthropiesDW.dbo._Donor_Major_Gift_ C ON B.New_MajorGiftPropensity1 = C.Column_Value
+			LEFT JOIN LDSPhilanthropiesDW.dbo._Donor_Annual_Gift_ D ON B.Plus_AnnualGift1 = D.Column_Value
+			LEFT JOIN LDSPhilanthropiesDW.dbo._Donor_Planned_Gift_ E ON B.Plus_PlannedGift = E.Column_Value
+			LEFT JOIN LDSPhilanthropiesDW.dbo._Donor_Gift_Cap_Enp_ F ON B.Plus_GiftCapacityEnp = F.Column_Value
+			LEFT JOIN LDSPhilanthropiesDW.dbo._Donor_Gift_Cap_En_ G ON B.Plus_GiftCapacityEn = G.Column_Value
+			LEFT JOIN LDSPhilanthropiesDW.dbo._Donor_Phil_Cap_Rate_ H ON B.Plus_PhilanthropicCapacityRatingPcr = H.Column_Value
+			LEFT JOIN LDSPhilanthropiesDW.dbo._Donor_Est_House_Income_ I ON B.Plus_EstimatedHouseHoldIncome = I.Column_Value
+			LEFT JOIN LDSPhilanthropiesDW.dbo._Donor_Est_House_Value_ J ON B.Plus_EstimatedHomemarketValue = J.Column_Value
+			LEFT JOIN LDSPhilanthropiesDW.dbo._Donor_Blockclusters_ K ON B.Plus_BlockClusters = K.Column_Value
+			LEFT JOIN
+				(SELECT DISTINCT A.Donor_Key
+					, COALESCE(Total_Donation, 0) + COALESCE(Matching_Credit,0) AS Donor_Total_Donation
+					FROM
+						(SELECT A.Donor_Key
+							, SUM(COALESCE(B.Donation_Primary_Amt,0)) AS Total_Donation
+							, SUM(COALESCE(C.Credit_Amount,0)) AS Matching_Credit
+							FROM _All_Donors_ A
+								LEFT JOIN _Donation_Fact B ON A.Donor_Key = B.Donor_Key
+								LEFT JOIN 
+									(SELECT CONVERT(NVARCHAR(100),Plus_OriginatingConstituent) AS Originating_Constituent
+										, SUM(New_CreditAmount) AS Credit_Amount
+										FROM 
+											(SELECT DISTINCT Plus_OriginatingConstituent
+												, New_CreditAmount
+												, New_RelatedGift
+												FROM _Gift_Credit_
+												WHERE 1 = 1
+													AND Plus_OriginatingConstituent IS NOT NULL
+													AND New_OrganizationId IS NOT NULL
+											) A
+										GROUP BY CONVERT(NVARCHAR(100),Plus_OriginatingConstituent)
+									) C ON A.Donor_Key = C.Originating_Constituent
+							GROUP BY A.Donor_Key
+						) A
+				) L ON A.Donor_Key = L.Donor_Key
+			LEFT JOIN
+				(SELECT A.Donor_Key
+					, MAX(A.Byu_Donor) AS Byu_Donor
+					, MAX(A.ByuI_Donor) AS ByuI_Donor
+					, MAX(A.ByuH_Donor) AS ByuH_Donor
+					, MAX(A.Ldsbc_Donor) AS Ldsbc_Donor
+					FROM
+						(SELECT A.Donor_Key
+							, CASE WHEN B.Donor_Key IS NOT NULL AND B.New_Inst = B.[BYU] THEN A.[Y]
+								ELSE A.[N] END AS Byu_Donor
+							, CASE WHEN B.Donor_Key IS NOT NULL AND B.New_Inst = B.[BYUI] THEN A.[Y]
+								ELSE A.[N] END AS ByuI_Donor
+							, CASE WHEN B.Donor_Key IS NOT NULL AND B.New_Inst = B.[BYUH] THEN A.[Y]
+								ELSE A.[N] END AS ByuH_Donor
+							, CASE WHEN B.Donor_Key IS NOT NULL AND B.New_Inst = B.[LDSBC] THEN A.[Y]
+								ELSE A.[N] END AS Ldsbc_Donor
+							FROM _Donor_Dim A
+								LEFT JOIN
+									(SELECT A.Donor_Key
+										, B.New_Inst
+										, B.[BYU]
+										, B.[BYUI]
+										, B.[BYUH]
+										, B.[LDSBC]
+										, SUM(A.Donation_Credit_Amt) AS Donation_Credit_Amt
+										FROM _Donation_Fact A
+											INNER JOIN _Hier_Dim B ON A.Hier_Key = B.Hier_Key
+										WHERE 1 = 1
+											AND New_Inst IN (B.[BYU],B.[BYUI],B.[BYUH],B.[LDSBC])
+										GROUP BY A.Donor_Key
+											, B.New_Inst
+											, B.[BYU]
+											, B.[BYUI]
+											, B.[BYUH]
+											, B.[LDSBC]
+									) B ON A.Donor_Key = B.Donor_Key
+						) A
+					GROUP BY A.Donor_Key
+				) M ON A.Donor_Key = M.Donor_Key			
+			' -- Ext_From_Statement
+		, ' AND A.Donor_Key IS NOT NULL
+			' -- Ext_Where_Statement
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, '
+			' -- Ext_From_Statement_2
+		, ' ' -- Ext_Create_Fields_2
+		, ' ' -- Ext_Create_Fields_3
+		, ' ' -- Ext_Where_Statement_2
+		, ' ' -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+		, NULL -- Ext_Select_Statement_3
+		, NULL -- Ext_Select_Statement_4
+		, NULL -- Ext_Select_Statement_5
+		, NULL -- Ext_Select_Statement_6
+		, NULL -- Ext_Select_Statement_7
+		, NULL -- Ext_From_Statement_3
+		, NULL -- Ext_From_Statement_4
 		, NULL -- Ext_From_Statement_5
 		, NULL -- Ext_From_Statement_6
 		, NULL -- Ext_From_Statement_7
