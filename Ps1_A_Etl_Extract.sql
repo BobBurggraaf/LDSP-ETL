@@ -252,6 +252,10 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, ModifiedOn DATETIME
 			, StateCode INT
 			, StatusCode INT
+			, Annual_and_Monthly NVARCHAR(25) DEFAULT ''Annual and Monthly''
+			, Annual NVARCHAR(25) DEFAULT ''Annual''
+			, Monthly NVARCHAR(25) DEFAULT ''Monthly''
+			, None NVARCHAR(25) DEFAULT ''None''
 			' -- Ext_Create_Fields
 		, 'AccountId
 			, New_LdspId
@@ -1670,6 +1674,10 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, CreatedOn DATETIME
 			, ModifiedOn DATETIME
 			, StateCode INT
+			, Annual_and_Monthly NVARCHAR(25) DEFAULT ''Annual and Monthly''
+			, Annual NVARCHAR(25) DEFAULT ''Annual''
+			, Monthly NVARCHAR(25) DEFAULT ''Monthly''
+			, None NVARCHAR(25) DEFAULT ''None''
 			' -- Ext_Create_Fields
 		, 'ContactId
 			, New_Ldspid
@@ -2004,6 +2012,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, ModifiedOn DATETIME
 			, StateCode INT
 			, StatusCode INT
+			, Lds_OneAccordConstituent UNIQUEIDENTIFIER
+			, Lds_OneAccordOrganization UNIQUEIDENTIFIER
 			' -- Dest_Create_Fields
 		, 'Lds_WebSubscriptionId
 			, Lds_AddressMatch
@@ -2042,6 +2052,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, ModifiedOn
 			, StateCode
 			, StatusCode
+			, Lds_OneAccordConstituent
+			, Lds_OneAccordOrganization
 			' -- Dest_Insert_Fields
 		, ' ' -- Dest_Where_Statement
 		, 'Lds_WebSubscriptionId UNIQUEIDENTIFIER
@@ -2081,6 +2093,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, ModifiedOn DATETIME
 			, StateCode INT
 			, StatusCode INT
+			, Lds_OneAccordConstituent UNIQUEIDENTIFIER
+			, Lds_OneAccordOrganization UNIQUEIDENTIFIER
 			' -- Ext_Create_Fields
 		, 'Lds_WebSubscriptionId
 			, Lds_AddressMatch
@@ -2119,6 +2133,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, ModifiedOn
 			, StateCode
 			, StatusCode
+			, Lds_OneAccordConstituent
+			, Lds_OneAccordOrganization
 			' -- Ext_Insert_Fields
 		, 'Lds_WebSubscriptionId
 			, Lds_AddressMatch
@@ -2163,6 +2179,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 					ELSE DATEADD(hh,-7,A.ModifiedOn) END AS ModifiedOn
 			, StateCode
 			, StatusCode
+			, Lds_OneAccordConstituent
+			, Lds_OneAccordOrganization
 			' -- Ext_Select_Statement
 		, 'Oa_Extract.Lds_WebSubscriptionBase A
 				LEFT JOIN dbo._MDT_Conversion_Dim B ON YEAR(A.Lds_NextPaymentDate) = B.Date_Year
@@ -8399,6 +8417,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, StatusCode INT
 			, CreatedOn DATETIME
 			, ModifiedOn DATETIME
+			, Plus_OneAccordConstituent UNIQUEIDENTIFIER
+			, Lds_OneAccordOrganization UNIQUEIDENTIFIER
 			' -- Dest_Create_Fields
 		, ' Plus_WebTransactionId
 			, Plus_TransactionId
@@ -8440,6 +8460,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, StatusCode
 			, CreatedOn
 			, ModifiedOn
+			, Plus_OneAccordConstituent
+			, Lds_OneAccordOrganization
 			' -- Dest_Insert_Fields
 		, ' ' -- Dest_Where_Statement
 		, ' Plus_WebTransactionId UNIQUEIDENTIFIER
@@ -8482,6 +8504,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, StatusCode INT
 			, CreatedOn DATETIME
 			, ModifiedOn DATETIME
+			, Plus_OneAccordConstituent UNIQUEIDENTIFIER
+			, Lds_OneAccordOrganization UNIQUEIDENTIFIER
 			' -- Ext_Create_Fields
 		, ' Plus_WebTransactionId
 			, Plus_TransactionId
@@ -8523,6 +8547,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, StatusCode
 			, CreatedOn
 			, ModifiedOn
+			, Plus_OneAccordConstituent
+			, Lds_OneAccordOrganization
 			' -- Ext_Insert_Fields
 		, ' Plus_WebTransactionId
 			, Plus_TransactionId
@@ -8567,6 +8593,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 					ELSE DATEADD(hh,-7,A.CreatedOn) END AS CreatedOn
 			, CASE WHEN DATENAME(dy,A.ModifiedOn) BETWEEN D.Mdt_Begin_Date_Number AND D.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.ModifiedOn)
 					ELSE DATEADD(hh,-7,A.ModifiedOn) END AS ModifiedOn
+			, Plus_OneAccordConstituent
+			, Lds_OneAccordOrganization
 			' -- Ext_Select_Statement
 		, 'Oa_Extract.Plus_WebTransactionBase A
 				LEFT JOIN dbo._MDT_Conversion_Dim B ON YEAR(A.Plus_ReceiptDate) = B.Date_Year
@@ -9433,6 +9461,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Donor_Key NVARCHAR(100)
 			, Y NVARCHAR(1) DEFAULT ''Y''
 			, N NVARCHAR(1) DEFAULT ''N''
+			, None NVARCHAR(5) DEFAULT ''None''
 			' -- Ext_Create_Fields
 		, 'Donor_Key
 			' -- Ext_Insert_Fields
@@ -26295,6 +26324,228 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 	)
 	,
 -- --------------------------
+-- _Donor_Ldsp_Org_Dim
+-- --------------------------
+	( 5 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Donor_Ldsp_Org_Dim' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, '	Donor_Key NVARCHAR(100) PRIMARY KEY
+			, Donor_Linked_Lds_Account NVARCHAR(1)
+			, Ldsp_Org_Donor NVARCHAR(1)
+			, Ldsp_Org_Current_Recurring_Donor_Type NVARCHAR(50)
+			, Ldsp_Org_Recurring_Donor NVARCHAR(1)
+			, Ldsp_Org_Current_Recurring_Donor NVARCHAR(1)
+		' -- Ext_Create_Fields
+		, ' Donor_Key
+			, Donor_Linked_Lds_Account
+			, Ldsp_Org_Donor
+			, Ldsp_Org_Current_Recurring_Donor_Type
+			, Ldsp_Org_Recurring_Donor
+			, Ldsp_Org_Current_Recurring_Donor
+		' -- Ext_Insert_Fields
+		, '  A.Donor_Key
+			, CASE WHEN B.Donor_Linked_Lds_Account IS NULL THEN A.[N] ELSE B.Donor_Linked_Lds_Account END AS Donor_Linked_Lds_Account
+			, CASE WHEN C.Ldsp_Org_Donor IS NULL THEN A.[N] ELSE C.Ldsp_Org_Donor END AS Ldsp_Org_Donor
+			, CASE WHEN D.Ldsp_Org_Current_Recurring_Donor_Type IS NULL THEN [None] ELSE D.Ldsp_Org_Current_Recurring_Donor_Type END AS Ldsp_Org_Current_Recurring_Donor_Type
+			, CASE WHEN E.Ldsp_Org_Recurring_Donor IS NULL THEN A.[N] ELSE E.Ldsp_Org_Recurring_Donor END AS Ldsp_Org_Recurring_Donor
+			, CASE WHEN F.Ldsp_Org_Current_Recurring_Donor IS NULL THEN A.[N] ELSE F.Ldsp_Org_Current_Recurring_Donor END AS Ldsp_Org_Current_Recurring_Donor
+		' -- Ext_Select_Statement
+		, ' _All_Donors_ A
+				LEFT JOIN
+					(SELECT CONVERT(NVARCHAR(100),ContactId) AS Donor_Key 
+						, CASE WHEN Lds_LinkedLdsAccount  = 1 THEN [Y] 
+							ELSE [N] END AS Donor_Linked_Lds_Account 
+						FROM Ext_Contact
+					) B ON A.Donor_Key = B.Donor_Key
+				LEFT JOIN
+					(SELECT CONVERT(NVARCHAR(100),A.ContactId) AS Donor_Key
+						, CASE WHEN COUNT(B.Plus_WebTransactionId) >= 1 THEN A.[Y] ELSE A.[N] END AS Ldsp_Org_Donor 
+						FROM Ext_Contact A
+							LEFT JOIN Ext_WebTransaction B ON A.ContactId = B.Plus_OneAccordConstituent
+						GROUP BY CONVERT(NVARCHAR(100),A.ContactId)
+					UNION
+					SELECT CONVERT(NVARCHAR(100),A.AccountId) AS Donor_Key
+						, CASE WHEN COUNT(B.Plus_WebTransactionId) >= 1 THEN A.[Y] ELSE A.[N] END AS Ldsp_Org_Donor 
+						FROM Ext_Account A
+							LEFT JOIN Ext_WebTransaction B ON A.AccountId = B.Lds_OneAccordOrganization
+						GROUP BY CONVERT(NVARCHAR(100),A.AccountId)
+					) C ON A.Donor_Key = C.Donor_Key
+				LEFT JOIN
+					(SELECT CONVERT(NVARCHAR(100),A.ContactId) AS Donor_Key
+						, CASE WHEN B.Number_of_WebSubscriptions >= 1 THEN A.[Y] ELSE A.[N] END AS Has_Annual_Sub
+						, CASE WHEN C.Number_of_WebSubscriptions >= 1 THEN A.[Y] ELSE A.[N] END AS Has_Monthly_Sub
+						, CASE WHEN B.Number_of_WebSubscriptions >= 1 AND C.Number_of_WebSubscriptions >= 1 THEN A.[Annual_and_Monthly]
+								WHEN B.Number_of_WebSubscriptions >= 1  THEN A.[Annual]
+								WHEN C.Number_of_WebSubscriptions = 1 THEN A.[Monthly]
+							ELSE A.[None] END AS LDSP_ORG_Current_Recurring_Donor_Type
+						FROM Ext_Contact A
+							LEFT JOIN
+								(SELECT A.ContactId
+									, COUNT(Lds_WebSubscriptionId) AS Number_of_WebSubscriptions
+								    FROM Ext_Contact A
+								         LEFT JOIN Ext_WebSubscription B ON A.ContactId = B.Lds_OneAccordConstituent
+								    WHERE 1 = 1
+										AND B.StateCode = 0
+								    	AND Lds_TypeOfDonation = 100000000
+								    GROUP BY A.ContactId
+								) B ON B.ContactId = A.ContactId
+							LEFT JOIN
+								(SELECT A.ContactId
+									, COUNT(Lds_WebSubscriptionId) AS Number_of_WebSubscriptions
+								    FROM Ext_Contact A
+								         LEFT JOIN Ext_WebSubscription B ON A.ContactId = B.Lds_OneAccordConstituent
+								    WHERE 1 = 1
+										AND B.StateCode = 0
+								    	AND Lds_TypeOfDonation = 100000001
+								    GROUP BY ContactId
+								) C ON C.ContactId = A.ContactId
+					UNION
+					SELECT CONVERT(NVARCHAR(100),A.AccountId) AS Donor_Key
+						, CASE WHEN B.Number_of_WebSubscriptions >= 1 THEN A.[Y] ELSE A.[N] END AS Has_Annual_Sub
+						, CASE WHEN C.Number_of_WebSubscriptions >= 1 THEN A.[Y] ELSE A.[N] END AS Has_Monthly_Sub
+						, CASE WHEN B.Number_of_WebSubscriptions >= 1 AND C.Number_of_WebSubscriptions >= 1 THEN A.[Annual_and_Monthly]
+								WHEN B.Number_of_WebSubscriptions >= 1  THEN A.[Annual]
+								WHEN C.Number_of_WebSubscriptions = 1 THEN A.[Monthly]
+							ELSE A.[None] END AS LDSP_ORG_Current_Recurring_Donor_Type
+						FROM Ext_Account A
+							LEFT JOIN
+								(SELECT A.AccountId
+									, COUNT(Lds_WebSubscriptionId) AS Number_of_WebSubscriptions
+								    FROM Ext_Account A
+								         LEFT JOIN Ext_WebSubscription B ON A.AccountId = B.Lds_OneAccordOrganization
+								    WHERE 1 = 1
+										AND B.StateCode = 0
+								    	AND B.Lds_TypeOfDonation = 100000000
+								    GROUP BY A.AccountId
+								) B ON B.AccountId = A.AccountId										
+			' -- Ext_From_Statement
+		, ' AND A.Donor_Key IS NOT NULL
+			' -- Ext_Where_Statement
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, '					LEFT JOIN
+								(SELECT A.AccountId
+									, COUNT(Lds_WebSubscriptionId) AS Number_of_WebSubscriptions
+								    FROM Ext_Account A
+								         LEFT JOIN Ext_WebSubscription B ON A.AccountId = B.Lds_OneAccordOrganization
+								    WHERE 1 = 1
+										AND B.StateCode = 0
+								    	AND Lds_TypeOfDonation = 100000001
+								    GROUP BY A.AccountId
+								) C ON C.AccountId = A.AccountId
+					) D ON A.Donor_Key = D.Donor_Key
+				LEFT JOIN
+					(SELECT CONVERT(NVARCHAR(100),A.ContactId) AS Donor_Key
+						, CASE WHEN B.Lds_WebSubscriptionId IS NOT NULL THEN A.[Y] ELSE A.[N] END AS Ldsp_Org_Recurring_Donor
+						FROM Ext_Contact A
+							LEFT JOIN Ext_WebSubscription B ON A.ContactId = B.Lds_OneAccordConstituent
+					UNION
+					SELECT CONVERT(NVARCHAR(100),A.AccountId) AS Donor_Key
+						, CASE WHEN B.Lds_WebSubscriptionId IS NOT NULL THEN A.[Y] ELSE A.[N] END AS Ldsp_Org_Recurring_Donor
+						FROM Ext_Account A
+							LEFT JOIN Ext_WebSubscription B ON A.AccountId = B.Lds_OneAccordOrganization
+					) E ON A.Donor_Key = E.Donor_Key
+				LEFT JOIN
+					(SELECT CONVERT(NVARCHAR(100),A.ContactId) AS Donor_Key
+						, CASE WHEN B.Number_Of_Web_Subscriptions >= 1 THEN A.[Y] ELSE A.[N] END AS LDSP_ORG_Current_Recurring_Donor
+						, CASE WHEN C.Number_Of_Web_Subscriptions >= 1 THEN A.[Y] ELSE A.[N] END AS LDSP_ORG_Recurring_Donor_At_Some_Time
+						FROM Ext_Contact A
+							LEFT JOIN
+								(SELECT A.ContactId
+									, COUNT(Lds_WebSubscriptionId) AS Number_Of_Web_Subscriptions
+								    FROM Ext_Contact A
+								         LEFT JOIN Ext_WebSubscription B ON A.ContactId = B.Lds_OneAccordConstituent
+								    WHERE 1 = 1
+										AND B.StateCode = 0
+								    GROUP BY A.ContactId
+								) B ON A.ContactId = B.ContactId
+							LEFT JOIN
+								(SELECT A.ContactId
+									, COUNT(Lds_WebSubscriptionId) AS Number_Of_Web_Subscriptions
+								    FROM Ext_Contact A
+								         LEFT JOIN Ext_WebSubscription B ON A.ContactId = B.Lds_OneAccordConstituent
+								    GROUP BY ContactId
+								) C ON A.ContactId = C.ContactId
+					UNION
+					SELECT CONVERT(NVARCHAR(100),A.AccountId) AS Donor_Key
+						, CASE WHEN B.Number_Of_Web_Subscriptions >= 1 THEN A.[Y] ELSE A.[N] END AS LDSP_ORG_Current_Recurring_Donor
+						, CASE WHEN C.Number_Of_Web_Subscriptions >= 1 THEN A.[Y] ELSE A.[N] END AS LDSP_ORG_Recurring_Donor_At_Some_Time
+						FROM Ext_Account A
+							LEFT JOIN
+								(SELECT A.AccountId
+									, COUNT(Lds_WebSubscriptionId) AS Number_Of_Web_Subscriptions
+								    FROM Ext_Account A
+								         LEFT JOIN Ext_WebSubscription B ON A.AccountId = B.Lds_OneAccordOrganization
+								    WHERE 1 = 1
+										AND B.StateCode = 0
+								    GROUP BY A.AccountId
+								) B ON A.AccountId = B.AccountId
+							LEFT JOIN
+								(SELECT A.AccountId
+									, COUNT(Lds_WebSubscriptionId) AS Number_Of_Web_Subscriptions
+								    FROM Ext_Account A
+								         LEFT JOIN Ext_WebSubscription B ON A.AccountId = B.Lds_OneAccordOrganization
+								    GROUP BY AccountId
+								) C ON A.AccountId = C.AccountId
+					) F ON A.Donor_Key = F.Donor_Key
+			' -- Ext_From_Statement_2
+		, ' ' -- Ext_Create_Fields_2
+		, ' ' -- Ext_Create_Fields_3
+		, ' ' -- Ext_Where_Statement_2
+		, ' ' -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+		, NULL -- Ext_Select_Statement_3
+		, NULL -- Ext_Select_Statement_4
+		, NULL -- Ext_Select_Statement_5
+		, NULL -- Ext_Select_Statement_6
+		, NULL -- Ext_Select_Statement_7
+		, NULL -- Ext_From_Statement_3
+		, NULL -- Ext_From_Statement_4
+		, NULL -- Ext_From_Statement_5
+		, NULL -- Ext_From_Statement_6
+		, NULL -- Ext_From_Statement_7
+		, NULL -- Ext_Where_Statement_4
+		, NULL -- Ext_Where_Statement_5
+		, NULL -- Ext_Where_Statement_6
+		, NULL -- Ext_Where_Statement_7
+		, NULL -- Tier_10_Stage
+		, NULL -- Tier_10_Stage_DateTime
+		, NULL -- Tier_11_Stage
+		, NULL -- Tier_11_Stage_DateTime
+		, NULL -- Tier_12_Stage
+		, NULL -- Tier_12_Stage_DateTime
+		, NULL -- Extra_7
+		, NULL -- Extra_8
+		, NULL -- Extra_9
+		, NULL -- Extra_10
+	)
+	,
+-- --------------------------
 -- _Address_Bridge
 -- --------------------------
 	( 5 -- Tier
@@ -32862,7 +33113,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 								ELSE A.[N] END AS ByuH_Donor
 							, CASE WHEN B.Donor_Key IS NOT NULL AND B.New_Inst = B.[LDSBC] THEN A.[Y]
 								ELSE A.[N] END AS Ldsbc_Donor
-							FROM _Donor_Dim A
+							FROM _Donor_Key_Dim A
 								LEFT JOIN
 									(SELECT A.Donor_Key
 										, B.New_Inst
