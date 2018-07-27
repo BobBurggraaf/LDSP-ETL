@@ -36946,6 +36946,264 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Extra_9
 		, NULL -- Extra_10
 	)
+	,
+-- --------------------------
+-- View_Web_Subscription
+-- --------------------------
+	( 10 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, 'View_Web_Subscription' -- Ext_Table
+		, '	' -- Dest_Create_Fields
+		, '	' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, '	Web_Subscription_OA_ID NVARCHAR(100)
+			, Web_Subscription_Name NVARCHAR(100) 
+			, Transaction_Total MONEY
+			, Transaction_ID NVARCHAR(100)
+			, Recurring_Donation_Start_Date DATE
+			, Recurring_Donation_Stop_Date DATE
+			, Next_Payment_Date DATE
+			, Payment_Type NVARCHAR(400)
+			, Tender_Name NVARCHAR(400)
+			, Opt_Into_Email_Communication NVARCHAR(400)
+			, CID NVARCHAR(200)
+			, CDE2 NVARCHAR(200)
+			, Type_of_Donation NVARCHAR(400)
+			, Appeal_Code NVARCHAR(10)
+			, Appeal_Name NVARCHAR(100)
+			, Appeal_Delivery_Type NVARCHAR(400)
+			, Donor_First_Name_From_Web NVARCHAR(100)
+			, Donor_Middle_Name_From_Web NVARCHAR(100)
+			, Donor_Last_Name_From_Web NVARCHAR(100)
+			, Web_Subscription_Linked_LDS_Account NVARCHAR(1)
+			, Donor_Email_From_Web NVARCHAR(100)
+			, Donor_Phone_Number_From_Web NVARCHAR(100)
+			, Donor_Address_Line_1_From_Web NVARCHAR(100)
+			, Donor_Address_Line_2_From_Web NVARCHAR(100)
+			, Donor_Address_City_From_Web NVARCHAR(100)
+			, Donor_Address_State_From_Web NVARCHAR(100)
+			, Donor_Address_Zip_Code_From_Web NVARCHAR(100)
+			, Donor_Address_Country_From_Web NVARCHAR(100)
+			, Comments NVARCHAR(1000)
+			, Telefund_Comments NVARCHAR(4000)
+			, Donor_Type NVARCHAR(400)	
+			, Donor_Match_Status NVARCHAR(400)
+			, Web_Subscription_Status NVARCHAR(400)
+			, Web_Subscription_Status_Reason NVARCHAR(400)	
+			, Web_Subscription_Created_On DATE
+			, Web_Subscription_Modified_On DATE
+			, Address_Match NVARCHAR(400)	
+			, Data_Entry_Status NVARCHAR(400)
+			, Receipt_Date DATETIME
+			, Donor_Key NVARCHAR(100)
+			, Donor_Gender NVARCHAR(400)
+			, Birthdate DATE
+			, Donor_Preferred_Name NVARCHAR(100)
+			, Donor_Name NVARCHAR(160)
+			, Donor_Primary_Email NVARCHAR(150)
+			, Donor_Marriage_Status NVARCHAR(400)
+			, Donor_Deceased NVARCHAR(1)
+			, Donor_Linked_Lds_Account NVARCHAR(1)
+			, Donor_LDSPID	NVARCHAR(100)
+			, Donor_CreatedOn DATE
+			, Donor_ModifiedOn DATE
+			, Donor_Status NVARCHAR(400)
+			, Donor_Status_Reason	NVARCHAR(400)
+			, Matched_by_User NVARCHAR(200)
+			' -- Ext_Create_Fields
+		, '	Web_Subscription_OA_ID
+			, Web_Subscription_Name
+			, Transaction_Total
+			, Transaction_ID
+			, Recurring_Donation_Start_Date
+			, Recurring_Donation_Stop_Date
+			, Next_Payment_Date
+			, Payment_Type
+			, Tender_Name
+			, Opt_Into_Email_Communication
+			, CID
+			, CDE2
+			, Type_of_Donation
+			, Appeal_Code
+			, Appeal_Name
+			, Appeal_Delivery_Type
+			, Donor_First_Name_From_Web
+			, Donor_Middle_Name_From_Web
+			, Donor_Last_Name_From_Web
+			, Web_Subscription_Linked_LDS_Account
+			, Donor_Email_From_Web
+			, Donor_Phone_Number_From_Web
+			, Donor_Address_Line_1_From_Web
+			, Donor_Address_Line_2_From_Web
+			, Donor_Address_City_From_Web
+			, Donor_Address_State_From_Web
+			, Donor_Address_Zip_Code_From_Web
+			, Donor_Address_Country_From_Web
+			, Comments
+			, Telefund_Comments	
+			, Donor_Type	
+			, Donor_Match_Status	
+			, Web_Subscription_Status
+			, Web_Subscription_Status_Reason	
+			, Web_Subscription_Created_On
+			, Web_Subscription_Modified_On	
+			, Address_Match	
+			, Data_Entry_Status
+			, Receipt_Date
+			, Donor_Key
+			, Donor_Gender
+			, Birthdate
+			, Donor_Preferred_Name
+			, Donor_Name
+			, Donor_Primary_Email
+			, Donor_Marriage_Status 
+			, Donor_Deceased
+			, Donor_Linked_Lds_Account
+			, Donor_LDSPID	
+			, Donor_CreatedOn
+			, Donor_ModifiedOn
+			, Donor_Status
+			, Donor_Status_Reason	
+			, Matched_by_User
+			' -- Ext_Insert_Fields
+		, '  A.WebSubscription_Key AS Web_Subscription_OA_ID
+			, B.Web_Subscription_Name
+			, A.Transaction_Total
+			, B.Transaction_ID
+			, B.Recurring_Donation_Start_Date
+			, B.Recurring_Donation_Stop_Date
+			, B.Next_Payment_Date
+			, B.Payment_Type
+			, B.Tender_Name
+			, B.Opt_Into_Email_Communication
+			, B.CID
+			, B.CDE2
+			, B.Type_of_Donation
+			, B.Appeal_Code
+			, C.Appeal_Name
+			, C.Delivery_Type AS Appeal_Delivery_Type
+			, B.Donor_First_Name_From_Web
+			, B.Donor_Middle_Name_From_Web
+			, B.Donor_Last_Name_From_Web
+			, B.Web_Subscription_Linked_LDS_Account
+			, B.Donor_Email_From_Web
+			, B.Donor_Phone_Number_From_Web
+			, B.Donor_Address_Line_1_From_Web
+			, B.Donor_Address_Line_2_From_Web
+			, B.Donor_Address_City_From_Web
+			, B.Donor_Address_State_From_Web
+			, B.Donor_Address_Zip_Code_From_Web
+			, B.Donor_Address_Country_From_Web
+			, B.Comments
+			, B.Telefund_Comments	
+			, B.Donor_Type	
+			, B.Donor_Match_Status	
+			, B.Web_Subscription_Status
+			, B.Web_Subscription_Status_Reason	
+			, B.Web_Subscription_Created_On
+			, B.Web_Subscription_Modified_On	
+			, B.Address_Match	
+			, B.Data_Entry_Status
+			, B.Receipt_Date
+			, D.Donor_Key
+			, E.Donor_Gender
+			, E.Donor_Birth_Dt AS Birthdate
+			, F.Donor_Preferred_Name
+			, F.Donor_Name
+			, G.Email_Address AS Donor_Primary_Email
+			, E.Donor_Marriage_Status 
+			, E.Donor_Deceased_Yn AS Donor_Deceased
+			, H.Donor_Linked_Lds_Account
+			, D.Donor_Ldsp_Id AS Donor_LDSPID	
+			, E.Donor_CreatedOn
+			, E.Donor_ModifiedOn
+			, E.Donor_Status
+			, E.Donor_Status_Reason	
+			, B.Matched_by_User
+			' -- Ext_Select_Statement
+		, '_Web_Subscription_Fact A
+				LEFT JOIN _Web_Subscription_Dim B ON A.WebSubscription_Key = B.WebSubscription_Dim_Key
+				LEFT JOIN	
+					(SELECT Appeal_Key
+						, Appeal_Code
+						, Appeal_Name
+						, Delivery_Type
+						FROM 
+							(SELECT ROW_NUMBER() OVER (PARTITION BY Appeal_Code ORDER BY Appeal_Key) AS Row_Num
+								, Appeal_Key
+								, Appeal_Code
+								, Appeal_Name
+								, Delivery_Type
+								FROM _Appeal_Dim 
+							) A
+						WHERE 1 = 1
+							AND Row_Num = 1
+					) C ON B.Appeal_Code = C.Appeal_Code
+				LEFT JOIN _Donor_Key_Dim D ON A.Donor_Key = D.Donor_Key
+				LEFT JOIN _Donor_Detail_Dim E ON D.Donor_Key = E.Donor_Key
+				LEFT JOIN _Donor_Name_Dim F ON D.Donor_Key = F.Donor_Key
+				LEFT JOIN _Email_Dim G ON D.Donor_Key = G.ContactId AND G.Email_Primary_Yn = D.[Y]
+				LEFT JOIN _Donor_Ldsp_Org_Dim H ON D.Donor_Key = H.Donor_Key													
+			' -- Ext_From_Statement
+		, '	
+			' -- Ext_Where_Statement
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
+		, ' ' -- Ext_Create_Fields_2
+		, ' ' -- Ext_Create_Fields_3
+		, ' ' -- Ext_Where_Statement_2
+		, ' ' -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+		, NULL -- Ext_Select_Statement_3
+		, NULL -- Ext_Select_Statement_4
+		, NULL -- Ext_Select_Statement_5
+		, NULL -- Ext_Select_Statement_6
+		, NULL -- Ext_Select_Statement_7
+		, '																											
+			' -- Ext_From_Statement_3
+		, '		
+			' -- Ext_From_Statement_4
+		, NULL -- Ext_From_Statement_5
+		, NULL -- Ext_From_Statement_6
+		, NULL -- Ext_From_Statement_7
+		, NULL -- Ext_Where_Statement_4
+		, NULL -- Ext_Where_Statement_5
+		, NULL -- Ext_Where_Statement_6
+		, NULL -- Ext_Where_Statement_7
+		, NULL -- Tier_10_Stage
+		, NULL -- Tier_10_Stage_DateTime
+		, NULL -- Tier_11_Stage
+		, NULL -- Tier_11_Stage_DateTime
+		, NULL -- Tier_12_Stage
+		, NULL -- Tier_12_Stage_DateTime
+		, NULL -- Extra_7
+		, NULL -- Extra_8
+		, NULL -- Extra_9
+		, NULL -- Extra_10
+	)
 	;	
 
 
