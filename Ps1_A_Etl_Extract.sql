@@ -32424,7 +32424,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 -- --------------------------
 -- _Web_Subscription_Fact
 -- --------------------------
-	( 6 -- Tier
+	( 7 -- Tier
 		, ' ' -- Source_Table
 		, ' ' -- Destination_Table
 		, '_Web_Subscription_Fact' -- Ext_Table
@@ -32526,7 +32526,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 -- --------------------------
 -- _Web_Transaction_Fact
 -- --------------------------
-	( 6 -- Tier
+	( 7 -- Tier
 		, ' ' -- Source_Table
 		, ' ' -- Destination_Table
 		, '_Web_Transaction_Fact' -- Ext_Table
@@ -32540,13 +32540,13 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Appeal_Key NVARCHAR(100)
 		' -- Ext_Create_Fields
 		, ' WebTransaction_Key
-			, WebTransaction_Dim_Key
+			, Web_Transaction_Dim_Key
 			, Transaction_Total
 			, Donor_Key
 			, Appeal_Key
 		' -- Ext_Insert_Fields
 		, ' CONVERT(NVARCHAR(100),A.Plus_WebTransactionId) AS WebTransaction_Key
-			, B.WebTransaction_Dim_Key
+			, B.Web_Transaction_Dim_Key
 			, A.Plus_TransactionTotal AS Transaction_Total
 			, COALESCE(C.Donor_Key,A.[Zero]) AS Donor_Key
 			, COALESCE(D.Appeal_Key,A.[Zero]) AS Appeal_Key
@@ -37964,6 +37964,273 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 	)
 	,
 -- --------------------------
+-- View_Web_Transaction
+-- --------------------------
+	( 9 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, 'View_Web_Transaction' -- Ext_Table
+		, '	' -- Dest_Create_Fields
+		, '	' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, '	Web_Transaction_OA_ID NVARCHAR(100)
+			, Transaction_Id NVARCHAR(100) 
+			, Transaction_Total MONEY
+			, Receipt_Date DATETIME
+			, Payment_Type NVARCHAR(400)
+			, Tender_Name NVARCHAR(400)
+			, Type_of_Donation NVARCHAR(400)
+			, Recurred_Donation_Status NVARCHAR(400)
+			, Appeal_Code NVARCHAR(10)
+			, Appeal_Name NVARCHAR(100)
+			, Appeal_Delivery_Type NVARCHAR(400)			
+			, CID NVARCHAR(200)
+			, CDE2 NVARCHAR(200)
+			, Score NVARCHAR(100)			
+			, Opt_Into_Email_Communication NVARCHAR(400)
+			, Donor_First_Name_From_Web NVARCHAR(100)
+			, Donor_Middle_Name_From_Web NVARCHAR(100)
+			, Donor_Last_Name_From_Web NVARCHAR(100)
+			, Web_Subscription_Linked_LDS_Account NVARCHAR(1)			
+			, Donor_Email_From_Web NVARCHAR(100)
+			, Donor_Phone_Number_From_Web NVARCHAR(100)
+			, Donor_Address_Line_1_From_Web NVARCHAR(100)
+			, Donor_Address_Line_2_From_Web NVARCHAR(100)
+			, Donor_Address_City_From_Web NVARCHAR(100)
+			, Donor_Address_State_From_Web NVARCHAR(100)
+			, Donor_Address_Zip_Code_From_Web NVARCHAR(100)
+			, Donor_Address_Country_From_Web NVARCHAR(100)						
+			, Comments NVARCHAR(1000)
+			, Telefund_Comments NVARCHAR(4000)
+			, Address_Match NVARCHAR(400)
+			, Data_Entry_Status NVARCHAR(400)
+			, In_Memoriam_Flag NVARCHAR(400)
+			, In_Memory_Of_Type NVARCHAR(400)
+			, Notify_Fmaily_Friends NVARCHAR(400)
+			, Notify_This_Person NVARCHAR(400)
+			, Honoree_Name NVARCHAR(100)
+			, Notify_By_Card NVARCHAR(400)
+			, Notify_By_Email NVARCHAR(400)
+			, Web_Transaction_Status NVARCHAR(400)
+			, Web_Transaction_Status_Reason NVARCHAR(400)
+			, Web_Transaction_Created_On DATE
+			, Web_Transaction_Modified_On DATE
+			, Web_Transaction_Modified_By NVARCHAR(200)
+			, DonorId NVARCHAR(100)
+			, Donor_Gender NVARCHAR(400)
+			, Birthdate DATE
+			, Donor_Preferred_Name NVARCHAR(100)
+			, Donor_Name NVARCHAR(160)
+			, Donor_Primary_Email NVARCHAR(150)
+			, Donor_Marriage_Status NVARCHAR(400)
+			, Donor_Deceased NVARCHAR(1)
+			, Donor_Linked_Lds_Account NVARCHAR(1)
+			, Donor_LDSPID NVARCHAR(100)
+			, Donor_CreatedOn DATE
+			, Donor_ModifiedOn DATE
+			, Donor_Status NVARCHAR(400)
+			, Donor_Status_Reason NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, '	Web_Transaction_OA_ID
+			, Transaction_Id 
+			, Transaction_Total
+			, Receipt_Date
+			, Payment_Type
+			, Tender_Name
+			, Type_of_Donation
+			, Recurred_Donation_Status
+			, Appeal_Code
+			, Appeal_Name
+			, Appeal_Delivery_Type			
+			, CID
+			, CDE2
+			, Score			
+			, Opt_Into_Email_Communication
+			, Donor_First_Name_From_Web
+			, Donor_Middle_Name_From_Web
+			, Donor_Last_Name_From_Web
+			, Web_Subscription_Linked_LDS_Account			
+			, Donor_Email_From_Web
+			, Donor_Phone_Number_From_Web
+			, Donor_Address_Line_1_From_Web
+			, Donor_Address_Line_2_From_Web
+			, Donor_Address_City_From_Web
+			, Donor_Address_State_From_Web
+			, Donor_Address_Zip_Code_From_Web
+			, Donor_Address_Country_From_Web						
+			, Comments
+			, Telefund_Comments
+			, Address_Match
+			, Data_Entry_Status
+			, In_Memoriam_Flag
+			, In_Memory_Of_Type
+			, Notify_Fmaily_Friends
+			, Notify_This_Person
+			, Honoree_Name
+			, Notify_By_Card
+			, Notify_By_Email
+			, Web_Transaction_Status
+			, Web_Transaction_Status_Reason
+			, Web_Transaction_Created_On
+			, Web_Transaction_Modified_On
+			, Web_Transaction_Modified_By
+			, DonorId
+			, Donor_Gender
+			, Birthdate
+			, Donor_Preferred_Name
+			, Donor_Name
+			, Donor_Primary_Email
+			, Donor_Marriage_Status
+			, Donor_Deceased
+			, Donor_Linked_Lds_Account
+			, Donor_LDSPID
+			, Donor_CreatedOn
+			, Donor_ModifiedOn
+			, Donor_Status
+			, Donor_Status_Reason
+			' -- Ext_Insert_Fields
+		, '  A.WebTransaction_Key AS Web_Transaction_OA_ID
+			, B.Transaction_Id
+			, A.Transaction_Total
+			, B.Receipt_Date
+			, B.Payment_Type
+			, B.Tender_Name
+			, B.Type_Of_Donation
+			, B.Recurred_Donation_Status
+			, B.Appeal_Code
+			, C.Appeal_Name
+			, C.Delivery_Type AS Appeal_Delivery_Type
+			, B.Cid
+			, B.Cde2
+			, B.Score
+			, B.Opt_Into_Email_Communication
+			, B.Donor_First_Name_From_Web
+			, B.Donor_Middle_Name_From_Web
+			, B.Donor_Last_Name_From_Web
+			, B.Web_Subscription_Linked_Lds_Account
+			, B.Donor_Email_From_Web
+			, B.Donor_Phone_Number_From_Web
+			, B.Donor_Address_Line_1_From_Web
+			, B.Donor_Address_Line_2_From_Web
+			, B.Donor_Address_City_From_Web
+			, B.Donor_Address_State_From_Web
+			, B.Donor_Address_Zip_Code_From_Web
+			, B.Donor_Address_Country_From_Web
+			, B.Comments
+			, B.Telefund_Comments
+			, B.Address_Match
+			, B.Data_Entry_Status
+			, B.In_Memoriam_Flag
+			, B.In_Memory_Of_Type
+			, B.Notify_Fmaily_Friends
+			, B.Notify_This_Person
+			, B.Honoree_Name
+			, B.Notify_By_Card
+			, B.Notify_By_Email
+			, B.Web_Transaction_Status
+			, B.Web_Transaction_Status_Reason
+			, B.Web_Transaction_Created_On
+			, B.Web_Transaction_Modified_On
+			, B.Web_Transaction_Modified_By
+			, D.Donor_Key AS DonorId
+			, E.Donor_Gender AS Gender
+			, E.Donor_Birth_Dt AS Birthdate
+			, F.Donor_Preferred_Name
+			, F.Donor_Name	
+			, G.Email_Address AS Donor_Primary_Email
+			, E.Donor_Marriage_Status 
+			, E.Donor_Deceased_Yn AS Donor_Deceased
+			, H.Donor_Linked_Lds_Account
+			, D.Donor_Ldsp_Id AS Donor_LDSPID	
+			, E.Donor_CreatedOn
+			, E.Donor_ModifiedOn
+			, E.Donor_Status
+			, E.Donor_Status_Reason
+			' -- Ext_Select_Statement
+		, ' _Web_Transaction_Fact A
+				LEFT JOIN _Web_Transaction_Dim B ON A.WebTransaction_Key = B.Web_Transaction_Dim_Key
+				LEFT JOIN	
+					(SELECT Appeal_Key
+						, Appeal_Code
+						, Appeal_Name
+						, Delivery_Type
+						FROM 
+							(SELECT ROW_NUMBER() OVER (PARTITION BY Appeal_Code ORDER BY Appeal_Key) AS Row_Num
+								, Appeal_Key
+								, Appeal_Code
+								, Appeal_Name
+								, Delivery_Type
+								FROM _Appeal_Dim 
+							) A
+						WHERE 1 = 1
+							AND Row_Num = 1
+					) C ON B.Appeal_Code = C.Appeal_Code
+				LEFT JOIN _Donor_Key_Dim D ON A.Donor_Key = D.Donor_Key
+				LEFT JOIN _Donor_Detail_Dim E ON D.Donor_Key = E.Donor_Key
+				LEFT JOIN _Donor_Name_Dim F ON D.Donor_Key = F.Donor_Key
+				LEFT JOIN _Email_Dim G ON D.Donor_Key = G.ContactId AND G.Email_Primary_Yn = D.[Y]
+				LEFT JOIN _Donor_Ldsp_Org_Dim H ON D.Donor_Key = H.Donor_Key													
+			' -- Ext_From_Statement
+		, '	
+			' -- Ext_Where_Statement
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
+		, ' ' -- Ext_Create_Fields_2
+		, ' ' -- Ext_Create_Fields_3
+		, ' ' -- Ext_Where_Statement_2
+		, ' ' -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+		, NULL -- Ext_Select_Statement_3
+		, NULL -- Ext_Select_Statement_4
+		, NULL -- Ext_Select_Statement_5
+		, NULL -- Ext_Select_Statement_6
+		, NULL -- Ext_Select_Statement_7
+		, '																											
+			' -- Ext_From_Statement_3
+		, '		
+			' -- Ext_From_Statement_4
+		, NULL -- Ext_From_Statement_5
+		, NULL -- Ext_From_Statement_6
+		, NULL -- Ext_From_Statement_7
+		, NULL -- Ext_Where_Statement_4
+		, NULL -- Ext_Where_Statement_5
+		, NULL -- Ext_Where_Statement_6
+		, NULL -- Ext_Where_Statement_7
+		, NULL -- Tier_10_Stage
+		, NULL -- Tier_10_Stage_DateTime
+		, NULL -- Tier_11_Stage
+		, NULL -- Tier_11_Stage_DateTime
+		, NULL -- Tier_12_Stage
+		, NULL -- Tier_12_Stage_DateTime
+		, NULL -- Extra_7
+		, NULL -- Extra_8
+		, NULL -- Extra_9
+		, NULL -- Extra_10
+	)
+	,
+-- --------------------------
 -- View_Accounting_Data_1
 -- --------------------------
 	( 9 -- Tier
@@ -38805,7 +39072,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Extra_8
 		, NULL -- Extra_9
 		, NULL -- Extra_10
-	)
+	)	
 	;	
 
 
