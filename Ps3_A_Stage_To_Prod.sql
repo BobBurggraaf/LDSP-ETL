@@ -4548,6 +4548,740 @@ INSERT INTO dbo.Stage_To_Prod
 		, GETDATE()
 		, NULL
 	)
+	,
+-- --------------------------
+-- _Donor_Organization_Dim
+-- --------------------------
+	( 1 -- Tier
+		, 'dbo._Donor_Organization_Dim' -- Source_Table
+		, 'dbo._Donor_Organization_Dim' -- Destination_Table
+		,'	Donor_Key  NVARCHAR(100)  PRIMARY KEY
+			, Donor_Org_Matches_Gifts_Yn  NVARCHAR(1)
+			, Donor_Org_Allow_Mail_Yn NVARCHAR(1)
+			, Donor_Org_Allow_Bulk_Mail_Yn NVARCHAR(1)
+			, Donor_Org_Allow_Email_Yn NVARCHAR(1)
+			, Donor_Org_Allow_Bulk_Email_Yn NVARCHAR(1)
+			, Donor_Org_Allow_Phone_Yn NVARCHAR(1)
+			, Donor_Org_Allow_Fax_Yn NVARCHAR(1)
+			, Donor_Org_Class_Code NVARCHAR(400)
+			, Donor_Org_Retiree_Ratio NVARCHAR(400) 
+			, Donor_Org_Split_Ratio NVARCHAR(400)
+			, Donor_Org_Matching_Ratio NVARCHAR(400)
+			, Donor_Org_Pref_Cont_Meth NVARCHAR(400)
+			, Donor_Org_Description NVARCHAR(4000)
+			' -- Dest_Create_Fields
+		, '	Donor_Key
+			, Donor_Org_Matches_Gifts_Yn
+			, Donor_Org_Allow_Mail_Yn 
+			, Donor_Org_Allow_Bulk_Mail_Yn 
+			, Donor_Org_Allow_Email_Yn
+			, Donor_Org_Allow_Bulk_Email_Yn
+			, Donor_Org_Allow_Phone_Yn
+			, Donor_Org_Allow_Fax_Yn
+			, Donor_Org_Class_Code
+			, Donor_Org_Retiree_Ratio
+			, Donor_Org_Split_Ratio
+			, Donor_Org_Matching_Ratio
+			, Donor_Org_Pref_Cont_Meth
+			, Donor_Org_Description
+			' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _Donor_Financial_Dim
+-- --------------------------
+	( 1 -- Tier
+		, 'dbo._Donor_Financial_Dim' -- Source_Table
+		, 'dbo._Donor_Financial_Dim' -- Destination_Table
+		,'	Donor_Key NVARCHAR(100)
+			, Donor_Wealth_Dt DATE
+			, Donor_Major_Gift_Propen  NVARCHAR(400)
+			, Donor_Annual_Gift NVARCHAR(400) 
+			, Donor_Planned_Gift NVARCHAR(400)
+			, Donor_Gift_Capacity_Enp NVARCHAR(400)
+			, Donor_Gift_Capacity_En NVARCHAR(400) 
+			, Donor_Philan_Cap_Rating NVARCHAR(400) 
+			, Donor_Est_Household_Income NVARCHAR(400) 
+			, Donor_Est_Home_Market_Val NVARCHAR(400) 
+			, Donor_Block_Clusters NVARCHAR(400)
+			, Donor_Total_Donation NVARCHAR(50)
+			, Byu_Donor NVARCHAR(1)
+			, ByuI_Donor NVARCHAR(1)
+			, ByuH_Donor NVARCHAR(1)
+			, Ldsbc_Donor NVARCHAR(1)
+			' -- Dest_Create_Fields
+		, '	Donor_Key      
+			, Donor_Wealth_Dt
+			, Donor_Major_Gift_Propen 
+			, Donor_Annual_Gift 
+			, Donor_Planned_Gift
+			, Donor_Gift_Capacity_Enp 
+			, Donor_Gift_Capacity_En 
+			, Donor_Philan_Cap_Rating 
+			, Donor_Est_Household_Income 
+			, Donor_Est_Home_Market_Val 
+			, Donor_Block_Clusters
+			, Donor_Total_Donation
+			, Byu_Donor
+			, ByuI_Donor
+			, ByuH_Donor
+			, Ldsbc_Donor
+			' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _Donor_Education_Dim
+-- --------------------------
+	( 1 -- Tier
+		, 'dbo._Donor_Education_Dim' -- Source_Table
+		, 'dbo._Donor_Education_Dim' -- Destination_Table
+		,'	Donor_Key NVARCHAR(100) PRIMARY KEY
+			, Byu_Student_Id NVARCHAR(100)
+			, ByuI_Student_Id NVARCHAR(100)
+			, ByuH_Student_Id NVARCHAR(100)
+			, Ldsbc_Student_Id NVARCHAR(100)
+			, Byu_Employee_Id NVARCHAR(100)
+			, ByuI_Employee_Id NVARCHAR(100)
+			, ByuH_Employee_Id NVARCHAR(100)
+			, Ldsbc_Employee_Id NVARCHAR(100)
+			, Ces_Id NVARCHAR(100)
+			, Byu_Degrees NVARCHAR(4000)
+			, ByuI_Degrees NVARCHAR(4000)
+			, ByuH_Degrees NVARCHAR(4000)
+			, Ldsbc_Degrees NVARCHAR(4000)
+			, Donor_Any_School_Current_Student NVARCHAR(1)
+			, Donor_BYU_Current_Student NVARCHAR(1)
+			, Donor_BYUI_Current_Student NVARCHAR(1)
+			, Donor_BYUH_Current_Student NVARCHAR(1)
+			, Donor_LDSBC_Current_Student NVARCHAR(1)
+			, Donor_Current_Student_Yn NVARCHAR(1) 
+			, Byu_Mba_Class_Year NVARCHAR(20)
+			' -- Dest_Create_Fields
+		, '	Donor_Key      
+			, Byu_Student_Id
+			, ByuI_Student_Id
+			, ByuH_Student_Id
+			, Ldsbc_Student_Id
+			, Byu_Employee_Id
+			, ByuI_Employee_Id
+			, ByuH_Employee_Id
+			, Ldsbc_Employee_Id
+			, Ces_Id
+			, Byu_Degrees
+			, ByuI_Degrees
+			, ByuH_Degrees
+			, Ldsbc_Degrees
+			, Donor_Any_School_Current_Student
+			, Donor_BYU_Current_Student
+			, Donor_BYUI_Current_Student
+			, Donor_BYUH_Current_Student
+			, Donor_LDSBC_Current_Student
+			, Donor_Current_Student_Yn 
+			, Byu_Mba_Class_Year
+			' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _Donor_Ldsp_Org_Dim
+-- --------------------------
+	( 1 -- Tier
+		, 'dbo._Donor_Ldsp_Org_Dim' -- Source_Table
+		, 'dbo._Donor_Ldsp_Org_Dim' -- Destination_Table
+		,'	Donor_Key NVARCHAR(100) PRIMARY KEY
+			, Donor_Linked_Lds_Account NVARCHAR(1)
+			, Ldsp_Org_Donor NVARCHAR(1)
+			, Ldsp_Org_Current_Recurring_Donor_Type NVARCHAR(50)
+			, Ldsp_Org_Recurring_Donor NVARCHAR(1)
+			, Ldsp_Org_Current_Recurring_Donor NVARCHAR(1)
+			' -- Dest_Create_Fields
+		, '	Donor_Key
+			, Donor_Linked_Lds_Account
+			, Ldsp_Org_Donor
+			, Ldsp_Org_Current_Recurring_Donor_Type
+			, Ldsp_Org_Recurring_Donor
+			, Ldsp_Org_Current_Recurring_Donor
+			' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _Web_Subscription_Dim
+-- --------------------------
+	( 1 -- Tier
+		, 'dbo._Web_Subscription_Dim' -- Source_Table
+		, 'dbo._Web_Subscription_Dim' -- Destination_Table
+		,'	WebSubscription_Dim_Key NVARCHAR(100) PRIMARY KEY
+			, Web_Subscription_Name NVARCHAR(100) 
+			, Transaction_ID NVARCHAR(100)
+			, Recurring_Donation_Start_Date DATE
+			, Recurring_Donation_Stop_Date DATE
+			, Next_Payment_Date DATE
+			, Payment_Type NVARCHAR(400)
+			, Tender_Name NVARCHAR(400) 
+			, Opt_Into_Email_Communication NVARCHAR(400) 
+			, CID NVARCHAR(200)
+			, CDE2 NVARCHAR(200)
+			, Type_of_Donation NVARCHAR(400)
+			, Appeal_Code NVARCHAR(10)
+			, Donor_First_Name_From_Web NVARCHAR(100)
+			, Donor_Middle_Name_From_Web NVARCHAR(100)
+			, Donor_Last_Name_From_Web NVARCHAR(100)
+			, Web_Subscription_Linked_LDS_Account NVARCHAR(1)
+			, Donor_Email_From_Web NVARCHAR(100)
+			, Donor_Phone_Number_From_Web NVARCHAR(100)
+			, Donor_Address_Line_1_From_Web NVARCHAR(100)
+			, Donor_Address_Line_2_From_Web NVARCHAR(100)
+			, Donor_Address_City_From_Web NVARCHAR(100)
+			, Donor_Address_State_From_Web NVARCHAR(100)
+			, Donor_Address_Zip_Code_From_Web NVARCHAR(100)
+			, Donor_Address_Country_From_Web NVARCHAR(100)
+			, Comments NVARCHAR(1000)
+			, Telefund_Comments NVARCHAR(4000)	
+			, Donor_Type NVARCHAR(400)	
+			, Donor_Match_Status NVARCHAR(400)	
+			, Web_Subscription_Status NVARCHAR(400)
+			, Web_Subscription_Status_Reason NVARCHAR(400)	
+			, Web_Subscription_Created_On DATE
+			, Web_Subscription_Modified_On DATE
+			, Address_Match NVARCHAR(400)	
+			, Data_Entry_Status NVARCHAR(400)
+			, Receipt_Date DATETIME
+			, Matched_by_User NVARCHAR(200)
+			' -- Dest_Create_Fields
+		, '	WebSubscription_Dim_Key
+			, Web_Subscription_Name
+			, Transaction_ID
+			, Recurring_Donation_Start_Date
+			, Recurring_Donation_Stop_Date
+			, Next_Payment_Date
+			, Payment_Type
+			, Tender_Name
+			, Opt_Into_Email_Communication
+			, CID
+			, CDE2
+			, Type_of_Donation
+			, Appeal_Code
+			, Donor_First_Name_From_Web
+			, Donor_Middle_Name_From_Web
+			, Donor_Last_Name_From_Web
+			, Web_Subscription_Linked_LDS_Account
+			, Donor_Email_From_Web
+			, Donor_Phone_Number_From_Web
+			, Donor_Address_Line_1_From_Web
+			, Donor_Address_Line_2_From_Web
+			, Donor_Address_City_From_Web
+			, Donor_Address_State_From_Web
+			, Donor_Address_Zip_Code_From_Web
+			, Donor_Address_Country_From_Web
+			, Comments
+			, Telefund_Comments	
+			, Donor_Type	
+			, Donor_Match_Status	
+			, Web_Subscription_Status
+			, Web_Subscription_Status_Reason	
+			, Web_Subscription_Created_On
+			, Web_Subscription_Modified_On	
+			, Address_Match	
+			, Data_Entry_Status
+			, Receipt_Date
+			, Matched_by_User
+			' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _Web_Subscription_Fact
+-- --------------------------
+	( 1 -- Tier
+		, 'dbo._Web_Subscription_Fact' -- Source_Table
+		, 'dbo._Web_Subscription_Fact' -- Destination_Table
+		,'	WebSubscription_Key NVARCHAR(100) PRIMARY KEY
+			, WebSubscription_Dim_Key NVARCHAR(100)
+			, Transaction_Total MONEY
+			, Donor_Key NVARCHAR(100)
+			, Appeal_Key NVARCHAR(100)
+			' -- Dest_Create_Fields
+		, '	WebSubscription_Key
+			, WebSubscription_Dim_Key
+			, Transaction_Total
+			, Donor_Key
+			, Appeal_Key
+			' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- View_Web_Subscription
+-- --------------------------
+	( 1 -- Tier
+		, 'dbo.View_Web_Subscription' -- Source_Table
+		, 'dbo.View_Web_Subscription' -- Destination_Table
+		,'	Web_Subscription_OA_ID NVARCHAR(100)
+			, Web_Subscription_Name NVARCHAR(100) 
+			, Transaction_Total MONEY
+			, Transaction_ID NVARCHAR(100)
+			, Recurring_Donation_Start_Date DATE
+			, Recurring_Donation_Stop_Date DATE
+			, Next_Payment_Date DATE
+			, Payment_Type NVARCHAR(400)
+			, Tender_Name NVARCHAR(400)
+			, Opt_Into_Email_Communication NVARCHAR(400)
+			, CID NVARCHAR(200)
+			, CDE2 NVARCHAR(200)
+			, Type_of_Donation NVARCHAR(400)
+			, Appeal_Code NVARCHAR(10)
+			, Appeal_Name NVARCHAR(100)
+			, Appeal_Delivery_Type NVARCHAR(400)
+			, Donor_First_Name_From_Web NVARCHAR(100)
+			, Donor_Middle_Name_From_Web NVARCHAR(100)
+			, Donor_Last_Name_From_Web NVARCHAR(100)
+			, Web_Subscription_Linked_LDS_Account NVARCHAR(1)
+			, Donor_Email_From_Web NVARCHAR(100)
+			, Donor_Phone_Number_From_Web NVARCHAR(100)
+			, Donor_Address_Line_1_From_Web NVARCHAR(100)
+			, Donor_Address_Line_2_From_Web NVARCHAR(100)
+			, Donor_Address_City_From_Web NVARCHAR(100)
+			, Donor_Address_State_From_Web NVARCHAR(100)
+			, Donor_Address_Zip_Code_From_Web NVARCHAR(100)
+			, Donor_Address_Country_From_Web NVARCHAR(100)
+			, Comments NVARCHAR(1000)
+			, Telefund_Comments NVARCHAR(4000)
+			, Donor_Type NVARCHAR(400)	
+			, Donor_Match_Status NVARCHAR(400)
+			, Web_Subscription_Status NVARCHAR(400)
+			, Web_Subscription_Status_Reason NVARCHAR(400)	
+			, Web_Subscription_Created_On DATE
+			, Web_Subscription_Modified_On DATE
+			, Address_Match NVARCHAR(400)	
+			, Data_Entry_Status NVARCHAR(400)
+			, Receipt_Date DATETIME
+			, Donor_Key NVARCHAR(100)
+			, Donor_Gender NVARCHAR(400)
+			, Birthdate DATE
+			, Donor_Preferred_Name NVARCHAR(100)
+			, Donor_Name NVARCHAR(160)
+			, Donor_Primary_Email NVARCHAR(150)
+			, Donor_Marriage_Status NVARCHAR(400)
+			, Donor_Deceased NVARCHAR(1)
+			, Donor_Linked_Lds_Account NVARCHAR(1)
+			, Donor_LDSPID	NVARCHAR(100)
+			, Donor_CreatedOn DATE
+			, Donor_ModifiedOn DATE
+			, Donor_Status NVARCHAR(400)
+			, Donor_Status_Reason	NVARCHAR(400)
+			, Matched_by_User NVARCHAR(200)
+			' -- Dest_Create_Fields
+		, '	Web_Subscription_OA_ID
+			, Web_Subscription_Name
+			, Transaction_Total
+			, Transaction_ID
+			, Recurring_Donation_Start_Date
+			, Recurring_Donation_Stop_Date
+			, Next_Payment_Date
+			, Payment_Type
+			, Tender_Name
+			, Opt_Into_Email_Communication
+			, CID
+			, CDE2
+			, Type_of_Donation
+			, Appeal_Code
+			, Appeal_Name
+			, Appeal_Delivery_Type
+			, Donor_First_Name_From_Web
+			, Donor_Middle_Name_From_Web
+			, Donor_Last_Name_From_Web
+			, Web_Subscription_Linked_LDS_Account
+			, Donor_Email_From_Web
+			, Donor_Phone_Number_From_Web
+			, Donor_Address_Line_1_From_Web
+			, Donor_Address_Line_2_From_Web
+			, Donor_Address_City_From_Web
+			, Donor_Address_State_From_Web
+			, Donor_Address_Zip_Code_From_Web
+			, Donor_Address_Country_From_Web
+			, Comments
+			, Telefund_Comments	
+			, Donor_Type	
+			, Donor_Match_Status	
+			, Web_Subscription_Status
+			, Web_Subscription_Status_Reason	
+			, Web_Subscription_Created_On
+			, Web_Subscription_Modified_On	
+			, Address_Match	
+			, Data_Entry_Status
+			, Receipt_Date
+			, Donor_Key
+			, Donor_Gender
+			, Birthdate
+			, Donor_Preferred_Name
+			, Donor_Name
+			, Donor_Primary_Email
+			, Donor_Marriage_Status 
+			, Donor_Deceased
+			, Donor_Linked_Lds_Account
+			, Donor_LDSPID	
+			, Donor_CreatedOn
+			, Donor_ModifiedOn
+			, Donor_Status
+			, Donor_Status_Reason	
+			, Matched_by_User
+			' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _Web_Transaction_Dim
+-- --------------------------
+	( 1 -- Tier
+		, 'dbo._Web_Transaction_Dim' -- Source_Table
+		, 'dbo._Web_Transaction_Dim' -- Destination_Table
+		,'	Web_Transaction_Dim_Key NVARCHAR(100) PRIMARY KEY
+			, Transaction_Id NVARCHAR(100)
+			, Receipt_Date DATETIME
+			, Payment_Type NVARCHAR(400) 
+			, Tender_Name NVARCHAR(400)
+			, Type_Of_Donation NVARCHAR(400)
+			, Recurred_Donation_Status NVARCHAR(400)
+			, Appeal_Code NVARCHAR(10)
+			, Cid NVARCHAR(200)
+			, Cde2 NVARCHAR(200)
+			, Score NVARCHAR(100)
+			, Opt_Into_Email_Communication NVARCHAR(400)
+			, Donor_First_Name_From_Web NVARCHAR(100)
+			, Donor_Middle_Name_From_Web NVARCHAR(100)
+			, Donor_Last_Name_From_Web NVARCHAR(100)
+			, Web_Subscription_Linked_Lds_Account NVARCHAR(1)
+			, Donor_Email_From_Web NVARCHAR(255)
+			, Donor_Phone_Number_From_Web NVARCHAR(100)
+			, Donor_Address_Line_1_From_Web NVARCHAR(100)
+			, Donor_Address_Line_2_From_Web NVARCHAR(100)
+			, Donor_Address_City_From_Web NVARCHAR(100)
+			, Donor_Address_State_From_Web NVARCHAR(100)
+			, Donor_Address_Zip_Code_From_Web NVARCHAR(100)
+			, Donor_Address_Country_From_Web NVARCHAR(100)
+			, Comments NVARCHAR(1000)
+			, Telefund_Comments NVARCHAR(4000)
+			, Address_Match NVARCHAR(400) 
+			, Data_Entry_Status NVARCHAR(400)
+			, In_Memoriam_Flag NVARCHAR(400)
+			, In_Memory_Of_Type NVARCHAR(400)
+			, Notify_Fmaily_Friends NVARCHAR(400)
+			, Notify_This_Person NVARCHAR(400)
+			, Honoree_Name NVARCHAR(100)
+			, Notify_By_Card NVARCHAR(400)
+			, Notify_By_Email NVARCHAR(400)
+			, Web_Transaction_Status NVARCHAR(400)
+			, Web_Transaction_Status_Reason NVARCHAR(400)
+			, Web_Transaction_Created_On DATE
+			, Web_Transaction_Modified_On DATE
+			, Web_Transaction_Modified_By NVARCHAR(200)
+			' -- Dest_Create_Fields
+		, '	Web_Transaction_Dim_Key
+			, Transaction_Id
+			, Receipt_Date
+			, Payment_Type 
+			, Tender_Name
+			, Type_Of_Donation
+			, Recurred_Donation_Status
+			, Appeal_Code
+			, Cid
+			, Cde2
+			, Score
+			, Opt_Into_Email_Communication
+			, Donor_First_Name_From_Web
+			, Donor_Middle_Name_From_Web
+			, Donor_Last_Name_From_Web
+			, Web_Subscription_Linked_Lds_Account
+			, Donor_Email_From_Web
+			, Donor_Phone_Number_From_Web
+			, Donor_Address_Line_1_From_Web
+			, Donor_Address_Line_2_From_Web
+			, Donor_Address_City_From_Web
+			, Donor_Address_State_From_Web
+			, Donor_Address_Zip_Code_From_Web
+			, Donor_Address_Country_From_Web
+			, Comments
+			, Telefund_Comments
+			, Address_Match 
+			, Data_Entry_Status
+			, In_Memoriam_Flag
+			, In_Memory_Of_Type
+			, Notify_Fmaily_Friends
+			, Notify_This_Person
+			, Honoree_Name
+			, Notify_By_Card
+			, Notify_By_Email
+			, Web_Transaction_Status
+			, Web_Transaction_Status_Reason
+			, Web_Transaction_Created_On
+			, Web_Transaction_Modified_On
+			, Web_Transaction_Modified_By
+			' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _Web_Transaction_Fact
+-- --------------------------
+	( 1 -- Tier
+		, 'dbo._Web_Transaction_Fact' -- Source_Table
+		, 'dbo._Web_Transaction_Fact' -- Destination_Table
+		,'	WebTransaction_Key NVARCHAR(100) PRIMARY KEY
+			, Web_Transaction_Dim_Key NVARCHAR(100)
+			, Transaction_Total MONEY
+			, Donor_Key NVARCHAR(100)
+			, Appeal_Key NVARCHAR(100)
+			' -- Dest_Create_Fields
+		, '	WebTransaction_Key
+			, Web_Transaction_Dim_Key
+			, Transaction_Total
+			, Donor_Key
+			, Appeal_Key
+			' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- View_Web_Transaction
+-- --------------------------
+	( 1 -- Tier
+		, 'dbo.View_Web_Transaction' -- Source_Table
+		, 'dbo.View_Web_Transaction' -- Destination_Table
+		,'	Web_Transaction_OA_ID NVARCHAR(100)
+			, Transaction_Id NVARCHAR(100) 
+			, Transaction_Total MONEY
+			, Receipt_Date DATETIME
+			, Payment_Type NVARCHAR(400)
+			, Tender_Name NVARCHAR(400)
+			, Type_of_Donation NVARCHAR(400)
+			, Recurred_Donation_Status NVARCHAR(400)
+			, Appeal_Code NVARCHAR(10)
+			, Appeal_Name NVARCHAR(100)
+			, Appeal_Delivery_Type NVARCHAR(400)			
+			, CID NVARCHAR(200)
+			, CDE2 NVARCHAR(200)
+			, Score NVARCHAR(100)			
+			, Opt_Into_Email_Communication NVARCHAR(400)
+			, Donor_First_Name_From_Web NVARCHAR(100)
+			, Donor_Middle_Name_From_Web NVARCHAR(100)
+			, Donor_Last_Name_From_Web NVARCHAR(100)
+			, Web_Subscription_Linked_LDS_Account NVARCHAR(1)			
+			, Donor_Email_From_Web NVARCHAR(100)
+			, Donor_Phone_Number_From_Web NVARCHAR(100)
+			, Donor_Address_Line_1_From_Web NVARCHAR(100)
+			, Donor_Address_Line_2_From_Web NVARCHAR(100)
+			, Donor_Address_City_From_Web NVARCHAR(100)
+			, Donor_Address_State_From_Web NVARCHAR(100)
+			, Donor_Address_Zip_Code_From_Web NVARCHAR(100)
+			, Donor_Address_Country_From_Web NVARCHAR(100)						
+			, Comments NVARCHAR(1000)
+			, Telefund_Comments NVARCHAR(4000)
+			, Address_Match NVARCHAR(400)
+			, Data_Entry_Status NVARCHAR(400)
+			, In_Memoriam_Flag NVARCHAR(400)
+			, In_Memory_Of_Type NVARCHAR(400)
+			, Notify_Fmaily_Friends NVARCHAR(400)
+			, Notify_This_Person NVARCHAR(400)
+			, Honoree_Name NVARCHAR(100)
+			, Notify_By_Card NVARCHAR(400)
+			, Notify_By_Email NVARCHAR(400)
+			, Web_Transaction_Status NVARCHAR(400)
+			, Web_Transaction_Status_Reason NVARCHAR(400)
+			, Web_Transaction_Created_On DATE
+			, Web_Transaction_Modified_On DATE
+			, Web_Transaction_Modified_By NVARCHAR(200)
+			, DonorId NVARCHAR(100)
+			, Donor_Gender NVARCHAR(400)
+			, Birthdate DATE
+			, Donor_Preferred_Name NVARCHAR(100)
+			, Donor_Name NVARCHAR(160)
+			, Donor_Primary_Email NVARCHAR(150)
+			, Donor_Marriage_Status NVARCHAR(400)
+			, Donor_Deceased NVARCHAR(1)
+			, Donor_Linked_Lds_Account NVARCHAR(1)
+			, Donor_LDSPID NVARCHAR(100)
+			, Donor_CreatedOn DATE
+			, Donor_ModifiedOn DATE
+			, Donor_Status NVARCHAR(400)
+			, Donor_Status_Reason NVARCHAR(400)
+			' -- Dest_Create_Fields
+		, '	Web_Transaction_OA_ID
+			, Transaction_Id 
+			, Transaction_Total
+			, Receipt_Date
+			, Payment_Type
+			, Tender_Name
+			, Type_of_Donation
+			, Recurred_Donation_Status
+			, Appeal_Code
+			, Appeal_Name
+			, Appeal_Delivery_Type			
+			, CID
+			, CDE2
+			, Score			
+			, Opt_Into_Email_Communication
+			, Donor_First_Name_From_Web
+			, Donor_Middle_Name_From_Web
+			, Donor_Last_Name_From_Web
+			, Web_Subscription_Linked_LDS_Account			
+			, Donor_Email_From_Web
+			, Donor_Phone_Number_From_Web
+			, Donor_Address_Line_1_From_Web
+			, Donor_Address_Line_2_From_Web
+			, Donor_Address_City_From_Web
+			, Donor_Address_State_From_Web
+			, Donor_Address_Zip_Code_From_Web
+			, Donor_Address_Country_From_Web						
+			, Comments
+			, Telefund_Comments
+			, Address_Match
+			, Data_Entry_Status
+			, In_Memoriam_Flag
+			, In_Memory_Of_Type
+			, Notify_Fmaily_Friends
+			, Notify_This_Person
+			, Honoree_Name
+			, Notify_By_Card
+			, Notify_By_Email
+			, Web_Transaction_Status
+			, Web_Transaction_Status_Reason
+			, Web_Transaction_Created_On
+			, Web_Transaction_Modified_On
+			, Web_Transaction_Modified_By
+			, DonorId
+			, Donor_Gender
+			, Birthdate
+			, Donor_Preferred_Name
+			, Donor_Name
+			, Donor_Primary_Email
+			, Donor_Marriage_Status
+			, Donor_Deceased
+			, Donor_Linked_Lds_Account
+			, Donor_LDSPID
+			, Donor_CreatedOn
+			, Donor_ModifiedOn
+			, Donor_Status
+			, Donor_Status_Reason
+			' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _Donor_Giving_Dim
+-- --------------------------
+	( 1 -- Tier
+		, 'dbo._Donor_Giving_Dim' -- Source_Table
+		, 'dbo._Donor_Giving_Dim' -- Destination_Table
+		,'	Donor_Key NVARCHAR(100)      
+			, Donor_Given_This_Year_To_Byu NVARCHAR(1)
+			, Donor_Given_This_Year_To_ByuI NVARCHAR(1)
+			, Donor_Given_This_Year_To_ByuH NVARCHAR(1)
+			, Donor_Given_This_Year_To_LDSBC NVARCHAR(1)
+			, Donor_Given_Last_3_Months_To_Byu NVARCHAR(1)
+			, Donor_Given_Last_3_Months_To_Byui NVARCHAR(1)
+			, Donor_Given_Last_3_Months_To_Byuh NVARCHAR(1)
+			, Donor_Given_Last_3_Months_To_Ldsbc NVARCHAR(1)
+			, Donor_Given_Last_3_Months_To_Church NVARCHAR(1)
+			, Donor_Institution_Giving_Areas NVARCHAR(1000)
+			, Donor_Byu_Giving_Areas NVARCHAR(2000)
+			, Donor_Church_Giving_Areas NVARCHAR(2000)
+			, Donor_Total_Giving_Byu_High_Flag NVARCHAR(1)
+			, Donor_Total_Giving_Byui_High_Flag NVARCHAR(1)
+			, Donor_Total_Giving_Byuh_High_Flag NVARCHAR(1)
+			, Donor_Total_Giving_Ldsbc_High_Flag NVARCHAR(1)
+			, Donor_Gift_Count_Previous_5_Years INT
+			, Donor_Average_Single_Gift_Previous_5_Years MONEY
+			' -- Dest_Create_Fields
+		, '	Donor_Key      
+			, Donor_Given_This_Year_To_Byu
+			, Donor_Given_This_Year_To_ByuI
+			, Donor_Given_This_Year_To_ByuH
+			, Donor_Given_This_Year_To_LDSBC
+			, Donor_Given_Last_3_Months_To_Byu
+			, Donor_Given_Last_3_Months_To_Byui
+			, Donor_Given_Last_3_Months_To_Byuh
+			, Donor_Given_Last_3_Months_To_Ldsbc
+			, Donor_Given_Last_3_Months_To_Church
+			, Donor_Institution_Giving_Areas
+			, Donor_Byu_Giving_Areas
+			, Donor_Church_Giving_Areas
+			, Donor_Total_Giving_Byu_High_Flag
+			, Donor_Total_Giving_Byui_High_Flag
+			, Donor_Total_Giving_Byuh_High_Flag
+			, Donor_Total_Giving_Ldsbc_High_Flag
+			, Donor_Gift_Count_Previous_5_Years
+			, Donor_Average_Single_Gift_Previous_5_Years
+			' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _Donor_Lifetime_Giving_Dim
+-- --------------------------
+	( 1 -- Tier
+		, 'dbo._Donor_Lifetime_Giving_Dim' -- Source_Table
+		, 'dbo._Donor_Lifetime_Giving_Dim' -- Destination_Table
+		,'	Donor_Key NVARCHAR(100)  
+			, Donor_Total_Lifetime_Giving MONEY
+			, Donor_Total_Lifetime_Giving_Last_5_Years MONEY
+			, Donor_Total_Lifetime_Giving_Byu MONEY
+			, Donor_Total_Lifetime_Giving_Byui MONEY
+			, Donor_Total_Lifetime_Giving_Byuh MONEY
+			, Donor_Total_Lifetime_Giving_Ldsbc MONEY
+			, Donor_Total_Lifetime_Giving_Church MONEY
+			, Donor_Total_Lifetime_Giving_Pcc MONEY
+			, Donor_Total_Lifetime_Giving_Ces MONEY
+			, Donor_Total_Lifetime_Giving_To_Byu_Last_5_Years MONEY
+			, Donor_Total_Lifetime_Giving_To_Byui_Last_5_Years MONEY
+			, Donor_Total_Lifetime_Giving_To_Byuh_Last_5_Years MONEY
+			, Donor_Total_Lifetime_Giving_To_Ldsbc_Last_5_Years MONEY
+			, Donor_Total_Lifetime_Giving_To_Church_Last_5_Years MONEY
+			' -- Dest_Create_Fields
+		, '	Donor_Key      
+			, Donor_Total_Lifetime_Giving
+			, Donor_Total_Lifetime_Giving_Last_5_Years
+			, Donor_Total_Lifetime_Giving_Byu
+			, Donor_Total_Lifetime_Giving_Byui
+			, Donor_Total_Lifetime_Giving_Byuh
+			, Donor_Total_Lifetime_Giving_Ldsbc
+			, Donor_Total_Lifetime_Giving_Church
+			, Donor_Total_Lifetime_Giving_Pcc
+			, Donor_Total_Lifetime_Giving_Ces
+			, Donor_Total_Lifetime_Giving_To_Byu_Last_5_Years
+			, Donor_Total_Lifetime_Giving_To_Byui_Last_5_Years
+			, Donor_Total_Lifetime_Giving_To_Byuh_Last_5_Years
+			, Donor_Total_Lifetime_Giving_To_Ldsbc_Last_5_Years
+			, Donor_Total_Lifetime_Giving_To_Church_Last_5_Years
+			' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, GETDATE()
+		, NULL
+	)
 ;	
 
 

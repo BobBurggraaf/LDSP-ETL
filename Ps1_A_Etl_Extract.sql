@@ -21249,7 +21249,10 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, BYU NVARCHAR(5) DEFAULT ''BYU''
 			, BYUI NVARCHAR(5) DEFAULT ''BYUI''
 			, BYUH NVARCHAR(5) DEFAULT ''BYUH''
-			, LDSBC NVARCHAR(5) DEFAULT ''LDSBC''			
+			, LDSBC NVARCHAR(5) DEFAULT ''LDSBC''
+			, Church NVARCHAR(10) DEFAULT ''Church''
+			, PCC NVARCHAR(5) DEFAULT ''PCC''
+			, CES NVARCHAR(5) DEFAULT ''CES''			
 			' -- Ext_Create_Fields
 		, 'Hier_Key 
 			, Hier_Name
@@ -21294,7 +21297,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, 'Ext_Institution A 
 			' -- Ext_From_Statement
 		, 'INSERT INTO _Hier_Dim
-			VALUES(0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+			VALUES(0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 			' -- Ext_Where_Statement	
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
@@ -30601,6 +30604,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Donation_Receipt_Ytd_Two_Weeks_Ago NVARCHAR(1)
 			, Donation_Description NVARCHAR(4000)
 			, Lds_BatchType NVARCHAR(400)
+			, Posted NVARCHAR(10) DEFAULT ''Posted''
 			' -- Ext_Create_Fields
 		, '	Donation_Key 
 			, New_ConstituentDonor
@@ -32673,7 +32677,9 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Expectancy_Key NVARCHAR(100)
 			, User_Coordinating_Liaison_Key NVARCHAR(100) DEFAULT ''0''
 			, User_Pending_Liaison_Key NVARCHAR(100) DEFAULT ''0''
-			, User_Connected_Liaison_Key NVARCHAR(100) DEFAULT ''0''			
+			, User_Connected_Liaison_Key NVARCHAR(100) DEFAULT ''0''
+			, Hard NVARCHAR(5) DEFAULT ''Hard''
+			, Shared NVARCHAR(10) DEFAULT ''Shared''
 			' -- Ext_Create_Fields
 		, '	Donor_Key
 			, Acitivity_Group_Key 
@@ -36972,7 +36978,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 																		LEFT JOIN _Donation_Fact B ON CONVERT(NVARCHAR(100),C.New_PledgeId) = B.Expectancy_Key
 																		LEFT JOIN _Donation_Dim D ON B.Donation_Key = D.Donation_Key
 																	WHERE 1 = 1
-																		AND D.StatusCode = [Posted]
+																		AND D.StatusCode = A.[Posted]
 																		AND B.Donation_Primary_Amt IS NOT NULL
 																	GROUP BY A.OpportunityId
 																) D ON A.OpportunityId = D.OpportunityId
@@ -37018,7 +37024,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 																LEFT JOIN _Donation_Fact B ON CONVERT(NVARCHAR(100),C.New_PledgeId) = B.Expectancy_Key
 																LEFT JOIN _Donation_Dim D ON B.Donation_Key = D.Donation_Key
 															WHERE 1 = 1
-																AND D.StatusCode = [Posted]
+																AND D.StatusCode = A.[Posted]
 																AND B.Donation_Primary_Amt IS NOT NULL
 															GROUP BY A.OpportunityId
 														) D ON A.OpportunityId = D.OpportunityId
@@ -37206,7 +37212,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 				LEFT JOIN _Accounting_Text_ H ON CONCAT(A.Donation_Key,COALESCE(A.Accounting_Key,[Zero])) = CONCAT(H.Donation_Key,H.Accounting_Key)
 				LEFT JOIN Uf_Reporting_Group_Key() I ON CONCAT(A.Donation_Key,COALESCE(A.Accounting_Key,[Zero])) = CONCAT(I.Donation_Key,I.Accounting_Key)
 				LEFT JOIN _Accounting_Week J ON A.New_AccountingDate = J.Accounting_Week_Date
-				LEFT JOIN _Donation_Fact K ON A.Donation_Key = K.Donation_Key AND K.Plus_Type = [Hard]															
+				LEFT JOIN _Donation_Fact K ON A.Donation_Key = K.Donation_Key AND K.Plus_Type = A.[Hard]															
 			' -- Ext_From_Statement
 		, '
 			' -- Ext_Where_Statement
@@ -39019,6 +39025,292 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 	)
 	,
 -- --------------------------
+-- _Donor_Lifetime_Giving_Dim
+-- --------------------------
+	( 8 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Donor_Lifetime_Giving_Dim' -- Ext_Table
+		, '	' -- Dest_Create_Fields
+		, '	' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, '	Donor_Key NVARCHAR(100)  
+			, Donor_Total_Lifetime_Giving MONEY
+			, Donor_Total_Lifetime_Giving_Last_5_Years MONEY
+			, Donor_Total_Lifetime_Giving_Byu MONEY
+			, Donor_Total_Lifetime_Giving_Byui MONEY
+			, Donor_Total_Lifetime_Giving_Byuh MONEY
+			, Donor_Total_Lifetime_Giving_Ldsbc MONEY
+			, Donor_Total_Lifetime_Giving_Church MONEY
+			, Donor_Total_Lifetime_Giving_Pcc MONEY
+			, Donor_Total_Lifetime_Giving_Ces MONEY
+			, Donor_Total_Lifetime_Giving_To_Byu_Last_5_Years MONEY
+			, Donor_Total_Lifetime_Giving_To_Byui_Last_5_Years MONEY
+			, Donor_Total_Lifetime_Giving_To_Byuh_Last_5_Years MONEY
+			, Donor_Total_Lifetime_Giving_To_Ldsbc_Last_5_Years MONEY
+			, Donor_Total_Lifetime_Giving_To_Church_Last_5_Years MONEY
+			' -- Ext_Create_Fields
+		, '	Donor_Key      
+			, Donor_Total_Lifetime_Giving
+			, Donor_Total_Lifetime_Giving_Last_5_Years
+			, Donor_Total_Lifetime_Giving_Byu
+			, Donor_Total_Lifetime_Giving_Byui
+			, Donor_Total_Lifetime_Giving_Byuh
+			, Donor_Total_Lifetime_Giving_Ldsbc
+			, Donor_Total_Lifetime_Giving_Church
+			, Donor_Total_Lifetime_Giving_Pcc
+			, Donor_Total_Lifetime_Giving_Ces
+			, Donor_Total_Lifetime_Giving_To_Byu_Last_5_Years
+			, Donor_Total_Lifetime_Giving_To_Byui_Last_5_Years
+			, Donor_Total_Lifetime_Giving_To_Byuh_Last_5_Years
+			, Donor_Total_Lifetime_Giving_To_Ldsbc_Last_5_Years
+			, Donor_Total_Lifetime_Giving_To_Church_Last_5_Years
+			' -- Ext_Insert_Fields
+		, '  A.Donor_Key
+			, Donor_Total_Lifetime_Giving
+			, Donor_Total_Lifetime_Giving_Last_5_Years
+			, Donor_Total_Lifetime_Giving_Byu
+			, Donor_Total_Lifetime_Giving_Byui
+			, Donor_Total_Lifetime_Giving_Byuh
+			, Donor_Total_Lifetime_Giving_Ldsbc
+			, Donor_Total_Lifetime_Giving_Church
+			, Donor_Total_Lifetime_Giving_Pcc
+			, Donor_Total_Lifetime_Giving_Ces
+			, Donor_Total_Lifetime_Giving_To_Byu_Last_5_Years
+			, Donor_Total_Lifetime_Giving_To_Byui_Last_5_Years
+			, Donor_Total_Lifetime_Giving_To_Byuh_Last_5_Years
+			, Donor_Total_Lifetime_Giving_To_Ldsbc_Last_5_Years
+			, Donor_Total_Lifetime_Giving_To_Church_Last_5_Years
+			' -- Ext_Select_Statement
+		, ' _All_Donors_ A
+				LEFT JOIN		
+					(SELECT A.Donor_Key
+						, SUM(A.Donation_Credit_Amt) AS Donor_Total_Lifetime_Giving
+						FROM _Donation_Fact A
+							INNER JOIN _Donation_Dim B ON A.Donation_Key = B.Donation_Key
+						WHERE 1 = 1
+							AND B.StatusCode = [Posted]
+							AND A.Plus_Type IN ([Hard],[Shared])
+						GROUP BY A.Donor_Key
+					) B ON A.Donor_Key = B.Donor_Key
+				LEFT JOIN
+					(SELECT ContactId AS Donor_Key
+						, Plus_TotalGivenLast5Years AS Donor_Total_Lifetime_Giving_Last_5_Years
+						FROM Ext_Contact
+					UNION
+					SELECT AccountId AS Donor_Key
+						, Plus_TotalGivenLast5Years AS Donor_Total_Lifetime_Giving_Last_5_Years
+						FROM Ext_Account
+					) C ON A.Donor_Key = C.Donor_Key
+				LEFT JOIN
+					(SELECT A.Donor_Key
+						, SUM(A.Donation_Credit_Amt) AS Donor_Total_Lifetime_Giving_Byu
+						FROM _Donation_Fact A
+							INNER JOIN _Donation_Dim B ON A.Donation_Key = B.Donation_Key
+							INNER JOIN _Hier_Dim C ON A.Hier_Key = C.Hier_Key
+						WHERE 1 = 1
+							AND B.StatusCode = [Posted]
+							AND A.Plus_Type IN ([Hard],[Shared])
+							AND C.New_Inst = [BYU]
+						GROUP BY A.Donor_Key
+					) D ON A.Donor_Key = D.Donor_Key
+				LEFT JOIN
+					(SELECT A.Donor_Key
+						, SUM(A.Donation_Credit_Amt) AS Donor_Total_Lifetime_Giving_Byui
+						FROM _Donation_Fact A
+							INNER JOIN _Donation_Dim B ON A.Donation_Key = B.Donation_Key
+							INNER JOIN _Hier_Dim C ON A.Hier_Key = C.Hier_Key
+						WHERE 1 = 1
+							AND B.StatusCode = [Posted]
+							AND A.Plus_Type IN ([Hard],[Shared])
+							AND C.New_Inst = [BYUI]
+						GROUP BY A.Donor_Key
+					) E ON A.Donor_Key = E.Donor_Key
+				LEFT JOIN
+					(SELECT A.Donor_Key
+						, SUM(A.Donation_Credit_Amt) AS Donor_Total_Lifetime_Giving_Byuh
+						FROM _Donation_Fact A
+							INNER JOIN _Donation_Dim B ON A.Donation_Key = B.Donation_Key
+							INNER JOIN _Hier_Dim C ON A.Hier_Key = C.Hier_Key
+						WHERE 1 = 1
+							AND B.StatusCode = [Posted]
+							AND A.Plus_Type IN ([Hard],[Shared])
+							AND C.New_Inst = [BYUH]
+						GROUP BY A.Donor_Key
+					) F ON A.Donor_Key = F.Donor_Key
+				LEFT JOIN
+					(SELECT A.Donor_Key
+						, SUM(A.Donation_Credit_Amt) AS Donor_Total_Lifetime_Giving_Ldsbc
+						FROM _Donation_Fact A
+							INNER JOIN _Donation_Dim B ON A.Donation_Key = B.Donation_Key
+							INNER JOIN _Hier_Dim C ON A.Hier_Key = C.Hier_Key
+						WHERE 1 = 1
+							AND B.StatusCode = [Posted]
+							AND A.Plus_Type IN ([Hard],[Shared])
+							AND C.New_Inst = [LDSBC]
+						GROUP BY A.Donor_Key
+					) G ON A.Donor_Key = G.Donor_Key
+				LEFT JOIN
+					(SELECT A.Donor_Key
+						, SUM(A.Donation_Credit_Amt) AS Donor_Total_Lifetime_Giving_Church
+						FROM _Donation_Fact A
+							INNER JOIN _Donation_Dim B ON A.Donation_Key = B.Donation_Key
+							INNER JOIN _Hier_Dim C ON A.Hier_Key = C.Hier_Key
+						WHERE 1 = 1
+							AND B.StatusCode = [Posted]
+							AND A.Plus_Type IN ([Hard],[Shared])
+							AND C.New_Inst = [Church]
+						GROUP BY A.Donor_Key
+					) H ON A.Donor_Key = H.Donor_Key													
+			' -- Ext_From_Statement
+		, '	
+			' -- Ext_Where_Statement
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, '		LEFT JOIN
+					(SELECT A.Donor_Key
+						, SUM(A.Donation_Credit_Amt) AS Donor_Total_Lifetime_Giving_Pcc
+						FROM _Donation_Fact A
+							INNER JOIN _Donation_Dim B ON A.Donation_Key = B.Donation_Key
+							INNER JOIN _Hier_Dim C ON A.Hier_Key = C.Hier_Key
+						WHERE 1 = 1
+							AND B.StatusCode = [Posted]
+							AND A.Plus_Type IN ([Hard],[Shared])
+							AND C.New_Inst = [PCC]
+						GROUP BY A.Donor_Key
+					) I ON A.Donor_Key = I.Donor_Key
+				LEFT JOIN
+					(SELECT A.Donor_Key
+						, SUM(A.Donation_Credit_Amt) AS Donor_Total_Lifetime_Giving_Ces
+						FROM _Donation_Fact A
+							INNER JOIN _Donation_Dim B ON A.Donation_Key = B.Donation_Key
+							INNER JOIN _Hier_Dim C ON A.Hier_Key = C.Hier_Key
+						WHERE 1 = 1
+							AND B.StatusCode = [Posted]
+							AND A.Plus_Type IN ([Hard],[Shared])
+							AND C.New_Inst = [CES]
+						GROUP BY A.Donor_Key
+					) J ON A.Donor_Key = J.Donor_Key
+				LEFT JOIN 
+					(SELECT COALESCE(A.New_RelatedConstituent,A.New_OrganizationId) AS Donor_Key 
+							, SUM(A.New_CreditAmount) AS Donor_Total_Lifetime_Giving_To_Byu_Last_5_Years
+							FROM dbo._Gift_Credit_ A
+								INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
+							WHERE 1 = 1
+								AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-6,0),112) -- 5 full calendar years + Ytd
+															AND CONVERT(NVARCHAR(10),GETDATE(),112)
+								AND A.Plus_Type IN (100000000,100000002) -- Hard, Shared (not Influence 100000001)
+								AND A.StatusCode = 1 --Posted
+								AND B.New_Inst = [BYU] --Institution
+							GROUP BY COALESCE(A.New_RelatedConstituent, A.New_OrganizationId)
+					) K ON A.Donor_Key = K.Donor_Key
+				LEFT JOIN 
+					(SELECT COALESCE(A.New_RelatedConstituent,A.New_OrganizationId) AS Donor_Key 
+							, SUM(A.New_CreditAmount) AS Donor_Total_Lifetime_Giving_To_Byui_Last_5_Years
+							FROM dbo._Gift_Credit_ A
+								INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
+							WHERE 1 = 1
+								AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-6,0),112) -- 5 full calendar years + Ytd
+															AND CONVERT(NVARCHAR(10),GETDATE(),112)
+								AND A.Plus_Type IN (100000000,100000002) -- Hard, Shared (not Influence 100000001)
+								AND A.StatusCode = 1 --Posted
+								AND B.New_Inst = [BYUI] --Institution
+							GROUP BY COALESCE(A.New_RelatedConstituent, A.New_OrganizationId)
+					) L ON A.Donor_Key = L.Donor_Key				
+			' -- Ext_From_Statement_2
+		, ' ' -- Ext_Create_Fields_2
+		, ' ' -- Ext_Create_Fields_3
+		, ' ' -- Ext_Where_Statement_2
+		, ' ' -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+		, NULL -- Ext_Select_Statement_3
+		, NULL -- Ext_Select_Statement_4
+		, NULL -- Ext_Select_Statement_5
+		, NULL -- Ext_Select_Statement_6
+		, NULL -- Ext_Select_Statement_7
+		, '		LEFT JOIN 
+					(SELECT COALESCE(A.New_RelatedConstituent,A.New_OrganizationId) AS Donor_Key 
+							, SUM(A.New_CreditAmount) AS Donor_Total_Lifetime_Giving_To_Byuh_Last_5_Years
+							FROM dbo._Gift_Credit_ A
+								INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
+							WHERE 1 = 1
+								AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-6,0),112) -- 5 full calendar years + Ytd
+															AND CONVERT(NVARCHAR(10),GETDATE(),112)
+								AND A.Plus_Type IN (100000000,100000002) -- Hard, Shared (not Influence 100000001)
+								AND A.StatusCode = 1 --Posted
+								AND B.New_Inst = [BYUH] --Institution
+							GROUP BY COALESCE(A.New_RelatedConstituent, A.New_OrganizationId)
+					) M ON A.Donor_Key = M.Donor_Key
+				LEFT JOIN 
+					(SELECT COALESCE(A.New_RelatedConstituent,A.New_OrganizationId) AS Donor_Key 
+							, SUM(A.New_CreditAmount) AS Donor_Total_Lifetime_Giving_To_Ldsbc_Last_5_Years
+							FROM dbo._Gift_Credit_ A
+								INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
+							WHERE 1 = 1
+								AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-6,0),112) -- 5 full calendar years + Ytd
+															AND CONVERT(NVARCHAR(10),GETDATE(),112)
+								AND A.Plus_Type IN (100000000,100000002) -- Hard, Shared (not Influence 100000001)
+								AND A.StatusCode = 1 --Posted
+								AND B.New_Inst = [LDSBC] --Institution
+							GROUP BY COALESCE(A.New_RelatedConstituent, A.New_OrganizationId)
+					) N ON A.Donor_Key = N.Donor_Key
+				LEFT JOIN 
+					(SELECT COALESCE(A.New_RelatedConstituent,A.New_OrganizationId) AS Donor_Key 
+							, SUM(A.New_CreditAmount) AS Donor_Total_Lifetime_Giving_To_Church_Last_5_Years
+							FROM dbo._Gift_Credit_ A
+								INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
+							WHERE 1 = 1
+								AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-6,0),112) -- 5 full calendar years + Ytd
+															AND CONVERT(NVARCHAR(10),GETDATE(),112)
+								AND A.Plus_Type IN (100000000,100000002) -- Hard, Shared (not Influence 100000001)
+								AND A.StatusCode = 1 --Posted
+								AND B.New_Inst = [Church] --Institution
+							GROUP BY COALESCE(A.New_RelatedConstituent, A.New_OrganizationId)
+					) O ON A.Donor_Key = O.Donor_Key 																											
+			' -- Ext_From_Statement_3
+		, '		
+			' -- Ext_From_Statement_4
+		, NULL -- Ext_From_Statement_5
+		, NULL -- Ext_From_Statement_6
+		, NULL -- Ext_From_Statement_7
+		, NULL -- Ext_Where_Statement_4
+		, NULL -- Ext_Where_Statement_5
+		, NULL -- Ext_Where_Statement_6
+		, NULL -- Ext_Where_Statement_7
+		, NULL -- Tier_10_Stage
+		, NULL -- Tier_10_Stage_DateTime
+		, NULL -- Tier_11_Stage
+		, NULL -- Tier_11_Stage_DateTime
+		, NULL -- Tier_12_Stage
+		, NULL -- Tier_12_Stage_DateTime
+		, NULL -- Extra_7
+		, NULL -- Extra_8
+		, NULL -- Extra_9
+		, NULL -- Extra_10
+	)	
+	,
+-- --------------------------
 -- _Accounting_Reporting_Dim
 -- --------------------------
 	( 9 -- Tier
@@ -39485,6 +39777,178 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Extra_9
 		, NULL -- Extra_10
 	)
+	,
+-- --------------------------
+-- _Donor_Giving_Dim
+-- --------------------------
+	( 9 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Donor_Giving_Dim' -- Ext_Table
+		, '	' -- Dest_Create_Fields
+		, '	' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, '	Donor_Key NVARCHAR(100)      
+			, Donor_Given_This_Year_To_Byu NVARCHAR(1)
+			, Donor_Given_This_Year_To_ByuI NVARCHAR(1)
+			, Donor_Given_This_Year_To_ByuH NVARCHAR(1)
+			, Donor_Given_This_Year_To_LDSBC NVARCHAR(1)
+			, Donor_Given_Last_3_Months_To_Byu NVARCHAR(1)
+			, Donor_Given_Last_3_Months_To_Byui NVARCHAR(1)
+			, Donor_Given_Last_3_Months_To_Byuh NVARCHAR(1)
+			, Donor_Given_Last_3_Months_To_Ldsbc NVARCHAR(1)
+			, Donor_Given_Last_3_Months_To_Church NVARCHAR(1)
+			, Donor_Institution_Giving_Areas NVARCHAR(1000)
+			, Donor_Byu_Giving_Areas NVARCHAR(2000)
+			, Donor_Church_Giving_Areas NVARCHAR(2000)
+			, Donor_Total_Giving_Byu_High_Flag NVARCHAR(1)
+			, Donor_Total_Giving_Byui_High_Flag NVARCHAR(1)
+			, Donor_Total_Giving_Byuh_High_Flag NVARCHAR(1)
+			, Donor_Total_Giving_Ldsbc_High_Flag NVARCHAR(1)
+			, Donor_Gift_Count_Previous_5_Years INT
+			, Donor_Average_Single_Gift_Previous_5_Years MONEY
+			' -- Ext_Create_Fields
+		, '	Donor_Key      
+			, Donor_Given_This_Year_To_Byu
+			, Donor_Given_This_Year_To_ByuI
+			, Donor_Given_This_Year_To_ByuH
+			, Donor_Given_This_Year_To_LDSBC
+			, Donor_Given_Last_3_Months_To_Byu
+			, Donor_Given_Last_3_Months_To_Byui
+			, Donor_Given_Last_3_Months_To_Byuh
+			, Donor_Given_Last_3_Months_To_Ldsbc
+			, Donor_Given_Last_3_Months_To_Church
+			, Donor_Institution_Giving_Areas
+			, Donor_Byu_Giving_Areas
+			, Donor_Church_Giving_Areas
+			, Donor_Total_Giving_Byu_High_Flag
+			, Donor_Total_Giving_Byui_High_Flag
+			, Donor_Total_Giving_Byuh_High_Flag
+			, Donor_Total_Giving_Ldsbc_High_Flag
+			, Donor_Gift_Count_Previous_5_Years
+			, Donor_Average_Single_Gift_Previous_5_Years
+			' -- Ext_Insert_Fields
+		, '  A.Donor_Key 
+			, Donor_Given_This_Year_To_Byu
+			, Donor_Given_This_Year_To_Byui
+			, Donor_Given_This_Year_To_Byuh
+			, Donor_Given_This_Year_To_Ldsbc
+			, Donor_Given_Last_3_Months_To_Byu
+			, Donor_Given_Last_3_Months_To_Byui
+			, Donor_Given_Last_3_Months_To_Byuh
+			, Donor_Given_Last_3_Months_To_Ldsbc
+			, Donor_Given_Last_3_Months_To_Church
+			, Donor_Institution_Giving_Areas
+			, Donor_Byu_Giving_Areas
+			, Donor_Church_Giving_Areas
+			, Donor_Total_Giving_Byu_High_Flag
+			, Donor_Total_Giving_Byui_High_Flag
+			, Donor_Total_Giving_Byuh_High_Flag
+			, Donor_Total_Giving_Ldsbc_High_Flag
+			, Donor_Gift_Count_Previous_5_Years
+			, Donor_Average_Single_Gift_Previous_5_Years
+			' -- Ext_Select_Statement
+		, ' _All_Donors_ A
+			LEFT JOIN _Donor_Given_This_Year_To_Byu_ B ON A.Donor_Key = B.Donor_Key
+			LEFT JOIN _Donor_Given_This_Year_To_Byui_ C ON A.Donor_Key = C.Donor_Key
+			LEFT JOIN _Donor_Given_This_Year_To_Byuh_ D ON A.Donor_Key = D.Donor_Key
+			LEFT JOIN _Donor_Given_This_Year_To_Ldsbc_ E ON A.Donor_Key = E.Donor_Key
+			LEFT JOIN _Donor_Given_Last_3_Months_To_Byu_ F ON A.Donor_Key = F.Donor_Key
+			LEFT JOIN _Donor_Given_Last_3_Months_To_Byui_ G ON A.Donor_Key = G.Donor_Key
+			LEFT JOIN _Donor_Given_Last_3_Months_To_Byuh_ H ON A.Donor_Key = H.Donor_Key
+			LEFT JOIN _Donor_Given_Last_3_Months_To_Ldsbc_ I ON A.Donor_Key = I.Donor_Key
+			LEFT JOIN _Donor_Given_Last_3_Months_To_Church_ J ON A.Donor_Key = J.Donor_Key
+			LEFT JOIN _Donor_Institution_Giving_Areas_ K ON A.Donor_Key = K.Donor_Key
+			LEFT JOIN _Donor_Byu_Giving_Areas_ L ON A.Donor_Key = L.Donor_Key
+			LEFT JOIN _Donor_Church_Giving_Areas_ M ON A.Donor_Key = M.Donor_Key
+			LEFT JOIN _Donor_Total_Giving_Byu_High_Flag_ N ON A.Donor_Key = N.Donor_Key
+			LEFT JOIN _Donor_Total_Giving_Byui_High_Flag_ O ON A.Donor_Key = O.Donor_Key
+			LEFT JOIN _Donor_Total_Giving_Byuh_High_Flag_ P ON A.Donor_Key = P.Donor_Key
+			LEFT JOIN _Donor_Total_Giving_Ldsbc_High_Flag_ Q ON A.Donor_Key = Q.Donor_Key
+			LEFT JOIN 
+				(SELECT A.Donor_Key
+					, COUNT(DISTINCT A.Donation_Key) AS Donor_Gift_Count_Previous_5_Years
+					FROM _Donation_Fact A
+						INNER JOIN _Donation_Dim B ON A.Donation_Key = B.Donation_Key
+					WHERE 1 = 1
+						AND B.New_ReceiptDate BETWEEN CONVERT(DATE,DATEADD(year, DATEDIFF(year, 0, GETDATE()) - 5, 0),101)
+												AND CONVERT(DATE,DATEADD(yy, DATEDIFF(yy, 0, GETDATE()) + 0, -1),101)
+					GROUP BY Donor_Key
+				) R ON A.Donor_Key = R.Donor_Key
+			LEFT JOIN
+				(SELECT A.Donor_Key
+					, ROUND(Donor_Credit_Sum_Amt/Donor_Gift_Count_Previous_5_Years,2) AS Donor_Average_Single_Gift_Previous_5_Years 
+					FROM
+						(SELECT A.Donor_Key
+							, SUM(A.Donation_Credit_Amt) AS Donor_Credit_Sum_Amt
+							, COUNT(DISTINCT A.Donation_Key) AS Donor_Gift_Count_Previous_5_Years
+							FROM _Donation_Fact A
+								INNER JOIN _Donation_Dim B ON A.Donation_Key = B.Donation_Key
+							WHERE 1 = 1
+								AND B.New_ReceiptDate BETWEEN CONVERT(DATE,DATEADD(year, DATEDIFF(year, 0, GETDATE()) - 5, 0),101)
+														AND CONVERT(DATE,DATEADD(yy, DATEDIFF(yy, 0, GETDATE()) + 0, -1),101)
+							GROUP BY Donor_Key
+						) A
+				) S ON A.Donor_Key = S.Donor_Key													
+			' -- Ext_From_Statement
+		, '	
+			' -- Ext_Where_Statement
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
+		, ' ' -- Ext_Create_Fields_2
+		, ' ' -- Ext_Create_Fields_3
+		, ' ' -- Ext_Where_Statement_2
+		, ' ' -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+		, NULL -- Ext_Select_Statement_3
+		, NULL -- Ext_Select_Statement_4
+		, NULL -- Ext_Select_Statement_5
+		, NULL -- Ext_Select_Statement_6
+		, NULL -- Ext_Select_Statement_7
+		, '																											
+			' -- Ext_From_Statement_3
+		, '		
+			' -- Ext_From_Statement_4
+		, NULL -- Ext_From_Statement_5
+		, NULL -- Ext_From_Statement_6
+		, NULL -- Ext_From_Statement_7
+		, NULL -- Ext_Where_Statement_4
+		, NULL -- Ext_Where_Statement_5
+		, NULL -- Ext_Where_Statement_6
+		, NULL -- Ext_Where_Statement_7
+		, NULL -- Tier_10_Stage
+		, NULL -- Tier_10_Stage_DateTime
+		, NULL -- Tier_11_Stage
+		, NULL -- Tier_11_Stage_DateTime
+		, NULL -- Tier_12_Stage
+		, NULL -- Tier_12_Stage_DateTime
+		, NULL -- Extra_7
+		, NULL -- Extra_8
+		, NULL -- Extra_9
+		, NULL -- Extra_10
+	)	
 	,
 -- --------------------------
 -- _Initiative_Dim
