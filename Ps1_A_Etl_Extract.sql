@@ -2596,6 +2596,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, New_EndDate DATETIME
 			, StatusCode INT
 			, New_RelatedOrganization UNIQUEIDENTIFIER
+			, Plus_Notes NVARCHAR(MAX)
 			' -- Dest_Create_Fields
 		, 'New_AssociationMembershipId
 			, New_ConstituentId
@@ -2604,6 +2605,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, New_EndDate
 			, StatusCode
 			, New_RelatedOrganization
+			, Plus_Notes
 			' -- Dest_Insert_Fields
 		, ' ' -- Dest_Where_Statement
 		, 'New_AssociationMembershipId UNIQUEIDENTIFIER
@@ -2613,6 +2615,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, New_EndDate DATETIME
 			, StatusCode INT
 			, New_RelatedOrganization UNIQUEIDENTIFIER
+			, Plus_Notes NVARCHAR(4000)
 			' -- Ext_Create_Fields
 		, 'New_AssociationMembershipId
 			, New_ConstituentId
@@ -2621,6 +2624,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, New_EndDate
 			, StatusCode
 			, New_RelatedOrganization
+			, Plus_Notes
 			' -- Ext_Insert_Fields
 		, 'New_AssociationMembershipId
 			, New_ConstituentId
@@ -2631,6 +2635,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 					ELSE DATEADD(hh,-7,A.New_EndDate) END AS New_EndDate
 			, StatusCode
 			, New_RelatedOrganization
+			, CONVERT(NVARCHAR(4000),SUBSTRING(Plus_Notes,1,4000)) AS Plus_Notes
 			' -- Ext_Select_Statement
 		, 'Oa_Extract.New_AssociationMembershipBase A
 				LEFT JOIN dbo._MDT_Conversion_Dim B ON YEAR(A.New_StartDate) = B.Date_Year
@@ -3233,6 +3238,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, New_EndDate DATETIME
 			, Plus_CampaignId UNIQUEIDENTIFIER
 			, New_Association UNIQUEIDENTIFIER
+			, Plus_i5TextDetails NVARCHAR(4000)
 			' -- Dest_Create_Fields
 		, 'New_DropIncludeId
 			, New_DropIncludesId
@@ -3252,6 +3258,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, New_EndDate
 			, Plus_CampaignId
 			, New_Association
+			, Plus_i5TextDetails
 			' -- Dest_Insert_Fields
 		, ' ' -- Dest_Where_Statement
 		, 'New_DropIncludeId UNIQUEIDENTIFIER
@@ -3274,6 +3281,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, New_Association UNIQUEIDENTIFIER
 			, Y NVARCHAR(1) DEFAULT ''Y''
 			, N NVARCHAR(1) DEFAULT ''N''
+			, Plus_i5TextDetails NVARCHAR(4000)
 			' -- Ext_Create_Fields
 		, 'New_DropIncludeId
 			, New_DropIncludesId
@@ -3293,6 +3301,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, New_EndDate
 			, Plus_CampaignId
 			, New_Association
+			, Plus_i5TextDetails
 			' -- Ext_Insert_Fields
 		, 'New_DropIncludeId
 			, New_DropIncludesId
@@ -3314,6 +3323,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 					ELSE DATEADD(hh,-7,A.New_EndDate) END AS New_EndDate
 			, Plus_CampaignId
 			, New_Association
+			, Plus_i5TextDetails
 			' -- Ext_Select_Statement
 		, 'Oa_Extract.New_DropIncludeBase A
 				LEFT JOIN dbo._MDT_Conversion_Dim B ON YEAR(A.New_StartDate) = B.Date_Year
@@ -8121,6 +8131,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Plus_Organization UNIQUEIDENTIFIER
 			, CreatedOn DATETIME
 			, Plus_DonationFrom INT
+			, Lds_AssociatedWebSubscription UNIQUEIDENTIFIER
 			' -- Dest_Create_Fields
 		, 'Plus_RecurringGiftRulesId
 			, Plus_Constituent
@@ -8138,6 +8149,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Plus_Organization
 			, CreatedOn
 			, Plus_DonationFrom
+			, Lds_AssociatedWebSubscription
 			' -- Dest_Insert_Fields
 		, ' ' -- Dest_Where_Statement
 		, 'Plus_RecurringGiftRulesId UNIQUEIDENTIFIER
@@ -8157,6 +8169,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, CreatedOn DATETIME
 			, Zero NVARCHAR(5) DEFAULT ''0''
 			, Plus_DonationFrom INT
+			, Lds_AssociatedWebSubscription UNIQUEIDENTIFIER
 			' -- Ext_Create_Fields
 		, 'Plus_RecurringGiftRulesId
 			, Plus_Constituent
@@ -8174,6 +8187,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Plus_Organization
 			, CreatedOn
 			, Plus_DonationFrom
+			, Lds_AssociatedWebSubscription
 			' -- Ext_Insert_Fields
 		, 'Plus_RecurringGiftRulesId
 			, Plus_Constituent
@@ -8194,6 +8208,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, CASE WHEN DATENAME(dy,A.CreatedOn) BETWEEN C.Mdt_Begin_Date_Number AND C.Mdt_End_Date_Number THEN DATEADD(hh,-6,A.CreatedOn)
 					ELSE DATEADD(hh,-7,A.CreatedOn) END AS CreatedOn
 			, Plus_DonationFrom
+			, Lds_AssociatedWebSubscription
 			' -- Ext_Select_Statement
 		, 'Oa_Extract.Plus_RecurringGiftRulesBase A
 				LEFT JOIN dbo._MDT_Conversion_Dim B ON YEAR(A.Plus_PaymentStart) = B.Date_Year
