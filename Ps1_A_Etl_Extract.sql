@@ -8722,6 +8722,16 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Value NVARCHAR(4000)
 			, DisplayOrder INT
 			, StringMapId UNIQUEIDENTIFIER
+			, StatusCode NVARCHAR(15) DEFAULT ''StatusCode''
+			, Email NVARCHAR(15) DEFAULT ''Email''
+			, PhoneCall NVARCHAR(15) DEFAULT ''PhoneCall''
+			, Appointment NVARCHAR(15) DEFAULT ''Appointment''
+			, Task NVARCHAR(15) DEFAULT ''Task''
+			, Letter NVARCHAR(15) DEFAULT ''Letter''
+			, Fax NVARCHAR(15) DEFAULT ''Fax''
+			, Plus_Note NVARCHAR(15) DEFAULT ''Plus_Note''
+			, Cdi_TxtMessage NVARCHAR(20) DEFAULT ''Cdi_TxtMessage''
+			, Plus_Legacym11 NVARCHAR(20) DEFAULT ''Plus_Legacym11''
 			' -- Ext_Create_Fields
 		, 'ObjectTypeCode
 			, AttributeName
@@ -9675,6 +9685,200 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Tier_4_Stage_DateTime
 		, ' ' -- Ext_Select_Statement_2
 		, ' ' -- Ext_From_Statement_2
+		, ' ' -- Ext_Create_Fields_2
+		, ' ' -- Ext_Create_Fields_3
+		, ' ' -- Ext_Where_Statement_2
+		, ' ' -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL  
+		, NULL -- Ext_Select_Statement_3
+		, NULL -- Ext_Select_Statement_4
+		, NULL -- Ext_Select_Statement_5
+		, NULL -- Ext_Select_Statement_6
+		, NULL -- Ext_Select_Statement_7
+		, NULL -- Ext_From_Statement_3
+		, NULL -- Ext_From_Statement_4
+		, NULL -- Ext_From_Statement_5
+		, NULL -- Ext_From_Statement_6
+		, NULL -- Ext_From_Statement_7
+		, NULL -- Ext_Where_Statement_4
+		, NULL -- Ext_Where_Statement_5
+		, NULL -- Ext_Where_Statement_6
+		, NULL -- Ext_Where_Statement_7
+		, NULL -- Tier_10_Stage
+		, NULL -- Tier_10_Stage_DateTime
+		, NULL -- Tier_11_Stage
+		, NULL -- Tier_11_Stage_DateTime
+		, NULL -- Tier_12_Stage
+		, NULL -- Tier_12_Stage_DateTime
+		, NULL -- Extra_7
+		, NULL -- Extra_8
+		, NULL -- Extra_9
+		, NULL -- Extra_10
+	)	
+	,
+-- --------------------------
+-- _Activity_StatusCode_
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Activity_StatusCode_' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Physical_Table_Name NVARCHAR(64)
+			, Column_Name NVARCHAR(4000)
+			, ActivityTypeCode INT
+			, Column_Label NVARCHAR(400)
+			, Column_Value INT
+			' -- Ext_Create_Fields
+		, 'Physical_Table_Name
+			, Column_Name
+			, ActivityTypeCode
+			, Column_Label
+			, Column_Value
+			' -- Ext_Insert_Fields
+		, 'Physical_Table_Name
+			, Column_Name
+			, ActivityTypeCode
+			, Column_Label
+			, Column_Value
+			' -- Ext_Select_Statement
+		, ' (SELECT DISTINCT UPPER(B.PhysicalName) AS Physical_Table_Name
+				, UPPER(A.AttributeName) AS Column_Name
+				, 4202 AS ActivityTypeCode
+				, CONVERT(NVARCHAR(400),A.Value) AS Column_Label
+				, A.AttributeValue AS Column_Value
+				FROM Ext_String_Map A
+					INNER JOIN Ext_Entity B ON A.ObjectTypeCode = B.ObjectTypeCode
+				WHERE 1 = 1
+					AND LangId = 1033
+					AND PhysicalName = A.[Email] 
+					AND AttributeName = A.[StatusCode]
+			UNION
+			SELECT DISTINCT UPPER(B.PhysicalName) AS Physical_Table_Name
+				, UPPER(A.AttributeName) AS Column_Name
+				, 4210 AS ActivityTypeCode
+				, CONVERT(NVARCHAR(400),A.Value) AS Column_Label
+				, A.AttributeValue AS Column_Value
+				FROM Ext_String_Map A
+					INNER JOIN Ext_Entity B ON A.ObjectTypeCode = B.ObjectTypeCode
+				WHERE 1 = 1
+					AND LangId = 1033
+					AND PhysicalName = A.[PhoneCall] 
+					AND AttributeName = A.[StatusCode]
+			UNION
+			SELECT DISTINCT UPPER(B.PhysicalName) AS Physical_Table_Name
+				, UPPER(A.AttributeName) AS Column_Name
+				, 4201 AS ActivityTypeCode
+				, CONVERT(NVARCHAR(400),A.Value) AS Column_Label
+				, A.AttributeValue AS Column_Value
+				FROM Ext_String_Map A
+					INNER JOIN Ext_Entity B ON A.ObjectTypeCode = B.ObjectTypeCode
+				WHERE 1 = 1
+					AND LangId = 1033
+					AND PhysicalName = A.[Appointment] 
+					AND AttributeName = A.[StatusCode]
+			UNION
+			SELECT DISTINCT UPPER(B.PhysicalName) AS Physical_Table_Name
+				, UPPER(A.AttributeName) AS Column_Name
+				, 4212 AS ActivityTypeCode
+				, CONVERT(NVARCHAR(400),A.Value) AS Column_Label
+				, A.AttributeValue AS Column_Value
+				FROM Ext_String_Map A
+					INNER JOIN Ext_Entity B ON A.ObjectTypeCode = B.ObjectTypeCode
+				WHERE 1 = 1
+					AND LangId = 1033
+					AND PhysicalName = A.[Task] 
+					AND AttributeName = A.[StatusCode]
+			UNION
+			SELECT DISTINCT UPPER(B.PhysicalName) AS Physical_Table_Name
+				, UPPER(A.AttributeName) AS Column_Name
+				, 4207 AS ActivityTypeCode
+				, CONVERT(NVARCHAR(400),A.Value) AS Column_Label
+				, A.AttributeValue AS Column_Value
+				FROM Ext_String_Map A
+					INNER JOIN Ext_Entity B ON A.ObjectTypeCode = B.ObjectTypeCode
+				WHERE 1 = 1
+					AND LangId = 1033
+					AND PhysicalName = A.[Letter] 
+					AND AttributeName = A.[StatusCode]
+			' -- Ext_From_Statement
+		, '
+			' -- Ext_Where_Statement	
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, 'UNION
+			SELECT DISTINCT UPPER(B.PhysicalName) AS Physical_Table_Name
+				, UPPER(A.AttributeName) AS Column_Name
+				, 4204 AS ActivityTypeCode
+				, CONVERT(NVARCHAR(400),A.Value) AS Column_Label
+				, A.AttributeValue AS Column_Value
+				FROM Ext_String_Map A
+					INNER JOIN Ext_Entity B ON A.ObjectTypeCode = B.ObjectTypeCode
+				WHERE 1 = 1
+					AND LangId = 1033
+					AND PhysicalName = A.[Fax] 
+					AND AttributeName = A.[StatusCode]
+			UNION
+			SELECT DISTINCT UPPER(B.PhysicalName) AS Physical_Table_Name
+				, UPPER(A.AttributeName) AS Column_Name
+				, 10175 AS ActivityTypeCode
+				, CONVERT(NVARCHAR(400),A.Value) AS Column_Label
+				, A.AttributeValue AS Column_Value
+				FROM Ext_String_Map A
+					INNER JOIN Ext_Entity B ON A.ObjectTypeCode = B.ObjectTypeCode
+				WHERE 1 = 1
+					AND LangId = 1033
+					AND PhysicalName = A.[Plus_Note] 
+					AND AttributeName = A.[StatusCode]
+			UNION
+			SELECT DISTINCT UPPER(B.PhysicalName) AS Physical_Table_Name
+				, UPPER(A.AttributeName) AS Column_Name
+				, 10107 AS ActivityTypeCode
+				, CONVERT(NVARCHAR(400),A.Value) AS Column_Label
+				, A.AttributeValue AS Column_Value
+				FROM Ext_String_Map A
+					INNER JOIN Ext_Entity B ON A.ObjectTypeCode = B.ObjectTypeCode
+				WHERE 1 = 1
+					AND LangId = 1033
+					AND PhysicalName = A.[Cdi_TxtMessage] 
+					AND AttributeName = A.[StatusCode]
+			UNION
+			SELECT DISTINCT UPPER(B.PhysicalName) AS Physical_Table_Name
+				, UPPER(A.AttributeName) AS Column_Name
+				, 10145 AS ActivityTypeCode
+				, CONVERT(NVARCHAR(400),A.Value) AS Column_Label
+				, A.AttributeValue AS Column_Value
+				FROM Ext_String_Map A
+					INNER JOIN Ext_Entity B ON A.ObjectTypeCode = B.ObjectTypeCode
+				WHERE 1 = 1
+					AND LangId = 1033
+					AND PhysicalName = A.[Plus_Legacym11] 
+					AND AttributeName = A.[StatusCode]
+			) A 
+			' -- Ext_From_Statement_2
 		, ' ' -- Ext_Create_Fields_2
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
@@ -27148,6 +27352,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 						WHEN B.RegardingObjectTypeCode = 2 THEN B.[Constituent]
 						WHEN B.RegardingObjectTypeCode = 3 THEN B.[Initiative] 
 							ELSE NULL END AS Regarding_Type
+					, B.ActivityTypeCode
 					FROM Ext_Activity A -- People
 						LEFT JOIN Ext_Activity_Pointer B ON A.ActivityId = B.ActivityId  -- Activities
 						LEFT JOIN Ext_Appointment C ON A.ActivityId = C.ActivityId
@@ -27161,7 +27366,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 				LEFT JOIN _Plus_M11MessageType_ MT ON B.Plus_M11MessageType = MT.Column_Value
 				LEFT JOIN _Plus_M11ActivityType_ MAT ON B.Plus_M11ActivityType = MAT.Column_Value
 				LEFT JOIN _ActivityPointer_StateCode_ STATE ON A.StateCode = STATE.Column_Value
-				LEFT JOIN _ActivityPointer_StatusCode_ STATUS ON A.StatusCode = STATUS.Column_Value
+				LEFT JOIN _Activity_StatusCode_ STATUS ON A.StatusCode = STATUS.Column_Value AND A.ActivityTypeCode = STATUS.ActivityTypeCode
 			) A
 			LEFT JOIN 
 				(
@@ -36556,6 +36761,132 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Accounting_Text_Gift_Adjustment_Text
 			' -- Ext_Select_Statement
 		, '	_Accounting_Text_															
+			' -- Ext_From_Statement
+		, '
+			' -- Ext_Where_Statement
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, '
+			' -- Ext_From_Statement_2
+		, ' ' -- Ext_Create_Fields_2
+		, ' ' -- Ext_Create_Fields_3
+		, ' ' -- Ext_Where_Statement_2
+		, ' ' -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+		, NULL -- Ext_Select_Statement_3
+		, NULL -- Ext_Select_Statement_4
+		, NULL -- Ext_Select_Statement_5
+		, NULL -- Ext_Select_Statement_6
+		, NULL -- Ext_Select_Statement_7
+		, '															
+			' -- Ext_From_Statement_3
+		, '
+			'-- Ext_From_Statement_4
+		, NULL -- Ext_From_Statement_5
+		, NULL -- Ext_From_Statement_6
+		, NULL -- Ext_From_Statement_7
+		, NULL -- Ext_Where_Statement_4
+		, NULL -- Ext_Where_Statement_5
+		, NULL -- Ext_Where_Statement_6
+		, NULL -- Ext_Where_Statement_7
+		, NULL -- Tier_10_Stage
+		, NULL -- Tier_10_Stage_DateTime
+		, NULL -- Tier_11_Stage
+		, NULL -- Tier_11_Stage_DateTime
+		, NULL -- Tier_12_Stage
+		, NULL -- Tier_12_Stage_DateTime
+		, NULL -- Extra_7
+		, NULL -- Extra_8
+		, NULL -- Extra_9
+		, NULL -- Extra_10
+	)
+	,
+-- --------------------------
+-- _Donor_First_Gift_Dim
+-- --------------------------
+	( 8 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Donor_First_Gift_Dim' -- Ext_Table
+		, '	' -- Dest_Create_Fields
+		, '	' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, '	Donor_Key NVARCHAR(100)  
+			, Donor_First_Gift_Post_Date_Byu DATE
+			, Donor_First_Gift_Post_Date_Byui DATE
+			, Donor_First_Gift_Post_Date_Byuh DATE
+			, Donor_First_Gift_Post_Date_Ldsbc DATE
+			, Donor_First_Gift_To_Byu_Amt MONEY
+			, Donor_First_Gift_To_Byui_Amt MONEY
+			, Donor_First_Gift_To_Byuh_Amt MONEY
+			, Donor_First_Gift_To_Ldsbc_Amt MONEY
+			, Donor_First_Gift_To_Church_Amt MONEY
+			, Donor_First_Gift_To_Ldsp_Amt MONEY
+			, Donor_First_Gift_Date_Byu DATE
+			, Donor_First_Gift_Date_Byui DATE
+			, Donor_First_Gift_Date_Byuh DATE
+			, Donor_First_Gift_Date_Ldsbc DATE
+			, Donor_First_Gift_Date_Church DATE
+			, Donor_First_Gift_Date_Ldsp DATE
+			' -- Ext_Create_Fields
+		, '	Donor_Key      
+			, Donor_First_Gift_Post_Date_Byu
+			, Donor_First_Gift_Post_Date_Byui
+			, Donor_First_Gift_Post_Date_Byuh
+			, Donor_First_Gift_Post_Date_Ldsbc
+			, Donor_First_Gift_To_Byu_Amt
+			, Donor_First_Gift_To_Byui_Amt
+			, Donor_First_Gift_To_Byuh_Amt
+			, Donor_First_Gift_To_Ldsbc_Amt
+			, Donor_First_Gift_To_Church_Amt
+			, Donor_First_Gift_To_Ldsp_Amt
+			, Donor_First_Gift_Date_Byu
+			, Donor_First_Gift_Date_Byui
+			, Donor_First_Gift_Date_Byuh
+			, Donor_First_Gift_Date_Ldsbc
+			, Donor_First_Gift_Date_Church
+			, Donor_First_Gift_Date_Ldsp
+			' -- Ext_Insert_Fields
+		, ' Donor_Key
+			, Donor_First_Gift_Post_Date_Byu
+			, Donor_First_Gift_Post_Date_Byui
+			, Donor_First_Gift_Post_Date_Byuh
+			, Donor_First_Gift_Post_Date_Ldsbc
+			, Donor_First_Gift_To_Byu_Amt
+			, Donor_First_Gift_To_Byui_Amt
+			, Donor_First_Gift_To_Byuh_Amt
+			, Donor_First_Gift_To_Ldsbc_Amt
+			, Donor_First_Gift_To_Church_Amt
+			, Donor_First_Gift_To_Ldsp_Amt
+			, Donor_First_Gift_Date_Byu
+			, Donor_First_Gift_Date_Byui
+			, Donor_First_Gift_Date_Byuh
+			, Donor_First_Gift_Date_Ldsbc
+			, Donor_First_Gift_Date_Church
+			, Donor_First_Gift_Date_Ldsp
+			' -- Ext_Select_Statement
+		, '	_Donor_First_Gift_()															
 			' -- Ext_From_Statement
 		, '
 			' -- Ext_Where_Statement
