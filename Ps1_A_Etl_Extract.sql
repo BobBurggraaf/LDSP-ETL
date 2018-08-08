@@ -27328,18 +27328,15 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 						ELSE NULL END AS Party_Object_Type
 					, F.Participation_Type
 					, G.[Type] 
-					, CASE WHEN A.PartyObjectTypeCode IN (1,2) THEN B.Subject 
-						ELSE NULL END AS Subject
-					, CASE WHEN A.PartyObjectTypeCode IN (1,2) THEN B.RegardingObjectIdName 
-						ELSE NULL END AS Regarding -- AS Regarding (Campaign type name)
+					, B.Subject 
+					, B.RegardingObjectIdName AS Regarding
 					, CASE WHEN C.Plus_FaceToFace = 0 THEN A.[N]
 						WHEN C.Plus_FaceToFace = 1 THEN A.[Y]
 						ELSE NULL END AS Face_To_Face
 					, B.ScheduledStart AS Scheduled_Start -- Date/Time
 					, B.ScheduledEnd AS Scheduled_End -- Date/Time
 					, B.ActualEnd AS Completed -- Date/Time (Best for a date)
-					, CASE WHEN A.PartyObjectTypeCode IN (1,2) THEN B.Description 
-						ELSE NULL END AS Description
+					, B.Description 
 					, E.Attendees AS Attendees
 					, D.FullName AS Owner
 					, D.SystemUserId AS Owner_Id
@@ -32900,6 +32897,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, User_Connected_Liaison_Key NVARCHAR(100) DEFAULT ''0''
 			, Hard NVARCHAR(5) DEFAULT ''Hard''
 			, Shared NVARCHAR(10) DEFAULT ''Shared''
+			, Matching NVARCHAR(10) DEFAULT ''Matching''
 			' -- Ext_Create_Fields
 		, '	Donor_Key
 			, Acitivity_Group_Key 
@@ -36888,7 +36886,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_Select_Statement
 		, '	_Donor_First_Gift_()															
 			' -- Ext_From_Statement
-		, '
+		, '	WHERE 1 = 1
+				AND A.Donor_Key IS NOT NULL
 			' -- Ext_Where_Statement
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
@@ -39655,6 +39654,546 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Extra_9
 		, NULL -- Extra_10
 	)	
+	,
+-- --------------------------
+-- _Donor_Most_Recent_Gift_Dim
+-- --------------------------
+	( 8 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Donor_Most_Recent_Gift_Dim' -- Ext_Table
+		, '	' -- Dest_Create_Fields
+		, '	' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, '	Donor_Key NVARCHAR(100) 
+			, Donor_Most_Recent_Gift_Date_Ldsp DATE
+			, Donor_Most_Recent_Gift_Date_Byu DATE
+			, Donor_Most_Recent_Gift_Date_Byui DATE
+			, Donor_Most_Recent_Gift_Date_Byuh DATE
+			, Donor_Most_Recent_Gift_Date_Ldsbc DATE
+			, Donor_Most_Recent_Gift_Date_Church DATE
+			, Donor_Most_Recent_Gift_To_Ldsp_Amt MONEY
+			, Donor_Most_Recent_Gift_To_Byu_Amt MONEY
+			, Donor_Most_Recent_Gift_To_Byui_Amt MONEY
+			, Donor_Most_Recent_Gift_To_Byuh_Amt MONEY
+			, Donor_Most_Recent_Gift_To_Ldsbc_Amt MONEY
+			, Donor_Most_Recent_Gift_To_Church_Amt MONEY
+			' -- Ext_Create_Fields
+		, '	Donor_Key      
+			, Donor_Most_Recent_Gift_Date_Ldsp
+			, Donor_Most_Recent_Gift_Date_Byu
+			, Donor_Most_Recent_Gift_Date_Byui
+			, Donor_Most_Recent_Gift_Date_Byuh
+			, Donor_Most_Recent_Gift_Date_Ldsbc
+			, Donor_Most_Recent_Gift_Date_Church
+			, Donor_Most_Recent_Gift_To_Ldsp_Amt
+			, Donor_Most_Recent_Gift_To_Byu_Amt
+			, Donor_Most_Recent_Gift_To_Byui_Amt
+			, Donor_Most_Recent_Gift_To_Byuh_Amt
+			, Donor_Most_Recent_Gift_To_Ldsbc_Amt
+			, Donor_Most_Recent_Gift_To_Church_Amt
+			' -- Ext_Insert_Fields
+		, ' A.Donor_Key
+			, Donor_Most_Recent_Gift_Date_Ldsp
+			, Donor_Most_Recent_Gift_Date_Byu
+			, Donor_Most_Recent_Gift_Date_Byui
+			, Donor_Most_Recent_Gift_Date_Byuh
+			, Donor_Most_Recent_Gift_Date_Ldsbc
+			, Donor_Most_Recent_Gift_Date_Church
+			, Donor_Most_Recent_Gift_To_Ldsp_Amt
+			, Donor_Most_Recent_Gift_To_Byu_Amt
+			, Donor_Most_Recent_Gift_To_Byui_Amt
+			, Donor_Most_Recent_Gift_To_Byuh_Amt
+			, Donor_Most_Recent_Gift_To_Ldsbc_Amt
+			, Donor_Most_Recent_Gift_To_Church_Amt
+			' -- Ext_Select_Statement
+		, '	 _All_Donors_ A
+				LEFT JOIN
+					(SELECT A.Donor_Key
+						, MAX(B.New_ReceiptDate) AS Donor_Most_Recent_Gift_Date_Ldsp
+						FROM _Donation_Fact A
+							INNER JOIN _Donation_Dim B ON A.Donation_Key = B.Donation_Key
+						WHERE 1 = 1
+							AND A.Plus_SharedCreditType != A.[Matching] -- Not Matching
+							AND A.Plus_Type IN (A.[Hard],A.[Shared]) -- Not Influence 100000001
+							AND B.New_ReceiptDate IS NOT NULL
+						GROUP BY A.Donor_Key
+					) B ON A.Donor_Key = B.Donor_Key
+				LEFT JOIN
+					(SELECT A.Donor_Key
+						, MAX(B.New_ReceiptDate) AS Donor_Most_Recent_Gift_Date_Byu
+						FROM _Donation_Fact A
+							INNER JOIN _Donation_Dim B ON A.Donation_Key = B.Donation_Key
+							INNER JOIN _Hier_Dim C ON A.Hier_Key = C.Hier_Key
+						WHERE 1 = 1
+							AND A.Plus_SharedCreditType != A.[Matching] -- Not Matching
+							AND A.Plus_Type IN (A.[Hard],A.[Shared]) -- Not Influence 100000001
+							AND C.New_Inst = C.[BYU]
+							AND B.New_ReceiptDate IS NOT NULL
+						GROUP BY A.Donor_Key
+					) C ON A.Donor_Key = C.Donor_Key
+				LEFT JOIN
+					(SELECT A.Donor_Key
+						, MAX(B.New_ReceiptDate) AS Donor_Most_Recent_Gift_Date_Byui
+						FROM _Donation_Fact A
+							INNER JOIN _Donation_Dim B ON A.Donation_Key = B.Donation_Key
+							INNER JOIN _Hier_Dim C ON A.Hier_Key = C.Hier_Key
+						WHERE 1 = 1
+							AND A.Plus_SharedCreditType != A.[Matching] -- Not Matching
+							AND A.Plus_Type IN (A.[Hard],A.[Shared]) -- Not Influence 100000001
+							AND C.New_Inst = C.[BYUI]
+							AND B.New_ReceiptDate IS NOT NULL
+						GROUP BY A.Donor_Key
+					) D ON A.Donor_Key = D.Donor_Key
+				LEFT JOIN
+					(SELECT A.Donor_Key
+						, MAX(B.New_ReceiptDate) AS Donor_Most_Recent_Gift_Date_Byuh
+						FROM _Donation_Fact A
+							INNER JOIN _Donation_Dim B ON A.Donation_Key = B.Donation_Key
+							INNER JOIN _Hier_Dim C ON A.Hier_Key = C.Hier_Key
+						WHERE 1 = 1
+							AND A.Plus_SharedCreditType != A.[Matching] -- Not Matching
+							AND A.Plus_Type IN (A.[Hard],A.[Shared]) -- Not Influence 100000001
+							AND C.New_Inst = C.[BYUH]
+							AND B.New_ReceiptDate IS NOT NULL
+						GROUP BY A.Donor_Key
+					) E ON A.Donor_Key = E.Donor_Key 
+				LEFT JOIN
+					(SELECT A.Donor_Key
+						, MAX(B.New_ReceiptDate) AS Donor_Most_Recent_Gift_Date_Ldsbc
+						FROM _Donation_Fact A
+							INNER JOIN _Donation_Dim B ON A.Donation_Key = B.Donation_Key
+							INNER JOIN _Hier_Dim C ON A.Hier_Key = C.Hier_Key
+						WHERE 1 = 1
+							AND A.Plus_SharedCreditType != A.[Matching] -- Not Matching
+							AND A.Plus_Type IN (A.[Hard],A.[Shared]) -- Not Influence 100000001
+							AND C.New_Inst = C.[LDSBC]
+							AND B.New_ReceiptDate IS NOT NULL
+						GROUP BY A.Donor_Key
+					) F ON A.Donor_Key = F.Donor_Key
+				LEFT JOIN  
+					(SELECT A.Donor_Key
+						, MAX(B.New_ReceiptDate) AS Donor_Most_Recent_Gift_Date_Church
+						FROM _Donation_Fact A
+							INNER JOIN _Donation_Dim B ON A.Donation_Key = B.Donation_Key
+							INNER JOIN _Hier_Dim C ON A.Hier_Key = C.Hier_Key
+						WHERE 1 = 1
+							AND A.Plus_SharedCreditType != A.[Matching] -- Not Matching
+							AND A.Plus_Type IN (A.[Hard],A.[Shared]) -- Not Influence 100000001
+							AND C.New_Inst = C.[Church]
+							AND B.New_ReceiptDate IS NOT NULL
+						GROUP BY A.Donor_Key
+					) G ON A.Donor_Key = G.Donor_Key
+				LEFT JOIN
+					(SELECT A.Donor_Key
+						, MAX(A.Donation_Credit_Amt) AS Donor_Most_Recent_Gift_To_Ldsp_Amt
+						FROM _Donation_Fact A
+							INNER JOIN _Donation_Dim B ON A.Donation_Key = B.Donation_Key
+							INNER JOIN Ldsp_Most_Recent_Donation_Ldsp() C ON A.Donor_Key = C.Donor_Key AND B.New_ReceiptDate = C.Max_Receipt_Date
+							INNER JOIN _Hier_Dim D ON A.Hier_Key = D.Hier_Key
+			' -- Ext_From_Statement
+		, '	WHERE 1 = 1
+				AND A.Donor_Key IS NOT NULL
+			' -- Ext_Where_Statement
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, '				WHERE 1 = 1
+							AND A.Plus_SharedCreditType != A.[Matching] -- Not Matching
+							AND A.Plus_Type IN (A.[Hard],A.[Shared]) -- Not Influence 100000001
+							AND A.Donation_Credit_Amt IS NOT NULL
+						GROUP BY A.Donor_Key
+					)  H ON A.Donor_Key = H.Donor_Key
+				LEFT JOIN
+					(SELECT A.Donor_Key
+						, MAX(A.Donation_Credit_Amt) AS Donor_Most_Recent_Gift_To_Byu_Amt
+						FROM _Donation_Fact A
+							INNER JOIN _Donation_Dim B ON A.Donation_Key = B.Donation_Key
+							INNER JOIN Ldsp_Most_Recent_Donation_Byu() C ON A.Donor_Key = C.Donor_Key AND B.New_ReceiptDate = C.Max_Receipt_Date
+							INNER JOIN _Hier_Dim D ON A.Hier_Key = D.Hier_Key
+						WHERE 1 = 1
+							AND A.Plus_SharedCreditType != A.[Matching] -- Not Matching
+							AND A.Plus_Type IN (A.[Hard],A.[Shared]) -- Not Influence 100000001
+							AND D.New_Inst = D.[BYU]
+							AND A.Donation_Credit_Amt IS NOT NULL
+						GROUP BY A.Donor_Key
+					)  I ON A.Donor_Key = I.Donor_Key
+				LEFT JOIN
+					(SELECT A.Donor_Key
+						, MAX(A.Donation_Credit_Amt) AS Donor_Most_Recent_Gift_To_Byui_Amt
+						FROM _Donation_Fact A
+							INNER JOIN _Donation_Dim B ON A.Donation_Key = B.Donation_Key
+							INNER JOIN Ldsp_Most_Recent_Donation_Byui() C ON A.Donor_Key = C.Donor_Key AND B.New_ReceiptDate = C.Max_Receipt_Date
+							INNER JOIN _Hier_Dim D ON A.Hier_Key = D.Hier_Key
+						WHERE 1 = 1
+							AND A.Plus_SharedCreditType != A.[Matching] -- Not Matching
+							AND A.Plus_Type IN (A.[Hard],A.[Shared]) -- Not Influence 100000001
+							AND D.New_Inst = D.[BYUI]
+							AND A.Donation_Credit_Amt IS NOT NULL
+						GROUP BY A.Donor_Key
+					) J ON A.Donor_Key = J.Donor_Key
+				LEFT JOIN
+					(SELECT A.Donor_Key
+						, MAX(A.Donation_Credit_Amt) AS Donor_Most_Recent_Gift_To_Byuh_Amt
+						FROM _Donation_Fact A
+							INNER JOIN _Donation_Dim B ON A.Donation_Key = B.Donation_Key
+							INNER JOIN Ldsp_Most_Recent_Donation_Byuh() C ON A.Donor_Key = C.Donor_Key AND B.New_ReceiptDate = C.Max_Receipt_Date
+							INNER JOIN _Hier_Dim D ON A.Hier_Key = D.Hier_Key
+						WHERE 1 = 1
+							AND A.Plus_SharedCreditType != A.[Matching] -- Not Matching
+							AND A.Plus_Type IN (A.[Hard],A.[Shared]) -- Not Influence 100000001
+							AND D.New_Inst = D.[BYUH]
+							AND A.Donation_Credit_Amt IS NOT NULL
+						GROUP BY A.Donor_Key
+					) K ON A.Donor_Key = K.Donor_Key
+				LEFT JOIN
+					(SELECT A.Donor_Key
+						, MAX(A.Donation_Credit_Amt) AS Donor_Most_Recent_Gift_To_Ldsbc_Amt
+						FROM _Donation_Fact A
+							INNER JOIN _Donation_Dim B ON A.Donation_Key = B.Donation_Key
+							INNER JOIN Ldsp_Most_Recent_Donation_Ldsbc() C ON A.Donor_Key = C.Donor_Key AND B.New_ReceiptDate = C.Max_Receipt_Date
+							INNER JOIN _Hier_Dim D ON A.Hier_Key = D.Hier_Key
+						WHERE 1 = 1
+							AND A.Plus_SharedCreditType != A.[Matching] -- Not Matching
+							AND A.Plus_Type IN (A.[Hard],A.[Shared]) -- Not Influence 100000001
+							AND D.New_Inst = D.[LDSBC]
+							AND A.Donation_Credit_Amt IS NOT NULL
+						GROUP BY A.Donor_Key
+					) L ON A.Donor_Key = L.Donor_Key
+				LEFT JOIN
+					(SELECT A.Donor_Key
+						, MAX(A.Donation_Credit_Amt) AS Donor_Most_Recent_Gift_To_Church_Amt
+						FROM _Donation_Fact A
+							INNER JOIN _Donation_Dim B ON A.Donation_Key = B.Donation_Key
+							INNER JOIN Ldsp_Most_Recent_Donation_Church() C ON A.Donor_Key = C.Donor_Key AND B.New_ReceiptDate = C.Max_Receipt_Date
+							INNER JOIN _Hier_Dim D ON A.Hier_Key = D.Hier_Key
+						WHERE 1 = 1
+							AND A.Plus_SharedCreditType != A.[Matching] -- Not Matching
+							AND A.Plus_Type IN (A.[Hard],A.[Shared]) -- Not Influence 100000001
+							AND D.New_Inst = D.[Church]
+							AND A.Donation_Credit_Amt IS NOT NULL
+						GROUP BY A.Donor_Key
+					) M ON A.Donor_Key = M.Donor_Key
+			' -- Ext_From_Statement_2
+		, ' ' -- Ext_Create_Fields_2
+		, ' ' -- Ext_Create_Fields_3
+		, ' ' -- Ext_Where_Statement_2
+		, ' ' -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+		, NULL -- Ext_Select_Statement_3
+		, NULL -- Ext_Select_Statement_4
+		, NULL -- Ext_Select_Statement_5
+		, NULL -- Ext_Select_Statement_6
+		, NULL -- Ext_Select_Statement_7
+		, '															
+			' -- Ext_From_Statement_3
+		, '
+			'-- Ext_From_Statement_4
+		, NULL -- Ext_From_Statement_5
+		, NULL -- Ext_From_Statement_6
+		, NULL -- Ext_From_Statement_7
+		, NULL -- Ext_Where_Statement_4
+		, NULL -- Ext_Where_Statement_5
+		, NULL -- Ext_Where_Statement_6
+		, NULL -- Ext_Where_Statement_7
+		, NULL -- Tier_10_Stage
+		, NULL -- Tier_10_Stage_DateTime
+		, NULL -- Tier_11_Stage
+		, NULL -- Tier_11_Stage_DateTime
+		, NULL -- Tier_12_Stage
+		, NULL -- Tier_12_Stage_DateTime
+		, NULL -- Extra_7
+		, NULL -- Extra_8
+		, NULL -- Extra_9
+		, NULL -- Extra_10
+	)
+	,
+-- --------------------------
+-- _Donor_Largest_Gift_Dim
+-- --------------------------
+	( 8 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Donor_Largest_Gift_Dim' -- Ext_Table
+		, '	' -- Dest_Create_Fields
+		, '	' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, '	Donor_Key NVARCHAR(100) 
+			, Donor_Largest_Gift_Amt_Byu MONEY
+			, Donor_Largest_Gift_Amt_Byui MONEY
+			, Donor_Largest_Gift_Amt_Byuh MONEY
+			, Donor_Largest_Gift_Amt_Ldsbc MONEY
+			, Donor_Ldsp_Largest_Gift MONEY
+			, Donor_Largest_Gift_Amt_Church MONEY
+			, Donor_Largest_Gift_Date_Ldsp DATE
+			, Donor_Largest_Gift_Date_Byu DATE
+			, Donor_Largest_Gift_Date_Byui DATE
+			, Donor_Largest_Gift_Date_Byuh DATE
+			, Donor_Largest_Gift_Date_Ldsbc DATE
+			, Donor_Largest_Gift_Date_Church DATE
+			' -- Ext_Create_Fields
+		, '	Donor_Key      
+			, Donor_Largest_Gift_Amt_Byu
+			, Donor_Largest_Gift_Amt_Byui
+			, Donor_Largest_Gift_Amt_Byuh
+			, Donor_Largest_Gift_Amt_Ldsbc
+			, Donor_Ldsp_Largest_Gift
+			, Donor_Largest_Gift_Amt_Church
+			, Donor_Largest_Gift_Date_Ldsp
+			, Donor_Largest_Gift_Date_Byu
+			, Donor_Largest_Gift_Date_Byui
+			, Donor_Largest_Gift_Date_Byuh
+			, Donor_Largest_Gift_Date_Ldsbc
+			, Donor_Largest_Gift_Date_Church
+			' -- Ext_Insert_Fields
+		, ' A.Donor_Key
+			, Donor_Largest_Gift_Amt_Byu
+			, Donor_Largest_Gift_Amt_Byui
+			, Donor_Largest_Gift_Amt_Byuh
+			, Donor_Largest_Gift_Amt_Ldsbc
+			, Donor_Ldsp_Largest_Gift
+			, Donor_Largest_Gift_Amt_Church
+			, Donor_Largest_Gift_Date_Ldsp
+			, Donor_Largest_Gift_Date_Byu
+			, Donor_Largest_Gift_Date_Byui
+			, Donor_Largest_Gift_Date_Byuh
+			, Donor_Largest_Gift_Date_Ldsbc
+			, Donor_Largest_Gift_Date_Church
+			' -- Ext_Select_Statement
+		, '	 _All_Donors_ A
+				LEFT JOIN
+					(SELECT A.Donor_Key
+						, MAX(A.Donation_Credit_Amt) AS Donor_Largest_Gift_Amt_Byu
+						FROM _Donation_Fact A
+							INNER JOIN _Hier_Dim B ON A.Hier_Key = B.Hier_Key
+						WHERE 1 = 1
+							AND A.Donation_Credit_Amt IS NOT NULL
+							AND B.New_Inst = B.[BYU]
+						GROUP BY A.Donor_Key
+					) B ON A.Donor_Key = B.Donor_Key
+				LEFT JOIN
+					(SELECT A.Donor_Key
+						, MAX(A.Donation_Credit_Amt) AS Donor_Largest_Gift_Amt_Byui
+						FROM _Donation_Fact A
+							INNER JOIN _Hier_Dim B ON A.Hier_Key = B.Hier_Key
+						WHERE 1 = 1
+							AND A.Donation_Credit_Amt IS NOT NULL
+							AND B.New_Inst = B.[BYUI]
+						GROUP BY A.Donor_Key
+					) C ON A.Donor_Key = C.Donor_Key 
+				LEFT JOIN
+					(SELECT A.Donor_Key
+						, MAX(A.Donation_Credit_Amt) AS Donor_Largest_Gift_Amt_Byuh
+						FROM _Donation_Fact A
+							INNER JOIN _Hier_Dim B ON A.Hier_Key = B.Hier_Key
+						WHERE 1 = 1
+							AND A.Donation_Credit_Amt IS NOT NULL
+							AND B.New_Inst = B.[BYUH]
+						GROUP BY A.Donor_Key
+					) D ON A.Donor_Key = D.Donor_Key
+				LEFT JOIN
+					(SELECT A.Donor_Key
+						, MAX(A.Donation_Credit_Amt) AS Donor_Largest_Gift_Amt_Ldsbc
+						FROM _Donation_Fact A
+							INNER JOIN _Hier_Dim B ON A.Hier_Key = B.Hier_Key
+						WHERE 1 = 1
+							AND A.Donation_Credit_Amt IS NOT NULL
+							AND B.New_Inst = B.[LDSBC]
+						GROUP BY A.Donor_Key
+					) E ON A.Donor_Key = E.Donor_Key
+				LEFT JOIN
+					(SELECT Donor_Key
+						, MAX(Donation_Credit_Amt) AS Donor_Ldsp_Largest_Gift
+						FROM _Donation_Fact A
+						WHERE 1 = 1 
+							AND A.Donation_Credit_Amt IS NOT NULL
+						GROUP BY Donor_Key
+					) F ON A.Donor_Key = F.Donor_Key
+				LEFT JOIN
+					(SELECT A.Donor_Key
+						, MAX(A.Donation_Credit_Amt) AS Donor_Largest_Gift_Amt_Church
+						FROM _Donation_Fact A
+							INNER JOIN _Hier_Dim B ON A.Hier_Key = B.Hier_Key
+						WHERE 1 = 1
+							AND A.Donation_Credit_Amt IS NOT NULL
+							AND B.New_Inst = B.[Church]
+						GROUP BY A.Donor_Key
+					) G ON A.Donor_Key = G.Donor_Key
+				LEFT JOIN
+					(SELECT A.Donor_Key 
+						, CONVERT(VARCHAR(10),A.New_ReceiptDate,101) AS Donor_Largest_Gift_Date_Ldsp
+						FROM
+							(SELECT A.Donor_Key
+								, C.New_ReceiptDate
+								, ROW_NUMBER() OVER(PARTITION BY A.Donor_Key ORDER BY A.Donation_Credit_Amt DESC, C.New_ReceiptDate DESC) AS RowNumber
+								FROM _Donation_Fact A
+									INNER JOIN _Hier_Dim B ON A.Hier_Key = B.Hier_Key
+									INNER JOIN _Donation_Dim C ON A.Donation_Key = C.Donation_Key
+								WHERE 1 = 1
+							) A
+						WHERE 1 = 1
+							AND A.RowNumber = 1
+					) H ON A.Donor_Key = H.Donor_Key
+				LEFT JOIN
+					(SELECT A.Donor_Key 
+						, CONVERT(VARCHAR(10),A.New_ReceiptDate,101) AS Donor_Largest_Gift_Date_Byu
+						FROM
+							(SELECT A.Donor_Key
+								, C.New_ReceiptDate
+								, ROW_NUMBER() OVER(PARTITION BY A.Donor_Key ORDER BY A.Donation_Credit_Amt DESC, C.New_ReceiptDate DESC) AS RowNumber
+								FROM _Donation_Fact A
+									INNER JOIN _Hier_Dim B ON A.Hier_Key = B.Hier_Key
+									INNER JOIN _Donation_Dim C ON A.Donation_Key = C.Donation_Key
+								WHERE 1 = 1
+									AND B.New_Inst = B.[BYU]
+							) A
+						WHERE 1 = 1
+							AND A.RowNumber = 1
+					) I ON A.Donor_Key = I.Donor_Key
+			' -- Ext_From_Statement
+		, ' WHERE 1 = 1
+				AND A.Donor_Key IS NOT NULL
+			' -- Ext_Where_Statement
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, '		LEFT JOIN
+					(SELECT A.Donor_Key 
+						, CONVERT(VARCHAR(10),A.New_ReceiptDate,101) AS Donor_Largest_Gift_Date_Byui
+						FROM
+							(SELECT A.Donor_Key
+								, C.New_ReceiptDate
+								, ROW_NUMBER() OVER(PARTITION BY A.Donor_Key ORDER BY A.Donation_Credit_Amt DESC, C.New_ReceiptDate DESC) AS RowNumber
+								FROM _Donation_Fact A
+									INNER JOIN _Hier_Dim B ON A.Hier_Key = B.Hier_Key
+									INNER JOIN _Donation_Dim C ON A.Donation_Key = C.Donation_Key
+								WHERE 1 = 1
+									AND B.New_Inst = B.[BYUI]
+							) A
+						WHERE 1 = 1
+							AND A.RowNumber = 1
+					) J ON A.Donor_Key = J.Donor_Key
+				LEFT JOIN
+					(SELECT A.Donor_Key 
+						, CONVERT(VARCHAR(10),A.New_ReceiptDate,101) AS Donor_Largest_Gift_Date_Byuh
+						FROM
+							(SELECT A.Donor_Key
+								, C.New_ReceiptDate
+								, ROW_NUMBER() OVER(PARTITION BY A.Donor_Key ORDER BY A.Donation_Credit_Amt DESC, C.New_ReceiptDate DESC) AS RowNumber
+								FROM _Donation_Fact A
+									INNER JOIN _Hier_Dim B ON A.Hier_Key = B.Hier_Key
+									INNER JOIN _Donation_Dim C ON A.Donation_Key = C.Donation_Key
+								WHERE 1 = 1
+									AND B.New_Inst = B.[BYUH]
+							) A
+						WHERE 1 = 1
+							AND A.RowNumber = 1
+					) K ON A.Donor_Key = K.Donor_Key
+				LEFT JOIN
+					(SELECT A.Donor_Key 
+						, CONVERT(VARCHAR(10),A.New_ReceiptDate,101) AS Donor_Largest_Gift_Date_Ldsbc
+						FROM
+							(SELECT A.Donor_Key
+								, C.New_ReceiptDate
+								, ROW_NUMBER() OVER(PARTITION BY A.Donor_Key ORDER BY A.Donation_Credit_Amt DESC, C.New_ReceiptDate DESC) AS RowNumber
+								FROM _Donation_Fact A
+									INNER JOIN _Hier_Dim B ON A.Hier_Key = B.Hier_Key
+									INNER JOIN _Donation_Dim C ON A.Donation_Key = C.Donation_Key
+								WHERE 1 = 1
+									AND B.New_Inst = B.[LDSBC]
+							) A
+						WHERE 1 = 1
+							AND A.RowNumber = 1
+					) L ON A.Donor_Key = L.Donor_Key
+				LEFT JOIN
+					(SELECT A.Donor_Key 
+						, CONVERT(VARCHAR(10),A.New_ReceiptDate,101) AS Donor_Largest_Gift_Date_Church
+						FROM
+							(SELECT A.Donor_Key
+								, C.New_ReceiptDate
+								, ROW_NUMBER() OVER(PARTITION BY A.Donor_Key ORDER BY A.Donation_Credit_Amt DESC, C.New_ReceiptDate DESC) AS RowNumber
+								FROM _Donation_Fact A
+									INNER JOIN _Hier_Dim B ON A.Hier_Key = B.Hier_Key
+									INNER JOIN _Donation_Dim C ON A.Donation_Key = C.Donation_Key
+								WHERE 1 = 1
+									AND B.New_Inst = B.[Church]
+							) A
+						WHERE 1 = 1
+							AND A.RowNumber = 1
+					) M ON A.Donor_Key = M.Donor_Key	
+			' -- Ext_From_Statement_2
+		, ' ' -- Ext_Create_Fields_2
+		, ' ' -- Ext_Create_Fields_3
+		, ' ' -- Ext_Where_Statement_2
+		, ' ' -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+		, NULL -- Ext_Select_Statement_3
+		, NULL -- Ext_Select_Statement_4
+		, NULL -- Ext_Select_Statement_5
+		, NULL -- Ext_Select_Statement_6
+		, NULL -- Ext_Select_Statement_7
+		, '															
+			' -- Ext_From_Statement_3
+		, '
+			'-- Ext_From_Statement_4
+		, NULL -- Ext_From_Statement_5
+		, NULL -- Ext_From_Statement_6
+		, NULL -- Ext_From_Statement_7
+		, NULL -- Ext_Where_Statement_4
+		, NULL -- Ext_Where_Statement_5
+		, NULL -- Ext_Where_Statement_6
+		, NULL -- Ext_Where_Statement_7
+		, NULL -- Tier_10_Stage
+		, NULL -- Tier_10_Stage_DateTime
+		, NULL -- Tier_11_Stage
+		, NULL -- Tier_11_Stage_DateTime
+		, NULL -- Tier_12_Stage
+		, NULL -- Tier_12_Stage_DateTime
+		, NULL -- Extra_7
+		, NULL -- Extra_8
+		, NULL -- Extra_9
+		, NULL -- Extra_10
+	)
 	,
 -- --------------------------
 -- _Accounting_Reporting_Dim
