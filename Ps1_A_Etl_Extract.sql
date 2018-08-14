@@ -8178,6 +8178,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Plus_DonationFrom INT
 			, Lds_AssociatedWebSubscription UNIQUEIDENTIFIER
 			, Plus_Name NVARCHAR(100)
+			, Y NVARCHAR(1) DEFAULT ''Y''
+			, N NVARCHAR(1) DEFAULT ''N''
 			' -- Ext_Create_Fields
 		, 'Plus_RecurringGiftRulesId
 			, Plus_Constituent
@@ -33109,6 +33111,414 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 	)
 	,
 -- --------------------------
+-- _Donor_Recurring_Gift_Dim
+-- --------------------------
+	( 6 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Donor_Recurring_Gift_Dim' -- Ext_Table
+		, '	' -- Dest_Create_Fields
+		, '	' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, ' Donor_Key NVARCHAR(100)    
+			, Donor_Byu_Recurring_Donor NVARCHAR(1) 
+			, Donor_Byui_Recurring_Donor NVARCHAR(1)
+			, Donor_Byuh_Recurring_Donor NVARCHAR(1)
+			, Donor_Ldsbc_Recurring_Donor NVARCHAR(1)
+			, Donor_First_Recurring_Rule_Date_Byu DATE
+			, Donor_First_Recurring_Rule_Date_Byui DATE
+			, Donor_First_Recurring_Rule_Date_Byuh DATE
+			, Donor_First_Recurring_Rule_Date_Ldsbc DATE
+			, Donor_Recurring_Total_Last_Month_Byu MONEY
+			, Donor_Recurring_Total_Last_Month_Byui MONEY
+			, Donor_Recurring_Total_Last_Month_Byuh MONEY
+			, Donor_Recurring_Total_Last_Month_Ldsbc MONEY
+			, Donor_Recurring_Total_Month_Before_Last_Byu MONEY
+			, Donor_Recurring_Total_Month_Before_Last_Byui MONEY
+			, Donor_Recurring_Total_Month_Before_Last_Byuh MONEY
+			, Donor_Recurring_Total_Month_Before_Last_Ldsbc MONEY
+			, Donor_Recurring_Gift_Upgrade_Byu NVARCHAR(1)
+			, Donor_Recurring_Gift_Upgrade_Byui NVARCHAR(1)
+			, Donor_Recurring_Gift_Upgrade_Byuh NVARCHAR(1)
+			, Donor_Recurring_Gift_Upgrade_Ldsbc NVARCHAR(1)
+			' -- Ext_Create_Fields
+		, '	Donor_Key      
+			, Donor_Byu_Recurring_Donor
+			, Donor_Byui_Recurring_Donor
+			, Donor_Byuh_Recurring_Donor
+			, Donor_Ldsbc_Recurring_Donor
+			, Donor_First_Recurring_Rule_Date_Byu
+			, Donor_First_Recurring_Rule_Date_Byui
+			, Donor_First_Recurring_Rule_Date_Byuh
+			, Donor_First_Recurring_Rule_Date_Ldsbc
+			, Donor_Recurring_Total_Last_Month_Byu
+			, Donor_Recurring_Total_Last_Month_Byui
+			, Donor_Recurring_Total_Last_Month_Byuh
+			, Donor_Recurring_Total_Last_Month_Ldsbc
+			, Donor_Recurring_Total_Month_Before_Last_Byu
+			, Donor_Recurring_Total_Month_Before_Last_Byui
+			, Donor_Recurring_Total_Month_Before_Last_Byuh
+			, Donor_Recurring_Total_Month_Before_Last_Ldsbc
+			, Donor_Recurring_Gift_Upgrade_Byu
+			, Donor_Recurring_Gift_Upgrade_Byui
+			, Donor_Recurring_Gift_Upgrade_Byuh
+			, Donor_Recurring_Gift_Upgrade_Ldsbc
+			' -- Ext_Insert_Fields
+		, ' A.Donor_Key
+			, CASE WHEN Donor_Byu_Recurring_Donor IS NULL THEN A.[N]
+				WHEN Donor_Byu_Recurring_Donor = A.[N] THEN A.[N]
+				WHEN Donor_Byu_Recurring_Donor = A.[Y] THEN A.[Y]
+				ELSE NULL END AS Donor_Byu_Recurring_Donor
+			, CASE WHEN Donor_Byui_Recurring_Donor IS NULL THEN A.[N]
+				WHEN Donor_Byui_Recurring_Donor = A.[N] THEN A.[N]
+				WHEN Donor_Byui_Recurring_Donor = A.[Y] THEN A.[Y]
+				ELSE NULL END AS Donor_Byui_Recurring_Donor
+			, CASE WHEN Donor_Byuh_Recurring_Donor IS NULL THEN A.[N]
+				WHEN Donor_Byuh_Recurring_Donor = A.[N] THEN A.[N]
+				WHEN Donor_Byuh_Recurring_Donor = A.[Y] THEN A.[Y]
+				ELSE NULL END AS Donor_Byuh_Recurring_Donor
+			, CASE WHEN Donor_Ldsbc_Recurring_Donor IS NULL THEN A.[N]
+				WHEN Donor_Ldsbc_Recurring_Donor = A.[N] THEN A.[N]
+				WHEN Donor_Ldsbc_Recurring_Donor = A.[Y] THEN A.[Y]
+				ELSE NULL END AS Donor_Ldsbc_Recurring_Donor
+			, Donor_First_Recurring_Rule_Date_Byu
+			, Donor_First_Recurring_Rule_Date_Byui
+			, Donor_First_Recurring_Rule_Date_Byuh
+			, Donor_First_Recurring_Rule_Date_Ldsbc
+			, Donor_Recurring_Total_Last_Month_Byu
+			, Donor_Recurring_Total_Last_Month_Byui
+			, Donor_Recurring_Total_Last_Month_Byuh
+			, Donor_Recurring_Total_Last_Month_Ldsbc
+			, Donor_Recurring_Total_Month_Before_Last_Byu
+			, Donor_Recurring_Total_Month_Before_Last_Byui
+			, Donor_Recurring_Total_Month_Before_Last_Byuh
+			, Donor_Recurring_Total_Month_Before_Last_Ldsbc
+			, CASE WHEN Donor_Recurring_Total_Last_Month_Byu > Donor_Recurring_Total_Month_Before_Last_Byu THEN A.[Y] 
+					ELSE A.[N] END AS Donor_Recurring_Gift_Upgrade_Byu
+			, CASE WHEN Donor_Recurring_Total_Last_Month_Byui > Donor_Recurring_Total_Month_Before_Last_Byui THEN A.[Y] 
+					ELSE A.[N] END AS Donor_Recurring_Gift_Upgrade_Byui
+			, CASE WHEN Donor_Recurring_Total_Last_Month_Byuh > Donor_Recurring_Total_Month_Before_Last_Byuh THEN A.[Y] 
+					ELSE A.[N] END AS Donor_Recurring_Gift_Upgrade_Byuh
+			, CASE WHEN Donor_Recurring_Total_Last_Month_Ldsbc > Donor_Recurring_Total_Month_Before_Last_Ldsbc THEN A.[Y] 
+					ELSE A.[N] END AS Donor_Recurring_Gift_Upgrade_Ldsbc
+			' -- Ext_Select_Statement
+		, ' _All_Donors_ A
+				LEFT JOIN
+					(SELECT DISTINCT A.Plus_Constituent AS Donor_Key
+						, A.[Y] AS Donor_BYU_Recurring_Donor
+						FROM Ext_Recurring_Gift_Rules A
+						WHERE 1 = 1 
+							AND EXISTS
+								(SELECT *
+									FROM Ext_Fund_Account B
+										LEFT JOIN Ext_Institution C ON B.New_InstitutionalHierarchy = C.New_InstitutionId
+									WHERE 1 = 1
+										AND A.Plus_FundAccount = B.New_FundAccountId
+										AND A.StatusCode <> 2 --all statuses except canceled.
+										AND C.New_Inst = C.[BYU]
+								)
+							AND NOT EXISTS
+								(SELECT *
+									FROM Ext_Recurring_Gift_Rules D
+									WHERE 1 = 1
+										AND A.Plus_RecurringGiftRulesId = D.Plus_RecurringGiftRulesId
+										AND D.Plus_PaymentStop < CONVERT(NVARCHAR(10), GETDATE() -1, 112)
+								) 
+					) B ON A.Donor_Key = B.Donor_Key
+				LEFT JOIN
+					(SELECT DISTINCT A.Plus_Constituent AS Donor_Key
+						, A.[Y] AS Donor_BYUI_Recurring_Donor
+						FROM Ext_Recurring_Gift_Rules A
+						WHERE 1 = 1 
+							AND EXISTS
+								(SELECT *
+									FROM Ext_Fund_Account B
+										LEFT JOIN Ext_Institution C ON B.New_InstitutionalHierarchy = C.New_InstitutionId
+									WHERE 1 = 1
+										AND A.Plus_FundAccount = B.New_FundAccountId
+										AND A.StatusCode <> 2 --all statuses except canceled.
+										AND C.New_Inst = C.[BYUI]
+								)
+							AND NOT EXISTS
+								(SELECT *
+									FROM Ext_Recurring_Gift_Rules D
+									WHERE 1 = 1
+										AND A.Plus_RecurringGiftRulesId = D.Plus_RecurringGiftRulesId
+										AND D.Plus_PaymentStop < CONVERT(NVARCHAR(10), GETDATE() -1, 112)
+								) 
+					) C ON A.Donor_Key = C.Donor_Key
+				LEFT JOIN
+					(SELECT DISTINCT A.Plus_Constituent AS Donor_Key
+						, A.[Y] AS Donor_BYUH_Recurring_Donor
+						FROM Ext_Recurring_Gift_Rules A
+						WHERE 1 = 1 
+							AND EXISTS
+								(SELECT *
+									FROM Ext_Fund_Account B
+										LEFT JOIN Ext_Institution C ON B.New_InstitutionalHierarchy = C.New_InstitutionId
+									WHERE 1 = 1
+										AND A.Plus_FundAccount = B.New_FundAccountId
+										AND A.StatusCode <> 2 --all statuses except canceled.
+										AND C.New_Inst = C.[BYUH]
+								)
+							AND NOT EXISTS
+								(SELECT *
+									FROM Ext_Recurring_Gift_Rules D
+									WHERE 1 = 1
+										AND A.Plus_RecurringGiftRulesId = D.Plus_RecurringGiftRulesId
+										AND D.Plus_PaymentStop < CONVERT(NVARCHAR(10), GETDATE() -1, 112)
+								) 
+					) D ON A.Donor_Key = D.Donor_Key
+				LEFT JOIN
+					(SELECT DISTINCT A.Plus_Constituent AS Donor_Key
+						, A.[Y] AS Donor_LDSBC_Recurring_Donor
+						FROM Ext_Recurring_Gift_Rules A
+						WHERE 1 = 1 
+							AND EXISTS
+								(SELECT *
+									FROM Ext_Fund_Account B
+										LEFT JOIN Ext_Institution C ON B.New_InstitutionalHierarchy = C.New_InstitutionId
+									WHERE 1 = 1
+										AND A.Plus_FundAccount = B.New_FundAccountId
+										AND A.StatusCode <> 2 --all statuses except canceled.
+										AND C.New_Inst = C.[LDSBC]
+								)
+							AND NOT EXISTS
+								(SELECT *
+									FROM Ext_Recurring_Gift_Rules D
+									WHERE 1 = 1
+										AND A.Plus_RecurringGiftRulesId = D.Plus_RecurringGiftRulesId
+										AND D.Plus_PaymentStop < CONVERT(NVARCHAR(10), GETDATE() -1, 112)
+								) 
+					) E ON A.Donor_Key = E.Donor_Key
+				LEFT JOIN 
+					(SELECT COALESCE(CONVERT(NVARCHAR(100),A.Plus_Constituent),CONVERT(NVARCHAR(100),A.Plus_Organization)) AS Donor_Key 
+						, MIN(CONVERT(DATE,A.CreatedOn,101)) AS Donor_First_Recurring_Rule_Date_Byu
+						FROM Ext_Recurring_Gift_Rules A
+							INNER JOIN Ext_Fund_Account B ON A.Plus_FundAccount = B.New_FundAccountId
+							INNER JOIN Ext_Institution C ON B.New_InstitutionalHierarchy = C.New_InstitutionId
+				
+			' -- Ext_From_Statement
+		, 'AND A.Donor_Key IS NOT NULL 
+			' -- Ext_Where_Statement
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, '				WHERE 1 = 1
+							AND C.New_Inst = C.[BYU]
+							AND COALESCE(CONVERT(NVARCHAR(100),A.Plus_Constituent),CONVERT(NVARCHAR(100),A.Plus_Organization)) IS NOT NULL
+							AND A.CreatedOn IS NOT NULL
+						GROUP BY COALESCE(CONVERT(NVARCHAR(100),A.Plus_Constituent),CONVERT(NVARCHAR(100),A.Plus_Organization))
+					) F ON A.Donor_Key = F.Donor_Key
+				LEFT JOIN 
+					(SELECT COALESCE(CONVERT(NVARCHAR(100),A.Plus_Constituent),CONVERT(NVARCHAR(100),A.Plus_Organization)) AS Donor_Key 
+						, MIN(CONVERT(DATE,A.CreatedOn,101)) AS Donor_First_Recurring_Rule_Date_Byui
+						FROM Ext_Recurring_Gift_Rules A
+							INNER JOIN Ext_Fund_Account B ON A.Plus_FundAccount = B.New_FundAccountId
+							INNER JOIN Ext_Institution C ON B.New_InstitutionalHierarchy = C.New_InstitutionId
+						WHERE 1 = 1
+							AND C.New_Inst = C.[BYUI]
+							AND COALESCE(CONVERT(NVARCHAR(100),A.Plus_Constituent),CONVERT(NVARCHAR(100),A.Plus_Organization)) IS NOT NULL
+							AND A.CreatedOn IS NOT NULL
+						GROUP BY COALESCE(CONVERT(NVARCHAR(100),A.Plus_Constituent),CONVERT(NVARCHAR(100),A.Plus_Organization))
+					) G ON A.Donor_Key = G.Donor_Key
+				LEFT JOIN 
+					(SELECT COALESCE(CONVERT(NVARCHAR(100),A.Plus_Constituent),CONVERT(NVARCHAR(100),A.Plus_Organization)) AS Donor_Key 
+						, MIN(CONVERT(DATE,A.CreatedOn,101)) AS Donor_First_Recurring_Rule_Date_Byuh
+						FROM Ext_Recurring_Gift_Rules A
+							INNER JOIN Ext_Fund_Account B ON A.Plus_FundAccount = B.New_FundAccountId
+							INNER JOIN Ext_Institution C ON B.New_InstitutionalHierarchy = C.New_InstitutionId
+						WHERE 1 = 1
+							AND C.New_Inst = C.[BYUH]
+							AND COALESCE(CONVERT(NVARCHAR(100),A.Plus_Constituent),CONVERT(NVARCHAR(100),A.Plus_Organization)) IS NOT NULL
+							AND A.CreatedOn IS NOT NULL
+						GROUP BY COALESCE(CONVERT(NVARCHAR(100),A.Plus_Constituent),CONVERT(NVARCHAR(100),A.Plus_Organization))
+					) H ON A.Donor_Key = H.Donor_Key
+				LEFT JOIN 
+					(SELECT COALESCE(CONVERT(NVARCHAR(100),A.Plus_Constituent),CONVERT(NVARCHAR(100),A.Plus_Organization)) AS Donor_Key 
+						, MIN(CONVERT(DATE,A.CreatedOn,101)) AS Donor_First_Recurring_Rule_Date_Ldsbc
+						FROM Ext_Recurring_Gift_Rules A
+							INNER JOIN Ext_Fund_Account B ON A.Plus_FundAccount = B.New_FundAccountId
+							INNER JOIN Ext_Institution C ON B.New_InstitutionalHierarchy = C.New_InstitutionId
+						WHERE 1 = 1
+							AND C.New_Inst = C.[LDSBC]
+							AND COALESCE(CONVERT(NVARCHAR(100),A.Plus_Constituent),CONVERT(NVARCHAR(100),A.Plus_Organization)) IS NOT NULL
+							AND A.CreatedOn IS NOT NULL
+						GROUP BY COALESCE(CONVERT(NVARCHAR(100),A.Plus_Constituent),CONVERT(NVARCHAR(100),A.Plus_Organization))
+					) I ON A.Donor_Key = I.Donor_Key
+				LEFT JOIN
+					(SELECT COALESCE(A.New_ConstituentDonor,A.New_OrganizationDonor) AS Donor_Key
+						, SUM(A.New_GiftAmount) AS Donor_Recurring_Total_Last_Month_Byu
+						FROM dbo._Gift_ A
+							INNER JOIN Ext_Fund_Account B ON A.New_FundAccount = B.New_FundAccountId
+							INNER JOIN Ext_Institution C ON B.New_InstitutionalHierarchy = C.New_InstitutionId
+						WHERE 1 = 1
+							AND (A.Lds_RecurringGiftRule IS NOT NULL
+									OR A.Lds_RecurringGiftGroup IS NOT NULL)
+							AND C.New_Inst = C.[BYU]
+							AND CONVERT(DATE,A.New_ReceiptDate,101) BETWEEN CONVERT(DATE,DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE())-1, 0),101)
+																AND CONVERT(DATE,DATEADD(MONTH, DATEDIFF(MONTH, -1, GETDATE())-1, -1),101)
+							AND A.New_GiftAmount IS NOT NULL
+						GROUP BY COALESCE(A.New_ConstituentDonor,A.New_OrganizationDonor)
+					) J ON A.Donor_Key = J.Donor_Key
+				LEFT JOIN
+					(SELECT COALESCE(A.New_ConstituentDonor,A.New_OrganizationDonor) AS Donor_Key
+						, SUM(A.New_GiftAmount) AS Donor_Recurring_Total_Last_Month_Byui
+						FROM dbo._Gift_ A																	
+			' -- Ext_From_Statement_2
+		, ' ' -- Ext_Create_Fields_2
+		, ' ' -- Ext_Create_Fields_3
+		, ' ' -- Ext_Where_Statement_2
+		, ' ' -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+		, NULL -- Ext_Select_Statement_3
+		, NULL -- Ext_Select_Statement_4
+		, NULL -- Ext_Select_Statement_5
+		, NULL -- Ext_Select_Statement_6
+		, NULL -- Ext_Select_Statement_7
+		, '					INNER JOIN Ext_Fund_Account B ON A.New_FundAccount = B.New_FundAccountId
+							INNER JOIN Ext_Institution C ON B.New_InstitutionalHierarchy = C.New_InstitutionId
+						WHERE 1 = 1
+							AND (A.Lds_RecurringGiftRule IS NOT NULL
+									OR A.Lds_RecurringGiftGroup IS NOT NULL)
+							AND C.New_Inst = C.[BYUI]
+							AND CONVERT(DATE,A.New_ReceiptDate,101) BETWEEN CONVERT(DATE,DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE())-1, 0),101)
+																AND CONVERT(DATE,DATEADD(MONTH, DATEDIFF(MONTH, -1, GETDATE())-1, -1),101)
+							AND A.New_GiftAmount IS NOT NULL
+						GROUP BY COALESCE(A.New_ConstituentDonor,A.New_OrganizationDonor)
+					) K ON A.Donor_Key = K.Donor_Key
+				LEFT JOIN
+					(SELECT COALESCE(A.New_ConstituentDonor,A.New_OrganizationDonor) AS Donor_Key
+						, SUM(A.New_GiftAmount) AS Donor_Recurring_Total_Last_Month_Byuh
+						FROM dbo._Gift_ A
+							INNER JOIN Ext_Fund_Account B ON A.New_FundAccount = B.New_FundAccountId
+							INNER JOIN Ext_Institution C ON B.New_InstitutionalHierarchy = C.New_InstitutionId
+						WHERE 1 = 1
+							AND (A.Lds_RecurringGiftRule IS NOT NULL
+									OR A.Lds_RecurringGiftGroup IS NOT NULL)
+							AND C.New_Inst = C.[BYUH]
+							AND CONVERT(DATE,A.New_ReceiptDate,101) BETWEEN CONVERT(DATE,DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE())-1, 0),101)
+																AND CONVERT(DATE,DATEADD(MONTH, DATEDIFF(MONTH, -1, GETDATE())-1, -1),101)
+							AND A.New_GiftAmount IS NOT NULL
+						GROUP BY COALESCE(A.New_ConstituentDonor,A.New_OrganizationDonor)
+					) L ON A.Donor_Key = L.Donor_Key
+				LEFT JOIN
+					(SELECT COALESCE(A.New_ConstituentDonor,A.New_OrganizationDonor) AS Donor_Key
+						, SUM(A.New_GiftAmount) AS Donor_Recurring_Total_Last_Month_Ldsbc
+						FROM dbo._Gift_ A
+							INNER JOIN Ext_Fund_Account B ON A.New_FundAccount = B.New_FundAccountId
+							INNER JOIN Ext_Institution C ON B.New_InstitutionalHierarchy = C.New_InstitutionId
+						WHERE 1 = 1
+							AND (A.Lds_RecurringGiftRule IS NOT NULL
+									OR A.Lds_RecurringGiftGroup IS NOT NULL)
+							AND C.New_Inst = C.[LDSBC]
+							AND CONVERT(DATE,A.New_ReceiptDate,101) BETWEEN CONVERT(DATE,DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE())-1, 0),101)
+																AND CONVERT(DATE,DATEADD(MONTH, DATEDIFF(MONTH, -1, GETDATE())-1, -1),101)
+							AND A.New_GiftAmount IS NOT NULL
+						GROUP BY COALESCE(A.New_ConstituentDonor,A.New_OrganizationDonor)
+					) M ON A.Donor_Key = M.Donor_Key
+				LEFT JOIN
+					(SELECT COALESCE(A.New_ConstituentDonor,A.New_OrganizationDonor) AS Donor_Key
+						, SUM(A.New_GiftAmount) AS Donor_Recurring_Total_Month_Before_Last_Byu
+						FROM dbo._Gift_ A
+							INNER JOIN Ext_Fund_Account B ON A.New_FundAccount = B.New_FundAccountId
+							INNER JOIN Ext_Institution C ON B.New_InstitutionalHierarchy = C.New_InstitutionId
+						WHERE 1 = 1
+							AND (A.Lds_RecurringGiftRule IS NOT NULL
+									OR A.Lds_RecurringGiftGroup IS NOT NULL)
+							AND C.New_Inst = C.[BYU]
+							AND CONVERT(DATE,A.New_ReceiptDate,101) BETWEEN CONVERT(DATE,DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE())-2, 0),101)
+																AND CONVERT(DATE,DATEADD(MONTH, DATEDIFF(MONTH, -1, GETDATE())-2, -1),101)
+							AND A.New_GiftAmount IS NOT NULL
+						GROUP BY COALESCE(A.New_ConstituentDonor,A.New_OrganizationDonor)	
+					) N ON A.Donor_Key = N.Donor_Key
+				LEFT JOIN
+					(SELECT COALESCE(A.New_ConstituentDonor,A.New_OrganizationDonor) AS Donor_Key
+						, SUM(A.New_GiftAmount) AS Donor_Recurring_Total_Month_Before_Last_Byui
+						FROM dbo._Gift_ A
+							INNER JOIN Ext_Fund_Account B ON A.New_FundAccount = B.New_FundAccountId
+							INNER JOIN Ext_Institution C ON B.New_InstitutionalHierarchy = C.New_InstitutionId															
+			' -- Ext_From_Statement_3
+		, '				WHERE 1 = 1
+							AND (A.Lds_RecurringGiftRule IS NOT NULL
+									OR A.Lds_RecurringGiftGroup IS NOT NULL)
+							AND C.New_Inst = C.[BYUI]
+							AND CONVERT(DATE,A.New_ReceiptDate,101) BETWEEN CONVERT(DATE,DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE())-2, 0),101)
+																AND CONVERT(DATE,DATEADD(MONTH, DATEDIFF(MONTH, -1, GETDATE())-2, -1),101)
+							AND A.New_GiftAmount IS NOT NULL
+						GROUP BY COALESCE(A.New_ConstituentDonor,A.New_OrganizationDonor)	
+					) O ON A.Donor_Key = O.Donor_Key
+				LEFT JOIN
+					(SELECT COALESCE(A.New_ConstituentDonor,A.New_OrganizationDonor) AS Donor_Key
+						, SUM(A.New_GiftAmount) AS Donor_Recurring_Total_Month_Before_Last_Byuh
+						FROM dbo._Gift_ A
+							INNER JOIN Ext_Fund_Account B ON A.New_FundAccount = B.New_FundAccountId
+							INNER JOIN Ext_Institution C ON B.New_InstitutionalHierarchy = C.New_InstitutionId
+						WHERE 1 = 1
+							AND (A.Lds_RecurringGiftRule IS NOT NULL
+									OR A.Lds_RecurringGiftGroup IS NOT NULL)
+							AND C.New_Inst = C.[BYUH]
+							AND CONVERT(DATE,A.New_ReceiptDate,101) BETWEEN CONVERT(DATE,DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE())-2, 0),101)
+																AND CONVERT(DATE,DATEADD(MONTH, DATEDIFF(MONTH, -1, GETDATE())-2, -1),101)
+							AND A.New_GiftAmount IS NOT NULL
+						GROUP BY COALESCE(A.New_ConstituentDonor,A.New_OrganizationDonor)	
+					) P ON A.Donor_Key = P.Donor_Key
+				LEFT JOIN
+					(SELECT COALESCE(A.New_ConstituentDonor,A.New_OrganizationDonor) AS Donor_Key
+						, SUM(A.New_GiftAmount) AS Donor_Recurring_Total_Month_Before_Last_Ldsbc
+						FROM dbo._Gift_ A
+							INNER JOIN Ext_Fund_Account B ON A.New_FundAccount = B.New_FundAccountId
+							INNER JOIN Ext_Institution C ON B.New_InstitutionalHierarchy = C.New_InstitutionId
+						WHERE 1 = 1
+							AND (A.Lds_RecurringGiftRule IS NOT NULL
+									OR A.Lds_RecurringGiftGroup IS NOT NULL)
+							AND C.New_Inst = C.[LDSBC]
+							AND CONVERT(DATE,A.New_ReceiptDate,101) BETWEEN CONVERT(DATE,DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE())-2, 0),101)
+																AND CONVERT(DATE,DATEADD(MONTH, DATEDIFF(MONTH, -1, GETDATE())-2, -1),101)
+							AND A.New_GiftAmount IS NOT NULL
+						GROUP BY COALESCE(A.New_ConstituentDonor,A.New_OrganizationDonor)	
+					) Q ON A.Donor_Key = Q.Donor_Key
+			'-- Ext_From_Statement_4
+		, NULL -- Ext_From_Statement_5
+		, NULL -- Ext_From_Statement_6
+		, NULL -- Ext_From_Statement_7
+		, NULL -- Ext_Where_Statement_4
+		, NULL -- Ext_Where_Statement_5
+		, NULL -- Ext_Where_Statement_6
+		, NULL -- Ext_Where_Statement_7
+		, NULL -- Tier_10_Stage
+		, NULL -- Tier_10_Stage_DateTime
+		, NULL -- Tier_11_Stage
+		, NULL -- Tier_11_Stage_DateTime
+		, NULL -- Tier_12_Stage
+		, NULL -- Tier_12_Stage_DateTime
+		, NULL -- Extra_7
+		, NULL -- Extra_8
+		, NULL -- Extra_9
+		, NULL -- Extra_10
+	)
+	,
+-- --------------------------
 -- _Web_Subscription_Fact
 -- --------------------------
 	( 7 -- Tier
@@ -42331,6 +42741,229 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 				LEFT JOIN _Web_Subscription_Dim N ON  M.WebSubscription_Dim_Key = N.WebSubscription_Dim_Key													
 			' -- Ext_From_Statement
 		, '	AND A.Donation_Key IS NOT NULL
+			' -- Ext_Where_Statement
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
+		, ' ' -- Ext_Create_Fields_2
+		, ' ' -- Ext_Create_Fields_3
+		, ' ' -- Ext_Where_Statement_2
+		, ' ' -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+		, NULL -- Ext_Select_Statement_3
+		, NULL -- Ext_Select_Statement_4
+		, NULL -- Ext_Select_Statement_5
+		, NULL -- Ext_Select_Statement_6
+		, NULL -- Ext_Select_Statement_7
+		, '																											
+			' -- Ext_From_Statement_3
+		, '		
+			' -- Ext_From_Statement_4
+		, NULL -- Ext_From_Statement_5
+		, NULL -- Ext_From_Statement_6
+		, NULL -- Ext_From_Statement_7
+		, NULL -- Ext_Where_Statement_4
+		, NULL -- Ext_Where_Statement_5
+		, NULL -- Ext_Where_Statement_6
+		, NULL -- Ext_Where_Statement_7
+		, NULL -- Tier_10_Stage
+		, NULL -- Tier_10_Stage_DateTime
+		, NULL -- Tier_11_Stage
+		, NULL -- Tier_11_Stage_DateTime
+		, NULL -- Tier_12_Stage
+		, NULL -- Tier_12_Stage_DateTime
+		, NULL -- Extra_7
+		, NULL -- Extra_8
+		, NULL -- Extra_9
+		, NULL -- Extra_10
+	)
+	,
+-- --------------------------
+-- View_Ldsp_Org_Recurring_Gift_Rules_Dataset
+-- --------------------------
+	( 9 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, 'View_Ldsp_Org_Recurring_Gift_Rules_Dataset' -- Ext_Table
+		, '	' -- Dest_Create_Fields
+		, '	' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, '	Plus_RecurringGiftRulesId NVARCHAR(100)
+			, Donor_Type NVARCHAR(400)
+			, Recurring_Gift_Type NVARCHAR(400)
+			, Recurring_Amount MONEY
+			, Frequency NVARCHAR(400)
+			, Payment_Start DATE
+			, Payment_Stop DATE
+			, Recurring_Gift_Rule_Name NVARCHAR(100)
+			, Recurring_Gift_Rule_Status NVARCHAR(400)
+			, Reucrring_Gift_Rule_Status_Reason NVARCHAR(400)
+			, Recurring_Group_Name NVARCHAR(100)
+			, New_FundAccountID NVARCHAR(100)
+			, LDSP_Account_Number NVARCHAR(100)
+			, Fund_Account_Online_Public_Name NVARCHAR(100)
+			, Fund_Account_Online_Approved NVARCHAR(1)
+			, Fund_Account_Gift_Purpose_Type NVARCHAR(400)
+			, Fund_Account_Gift_Purpose_Sub_Type NVARCHAR(400)
+			, Fund_Account_Unrestricted NVARCHAR(400)
+			, Fund_Account_Scholarship NVARCHAR(1)
+			, Fund_Account_Endowment NVARCHAR(1)
+			, Appeal_Code NVARCHAR(20)
+			, Appeal_Name NVARCHAR(100)
+			, Appeal_Delivery_Type NVARCHAR(400)
+			, Institution NVARCHAR(100)
+			, Level_1 NVARCHAR(100)
+			, Level_2 NVARCHAR(100)
+			, Level_3 NVARCHAR(100)
+			, Hierarchy_Name NVARCHAR(100)
+			, DonorID NVARCHAR(100)
+			, GenderCode NVARCHAR(400)
+			, Birthdate DATE
+			, Donor_Preferred_Name NVARCHAR(160)
+			, Donor_Name NVARCHAR(160)
+			, Donor_Marital_Status NVARCHAR(400)
+			, Donor_Linked_Lds_Account NVARCHAR(1)
+			, Donor_LDSPID NVARCHAR(100)
+			, Donor_Status NVARCHAR(400)
+			, Donor_Status_Reason NVARCHAR(400)
+			, Web_Subscription_OA_ID NVARCHAR(100)
+			, Transaction_ID NVARCHAR(100)
+			, Recurring_Donation_Start_Date DATE
+			, Recurring_Donation_Stop_Date DATE
+			, Next_Payment_Date DATE
+			, Payment_Type NVARCHAR(400)
+			, Tender_Name NVARCHAR(400)
+			' -- Ext_Create_Fields
+		, '	Plus_RecurringGiftRulesId
+			, Donor_Type
+			, Recurring_Gift_Type
+			, Recurring_Amount
+			, Frequency
+			, Payment_Start
+			, Payment_Stop
+			, Recurring_Gift_Rule_Name
+			, Recurring_Gift_Rule_Status
+			, Reucrring_Gift_Rule_Status_Reason 
+			, Recurring_Group_Name
+			, New_FundAccountID
+			, LDSP_Account_Number
+			, Fund_Account_Online_Public_Name
+			, Fund_Account_Online_Approved
+			, Fund_Account_Gift_Purpose_Type
+			, Fund_Account_Gift_Purpose_Sub_Type
+			, Fund_Account_Unrestricted
+			, Fund_Account_Scholarship
+			, Fund_Account_Endowment
+			, Appeal_Code
+			, Appeal_Name
+			, Appeal_Delivery_Type
+			, Institution
+			, Level_1
+			, Level_2
+			, Level_3
+			, Hierarchy_Name
+			, DonorID
+			, GenderCode
+			, Birthdate
+			, Donor_Preferred_Name
+			, Donor_Name
+			, Donor_Marital_Status
+			, Donor_Linked_Lds_Account
+			, Donor_LDSPID
+			, Donor_Status
+			, Donor_Status_Reason
+			, Web_Subscription_OA_ID
+			, Transaction_ID
+			, Recurring_Donation_Start_Date
+			, Recurring_Donation_Stop_Date
+			, Next_Payment_Date
+			, Payment_Type
+			, Tender_Name
+			' -- Ext_Insert_Fields
+		, ' A.Recurring_Gift_Rule_Key AS Plus_RecurringGiftRulesId
+			, B.Donor_Type
+			, B.Recurring_Gift_Type
+			, A.Recurring_Amount
+			, B.Recurring_Gift_Frequency AS Frequency
+			, B.Recurring_Gift_Payment_Start_Date AS Payment_Start
+			, B.Recurring_Gift_Payment_Stop_Date AS Payment_Stop
+			, B.Recurring_Gift_Rule_Name
+			, B.Recurring_Gift_State_Code AS Recurring_Gift_Rule_Status
+			, B.Recurring_Gift_Status_Code AS Reucrring_Gift_Rule_Status_Reason 
+			, B.Recurring_Gift_Group AS Recurring_Group_Name
+			, C.Fund_Key AS New_FundAccountID
+			, C.Fund_Account_Number AS LDSP_Account_Number
+			, C.Plus_OnlinePublicName AS Fund_Account_Online_Public_Name
+			, C.Plus_OnlineApproved AS Fund_Account_Online_Approved
+			, C.Plus_GiftPurposeType AS Fund_Account_Gift_Purpose_Type
+			, C.Plus_GiftPurposeSubtype AS Fund_Account_Gift_Purpose_Sub_Type
+			, C.Plus_Unrestricted AS Fund_Account_Unrestricted
+			, C.Plus_Scholarship AS Fund_Account_Scholarship
+			, C.New_Endowment AS Fund_Account_Endowment
+			, D.Appeal_Code
+			, D.Appeal_Name
+			, D.Delivery_Type AS Appeal_Delivery_Type
+			, E.New_Inst AS Institution
+			, E.Hier_Level_1 AS Level_1
+			, E.Hier_Level_2 AS Level_2
+			, E.Hier_Level_3 AS Level_3
+			, E.Hier_Name AS Hierarchy_Name
+			, A.Donor_Key AS DonorID
+			, F.Donor_Gender AS GenderCode
+			, F.Donor_Birth_Dt AS Birthdate
+			, COALESCE(G.Donor_Preferred_Name,G.Donor_Name) AS Donor_Preferred_Name
+			, G.Donor_Name
+			, F.Donor_Marriage_Status AS Donor_Marital_Status
+			, H.Donor_Linked_Lds_Account
+			, I.Donor_Ldsp_Id AS Donor_LDSPID
+			, F.Donor_Status
+			, F.Donor_Status_Reason
+			, J.WebSubscription_Dim_Key AS Web_Subscription_OA_ID
+			, J.Transaction_ID AS Transaction_ID
+			, J.Recurring_Donation_Start_Date
+			, J.Recurring_Donation_Stop_Date
+			, J.Next_Payment_Date
+			, J.Payment_Type
+			, J.Tender_Name
+			' -- Ext_Select_Statement
+		, ' _Ldsp_Org_Recurring_Gift_Fact A
+				LEFT JOIN _Recurring_Gift_Dim B ON A.Recurring_Gift_Rule_Key = B.Recurring_Gift_Key
+				LEFT JOIN _Fund_Dim C ON A.Fund_Key = C.Fund_Key
+				LEFT JOIN _Appeal_Dim D ON A.Appeal_Key = D.Appeal_Key
+				LEFT JOIN _Hier_Dim E ON A.Hier_Key = E.Hier_Key
+				LEFT JOIN _Donor_Detail_Dim F ON A.Donor_Key = F.Donor_Key
+				LEFT JOIN _Donor_Name_Dim G ON A.Donor_Key = G.Donor_Key
+				LEFT JOIN 
+					(SELECT CONVERT(NVARCHAR(100),ContactId) AS Donor_Key 
+						, CASE WHEN Lds_LinkedLdsAccount  = 1 THEN [Y] 
+							ELSE [N] END AS Donor_Linked_Lds_Account 
+						FROM Ext_Contact
+					) H ON A.Donor_Key = H.Donor_Key
+				LEFT JOIN _Donor_Key_Dim I ON A.Donor_Key = I.Donor_Key
+				LEFT JOIN _Web_Subscription_Dim J ON A.Web_Subscription_Key = J.WebSubscription_Dim_Key													
+			' -- Ext_From_Statement
+		, '	AND A.Recurring_Gift_Rule_Key IS NOT NULL
 			' -- Ext_Where_Statement
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
