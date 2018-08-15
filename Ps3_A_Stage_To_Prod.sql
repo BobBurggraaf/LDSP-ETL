@@ -4952,7 +4952,7 @@ INSERT INTO dbo.Stage_To_Prod
 	( 1 -- Tier
 		, 'dbo._Web_Transaction_Dim' -- Source_Table
 		, 'dbo._Web_Transaction_Dim' -- Destination_Table
-		,'	Web_Transaction_Dim_Key NVARCHAR(100) PRIMARY KEY
+		,'	WebTransaction_Dim_Key NVARCHAR(100) PRIMARY KEY
 			, Transaction_Id NVARCHAR(100)
 			, Receipt_Date DATETIME
 			, Payment_Type NVARCHAR(400) 
@@ -4967,7 +4967,7 @@ INSERT INTO dbo.Stage_To_Prod
 			, Donor_First_Name_From_Web NVARCHAR(100)
 			, Donor_Middle_Name_From_Web NVARCHAR(100)
 			, Donor_Last_Name_From_Web NVARCHAR(100)
-			, Web_Subscription_Linked_Lds_Account NVARCHAR(1)
+			, Web_Transaction_Linked_Lds_Account NVARCHAR(1)
 			, Donor_Email_From_Web NVARCHAR(255)
 			, Donor_Phone_Number_From_Web NVARCHAR(100)
 			, Donor_Address_Line_1_From_Web NVARCHAR(100)
@@ -4993,7 +4993,7 @@ INSERT INTO dbo.Stage_To_Prod
 			, Web_Transaction_Modified_On DATE
 			, Web_Transaction_Modified_By NVARCHAR(200)
 			' -- Dest_Create_Fields
-		, '	Web_Transaction_Dim_Key
+		, '	WebTransaction_Dim_Key
 			, Transaction_Id
 			, Receipt_Date
 			, Payment_Type 
@@ -5008,7 +5008,7 @@ INSERT INTO dbo.Stage_To_Prod
 			, Donor_First_Name_From_Web
 			, Donor_Middle_Name_From_Web
 			, Donor_Last_Name_From_Web
-			, Web_Subscription_Linked_Lds_Account
+			, Web_Transaction_Linked_Lds_Account
 			, Donor_Email_From_Web
 			, Donor_Phone_Number_From_Web
 			, Donor_Address_Line_1_From_Web
@@ -5046,13 +5046,13 @@ INSERT INTO dbo.Stage_To_Prod
 		, 'dbo._Web_Transaction_Fact' -- Source_Table
 		, 'dbo._Web_Transaction_Fact' -- Destination_Table
 		,'	WebTransaction_Key NVARCHAR(100) PRIMARY KEY
-			, Web_Transaction_Dim_Key NVARCHAR(100)
+			, WebTransaction_Dim_Key NVARCHAR(100)
 			, Transaction_Total MONEY
 			, Donor_Key NVARCHAR(100)
 			, Appeal_Key NVARCHAR(100)
 			' -- Dest_Create_Fields
 		, '	WebTransaction_Key
-			, Web_Transaction_Dim_Key
+			, WebTransaction_Dim_Key
 			, Transaction_Total
 			, Donor_Key
 			, Appeal_Key
@@ -5086,7 +5086,7 @@ INSERT INTO dbo.Stage_To_Prod
 			, Donor_First_Name_From_Web NVARCHAR(100)
 			, Donor_Middle_Name_From_Web NVARCHAR(100)
 			, Donor_Last_Name_From_Web NVARCHAR(100)
-			, Web_Subscription_Linked_LDS_Account NVARCHAR(1)			
+			, Web_Transaction_Linked_LDS_Account NVARCHAR(1)			
 			, Donor_Email_From_Web NVARCHAR(100)
 			, Donor_Phone_Number_From_Web NVARCHAR(100)
 			, Donor_Address_Line_1_From_Web NVARCHAR(100)
@@ -5144,7 +5144,7 @@ INSERT INTO dbo.Stage_To_Prod
 			, Donor_First_Name_From_Web
 			, Donor_Middle_Name_From_Web
 			, Donor_Last_Name_From_Web
-			, Web_Subscription_Linked_LDS_Account			
+			, Web_Transaction_Linked_LDS_Account			
 			, Donor_Email_From_Web
 			, Donor_Phone_Number_From_Web
 			, Donor_Address_Line_1_From_Web

@@ -416,6 +416,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, ModifiedOn DATETIME
 			, StatusCode INT
 			, StateCode INT
+			, Zero NVARCHAR(1) DEFAULT ''0''
+			, D1 NVARCHAR(2) DEFAULT ''D1''
 			' -- Ext_Create_Fields
 		, '	Plus_DonorScoreId
 			, Plus_Constituent
@@ -4676,6 +4678,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Byuh NVARCHAR(10) DEFAULT ''BYUH''
 			, Ldsbc NVARCHAR(10) DEFAULT ''LDSBC''
 			, Church NVARCHAR(10) DEFAULT ''Church''
+			, Ldsp NVARCHAR(10) DEFAULT ''LDSP''
 			' -- Ext_Create_Fields
 		, 'New_Institutionid
 			, New_Name
@@ -9900,6 +9903,534 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 					AND AttributeName = A.[StatusCode]
 			) A 
 			' -- Ext_From_Statement_2
+		, ' ' -- Ext_Create_Fields_2
+		, ' ' -- Ext_Create_Fields_3
+		, ' ' -- Ext_Where_Statement_2
+		, ' ' -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL  
+		, NULL -- Ext_Select_Statement_3
+		, NULL -- Ext_Select_Statement_4
+		, NULL -- Ext_Select_Statement_5
+		, NULL -- Ext_Select_Statement_6
+		, NULL -- Ext_Select_Statement_7
+		, NULL -- Ext_From_Statement_3
+		, NULL -- Ext_From_Statement_4
+		, NULL -- Ext_From_Statement_5
+		, NULL -- Ext_From_Statement_6
+		, NULL -- Ext_From_Statement_7
+		, NULL -- Ext_Where_Statement_4
+		, NULL -- Ext_Where_Statement_5
+		, NULL -- Ext_Where_Statement_6
+		, NULL -- Ext_Where_Statement_7
+		, NULL -- Tier_10_Stage
+		, NULL -- Tier_10_Stage_DateTime
+		, NULL -- Tier_11_Stage
+		, NULL -- Tier_11_Stage_DateTime
+		, NULL -- Tier_12_Stage
+		, NULL -- Tier_12_Stage_DateTime
+		, NULL -- Extra_7
+		, NULL -- Extra_8
+		, NULL -- Extra_9
+		, NULL -- Extra_10
+	)	
+	,
+-- --------------------------
+-- _Donor_Retention_1
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Donor_Retention_1' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Donor_Key NVARCHAR(100)
+			, Donor_Retention_Type_Code_Byu_Minus_1 NVARCHAR(2)
+			, Donor_Retention_Type_Code_Byu_Minus_2 NVARCHAR(2)
+			, Donor_Retention_Type_Code_Byu_Minus_3 NVARCHAR(2)
+			, Donor_Retention_Type_Code_Byu_Minus_4 NVARCHAR(2)
+			, Donor_Retention_Type_Code_Byu_Minus_5 NVARCHAR(2)
+			' -- Ext_Create_Fields
+		, 'Donor_Key
+			, Donor_Retention_Type_Code_Byu_Minus_1
+			, Donor_Retention_Type_Code_Byu_Minus_2
+			, Donor_Retention_Type_Code_Byu_Minus_3
+			, Donor_Retention_Type_Code_Byu_Minus_4
+			, Donor_Retention_Type_Code_Byu_Minus_5
+			' -- Ext_Insert_Fields
+		, ' Donor_Key
+			, MAX(Donor_Retention_Type_Code_Byu_Minus_1) AS Donor_Retention_Type_Code_Byu_Minus_1
+			, MAX(Donor_Retention_Type_Code_Byu_Minus_2) AS Donor_Retention_Type_Code_Byu_Minus_2
+			, MAX(Donor_Retention_Type_Code_Byu_Minus_3) AS Donor_Retention_Type_Code_Byu_Minus_3
+			, MAX(Donor_Retention_Type_Code_Byu_Minus_4) AS Donor_Retention_Type_Code_Byu_Minus_4
+			, MAX(Donor_Retention_Type_Code_Byu_Minus_5) AS Donor_Retention_Type_Code_Byu_Minus_5
+			' -- Ext_Select_Statement
+		, '(SELECT Donor_Key
+				, New_Inst
+				, Donor_Type_Year
+				, Donor_Type
+				, CASE WHEN Donor_Type_Year = YEAR(GETDATE())-1
+						AND New_Inst = [BYU] THEN Donor_Type 
+					ELSE [Zero] END AS Donor_Retention_Type_Code_Byu_Minus_1 
+				, CASE WHEN Donor_Type_Year = YEAR(GETDATE())-2
+						AND New_Inst = [BYU] THEN Donor_Type 
+					ELSE [Zero] END AS Donor_Retention_Type_Code_Byu_Minus_2
+				, CASE WHEN Donor_Type_Year = YEAR(GETDATE())-3
+						AND New_Inst = [BYU] THEN Donor_Type 
+					ELSE [Zero] END AS Donor_Retention_Type_Code_Byu_Minus_3
+				, CASE WHEN Donor_Type_Year = YEAR(GETDATE())-4
+						AND New_Inst = [BYU] THEN Donor_Type 
+					ELSE [Zero] END AS Donor_Retention_Type_Code_Byu_Minus_4
+				, CASE WHEN Donor_Type_Year = YEAR(GETDATE())-5
+						AND New_Inst = [BYU] THEN Donor_Type 
+					ELSE [Zero] END AS Donor_Retention_Type_Code_Byu_Minus_5
+				, [Zero] AS Zero
+				FROM 
+					(SELECT COALESCE(A.Plus_Constituent,A.Plus_Institution) AS Donor_Key
+						, YEAR(A.Plus_I5LegacyDonorTypeDate) AS Donor_Type_Year
+						, B.New_Inst
+						, CONVERT(NVARCHAR(2),A.Plus_I5LegacyDonorType) AS Donor_Type
+						, A.Plus_DonorScoreId
+						, A.[Zero] AS Zero
+						, B.[BYU] AS BYU		
+						, ROW_NUMBER() OVER(PARTITION BY COALESCE(A.Plus_Constituent,A.Plus_Institution), YEAR(A.Plus_I5LegacyDonorTypeDate), B.New_Inst ORDER BY A.ModifiedOn) AS RowNum
+						FROM Ext_Donor_Score A
+							INNER JOIN Ext_Institution B ON A.Plus_Institution = B.New_InstitutionId
+						WHERE 1 = 1
+							AND A.StatusCode = 1
+					) A
+				WHERE 1 = 1
+					AND RowNum = 1
+			) A
+			' -- Ext_From_Statement
+		, 'AND  (Donor_Retention_Type_Code_Byu_Minus_1 != [Zero]
+				OR Donor_Retention_Type_Code_Byu_Minus_2 != [Zero]
+				OR Donor_Retention_Type_Code_Byu_Minus_3 != [Zero]
+				OR Donor_Retention_Type_Code_Byu_Minus_4 != [Zero]
+				OR Donor_Retention_Type_Code_Byu_Minus_5 != [Zero]
+				)
+			GROUP BY Donor_Key
+			' -- Ext_Where_Statement	
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
+		, ' ' -- Ext_Create_Fields_2
+		, ' ' -- Ext_Create_Fields_3
+		, ' ' -- Ext_Where_Statement_2
+		, ' ' -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL  
+		, NULL -- Ext_Select_Statement_3
+		, NULL -- Ext_Select_Statement_4
+		, NULL -- Ext_Select_Statement_5
+		, NULL -- Ext_Select_Statement_6
+		, NULL -- Ext_Select_Statement_7
+		, NULL -- Ext_From_Statement_3
+		, NULL -- Ext_From_Statement_4
+		, NULL -- Ext_From_Statement_5
+		, NULL -- Ext_From_Statement_6
+		, NULL -- Ext_From_Statement_7
+		, NULL -- Ext_Where_Statement_4
+		, NULL -- Ext_Where_Statement_5
+		, NULL -- Ext_Where_Statement_6
+		, NULL -- Ext_Where_Statement_7
+		, NULL -- Tier_10_Stage
+		, NULL -- Tier_10_Stage_DateTime
+		, NULL -- Tier_11_Stage
+		, NULL -- Tier_11_Stage_DateTime
+		, NULL -- Tier_12_Stage
+		, NULL -- Tier_12_Stage_DateTime
+		, NULL -- Extra_7
+		, NULL -- Extra_8
+		, NULL -- Extra_9
+		, NULL -- Extra_10
+	)	
+	,
+-- --------------------------
+-- _Donor_Retention_2
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Donor_Retention_2' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Donor_Key NVARCHAR(100)
+			, Donor_Retention_Type_Code_Byui_Minus_1 NVARCHAR(2)
+			, Donor_Retention_Type_Code_Byui_Minus_2 NVARCHAR(2)
+			, Donor_Retention_Type_Code_Byui_Minus_3 NVARCHAR(2)
+			, Donor_Retention_Type_Code_Byui_Minus_4 NVARCHAR(2)
+			, Donor_Retention_Type_Code_Byui_Minus_5 NVARCHAR(2)
+			' -- Ext_Create_Fields
+		, 'Donor_Key
+			, Donor_Retention_Type_Code_Byui_Minus_1
+			, Donor_Retention_Type_Code_Byui_Minus_2
+			, Donor_Retention_Type_Code_Byui_Minus_3
+			, Donor_Retention_Type_Code_Byui_Minus_4
+			, Donor_Retention_Type_Code_Byui_Minus_5
+			' -- Ext_Insert_Fields
+		, ' Donor_Key
+			, MAX(Donor_Retention_Type_Code_Byui_Minus_1) AS Donor_Retention_Type_Code_Byui_Minus_1
+			, MAX(Donor_Retention_Type_Code_Byui_Minus_2) AS Donor_Retention_Type_Code_Byui_Minus_2
+			, MAX(Donor_Retention_Type_Code_Byui_Minus_3) AS Donor_Retention_Type_Code_Byui_Minus_3
+			, MAX(Donor_Retention_Type_Code_Byui_Minus_4) AS Donor_Retention_Type_Code_Byui_Minus_4
+			, MAX(Donor_Retention_Type_Code_Byui_Minus_5) AS Donor_Retention_Type_Code_Byui_Minus_5
+			' -- Ext_Select_Statement
+		, '(SELECT Donor_Key
+				, New_Inst
+				, Donor_Type_Year
+				, Donor_Type
+				, CASE WHEN Donor_Type_Year = YEAR(GETDATE())-1
+						AND New_Inst = [BYUI] THEN Donor_Type 
+					ELSE [Zero] END AS Donor_Retention_Type_Code_Byui_Minus_1 
+				, CASE WHEN Donor_Type_Year = YEAR(GETDATE())-2
+						AND New_Inst = [BYUI] THEN Donor_Type 
+					ELSE [Zero] END AS Donor_Retention_Type_Code_Byui_Minus_2
+				, CASE WHEN Donor_Type_Year = YEAR(GETDATE())-3
+						AND New_Inst = [BYUI] THEN Donor_Type 
+					ELSE [Zero] END AS Donor_Retention_Type_Code_Byui_Minus_3
+				, CASE WHEN Donor_Type_Year = YEAR(GETDATE())-4
+						AND New_Inst = [BYUI] THEN Donor_Type 
+					ELSE [Zero] END AS Donor_Retention_Type_Code_Byui_Minus_4
+				, CASE WHEN Donor_Type_Year = YEAR(GETDATE())-5
+						AND New_Inst = [BYUI] THEN Donor_Type 
+					ELSE [Zero] END AS Donor_Retention_Type_Code_Byui_Minus_5
+				, [Zero] AS Zero
+				FROM 
+					(SELECT COALESCE(A.Plus_Constituent,A.Plus_Institution) AS Donor_Key
+						, YEAR(A.Plus_I5LegacyDonorTypeDate) AS Donor_Type_Year
+						, B.New_Inst
+						, CONVERT(NVARCHAR(2),A.Plus_I5LegacyDonorType) AS Donor_Type
+						, A.Plus_DonorScoreId
+						, A.[Zero] AS Zero
+						, B.[BYUI] AS BYUI		
+						, ROW_NUMBER() OVER(PARTITION BY COALESCE(A.Plus_Constituent,A.Plus_Institution), YEAR(A.Plus_I5LegacyDonorTypeDate), B.New_Inst ORDER BY A.ModifiedOn) AS RowNum
+						FROM Ext_Donor_Score A
+							INNER JOIN Ext_Institution B ON A.Plus_Institution = B.New_InstitutionId
+						WHERE 1 = 1
+							AND A.StatusCode = 1
+					) A
+				WHERE 1 = 1
+					AND RowNum = 1
+			) A
+			' -- Ext_From_Statement
+		, 'AND  (Donor_Retention_Type_Code_Byui_Minus_1 != [Zero]
+				OR Donor_Retention_Type_Code_Byui_Minus_2 != [Zero]
+				OR Donor_Retention_Type_Code_Byui_Minus_3 != [Zero]
+				OR Donor_Retention_Type_Code_Byui_Minus_4 != [Zero]
+				OR Donor_Retention_Type_Code_Byui_Minus_5 != [Zero]
+				)
+			GROUP BY Donor_Key
+			' -- Ext_Where_Statement	
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
+		, ' ' -- Ext_Create_Fields_2
+		, ' ' -- Ext_Create_Fields_3
+		, ' ' -- Ext_Where_Statement_2
+		, ' ' -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL  
+		, NULL -- Ext_Select_Statement_3
+		, NULL -- Ext_Select_Statement_4
+		, NULL -- Ext_Select_Statement_5
+		, NULL -- Ext_Select_Statement_6
+		, NULL -- Ext_Select_Statement_7
+		, NULL -- Ext_From_Statement_3
+		, NULL -- Ext_From_Statement_4
+		, NULL -- Ext_From_Statement_5
+		, NULL -- Ext_From_Statement_6
+		, NULL -- Ext_From_Statement_7
+		, NULL -- Ext_Where_Statement_4
+		, NULL -- Ext_Where_Statement_5
+		, NULL -- Ext_Where_Statement_6
+		, NULL -- Ext_Where_Statement_7
+		, NULL -- Tier_10_Stage
+		, NULL -- Tier_10_Stage_DateTime
+		, NULL -- Tier_11_Stage
+		, NULL -- Tier_11_Stage_DateTime
+		, NULL -- Tier_12_Stage
+		, NULL -- Tier_12_Stage_DateTime
+		, NULL -- Extra_7
+		, NULL -- Extra_8
+		, NULL -- Extra_9
+		, NULL -- Extra_10
+	)	
+	,
+-- --------------------------
+-- _Donor_Retention_3
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Donor_Retention_3' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Donor_Key NVARCHAR(100)
+			, Donor_Retention_Type_Code_Byuh_Minus_1 NVARCHAR(2)
+			, Donor_Retention_Type_Code_Byuh_Minus_2 NVARCHAR(2)
+			, Donor_Retention_Type_Code_Byuh_Minus_3 NVARCHAR(2)
+			, Donor_Retention_Type_Code_Byuh_Minus_4 NVARCHAR(2)
+			, Donor_Retention_Type_Code_Byuh_Minus_5 NVARCHAR(2)
+			' -- Ext_Create_Fields
+		, 'Donor_Key
+			, Donor_Retention_Type_Code_Byuh_Minus_1
+			, Donor_Retention_Type_Code_Byuh_Minus_2
+			, Donor_Retention_Type_Code_Byuh_Minus_3
+			, Donor_Retention_Type_Code_Byuh_Minus_4
+			, Donor_Retention_Type_Code_Byuh_Minus_5
+			' -- Ext_Insert_Fields
+		, ' Donor_Key
+			, MAX(Donor_Retention_Type_Code_Byuh_Minus_1) AS Donor_Retention_Type_Code_Byuh_Minus_1
+			, MAX(Donor_Retention_Type_Code_Byuh_Minus_2) AS Donor_Retention_Type_Code_Byuh_Minus_2
+			, MAX(Donor_Retention_Type_Code_Byuh_Minus_3) AS Donor_Retention_Type_Code_Byuh_Minus_3
+			, MAX(Donor_Retention_Type_Code_Byuh_Minus_4) AS Donor_Retention_Type_Code_Byuh_Minus_4
+			, MAX(Donor_Retention_Type_Code_Byuh_Minus_5) AS Donor_Retention_Type_Code_Byuh_Minus_5
+			' -- Ext_Select_Statement
+		, '(SELECT Donor_Key
+				, New_Inst
+				, Donor_Type_Year
+				, Donor_Type
+				, CASE WHEN Donor_Type_Year = YEAR(GETDATE())-1
+						AND New_Inst = [BYUH] THEN Donor_Type 
+					ELSE [Zero] END AS Donor_Retention_Type_Code_Byuh_Minus_1 
+				, CASE WHEN Donor_Type_Year = YEAR(GETDATE())-2
+						AND New_Inst = [BYUH] THEN Donor_Type 
+					ELSE [Zero] END AS Donor_Retention_Type_Code_Byuh_Minus_2
+				, CASE WHEN Donor_Type_Year = YEAR(GETDATE())-3
+						AND New_Inst = [BYUH] THEN Donor_Type 
+					ELSE [Zero] END AS Donor_Retention_Type_Code_Byuh_Minus_3
+				, CASE WHEN Donor_Type_Year = YEAR(GETDATE())-4
+						AND New_Inst = [BYUH] THEN Donor_Type 
+					ELSE [Zero] END AS Donor_Retention_Type_Code_Byuh_Minus_4
+				, CASE WHEN Donor_Type_Year = YEAR(GETDATE())-5
+						AND New_Inst = [BYUH] THEN Donor_Type 
+					ELSE [Zero] END AS Donor_Retention_Type_Code_Byuh_Minus_5
+				, [Zero] AS Zero
+				FROM 
+					(SELECT COALESCE(A.Plus_Constituent,A.Plus_Institution) AS Donor_Key
+						, YEAR(A.Plus_I5LegacyDonorTypeDate) AS Donor_Type_Year
+						, B.New_Inst
+						, CONVERT(NVARCHAR(2),A.Plus_I5LegacyDonorType) AS Donor_Type
+						, A.Plus_DonorScoreId
+						, A.[Zero] AS Zero
+						, B.[BYUH] AS BYUH		
+						, ROW_NUMBER() OVER(PARTITION BY COALESCE(A.Plus_Constituent,A.Plus_Institution), YEAR(A.Plus_I5LegacyDonorTypeDate), B.New_Inst ORDER BY A.ModifiedOn) AS RowNum
+						FROM Ext_Donor_Score A
+							INNER JOIN Ext_Institution B ON A.Plus_Institution = B.New_InstitutionId
+						WHERE 1 = 1
+							AND A.StatusCode = 1
+					) A
+				WHERE 1 = 1
+					AND RowNum = 1
+			) A
+			' -- Ext_From_Statement
+		, 'AND  (Donor_Retention_Type_Code_Byuh_Minus_1 != [Zero]
+				OR Donor_Retention_Type_Code_Byuh_Minus_2 != [Zero]
+				OR Donor_Retention_Type_Code_Byuh_Minus_3 != [Zero]
+				OR Donor_Retention_Type_Code_Byuh_Minus_4 != [Zero]
+				OR Donor_Retention_Type_Code_Byuh_Minus_5 != [Zero]
+				)
+			GROUP BY Donor_Key
+			' -- Ext_Where_Statement	
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
+		, ' ' -- Ext_Create_Fields_2
+		, ' ' -- Ext_Create_Fields_3
+		, ' ' -- Ext_Where_Statement_2
+		, ' ' -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL  
+		, NULL -- Ext_Select_Statement_3
+		, NULL -- Ext_Select_Statement_4
+		, NULL -- Ext_Select_Statement_5
+		, NULL -- Ext_Select_Statement_6
+		, NULL -- Ext_Select_Statement_7
+		, NULL -- Ext_From_Statement_3
+		, NULL -- Ext_From_Statement_4
+		, NULL -- Ext_From_Statement_5
+		, NULL -- Ext_From_Statement_6
+		, NULL -- Ext_From_Statement_7
+		, NULL -- Ext_Where_Statement_4
+		, NULL -- Ext_Where_Statement_5
+		, NULL -- Ext_Where_Statement_6
+		, NULL -- Ext_Where_Statement_7
+		, NULL -- Tier_10_Stage
+		, NULL -- Tier_10_Stage_DateTime
+		, NULL -- Tier_11_Stage
+		, NULL -- Tier_11_Stage_DateTime
+		, NULL -- Tier_12_Stage
+		, NULL -- Tier_12_Stage_DateTime
+		, NULL -- Extra_7
+		, NULL -- Extra_8
+		, NULL -- Extra_9
+		, NULL -- Extra_10
+	)	
+	,
+-- --------------------------
+-- _Donor_Retention_4
+-- --------------------------
+	( 2 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Donor_Retention_4' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, 'Donor_Key NVARCHAR(100)
+			, Donor_Retention_Type_Code_Ldsbc_Minus_1 NVARCHAR(2)
+			, Donor_Retention_Type_Code_Ldsbc_Minus_2 NVARCHAR(2)
+			, Donor_Retention_Type_Code_Ldsbc_Minus_3 NVARCHAR(2)
+			, Donor_Retention_Type_Code_Ldsbc_Minus_4 NVARCHAR(2)
+			, Donor_Retention_Type_Code_Ldsbc_Minus_5 NVARCHAR(2)
+			' -- Ext_Create_Fields
+		, 'Donor_Key
+			, Donor_Retention_Type_Code_Ldsbc_Minus_1
+			, Donor_Retention_Type_Code_Ldsbc_Minus_2
+			, Donor_Retention_Type_Code_Ldsbc_Minus_3
+			, Donor_Retention_Type_Code_Ldsbc_Minus_4
+			, Donor_Retention_Type_Code_Ldsbc_Minus_5
+			' -- Ext_Insert_Fields
+		, ' Donor_Key
+			, MAX(Donor_Retention_Type_Code_Ldsbc_Minus_1) AS Donor_Retention_Type_Code_Ldsbc_Minus_1
+			, MAX(Donor_Retention_Type_Code_Ldsbc_Minus_2) AS Donor_Retention_Type_Code_Ldsbc_Minus_2
+			, MAX(Donor_Retention_Type_Code_Ldsbc_Minus_3) AS Donor_Retention_Type_Code_Ldsbc_Minus_3
+			, MAX(Donor_Retention_Type_Code_Ldsbc_Minus_4) AS Donor_Retention_Type_Code_Ldsbc_Minus_4
+			, MAX(Donor_Retention_Type_Code_Ldsbc_Minus_5) AS Donor_Retention_Type_Code_Ldsbc_Minus_5
+			' -- Ext_Select_Statement
+		, '(SELECT Donor_Key
+				, New_Inst
+				, Donor_Type_Year
+				, Donor_Type
+				, CASE WHEN Donor_Type_Year = YEAR(GETDATE())-1
+						AND New_Inst = [LDSBC] THEN Donor_Type 
+					ELSE [Zero] END AS Donor_Retention_Type_Code_Ldsbc_Minus_1 
+				, CASE WHEN Donor_Type_Year = YEAR(GETDATE())-2
+						AND New_Inst = [LDSBC] THEN Donor_Type 
+					ELSE [Zero] END AS Donor_Retention_Type_Code_Ldsbc_Minus_2
+				, CASE WHEN Donor_Type_Year = YEAR(GETDATE())-3
+						AND New_Inst = [LDSBC] THEN Donor_Type 
+					ELSE [Zero] END AS Donor_Retention_Type_Code_Ldsbc_Minus_3
+				, CASE WHEN Donor_Type_Year = YEAR(GETDATE())-4
+						AND New_Inst = [LDSBC] THEN Donor_Type 
+					ELSE [Zero] END AS Donor_Retention_Type_Code_Ldsbc_Minus_4
+				, CASE WHEN Donor_Type_Year = YEAR(GETDATE())-5
+						AND New_Inst = [LDSBC] THEN Donor_Type 
+					ELSE [Zero] END AS Donor_Retention_Type_Code_Ldsbc_Minus_5
+				, [Zero] AS Zero
+				FROM 
+					(SELECT COALESCE(A.Plus_Constituent,A.Plus_Institution) AS Donor_Key
+						, YEAR(A.Plus_I5LegacyDonorTypeDate) AS Donor_Type_Year
+						, B.New_Inst
+						, CONVERT(NVARCHAR(2),A.Plus_I5LegacyDonorType) AS Donor_Type
+						, A.Plus_DonorScoreId
+						, A.[Zero] AS Zero
+						, B.[LDSBC] AS LDSBC		
+						, ROW_NUMBER() OVER(PARTITION BY COALESCE(A.Plus_Constituent,A.Plus_Institution), YEAR(A.Plus_I5LegacyDonorTypeDate), B.New_Inst ORDER BY A.ModifiedOn) AS RowNum
+						FROM Ext_Donor_Score A
+							INNER JOIN Ext_Institution B ON A.Plus_Institution = B.New_InstitutionId
+						WHERE 1 = 1
+							AND A.StatusCode = 1
+					) A
+				WHERE 1 = 1
+					AND RowNum = 1
+			) A
+			' -- Ext_From_Statement
+		, 'AND  (Donor_Retention_Type_Code_Ldsbc_Minus_1 != [Zero]
+				OR Donor_Retention_Type_Code_Ldsbc_Minus_2 != [Zero]
+				OR Donor_Retention_Type_Code_Ldsbc_Minus_3 != [Zero]
+				OR Donor_Retention_Type_Code_Ldsbc_Minus_4 != [Zero]
+				OR Donor_Retention_Type_Code_Ldsbc_Minus_5 != [Zero]
+				)
+			GROUP BY Donor_Key
+			' -- Ext_Where_Statement	
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
 		, ' ' -- Ext_Create_Fields_2
 		, ' ' -- Ext_Create_Fields_3
 		, ' ' -- Ext_Where_Statement_2
@@ -28750,6 +29281,564 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Ext_Select_Statement_7
 		, NULL -- Ext_From_Statement_3
 		, NULL -- Ext_From_Statement_4
+		, NULL -- Ext_From_Statement_5
+		, NULL -- Ext_From_Statement_6
+		, NULL -- Ext_From_Statement_7
+		, NULL -- Ext_Where_Statement_4
+		, NULL -- Ext_Where_Statement_5
+		, NULL -- Ext_Where_Statement_6
+		, NULL -- Ext_Where_Statement_7
+		, NULL -- Tier_10_Stage
+		, NULL -- Tier_10_Stage_DateTime
+		, NULL -- Tier_11_Stage
+		, NULL -- Tier_11_Stage_DateTime
+		, NULL -- Tier_12_Stage
+		, NULL -- Tier_12_Stage_DateTime
+		, NULL -- Extra_7
+		, NULL -- Extra_8
+		, NULL -- Extra_9
+		, NULL -- Extra_10
+	)
+	,
+-- --------------------------
+-- _Donor_Retention_Dim
+-- --------------------------
+	( 5 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Donor_Retention_Dim' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, '	Donor_Key NVARCHAR(100)      
+			, Donor_Retention_Type_Code_Byu_Minus_1 NVARCHAR(2)
+			, Donor_Retention_Type_Code_Byu_Minus_2 NVARCHAR(2)
+			, Donor_Retention_Type_Code_Byu_Minus_3 NVARCHAR(2)
+			, Donor_Retention_Type_Code_Byu_Minus_4 NVARCHAR(2)
+			, Donor_Retention_Type_Code_Byu_Minus_5 NVARCHAR(2)
+			, Donor_Retention_Type_Code_Byui_Minus_1 NVARCHAR(2)
+			, Donor_Retention_Type_Code_Byui_Minus_2 NVARCHAR(2)
+			, Donor_Retention_Type_Code_Byui_Minus_3 NVARCHAR(2)
+			, Donor_Retention_Type_Code_Byui_Minus_4 NVARCHAR(2)
+			, Donor_Retention_Type_Code_Byui_Minus_5 NVARCHAR(2)
+			, Donor_Retention_Type_Code_Byuh_Minus_1 NVARCHAR(2)
+			, Donor_Retention_Type_Code_Byuh_Minus_2 NVARCHAR(2)
+			, Donor_Retention_Type_Code_Byuh_Minus_3 NVARCHAR(2)
+			, Donor_Retention_Type_Code_Byuh_Minus_4 NVARCHAR(2)
+			, Donor_Retention_Type_Code_Byuh_Minus_5 NVARCHAR(2)
+			, Donor_Retention_Type_Code_Ldsbc_Minus_1 NVARCHAR(2)
+			, Donor_Retention_Type_Code_Ldsbc_Minus_2 NVARCHAR(2)
+			, Donor_Retention_Type_Code_Ldsbc_Minus_3 NVARCHAR(2)
+			, Donor_Retention_Type_Code_Ldsbc_Minus_4 NVARCHAR(2)
+			, Donor_Retention_Type_Code_Ldsbc_Minus_5 NVARCHAR(2)
+			, Donor_Retention_Type_Code_Byu NVARCHAR(2)
+			, Donor_Retention_Type_Code_Byui NVARCHAR(2)
+			, Donor_Retention_Type_Code_Byuh NVARCHAR(2)
+			, Donor_Retention_Type_Code_Ldsbc NVARCHAR(2)
+			, Donor_Type_Code_Ldsp NVARCHAR(2)
+		' -- Ext_Create_Fields
+		, ' Donor_Key      
+			, Donor_Retention_Type_Code_Byu_Minus_1
+			, Donor_Retention_Type_Code_Byu_Minus_2
+			, Donor_Retention_Type_Code_Byu_Minus_3
+			, Donor_Retention_Type_Code_Byu_Minus_4
+			, Donor_Retention_Type_Code_Byu_Minus_5
+			, Donor_Retention_Type_Code_Byui_Minus_1
+			, Donor_Retention_Type_Code_Byui_Minus_2
+			, Donor_Retention_Type_Code_Byui_Minus_3
+			, Donor_Retention_Type_Code_Byui_Minus_4
+			, Donor_Retention_Type_Code_Byui_Minus_5
+			, Donor_Retention_Type_Code_Byuh_Minus_1
+			, Donor_Retention_Type_Code_Byuh_Minus_2
+			, Donor_Retention_Type_Code_Byuh_Minus_3
+			, Donor_Retention_Type_Code_Byuh_Minus_4
+			, Donor_Retention_Type_Code_Byuh_Minus_5
+			, Donor_Retention_Type_Code_Ldsbc_Minus_1
+			, Donor_Retention_Type_Code_Ldsbc_Minus_2
+			, Donor_Retention_Type_Code_Ldsbc_Minus_3
+			, Donor_Retention_Type_Code_Ldsbc_Minus_4
+			, Donor_Retention_Type_Code_Ldsbc_Minus_5
+			, Donor_Retention_Type_Code_Byu
+			, Donor_Retention_Type_Code_Byui
+			, Donor_Retention_Type_Code_Byuh
+			, Donor_Retention_Type_Code_Ldsbc
+			, Donor_Type_Code_Ldsp
+		' -- Ext_Insert_Fields
+		, '  A.Donor_Key
+			, Donor_Retention_Type_Code_Byu_Minus_1
+			, Donor_Retention_Type_Code_Byu_Minus_2
+			, Donor_Retention_Type_Code_Byu_Minus_3
+			, Donor_Retention_Type_Code_Byu_Minus_4
+			, Donor_Retention_Type_Code_Byu_Minus_5
+			, Donor_Retention_Type_Code_Byui_Minus_1
+			, Donor_Retention_Type_Code_Byui_Minus_2
+			, Donor_Retention_Type_Code_Byui_Minus_3
+			, Donor_Retention_Type_Code_Byui_Minus_4
+			, Donor_Retention_Type_Code_Byui_Minus_5
+			, Donor_Retention_Type_Code_Byuh_Minus_1
+			, Donor_Retention_Type_Code_Byuh_Minus_2
+			, Donor_Retention_Type_Code_Byuh_Minus_3
+			, Donor_Retention_Type_Code_Byuh_Minus_4
+			, Donor_Retention_Type_Code_Byuh_Minus_5
+			, Donor_Retention_Type_Code_Ldsbc_Minus_1
+			, Donor_Retention_Type_Code_Ldsbc_Minus_2
+			, Donor_Retention_Type_Code_Ldsbc_Minus_3
+			, Donor_Retention_Type_Code_Ldsbc_Minus_4
+			, Donor_Retention_Type_Code_Ldsbc_Minus_5
+			, Donor_Retention_Type_Code_Byu
+			, Donor_Retention_Type_Code_Byui
+			, Donor_Retention_Type_Code_Byuh
+			, Donor_Retention_Type_Code_Ldsbc
+			, Donor_Type_Code_Ldsp
+		' -- Ext_Select_Statement
+		, ' _All_Donors_ A
+				LEFT JOIN _Donor_Retention_1 B ON A.Donor_Key = B.Donor_Key
+				LEFT JOIN _Donor_Retention_2 C ON A.Donor_Key = C.Donor_Key
+				LEFT JOIN _Donor_Retention_3 D ON A.Donor_Key = D.Donor_Key
+				LEFT JOIN _Donor_Retention_4 E ON A.Donor_Key = E.Donor_Key
+				LEFT JOIN 
+					(SELECT Donor_Key
+						, MIN(Donor_Retention_Type_Code_Byu) AS Donor_Retention_Type_Code_Byu
+						, MIN(Donor_Retention_Type_Code_Byui) AS Donor_Retention_Type_Code_Byui
+						, MIN(Donor_Retention_Type_Code_Byuh) AS Donor_Retention_Type_Code_Byuh
+						, MIN(Donor_Retention_Type_Code_Ldsbc) AS Donor_Retention_Type_Code_Ldsbc
+						, MIN(Donor_Type_Code_Ldsp) AS Donor_Type_Code_Ldsp
+						FROM
+							(SELECT Donor_Key
+									, New_Inst
+									, Donor_Type_Year
+									, Donor_Type
+									, CASE WHEN Donor_Type_Year = YEAR(GETDATE())
+											AND New_Inst = [BYU] THEN Donor_Type 
+										ELSE [D1] END AS Donor_Retention_Type_Code_Byu 
+									, CASE WHEN Donor_Type_Year = YEAR(GETDATE())
+											AND New_Inst = [BYUI] THEN Donor_Type 
+										ELSE [D1] END AS Donor_Retention_Type_Code_Byui
+									, CASE WHEN Donor_Type_Year = YEAR(GETDATE())
+											AND New_Inst = [BYUH] THEN Donor_Type 
+										ELSE [D1] END AS Donor_Retention_Type_Code_Byuh
+									, CASE WHEN Donor_Type_Year = YEAR(GETDATE())
+											AND New_Inst = [LDSBC] THEN Donor_Type 
+										ELSE [D1] END AS Donor_Retention_Type_Code_Ldsbc
+									, CASE WHEN Donor_Type_Year = YEAR(GETDATE())
+											AND New_Inst = [LDSP] THEN Donor_Type 
+										ELSE [D1] END AS Donor_Type_Code_Ldsp
+									, [D1] AS D1
+									FROM 
+										(SELECT COALESCE(A.Plus_Constituent,A.Plus_Institution) AS Donor_Key
+											, YEAR(A.Plus_I5LegacyDonorTypeDate) AS Donor_Type_Year
+											, B.New_Inst
+											, CONVERT(NVARCHAR(2),A.Plus_I5LegacyDonorType) AS Donor_Type
+											, A.Plus_DonorScoreId
+											, A.[D1] AS D1
+											, B.[BYU] AS BYU
+											, B.[BYUI] AS BYUI
+											, B.[BYUH] AS BYUH
+											, B.[LDSBC] AS LDSBC
+											, B.[LDSP] AS LDSP		
+											, ROW_NUMBER() OVER(PARTITION BY COALESCE(A.Plus_Constituent,A.Plus_Institution), YEAR(A.Plus_I5LegacyDonorTypeDate), B.New_Inst ORDER BY A.ModifiedOn) AS RowNum
+											FROM Ext_Donor_Score A
+												INNER JOIN Ext_Institution B ON A.Plus_Institution = B.New_InstitutionId
+											WHERE 1 = 1
+												AND A.StatusCode = 1
+										) A
+									WHERE 1 = 1
+										AND RowNum = 1
+							) A
+						WHERE 1 = 1
+						GROUP BY Donor_Key
+					) F ON A.Donor_Key = F.Donor_Key				
+			' -- Ext_From_Statement
+		, ' AND A.Donor_Key IS NOT NULL
+			' -- Ext_Where_Statement
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' 
+			' -- Ext_From_Statement_2
+		, ' ' -- Ext_Create_Fields_2
+		, ' ' -- Ext_Create_Fields_3
+		, ' ' -- Ext_Where_Statement_2
+		, ' ' -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+		, NULL -- Ext_Select_Statement_3
+		, NULL -- Ext_Select_Statement_4
+		, NULL -- Ext_Select_Statement_5
+		, NULL -- Ext_Select_Statement_6
+		, NULL -- Ext_Select_Statement_7
+		, NULL -- Ext_From_Statement_3
+		, NULL -- Ext_From_Statement_4
+		, NULL -- Ext_From_Statement_5
+		, NULL -- Ext_From_Statement_6
+		, NULL -- Ext_From_Statement_7
+		, NULL -- Ext_Where_Statement_4
+		, NULL -- Ext_Where_Statement_5
+		, NULL -- Ext_Where_Statement_6
+		, NULL -- Ext_Where_Statement_7
+		, NULL -- Tier_10_Stage
+		, NULL -- Tier_10_Stage_DateTime
+		, NULL -- Tier_11_Stage
+		, NULL -- Tier_11_Stage_DateTime
+		, NULL -- Tier_12_Stage
+		, NULL -- Tier_12_Stage_DateTime
+		, NULL -- Extra_7
+		, NULL -- Extra_8
+		, NULL -- Extra_9
+		, NULL -- Extra_10
+	)
+	,
+-- --------------------------
+-- _Donor_Telefund_Dim
+-- --------------------------
+	( 5 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Donor_Telefund_Dim' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, '	Donor_Key NVARCHAR(100)      
+			, Donor_Open_Byu_Telefund_Pledge NVARCHAR(1)
+			, Donor_Open_Byui_Telefund_Pledge NVARCHAR(1)
+			, Donor_Open_Byuh_Telefund_Pledge NVARCHAR(1)
+			, Donor_Open_Ldsbc_Telefund_Pledge NVARCHAR(1)
+			, Donor_Previously_Contacted_Byu_Yn NVARCHAR(1)
+			, Donor_Previously_Contacted_Byui_Yn NVARCHAR(1)
+			, Donor_Previously_Contacted_Byuh_Yn NVARCHAR(1)
+			, Donor_Previously_Contacted_Ldsbc_Yn NVARCHAR(1)
+			, Donor_Lds_TelefundNotes NVARCHAR(4000)
+		' -- Ext_Create_Fields
+		, ' Donor_Key      
+			, Donor_Open_Byu_Telefund_Pledge
+			, Donor_Open_Byui_Telefund_Pledge
+			, Donor_Open_Byuh_Telefund_Pledge
+			, Donor_Open_Ldsbc_Telefund_Pledge
+			, Donor_Previously_Contacted_Byu_Yn
+			, Donor_Previously_Contacted_Byui_Yn
+			, Donor_Previously_Contacted_Byuh_Yn
+			, Donor_Previously_Contacted_Ldsbc_Yn
+			, Donor_Lds_TelefundNotes
+		' -- Ext_Insert_Fields
+		, ' A.Donor_Key
+			, COALESCE(Donor_Open_Byu_Telefund_Pledge,A.[N]) AS Donor_Open_Byu_Telefund_Pledge
+			, COALESCE(Donor_Open_Byui_Telefund_Pledge,A.[N]) AS Donor_Open_Byui_Telefund_Pledge
+			, COALESCE(Donor_Open_Byuh_Telefund_Pledge,A.[N]) AS Donor_Open_Byuh_Telefund_Pledge
+			, COALESCE(Donor_Open_Ldsbc_Telefund_Pledge,A.[N]) AS Donor_Open_Ldsbc_Telefund_Pledge
+			, CASE WHEN F.Donor_Key IS NULL THEN A.[N]
+				WHEN F.Donor_Key IS NOT NULL THEN A.[Y]
+				ELSE A.[N] END AS Donor_Previously_Contacted_Byu_Yn
+			, CASE WHEN G.Donor_Key IS NULL THEN A.[N]
+				WHEN G.Donor_Key IS NOT NULL THEN A.[Y]
+				ELSE A.[N] END AS Donor_Previously_Contacted_Byui_Yn
+			, CASE WHEN H.Donor_Key IS NULL THEN A.[N]
+				WHEN H.Donor_Key IS NOT NULL THEN A.[Y]
+				ELSE A.[N] END AS Donor_Previously_Contacted_Byuh_Yn
+			, CASE WHEN I.Donor_Key IS NULL THEN A.[N]
+				WHEN I.Donor_Key IS NOT NULL THEN A.[Y]
+				ELSE A.[N] END AS Donor_Previously_Contacted_Ldsbc_Yn
+			, J.Lds_TelefundNotes AS Donor_Lds_TelefundNotes
+		' -- Ext_Select_Statement
+		, ' _All_Donors_ A
+				LEFT JOIN
+					(SELECT DISTINCT COALESCE(CONVERT(NVARCHAR(100),A.New_ConstituentDonor),CONVERT(NVARCHAR(100),A.New_OrganizationDonor)) AS Donor_Key
+						, A.[Y] AS Donor_Open_Byu_Telefund_Pledge
+						FROM Ext_Pledge A
+							LEFT JOIN Ext_Institution D ON A.New_InstitutionalHierarchy = D.New_InstitutionId
+						WHERE 1 = 1
+							AND EXISTS
+								(SELECT *
+									FROM Ext_Campaign_Activity B
+										LEFT JOIN Ext_Activity_Pointer C ON B.ActivityId = C.ActivityId	
+									WHERE 1 = 1
+										AND A.Plus_Appeal = B.ActivityId
+										AND C.CampactChannelTypeCode = 1 -- Phone
+										AND (B.Plus_CommunicationType = 100000009 OR B.Plus_CommunicationType = 100000019) -- Soliciation 
+										AND A.StatusCode = 1 -- Outstanding
+										AND A.New_BeginDate > DATEADD(MONTH,-6,GETDATE()) -- Dynamic 6 months from today
+								)
+							AND D.New_Inst = D.[BYU]
+					) B ON A.Donor_Key = B.Donor_Key
+				LEFT JOIN
+					(SELECT DISTINCT COALESCE(CONVERT(NVARCHAR(100),A.New_ConstituentDonor),CONVERT(NVARCHAR(100),A.New_OrganizationDonor)) AS Donor_Key
+						, A.[Y] AS Donor_Open_Byui_Telefund_Pledge
+						FROM Ext_Pledge A
+							LEFT JOIN Ext_Institution D ON A.New_InstitutionalHierarchy = D.New_InstitutionId
+						WHERE 1 = 1
+							AND EXISTS
+								(SELECT *
+									FROM Ext_Campaign_Activity B
+										LEFT JOIN Ext_Activity_Pointer C ON B.ActivityId = C.ActivityId	
+									WHERE 1 = 1
+										AND A.Plus_Appeal = B.ActivityId
+										AND C.CampactChannelTypeCode = 1 -- Phone
+										AND (B.Plus_CommunicationType = 100000009 OR B.Plus_CommunicationType = 100000019) -- Soliciation 
+										AND A.StatusCode = 1 -- Outstanding
+										AND A.New_BeginDate > DATEADD(MONTH,-6,GETDATE()) -- Dynamic 6 months from today
+								)
+							AND D.New_Inst = D.[BYUI]
+					) C ON A.Donor_Key = C.Donor_Key
+				LEFT JOIN
+					(SELECT DISTINCT COALESCE(CONVERT(NVARCHAR(100),A.New_ConstituentDonor),CONVERT(NVARCHAR(100),A.New_OrganizationDonor)) AS Donor_Key
+						, A.[Y] AS Donor_Open_Byuh_Telefund_Pledge
+						FROM Ext_Pledge A
+							LEFT JOIN Ext_Institution D ON A.New_InstitutionalHierarchy = D.New_InstitutionId
+						WHERE 1 = 1
+							AND EXISTS
+								(SELECT *
+									FROM Ext_Campaign_Activity B
+										LEFT JOIN Ext_Activity_Pointer C ON B.ActivityId = C.ActivityId	
+									WHERE 1 = 1
+										AND A.Plus_Appeal = B.ActivityId
+										AND C.CampactChannelTypeCode = 1 -- Phone
+										AND (B.Plus_CommunicationType = 100000009 OR B.Plus_CommunicationType = 100000019) -- Soliciation 
+										AND A.StatusCode = 1 -- Outstanding
+										AND A.New_BeginDate > DATEADD(MONTH,-6,GETDATE()) -- Dynamic 6 months from today
+								)
+							AND D.New_Inst = D.[BYUH]
+					) D ON A.Donor_Key = D.Donor_Key
+				LEFT JOIN
+					(SELECT DISTINCT COALESCE(CONVERT(NVARCHAR(100),A.New_ConstituentDonor),CONVERT(NVARCHAR(100),A.New_OrganizationDonor)) AS Donor_Key
+						, A.[Y] AS Donor_Open_Ldsbc_Telefund_Pledge
+						FROM Ext_Pledge A
+							LEFT JOIN Ext_Institution D ON A.New_InstitutionalHierarchy = D.New_InstitutionId
+						WHERE 1 = 1
+							AND EXISTS
+								(SELECT *
+									FROM Ext_Campaign_Activity B
+										LEFT JOIN Ext_Activity_Pointer C ON B.ActivityId = C.ActivityId	
+									WHERE 1 = 1
+										AND A.Plus_Appeal = B.ActivityId
+										AND C.CampactChannelTypeCode = 1 -- Phone
+										AND (B.Plus_CommunicationType = 100000009 OR B.Plus_CommunicationType = 100000019) -- Soliciation 
+										AND A.StatusCode = 1 -- Outstanding
+										AND A.New_BeginDate > DATEADD(MONTH,-6,GETDATE()) -- Dynamic 6 months from today
+								)
+							AND D.New_Inst = D.[LDSBC]
+					) E ON A.Donor_Key = E.Donor_Key				
+			' -- Ext_From_Statement
+		, ' AND A.Donor_Key IS NOT NULL
+			' -- Ext_Where_Statement
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, '		LEFT JOIN
+					(SELECT CONVERT(NVARCHAR(100),ContactId) AS Donor_Key
+						FROM
+							(SELECT DISTINCT F.PartyID AS ContactId
+								FROM Ext_Campaign_Response A 
+									INNER JOIN Ext_Activity_Pointer B ON B.ActivityId = A.ActivityId 
+									INNER JOIN Ext_Campaign_Activity C ON C.ActivityId = A.Plus_CampaignAppeal
+									INNER JOIN Ext_Activity_Pointer D ON C.ActivityId = D.ActivityId 
+									INNER JOIN Ext_Campaign E ON E.CampaignId = B.RegardingObjectId and B.regardingobjecttypecode = 4400 
+									INNER JOIN Ext_Activity F ON F.ActivityId = A.ActivityId 	
+									INNER JOIN Ext_Institution G ON C.Plus_InstitutionalHierarchy = G.New_InstitutionId
+								WHERE 1 = 1
+									AND D.CampactChannelTypeCode = 1 
+									AND B.CreatedOn > DATEADD(m,-3,GETDATE()) 	
+									AND F.PartyObjectTypeCode IN (2) 
+									AND G.New_Inst = G.[BYU]
+							UNION
+							SELECT Relationship_ContactId AS ContactId
+								FROM _Connection_Dim CD
+								WHERE 1 = 1 
+									AND EXISTS
+										(SELECT *
+											FROM Ext_Campaign_Response A 
+												INNER JOIN Ext_Activity_Pointer B ON B.ActivityId = A.ActivityId  
+												INNER JOIN Ext_Campaign_Activity C ON C.ActivityId = A.Plus_CampaignAppeal 
+												INNER JOIN Ext_Activity_Pointer D ON C.ActivityId = D.ActivityId 
+												INNER JOIN Ext_Campaign E ON E.CampaignId = B.RegardingObjectId and B.regardingobjecttypecode = 4400 
+												INNER JOIN Ext_Activity F ON F.ActivityId = A.ActivityId 	
+												INNER JOIN Ext_Institution G ON C.Plus_InstitutionalHierarchy = G.New_InstitutionId
+											WHERE 1 = 1
+												AND CD.ContactId = F.PartyId
+												AND D.CampactChannelTypeCode = 1 	
+												AND B.CreatedOn > DATEADD(m,-3,GETDATE()) 	
+												AND F.PartyObjectTypeCode IN (2)
+												AND G.New_Inst = G.[BYU]
+										) 
+								AND Relationship = CD.[Spouse]
+							) A
+						WHERE 1 = 1 
+							AND ContactId IS NOT NULL
+					) F ON A.Donor_Key = F.Donor_Key
+				LEFT JOIN
+					(SELECT CONVERT(NVARCHAR(100),ContactId) AS Donor_Key
+						FROM
+							(SELECT DISTINCT F.PartyID AS ContactId
+								FROM Ext_Campaign_Response A 
+									INNER JOIN Ext_Activity_Pointer B ON B.ActivityId = A.ActivityId 
+									INNER JOIN Ext_Campaign_Activity C ON C.ActivityId = A.Plus_CampaignAppeal
+									INNER JOIN Ext_Activity_Pointer D ON C.ActivityId = D.ActivityId 
+									INNER JOIN Ext_Campaign E ON E.CampaignId = B.RegardingObjectId and B.regardingobjecttypecode = 4400 
+									INNER JOIN Ext_Activity F ON F.ActivityId = A.ActivityId 	
+									INNER JOIN Ext_Institution G ON C.Plus_InstitutionalHierarchy = G.New_InstitutionId
+								WHERE 1 = 1
+									AND D.CampactChannelTypeCode = 1 
+									AND B.CreatedOn > DATEADD(m,-3,GETDATE()) 	
+									AND F.PartyObjectTypeCode IN (2) 
+									AND G.New_Inst = G.[BYUI]
+							UNION
+							SELECT Relationship_ContactId AS ContactId
+								FROM _Connection_Dim CD
+								WHERE 1 = 1 
+									AND EXISTS
+										(SELECT *
+											FROM Ext_Campaign_Response A 
+												INNER JOIN Ext_Activity_Pointer B ON B.ActivityId = A.ActivityId  
+												INNER JOIN Ext_Campaign_Activity C ON C.ActivityId = A.Plus_CampaignAppeal 
+												INNER JOIN Ext_Activity_Pointer D ON C.ActivityId = D.ActivityId 
+												INNER JOIN Ext_Campaign E ON E.CampaignId = B.RegardingObjectId and B.regardingobjecttypecode = 4400 
+												INNER JOIN Ext_Activity F ON F.ActivityId = A.ActivityId 	
+												INNER JOIN Ext_Institution G ON C.Plus_InstitutionalHierarchy = G.New_InstitutionId											 
+			' -- Ext_From_Statement_2
+		, ' ' -- Ext_Create_Fields_2
+		, ' ' -- Ext_Create_Fields_3
+		, ' ' -- Ext_Where_Statement_2
+		, ' ' -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+		, NULL -- Ext_Select_Statement_3
+		, NULL -- Ext_Select_Statement_4
+		, NULL -- Ext_Select_Statement_5
+		, NULL -- Ext_Select_Statement_6
+		, NULL -- Ext_Select_Statement_7
+		, '									WHERE 1 = 1
+												AND CD.ContactId = F.PartyId
+												AND D.CampactChannelTypeCode = 1 	
+												AND B.CreatedOn > DATEADD(m,-3,GETDATE()) 	
+												AND F.PartyObjectTypeCode IN (2)
+												AND G.New_Inst = G.[BYUI]
+										) 
+								AND Relationship = CD.[Spouse]
+							) A
+						WHERE 1 = 1 
+							AND ContactId IS NOT NULL
+					) G ON A.Donor_Key = G.Donor_Key
+				LEFT JOIN
+					(SELECT CONVERT(NVARCHAR(100),ContactId) AS Donor_Key
+						FROM
+							(SELECT DISTINCT F.PartyID AS ContactId
+								FROM Ext_Campaign_Response A 
+									INNER JOIN Ext_Activity_Pointer B ON B.ActivityId = A.ActivityId 
+									INNER JOIN Ext_Campaign_Activity C ON C.ActivityId = A.Plus_CampaignAppeal
+									INNER JOIN Ext_Activity_Pointer D ON C.ActivityId = D.ActivityId 
+									INNER JOIN Ext_Campaign E ON E.CampaignId = B.RegardingObjectId and B.regardingobjecttypecode = 4400 
+									INNER JOIN Ext_Activity F ON F.ActivityId = A.ActivityId 	
+									INNER JOIN Ext_Institution G ON C.Plus_InstitutionalHierarchy = G.New_InstitutionId
+								WHERE 1 = 1
+									AND D.CampactChannelTypeCode = 1 
+									AND B.CreatedOn > DATEADD(m,-3,GETDATE()) 	
+									AND F.PartyObjectTypeCode IN (2) 
+									AND G.New_Inst = G.[BYUH]
+							UNION
+							SELECT Relationship_ContactId AS ContactId
+								FROM _Connection_Dim CD
+								WHERE 1 = 1 
+									AND EXISTS
+										(SELECT *
+											FROM Ext_Campaign_Response A 
+												INNER JOIN Ext_Activity_Pointer B ON B.ActivityId = A.ActivityId  
+												INNER JOIN Ext_Campaign_Activity C ON C.ActivityId = A.Plus_CampaignAppeal 
+												INNER JOIN Ext_Activity_Pointer D ON C.ActivityId = D.ActivityId 
+												INNER JOIN Ext_Campaign E ON E.CampaignId = B.RegardingObjectId and B.regardingobjecttypecode = 4400 
+												INNER JOIN Ext_Activity F ON F.ActivityId = A.ActivityId 	
+												INNER JOIN Ext_Institution G ON C.Plus_InstitutionalHierarchy = G.New_InstitutionId
+											WHERE 1 = 1
+												AND CD.ContactId = F.PartyId
+												AND D.CampactChannelTypeCode = 1 	
+												AND B.CreatedOn > DATEADD(m,-3,GETDATE()) 	
+												AND F.PartyObjectTypeCode IN (2)
+												AND G.New_Inst = G.[BYUH]
+										) 
+								AND Relationship = CD.[Spouse]
+							) A
+						WHERE 1 = 1 
+							AND ContactId IS NOT NULL
+					) H ON A.Donor_Key = H.Donor_Key
+			' -- Ext_From_Statement_3
+		, '	LEFT JOIN
+					(SELECT CONVERT(NVARCHAR(100),ContactId) AS Donor_Key
+						FROM
+							(SELECT DISTINCT F.PartyID AS ContactId
+								FROM Ext_Campaign_Response A 
+									INNER JOIN Ext_Activity_Pointer B ON B.ActivityId = A.ActivityId 
+									INNER JOIN Ext_Campaign_Activity C ON C.ActivityId = A.Plus_CampaignAppeal
+									INNER JOIN Ext_Activity_Pointer D ON C.ActivityId = D.ActivityId 
+									INNER JOIN Ext_Campaign E ON E.CampaignId = B.RegardingObjectId and B.regardingobjecttypecode = 4400 
+									INNER JOIN Ext_Activity F ON F.ActivityId = A.ActivityId 	
+									INNER JOIN Ext_Institution G ON C.Plus_InstitutionalHierarchy = G.New_InstitutionId
+								WHERE 1 = 1
+									AND D.CampactChannelTypeCode = 1 
+									AND B.CreatedOn > DATEADD(m,-3,GETDATE()) 	
+									AND F.PartyObjectTypeCode IN (2) 
+									AND G.New_Inst = G.[LDSBC]
+							UNION
+							SELECT Relationship_ContactId AS ContactId
+								FROM _Connection_Dim CD
+								WHERE 1 = 1 
+									AND EXISTS
+										(SELECT *
+											FROM Ext_Campaign_Response A 
+												INNER JOIN Ext_Activity_Pointer B ON B.ActivityId = A.ActivityId  
+												INNER JOIN Ext_Campaign_Activity C ON C.ActivityId = A.Plus_CampaignAppeal 
+												INNER JOIN Ext_Activity_Pointer D ON C.ActivityId = D.ActivityId 
+												INNER JOIN Ext_Campaign E ON E.CampaignId = B.RegardingObjectId and B.regardingobjecttypecode = 4400 
+												INNER JOIN Ext_Activity F ON F.ActivityId = A.ActivityId 	
+												INNER JOIN Ext_Institution G ON C.Plus_InstitutionalHierarchy = G.New_InstitutionId
+											WHERE 1 = 1
+												AND CD.ContactId = F.PartyId
+												AND D.CampactChannelTypeCode = 1 	
+												AND B.CreatedOn > DATEADD(m,-3,GETDATE()) 	
+												AND F.PartyObjectTypeCode IN (2)
+												AND G.New_Inst = G.[LDSBC]
+										) 
+								AND Relationship = CD.[Spouse]
+							) A
+						WHERE 1 = 1 
+							AND ContactId IS NOT NULL
+					) I ON A.Donor_Key = I.Donor_Key
+				LEFT JOIN Ext_Contact J ON A.Donor_Key = CONVERT(NVARCHAR(100),J.ContactId)
+			' -- Ext_From_Statement_4
 		, NULL -- Ext_From_Statement_5
 		, NULL -- Ext_From_Statement_6
 		, NULL -- Ext_From_Statement_7
