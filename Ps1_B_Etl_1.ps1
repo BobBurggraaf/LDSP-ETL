@@ -4846,7 +4846,7 @@ FUNCTION Insert-Alpha_Table_1
 								Write-Host "~ Total Processing Time: $Total_Processing_Time"
 					}	
 			
-			} UNTIL ($Tables_To_Process_Tier_10 -eq 0 -OR $Total_Processing_Time -gt '02:29:00')
+			} UNTIL ($Tables_To_Process_Tier_10 -eq 0 -OR $Total_Processing_Time -gt '03:14:00')
 			
 			
 

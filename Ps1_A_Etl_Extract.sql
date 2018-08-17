@@ -29628,6 +29628,11 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, ModifiedOn DATE
 			, DomainName NVARCHAR(1024)
 			, Regarding_Type NVARCHAR(15)
+			, Appointment NVARCHAR(15) DEFAULT ''Appointment''
+			, Email NVARCHAR(15) DEFAULT ''Email''
+			, Letter NVARCHAR(15) DEFAULT ''Letter''
+			, Phone_Call NVARCHAR(15) DEFAULT ''Phone Call''
+			, Fax NVARCHAR(15) DEFAULT ''Fax''
 		' -- Ext_Create_Fields
 		, 'Activity_Key
 			, Activity_Group_Key
@@ -29777,7 +29782,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 				) E ON A.ContactId = E.ContactId
 			' -- Ext_From_Statement
 		, 'INSERT INTO _Activity_Dim
-			VALUES(0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+			VALUES(0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 			' -- Ext_Where_Statement	
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
@@ -47700,6 +47705,790 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 	)
 	,
 -- --------------------------
+-- View_Qualifieds
+-- --------------------------
+	( 10 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, 'View_Qualifieds' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, '	Ldsp_Id NVARCHAR(100)
+			, Donor_Full_Name NVARCHAR(160)
+			, Is_Qualified  NVARCHAR(1)
+			, Qualified_By NVARCHAR(200)
+			, Qualified_On DATE
+			, Coordinating_Liaison NVARCHAR(200)
+			, Pending_Liaison NVARCHAR(200)
+			' -- Ext_Create_Fields
+		, '	Ldsp_Id
+			, Donor_Full_Name
+			, Is_Qualified
+			, Qualified_By
+			, Qualified_On
+			, Coordinating_Liaison
+			, Pending_Liaison 
+			' -- Ext_Insert_Fields
+		, ' A.Donor_Ldsp_Id AS Ldsp_Id
+			, C.Donor_Name AS Donor_Full_Name
+			, B.Donor_Qualified AS Is_Qualified 
+			, B.Donor_Qualified_By AS Qualified_By
+			, B.Donor_Qualified_On AS Qualified_On
+			, D.Plus_CoordinatingLiaison AS Coordinating_Liaison
+			, D.Plus_PendingLiaison AS Pending_Liaison
+			' -- Ext_Select_Statement
+		, ' _Donor_Key_Dim A 
+				LEFT JOIN _Donor_Detail_Dim B ON A.Donor_Key = B.Donor_Key
+				LEFT JOIN _Donor_Name_Dim C ON A.Donor_Key = C.Donor_Key
+				LEFT JOIN _Donor_Association_Dim D ON A.Donor_Key = D.Donor_Key
+			' -- Ext_From_Statement
+		, ' AND (D.Plus_CoordinatingLiaison_DomainName IS NOT NULL
+					OR D.Plus_PendingLiaison_DomainName IS NOT NULL
+					OR D.Plus_ConnectedLiaison_DomainName IS NOT NULL
+				)
+			' -- Ext_Where_Statement
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, '
+			' -- Ext_Select_Statement_2
+		, '										 
+			' -- Ext_From_Statement_2
+		, '
+			' -- Ext_Create_Fields_2
+		, '
+			' -- Ext_Create_Fields_3
+		, ' ' -- Ext_Where_Statement_2
+		, ' ' -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+		, ' 
+			' -- Ext_Select_Statement_3
+		, '
+			' -- Ext_Select_Statement_4
+		, NULL -- Ext_Select_Statement_5
+		, NULL -- Ext_Select_Statement_6
+		, NULL -- Ext_Select_Statement_7
+		, '
+			' -- Ext_From_Statement_3
+		, '
+			' -- Ext_From_Statement_4
+		, NULL -- Ext_From_Statement_5
+		, NULL -- Ext_From_Statement_6
+		, NULL -- Ext_From_Statement_7
+		, NULL -- Ext_Where_Statement_4
+		, NULL -- Ext_Where_Statement_5
+		, NULL -- Ext_Where_Statement_6
+		, NULL -- Ext_Where_Statement_7
+		, NULL -- Tier_10_Stage
+		, NULL -- Tier_10_Stage_DateTime
+		, NULL -- Tier_11_Stage
+		, NULL -- Tier_11_Stage_DateTime
+		, NULL -- Tier_12_Stage
+		, NULL -- Tier_12_Stage_DateTime
+		, ' 
+			'-- Ext_Create_Fields_4
+		, '
+			' -- Ext_Create_Fields_5
+		, '
+			' -- Ext_Insert_Fields_2
+		, '
+			' -- Ext_Insert_Fields_3
+		, '
+			' -- Ext_Insert_Fields_4
+		, NULL -- Ext_Insert_Fields_5
+		, NULL -- Extra_7
+		, NULL -- Extra_8
+		, NULL -- Extra_9
+		, NULL -- Extra_10
+	)
+	,
+-- --------------------------
+-- View_Dl_Initiatives
+-- --------------------------
+	( 10 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, 'View_Dl_Initiatives' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, '	Donor_Ldsp_Id NVARCHAR(100)
+			, Initiative_Key NVARCHAR(100)
+			, Initiative_Name_Donor_Name NVARCHAR(1000)
+			, Initiative_Step_Name NVARCHAR(400)
+			, Initiative_State_Code NVARCHAR(400)
+			, Initiative_Status_Code NVARCHAR(400)
+			, Initiative_Proposal_Status NVARCHAR(400)	
+			, Initiative_Liaison NVARCHAR(200)
+			, Initiative_New_Account NVARCHAR(400)
+			, Initiative_Proposal_Date DATE
+			, Initiative_Targeted_Commitment_Date DATE
+			, Initiative_Committed_Date DATE
+			, Initiative_Cultivation_Proc_Stg_1_Date DATE
+			, Initiative_Cultivation_Proc_Stg_2_Date DATE
+			, Initiative_Cultivation_Proc_Stg_3_Date DATE
+			, Initiative_Cultivation_Proc_Stg_4_Date DATE
+			, Initiative_Gift_Notice_Created_Date DATE
+			, Initiative_Proposal_Status_Change_Date DATE
+			, Initiative_Coordinating_Liaison NVARCHAR(200)
+			, Initiative_Supporting_Liaisons NVARCHAR(1000)
+			, Initiative_Primary_Initiative NVARCHAR(1)
+			, Initiative_Parent_Initiative NVARCHAR(600)
+			, Initiative_Proposal_Amt MONEY
+			, Initiative_Total_Committed_Amt MONEY
+			, Initiative_Total_Given_Amt MONEY
+			, Initiative_Has_Expectancy NVARCHAR(1)
+			' -- Ext_Create_Fields
+		, '	Donor_Ldsp_Id
+			, Initiative_Key
+			, Initiative_Name_Donor_Name
+			, Initiative_Step_Name
+			, Initiative_State_Code
+			, Initiative_Status_Code
+			, Initiative_Proposal_Status	
+			, Initiative_Liaison
+			, Initiative_New_Account
+			, Initiative_Proposal_Date
+			, Initiative_Targeted_Commitment_Date
+			, Initiative_Committed_Date
+			, Initiative_Cultivation_Proc_Stg_1_Date
+			, Initiative_Cultivation_Proc_Stg_2_Date
+			, Initiative_Cultivation_Proc_Stg_3_Date
+			, Initiative_Cultivation_Proc_Stg_4_Date
+			, Initiative_Gift_Notice_Created_Date
+			, Initiative_Proposal_Status_Change_Date
+			, Initiative_Coordinating_Liaison
+			, Initiative_Supporting_Liaisons
+			, Initiative_Primary_Initiative
+			, Initiative_Parent_Initiative
+			, Initiative_Proposal_Amt
+			, Initiative_Total_Committed_Amt
+			, Initiative_Total_Given_Amt
+			, Initiative_Has_Expectancy 
+			' -- Ext_Insert_Fields
+		, ' C.Donor_Ldsp_Id
+			, A.Initiative_Key
+			, A.Initiative_Name_Donor_Name
+			, A.Initiative_Step_Name
+			, A.Initiative_State_Code
+			, A.Initiative_Status_Code
+			, A.Initiative_Proposal_Status	
+			, A.Initiative_Liaison
+			, A.Initiative_New_Account
+			, A.Initiative_Proposal_Date
+			, A.Initiative_Targeted_Commitment_Date
+			, A.Initiative_Committed_Date
+			, A.Initiative_Cultivation_Proc_Stg_1_Date
+			, A.Initiative_Cultivation_Proc_Stg_2_Date
+			, A.Initiative_Cultivation_Proc_Stg_3_Date
+			, A.Initiative_Cultivation_Proc_Stg_4_Date
+			, A.Initiative_Gift_Notice_Created_Date
+			, A.Initiative_Proposal_Status_Change_Date
+			, A.Initiative_Coordinating_Liaison
+			, A.Initiative_Supporting_Liaisons
+			, A.Initiative_Primary_Initiative
+			, A.Initiative_Parent_Initiative
+			, B.Initiative_Proposal_Amt
+			, B.Initiative_Total_Committed_Amt
+			, B.Initiative_Total_Given_Amt
+			, A.Initiative_Has_Expectancy
+			' -- Ext_Select_Statement
+		, ' _Initiative_Dim A
+				INNER JOIN _Initiative_Fact B ON A.Initiative_Key = B.Initiative_Key
+				INNER JOIN _Donor_Key_Dim C ON B.Donor_Key = C.Donor_Key
+			' -- Ext_From_Statement
+		, ' AND Initiative_Liaison IS NOT NULL
+			' -- Ext_Where_Statement
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, '
+			' -- Ext_Select_Statement_2
+		, '										 
+			' -- Ext_From_Statement_2
+		, '
+			' -- Ext_Create_Fields_2
+		, '
+			' -- Ext_Create_Fields_3
+		, ' ' -- Ext_Where_Statement_2
+		, ' ' -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+		, ' 
+			' -- Ext_Select_Statement_3
+		, '
+			' -- Ext_Select_Statement_4
+		, NULL -- Ext_Select_Statement_5
+		, NULL -- Ext_Select_Statement_6
+		, NULL -- Ext_Select_Statement_7
+		, '
+			' -- Ext_From_Statement_3
+		, '
+			' -- Ext_From_Statement_4
+		, NULL -- Ext_From_Statement_5
+		, NULL -- Ext_From_Statement_6
+		, NULL -- Ext_From_Statement_7
+		, NULL -- Ext_Where_Statement_4
+		, NULL -- Ext_Where_Statement_5
+		, NULL -- Ext_Where_Statement_6
+		, NULL -- Ext_Where_Statement_7
+		, NULL -- Tier_10_Stage
+		, NULL -- Tier_10_Stage_DateTime
+		, NULL -- Tier_11_Stage
+		, NULL -- Tier_11_Stage_DateTime
+		, NULL -- Tier_12_Stage
+		, NULL -- Tier_12_Stage_DateTime
+		, ' 
+			'-- Ext_Create_Fields_4
+		, '
+			' -- Ext_Create_Fields_5
+		, '
+			' -- Ext_Insert_Fields_2
+		, '
+			' -- Ext_Insert_Fields_3
+		, '
+			' -- Ext_Insert_Fields_4
+		, NULL -- Ext_Insert_Fields_5
+		, NULL -- Extra_7
+		, NULL -- Extra_8
+		, NULL -- Extra_9
+		, NULL -- Extra_10
+	)
+	,	
+-- --------------------------
+-- View_Dl_Activities
+-- --------------------------
+	( 10 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, 'View_Dl_Activities' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, '	Owner NVARCHAR(200)
+			, Donor_Ldsp_Id NVARCHAR(100)
+			, Donor_Display_Name NVARCHAR(100)
+			, Type NVARCHAR(100)
+			, Subject NVARCHAR(200)
+			, Regarding NVARCHAR(4000)
+			, Face_To_Face NVARCHAR(1)
+			, Scheduled_Start DATE
+			, Scheduled_End DATE
+			, Completed DATE
+			, CreatedOn DATE
+			, ModifiedOn DATE
+			, Description  NVARCHAR(4000)
+			, Attendees  NVARCHAR(4000)
+			, Source NVARCHAR(100)
+			, StateCode  NVARCHAR(400)
+			, StatusCode NVARCHAR(400)
+			, Donor_Key NVARCHAR(100)
+			, Activity_Id NVARCHAR(100)
+			, Regarding_Type NVARCHAR(15)
+			' -- Ext_Create_Fields
+		, '	Owner
+			, Donor_Ldsp_Id
+			, Donor_Display_Name
+			, Type
+			, Subject
+			, Regarding
+			, Face_To_Face
+			, Scheduled_Start
+			, Scheduled_End
+			, Completed
+			, CreatedOn
+			, ModifiedOn
+			, Description
+			, Attendees
+			, Source
+			, StateCode
+			, StatusCode
+			, Donor_Key
+			, Activity_Id
+			, Regarding_Type 
+			' -- Ext_Insert_Fields
+		, '  C.Owner
+			, A.Donor_Ldsp_Id
+			, D.Donor_Display_Name
+			, C.Type
+			, C.Subject
+			, C.Regarding
+			, C.Face_To_Face
+			, C.Scheduled_Start
+			, C.Scheduled_End
+			, C.Completed
+			, C.CreatedOn
+			, C.ModifiedOn
+			, C.Description
+			, C.Attendees
+			, C.Source
+			, C.StateCode
+			, C.StatusCode
+			, A.Donor_Key
+			, C.Activity_Id
+			, C.Regarding_Type
+			' -- Ext_Select_Statement
+		, ' _Donor_Key_Dim A
+			INNER JOIN _Activity_Bridge B ON A.Activity_Group_Key = B.Activity_Group_Key
+			INNER JOIN _Activity_Dim C ON B.Activity_Key = C.Activity_Key
+			INNER JOIN _Donor_Name_Dim D ON A.Donor_Key = D.Donor_Key
+			' -- Ext_From_Statement
+		, ' AND C.Type IN (C.[Appointment],C.[Email],C.[Letter],C.[Phone_Call],C.[Fax])
+			AND C.Owner IN
+						(SELECT DISTINCT B.User_Full_Name
+							FROM 
+								(SELECT A.Donor_Ldsp_Id
+									, D.Donor_Display_Name
+									, C.Type
+									, C.Subject
+									, C.Regarding
+									, C.Face_To_Face
+									, C.Scheduled_Start
+									, C.Scheduled_End
+									, C.Completed
+									, C.CreatedOn
+									, C.ModifiedOn
+									, C.Description
+									, C.Attendees
+									, C.Owner
+									, C.Source
+									, C.StateCode
+									, C.StatusCode
+									, A.Donor_Key
+									, C.Activity_Id
+									, C.Regarding_Type
+									FROM _Donor_Key_Dim A
+										INNER JOIN _Activity_Bridge B ON A.Activity_Group_Key = B.Activity_Group_Key
+										INNER JOIN _Activity_Dim C ON B.Activity_Key = C.Activity_Key
+										INNER JOIN _Donor_Name_Dim D ON A.Donor_Key = D.Donor_Key
+								) A
+								LEFT JOIN _User_Coordinating_Liaison_Dim B ON A.Owner = B.User_Full_Name
+							WHERE 1 = 1
+								AND B.User_Full_Name IS NOT NULL
+						)
+			' -- Ext_Where_Statement
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, '
+			' -- Ext_Select_Statement_2
+		, '										 
+			' -- Ext_From_Statement_2
+		, '
+			' -- Ext_Create_Fields_2
+		, '
+			' -- Ext_Create_Fields_3
+		, ' ' -- Ext_Where_Statement_2
+		, ' ' -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+		, ' 
+			' -- Ext_Select_Statement_3
+		, '
+			' -- Ext_Select_Statement_4
+		, NULL -- Ext_Select_Statement_5
+		, NULL -- Ext_Select_Statement_6
+		, NULL -- Ext_Select_Statement_7
+		, '
+			' -- Ext_From_Statement_3
+		, '
+			' -- Ext_From_Statement_4
+		, NULL -- Ext_From_Statement_5
+		, NULL -- Ext_From_Statement_6
+		, NULL -- Ext_From_Statement_7
+		, NULL -- Ext_Where_Statement_4
+		, NULL -- Ext_Where_Statement_5
+		, NULL -- Ext_Where_Statement_6
+		, NULL -- Ext_Where_Statement_7
+		, NULL -- Tier_10_Stage
+		, NULL -- Tier_10_Stage_DateTime
+		, NULL -- Tier_11_Stage
+		, NULL -- Tier_11_Stage_DateTime
+		, NULL -- Tier_12_Stage
+		, NULL -- Tier_12_Stage_DateTime
+		, ' 
+			'-- Ext_Create_Fields_4
+		, '
+			' -- Ext_Create_Fields_5
+		, '
+			' -- Ext_Insert_Fields_2
+		, '
+			' -- Ext_Insert_Fields_3
+		, '
+			' -- Ext_Insert_Fields_4
+		, NULL -- Ext_Insert_Fields_5
+		, NULL -- Extra_7
+		, NULL -- Extra_8
+		, NULL -- Extra_9
+		, NULL -- Extra_10
+	)
+	,
+-- --------------------------
+-- View_Portfolio_Management
+-- --------------------------
+	( 10 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, 'View_Portfolio_Management' -- Ext_Table
+		, ' ' -- Dest_Create_Fields
+		, ' ' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, '	Ldsp_Id NVARCHAR(100)
+			, Donor_Full_Name NVARCHAR(160)
+			, Donor_Display_Name NVARCHAR(100)
+			, Couple_Name NVARCHAR(200)
+			, Couple_Display_Name NVARCHAR(200)
+			, Coordinating_Liaison NVARCHAR(200)
+			, Pending_Liaison NVARCHAR(200)
+			, Connected_Liaison NVARCHAR(200)
+			, Coordinating_Liaison_Domain_Name NVARCHAR(1024)
+			, Pending_Liaison_Domain_Name NVARCHAR(1024)
+			, Connected_Liaison_Domain_Name NVARCHAR(1024)
+			, Contact_Type NVARCHAR(100)
+			, Ldsp_Donor_Type NVARCHAR(2)
+			, Age INT
+			, Birthdate DATE
+			, Birth_Year NVARCHAR(100)
+			, Address_Type NVARCHAR(400)
+			, Street_Line_1 NVARCHAR(100)
+			, Street_Line_2 NVARCHAR(100)
+			, City NVARCHAR(100)
+			, County NVARCHAR(100)
+			, State_Abbreviation NVARCHAR(100)
+			, Zip_Code NVARCHAR(100)
+			, Country NVARCHAR(100)
+			, Phone_Number NVARCHAR(100)
+			, Email_Address NVARCHAR(150)
+			, Spouse_Email NVARCHAR(100)
+			, Total_Lifetime_Giving MONEY
+			, Total_Lifetime_Giving_Last_5_Years MONEY
+			, Total_Giving_Current_Year MONEY
+			, Total_Giving_1_Years_Ago MONEY
+			, Total_Giving_2_Years_Ago MONEY
+			, Total_Giving_3_Years_Ago MONEY
+			, Total_Giving_4_Years_Ago MONEY
+			, Total_Giving_5_Years_Ago MONEY
+			, Gift_Capacity_2016_To_2020 NVARCHAR(400)
+			, Gift_Count_Previous_5_Years INT
+			, Average_Single_Gift_Previous_5_Years MONEY
+			, Ldsp_Largest_Gift MONEY
+			, Ldsp_Largest_Gift_Date DATE
+			, Ldsp_Most_Recent_Gift MONEY
+			, Ldsp_Most_Recent_Gift_Date DATE
+			, Institution_Giving_Areas NVARCHAR(1000)
+			, Byu_Giving_Areas NVARCHAR(2000)
+			, Church_Giving_Areas NVARCHAR(2000)
+			, Is_Qualified NVARCHAR(1)
+			, Qualified_On DATE 
+			, Qualified_By NVARCHAR(200)
+			, DonorId NVARCHAR(100)
+			, First_Gift_To_Byu_Amt MONEY
+			, First_Gift_To_Byui_Amt MONEY
+			, First_Gift_To_Byuh_Amt MONEY
+			, First_Gift_To_Ldsbc_Amt MONEY
+			, First_Gift_To_Church_Amt MONEY
+			, First_Gift_To_Ldsp_Amt MONEY
+			, First_Gift_Date_Byu DATE
+			, First_Gift_Date_Byui DATE
+			, First_Gift_Date_Byuh DATE
+			, First_Gift_Date_Ldsbc DATE
+			, First_Gift_Date_Church DATE
+			, First_Gift_Date_Ldsp DATE
+			, Total_Giving_Current_Year_With_Matching MONEY
+			, Total_Giving_1_Years_Ago_With_Matching MONEY
+			, Total_Giving_2_Years_Ago_With_Matching MONEY
+			, Total_Giving_3_Years_Ago_With_Matching MONEY
+			, Total_Giving_4_Years_Ago_With_Matching MONEY
+			, Total_Giving_5_Years_Ago_With_Matching MONEY
+			' -- Ext_Create_Fields
+		, '	Ldsp_Id
+			, Donor_Full_Name
+			, Donor_Display_Name
+			, Couple_Name
+			, Couple_Display_Name
+			, Coordinating_Liaison
+			, Pending_Liaison
+			, Connected_Liaison
+			, Coordinating_Liaison_Domain_Name 
+			, Pending_Liaison_Domain_Name
+			, Connected_Liaison_Domain_Name
+			, Contact_Type
+			, Ldsp_Donor_Type
+			, Age
+			, Birthdate
+			, Birth_Year
+			, Address_Type
+			, Street_Line_1
+			, Street_Line_2
+			, City
+			, County
+			, State_Abbreviation
+			, Zip_Code
+			, Country
+			, Phone_Number
+			, Email_Address
+			, Spouse_Email
+			, Total_Lifetime_Giving
+			, Total_Lifetime_Giving_Last_5_Years
+			, Total_Giving_Current_Year
+			, Total_Giving_1_Years_Ago
+			, Total_Giving_2_Years_Ago
+			, Total_Giving_3_Years_Ago
+			, Total_Giving_4_Years_Ago
+			, Total_Giving_5_Years_Ago
+			, Gift_Capacity_2016_To_2020
+			, Gift_Count_Previous_5_Years
+			, Average_Single_Gift_Previous_5_Years
+			, Ldsp_Largest_Gift
+			, Ldsp_Largest_Gift_Date
+			, Ldsp_Most_Recent_Gift
+			, Ldsp_Most_Recent_Gift_Date
+			, Institution_Giving_Areas
+			, Byu_Giving_Areas
+			, Church_Giving_Areas
+			, Is_Qualified
+			, Qualified_On 
+			, Qualified_By
+			, DonorId
+			, First_Gift_To_Byu_Amt
+			, First_Gift_To_Byui_Amt
+			, First_Gift_To_Byuh_Amt
+			, First_Gift_To_Ldsbc_Amt
+			, First_Gift_To_Church_Amt
+			, First_Gift_To_Ldsp_Amt
+			, First_Gift_Date_Byu
+			, First_Gift_Date_Byui
+			, First_Gift_Date_Byuh
+			, First_Gift_Date_Ldsbc
+			, First_Gift_Date_Church
+			, First_Gift_Date_Ldsp
+			, Total_Giving_Current_Year_With_Matching
+			, Total_Giving_1_Years_Ago_With_Matching
+			, Total_Giving_2_Years_Ago_With_Matching
+			, Total_Giving_3_Years_Ago_With_Matching
+			, Total_Giving_4_Years_Ago_With_Matching
+			, Total_Giving_5_Years_Ago_With_Matching 
+			' -- Ext_Insert_Fields
+		, ' A.Donor_Ldsp_Id AS Ldsp_Id
+			, F.Donor_Name AS Donor_Full_Name
+			, F.Donor_Display_Name AS Donor_Display_Name
+			, F.Donor_Total_Name AS Couple_Name
+			, G.Donor_Total_Name_Display AS Couple_Display_Name
+			, H.Plus_CoordinatingLiaison AS Coordinating_Liaison
+			, H.Plus_PendingLiaison AS Pending_Liaison
+			, H.Plus_ConnectedLiaison AS Connected_Liaison
+			, H.Plus_CoordinatingLiaison_DomainName AS Coordinating_Liaison_Domain_Name 
+			, H.Plus_PendingLiaison_DomainName AS Pending_Liaison_Domain_Name
+			, H.Plus_ConnectedLiaison_DomainName AS Connected_Liaison_Domain_Name
+			, A.Donor_Contact_Type AS Contact_Type
+			, I.Donor_Type_Code_Ldsp AS Ldsp_Donor_Type
+			, C.Donor_Age AS Age
+			, C.Donor_Birth_Dt AS Birthdate
+			, C.Donor_Birth_Dt_Year AS Birth_Year
+			, B.Address_Type AS Address_Type
+			, B.Address_Street_1 AS Street_Line_1
+			, B.Address_Street_2 AS Street_Line_2
+			, B.Address_City AS City
+			, B.Address_County AS County
+			, B.Address_State_Code AS State_Abbreviation
+			, B.Address_Post_Code_Full AS Zip_Code
+			, B.Address_Country AS Country
+			, B.Phone_Number AS Phone_Number
+			, B.Email_Address AS Email_Address
+			, G.Spouse_Email AS Spouse_Email
+			, J.Donor_Total_Lifetime_Giving AS Total_Lifetime_Giving
+			, J.Donor_Total_Lifetime_Giving_Last_5_Years AS Total_Lifetime_Giving_Last_5_Years
+			, D.Total_Giving_Current_Year AS Total_Giving_Current_Year
+			, D.Total_Giving_Current_Year_Minus_1 AS Total_Giving_1_Years_Ago
+			, D.Total_Giving_Current_Year_Minus_2 AS Total_Giving_2_Years_Ago
+			, D.Total_Giving_Current_Year_Minus_3 AS Total_Giving_3_Years_Ago
+			, D.Total_Giving_Current_Year_Minus_4 AS Total_Giving_4_Years_Ago
+			, D.Total_Giving_Current_Year_Minus_5 AS Total_Giving_5_Years_Ago
+			, K.Donor_Gift_Capacity_En AS Gift_Capacity_2016_To_2020
+			, L.Donor_Gift_Count_Previous_5_Years AS Gift_Count_Previous_5_Years
+			, L.Donor_Average_Single_Gift_Previous_5_Years AS Average_Single_Gift_Previous_5_Years
+			, M.Donor_Ldsp_Largest_Gift AS Ldsp_Largest_Gift
+			, M.Donor_Largest_Gift_Date_Ldsp AS Ldsp_Largest_Gift_Date
+			, N.Donor_Most_Recent_Gift_To_Ldsp_Amt AS Ldsp_Most_Recent_Gift
+			, N.Donor_Most_Recent_Gift_Date_Ldsp AS Ldsp_Most_Recent_Gift_Date
+			, L.Donor_Institution_Giving_Areas AS Institution_Giving_Areas
+			, L.Donor_Byu_Giving_Areas AS Byu_Giving_Areas
+			, L.Donor_Church_Giving_Areas AS Church_Giving_Areas
+			, C.Donor_Qualified AS Is_Qualified
+			, C.Donor_Qualified_On AS Qualified_On 
+			, C.Donor_Qualified_By AS Qualified_By
+			, A.Donor_Key AS DonorId
+			, O.Donor_First_Gift_To_Byu_Amt AS First_Gift_To_Byu_Amt
+			, O.Donor_First_Gift_To_Byui_Amt AS First_Gift_To_Byui_Amt
+			, O.Donor_First_Gift_To_Byuh_Amt AS First_Gift_To_Byuh_Amt
+			, O.Donor_First_Gift_To_Ldsbc_Amt AS First_Gift_To_Ldsbc_Amt
+			, O.Donor_First_Gift_To_Church_Amt AS First_Gift_To_Church_Amt
+			, O.Donor_First_Gift_To_Ldsp_Amt AS First_Gift_To_Ldsp_Amt
+			, O.Donor_First_Gift_Date_Byu AS First_Gift_Date_Byu
+			, O.Donor_First_Gift_Date_Byui AS First_Gift_Date_Byui
+			, O.Donor_First_Gift_Date_Byuh AS First_Gift_Date_Byuh
+			, O.Donor_First_Gift_Date_Ldsbc AS First_Gift_Date_Ldsbc
+			, O.Donor_First_Gift_Date_Church AS First_Gift_Date_Church
+			, O.Donor_First_Gift_Date_Ldsp AS First_Gift_Date_Ldsp
+			, E.Total_Giving_With_Matching_Current_Year AS Total_Giving_Current_Year_With_Matching
+			, E.Total_Giving_With_Matching_Current_Year_Minus_1 AS Total_Giving_1_Years_Ago_With_Matching
+			, E.Total_Giving_With_Matching_Current_Year_Minus_2 AS Total_Giving_2_Years_Ago_With_Matching
+			, E.Total_Giving_With_Matching_Current_Year_Minus_3 AS Total_Giving_3_Years_Ago_With_Matching
+			, E.Total_Giving_With_Matching_Current_Year_Minus_4 AS Total_Giving_4_Years_Ago_With_Matching
+			, E.Total_Giving_With_Matching_Current_Year_Minus_5 AS Total_Giving_5_Years_Ago_With_Matching
+			' -- Ext_Select_Statement
+		, ' _Donor_Key_Dim A
+				LEFT JOIN _Primary_Contact_Dim B ON A.Donor_Key = B.Donor_Key
+				LEFT JOIN _Donor_Detail_Dim C ON A.Donor_Key = C.Donor_Key
+				LEFT JOIN _Total_Giving_Dim D ON A.Donor_Key = D.Donor_Key
+				LEFT JOIN _Total_Giving_With_Matching_Dim E ON A.Donor_Key = E.Donor_Key
+				LEFT JOIN _Donor_Name_Dim F ON A.Donor_Key = F.Donor_Key
+				LEFT JOIN _Donor_Connection_Dim G ON A.Donor_Key = G.Donor_Key
+				LEFT JOIN _Donor_Association_Dim H ON A.Donor_Key = H.Donor_Key
+				LEFT JOIN _Donor_Retention_Dim I ON A.Donor_Key = I.Donor_Key
+				LEFT JOIN _Donor_Lifetime_Giving_Dim J ON A.Donor_Key = J.Donor_Key
+				LEFT JOIN _Donor_Financial_Dim K ON A.Donor_Key = K.Donor_Key
+				LEFT JOIN _Donor_Giving_Dim L ON A.Donor_Key = L.Donor_Key
+				LEFT JOIN _Donor_Largest_Gift_Dim M ON A.Donor_Key = M.Donor_Key
+				LEFT JOIN _Donor_Most_Recent_Gift_Dim N ON A.Donor_Key = N.Donor_Key
+				LEFT JOIN _Donor_First_Gift_Dim O ON A.Donor_Key = O.Donor_Key
+			' -- Ext_From_Statement
+		, '	AND (H.Plus_CoordinatingLiaison_DomainName IS NOT NULL
+					OR H.Plus_PendingLiaison_DomainName IS NOT NULL
+					OR H.Plus_ConnectedLiaison_DomainName IS NOT NULL
+				)
+			' -- Ext_Where_Statement
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, '
+			' -- Ext_Select_Statement_2
+		, '										 
+			' -- Ext_From_Statement_2
+		, '
+			' -- Ext_Create_Fields_2
+		, '
+			' -- Ext_Create_Fields_3
+		, ' ' -- Ext_Where_Statement_2
+		, ' ' -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+		, ' 
+			' -- Ext_Select_Statement_3
+		, '
+			' -- Ext_Select_Statement_4
+		, NULL -- Ext_Select_Statement_5
+		, NULL -- Ext_Select_Statement_6
+		, NULL -- Ext_Select_Statement_7
+		, '
+			' -- Ext_From_Statement_3
+		, '
+			' -- Ext_From_Statement_4
+		, NULL -- Ext_From_Statement_5
+		, NULL -- Ext_From_Statement_6
+		, NULL -- Ext_From_Statement_7
+		, NULL -- Ext_Where_Statement_4
+		, NULL -- Ext_Where_Statement_5
+		, NULL -- Ext_Where_Statement_6
+		, NULL -- Ext_Where_Statement_7
+		, NULL -- Tier_10_Stage
+		, NULL -- Tier_10_Stage_DateTime
+		, NULL -- Tier_11_Stage
+		, NULL -- Tier_11_Stage_DateTime
+		, NULL -- Tier_12_Stage
+		, NULL -- Tier_12_Stage_DateTime
+		, ' 
+			'-- Ext_Create_Fields_4
+		, '
+			' -- Ext_Create_Fields_5
+		, '
+			' -- Ext_Insert_Fields_2
+		, '
+			' -- Ext_Insert_Fields_3
+		, '
+			' -- Ext_Insert_Fields_4
+		, NULL -- Ext_Insert_Fields_5
+		, NULL -- Extra_7
+		, NULL -- Extra_8
+		, NULL -- Extra_9
+		, NULL -- Extra_10
+	)
+	,	
+-- --------------------------
 -- _Donor_Dim
 -- --------------------------
 	( 10 -- Tier
@@ -47784,23 +48573,6 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Donor_Org_Matching_Ratio  NVARCHAR(400) 
 			, Donor_Org_Pref_Cont_Meth  NVARCHAR(400) 
 			, Donor_Org_Description  NVARCHAR(4000) 
-			, Donor_Marriage_Status_Value  INT  
-			, Donor_Lds_Member_Value  INT 
-			, Donor_Personal_Suffix_Value  INT 
-			, Donor_Major_Gift_Propen_Value  INT 
-			, Donor_Annual_Gift_Value  INT 
-			, Donor_Planned_Gift_Value  INT 
-			, Donor_Gift_Capacity_Enp_Value  INT 
-			, Donor_Gift_Capacity_En_Value  INT 
-			, Donor_Philan_Cap_Rating_Value  INT 
-			, Donor_Est_Household_Income_Value  INT 
-			, Donor_Est_Home_Market_Val_Value  INT 
-			, Donor_Block_Clusters_Value  INT 
-			, Donor_Org_Class_Code_Value  INT 
-			, Donor_Org_Retiree_Ratio_Value  INT 
-			, Donor_Org_Split_Ratio_Value  INT 
-			, Donor_Org_Matching_Ratio_Value  INT 
-			, Donor_Org_Pref_Cont_Meth_Val  INT
 			, All_Personal_Connections NVARCHAR(4000)
 		' -- Ext_Create_Fields
 		, ' Donor_Key      
@@ -47878,23 +48650,6 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Donor_Org_Matching_Ratio
 			, Donor_Org_Pref_Cont_Meth
 			, Donor_Org_Description 
-			, Donor_Marriage_Status_Value
-			, Donor_Lds_Member_Value 
-			, Donor_Personal_Suffix_Value 
-			, Donor_Major_Gift_Propen_Value 
-			, Donor_Annual_Gift_Value
-			, Donor_Planned_Gift_Value
-			, Donor_Gift_Capacity_Enp_Value 
-			, Donor_Gift_Capacity_En_Value
-			, Donor_Philan_Cap_Rating_Value
-			, Donor_Est_Household_Income_Value
-			, Donor_Est_Home_Market_Val_Value
-			, Donor_Block_Clusters_Value 
-			, Donor_Org_Class_Code_Value
-			, Donor_Org_Retiree_Ratio_Value 
-			, Donor_Org_Split_Ratio_Value 
-			, Donor_Org_Matching_Ratio_Value
-			, Donor_Org_Pref_Cont_Meth_Val
 			, All_Personal_Connections
 			, Byu_Student_Id
 			, ByuI_Student_Id
@@ -48020,23 +48775,6 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Donor_Org_Matching_Ratio
 			, Donor_Org_Pref_Cont_Meth
 			, Donor_Org_Description 
-			, Donor_Marriage_Status_Value
-			, Donor_Lds_Member_Value 
-			, Donor_Personal_Suffix_Value 
-			, Donor_Major_Gift_Propen_Value 
-			, Donor_Annual_Gift_Value
-			, Donor_Planned_Gift_Value
-			, Donor_Gift_Capacity_Enp_Value 
-			, Donor_Gift_Capacity_En_Value
-			, Donor_Philan_Cap_Rating_Value
-			, Donor_Est_Household_Income_Value
-			, Donor_Est_Home_Market_Val_Value
-			, Donor_Block_Clusters_Value 
-			, Donor_Org_Class_Code_Value
-			, Donor_Org_Retiree_Ratio_Value 
-			, Donor_Org_Split_Ratio_Value 
-			, Donor_Org_Matching_Ratio_Value
-			, Donor_Org_Pref_Cont_Meth_Val
 			, All_Personal_Connections
 			, Byu_Student_Id
 			, ByuI_Student_Id
@@ -48105,6 +48843,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 				LEFT JOIN _Donor_Retention_Dim P ON A.Donor_Key = P.Donor_Key
 				LEFT JOIN _Donor_Telefund_Dim Q ON A.Donor_Key = Q.Donor_Key
 				LEFT JOIN _Donor_Initiative_Dim R ON A.Donor_Key = R.Donor_Key
+				LEFT JOIN _Total_Giving_Dim S ON A.Donor_Key = S.Donor_Key
+				LEFT JOIN _Total_Giving_With_Matching_Dim T ON A.Donor_Key = T.Donor_Key
 			' -- Ext_From_Statement
 		, ' AND A.Donor_Key IS NOT NULL
 			' -- Ext_Where_Statement
@@ -48118,10 +48858,10 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Current_Job_Date_Started
 			, Current_Job_Work_Phone
 			, Current_Job_Work_Address
-			, Donor_Total_Giving_Current_Year
-			, Donor_Total_Giving_Current_Year_Minus_1
-			, Donor_Total_Giving_Current_Year_Minus_2
-			, Donor_Total_Giving_Current_Year_Minus_3
+			, Total_Giving_Current_Year AS Donor_Total_Giving_Current_Year
+			, Total_Giving_Current_Year_Minus_1 AS Donor_Total_Giving_Current_Year_Minus_1
+			, Total_Giving_Current_Year_Minus_2 AS Donor_Total_Giving_Current_Year_Minus_2
+			, Total_Giving_Current_Year_Minus_3 AS Donor_Total_Giving_Current_Year_Minus_3
 			, Donor_Any_School_Current_Student
 			, Donor_BYU_Current_Student
 			, Donor_BYUI_Current_Student
@@ -48153,56 +48893,26 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Donor_Retention_Type_Code_Byui
 			, Donor_Retention_Type_Code_Byuh
 			, Donor_Retention_Type_Code_Ldsbc
-			, Donor_Total_Giving_To_Byu_Current_Year_Amt
-			, Donor_Total_Giving_To_Byu_Current_Year_Minus_1_Amt
-			, Donor_Total_Giving_To_Byu_Current_Year_Minus_2_Amt
-			, Donor_Total_Giving_To_Byu_Current_Year_Minus_3_Amt
-			, Donor_Total_Giving_To_Byui_Current_Year_Amt
-			, Donor_Total_Giving_To_Byui_Current_Year_Minus_1_Amt
-			, Donor_Total_Giving_To_Byui_Current_Year_Minus_2_Amt
-			, Donor_Total_Giving_To_Byui_Current_Year_Minus_3_Amt
-			, Donor_Total_Giving_To_Byuh_Current_Year_Amt
-			, Donor_Total_Giving_To_Byuh_Current_Year_Minus_1_Amt
-			, Donor_Total_Giving_To_Byuh_Current_Year_Minus_2_Amt
-			, Donor_Total_Giving_To_Byuh_Current_Year_Minus_3_Amt
-			, Donor_Total_Giving_To_Ldsbc_Current_Year_Amt
-			, Donor_Total_Giving_To_Ldsbc_Current_Year_Minus_1_Amt
-			, Donor_Total_Giving_To_Ldsbc_Current_Year_Minus_2_Amt
-			, Donor_Total_Giving_To_Ldsbc_Current_Year_Minus_3_Amt
-			, Donor_Total_Giving_To_Byu_Current_Year_Minus_4_Amt
-			, Donor_Total_Giving_To_Byu_Current_Year_Minus_5_Amt
-			, Donor_Total_Giving_To_Byui_Current_Year_Minus_4_Amt
-			, Donor_Total_Giving_To_Byui_Current_Year_Minus_5_Amt
-			, Donor_Total_Giving_To_Byuh_Current_Year_Minus_4_Amt
-			, Donor_Total_Giving_To_Byuh_Current_Year_Minus_5_Amt
-			, Donor_Total_Giving_To_Ldsbc_Current_Year_Minus_4_Amt
-			, Donor_Total_Giving_To_Ldsbc_Current_Year_Minus_5_Amt
-			, Donor_Total_Giving_Current_Year_Minus_4_Amt
-			, Donor_Total_Giving_Current_Year_Minus_5_Amt
-			, Donor_Total_Giving_Byu_High_Flag
-			, Donor_Total_Giving_Byui_High_Flag
-			, Donor_Total_Giving_Byuh_High_Flag
-			, Donor_Total_Giving_Ldsbc_High_Flag
-			, Current_Byu_Employment_Yn
-			, Current_Byui_Employment_Yn
-			, Current_Byuh_Employment_Yn
-			, Current_Ldsbc_Employment_Yn
-			, Informal_Mailing_Name
-			, Informal_Salutation
-			, Byu_Night_Society_Member
-			, Byui_Legacy_Society_Member
-			, Byuh_Cowley_Society_Member
-			, Ldsbc_Fox_Society_Member
-			, Donor_Spouse_Coordinating_Liaison
-			, Donor_Previously_Contacted_Byu_Yn
-			, Donor_Previously_Contacted_Byui_Yn
-			, Donor_Previously_Contacted_Byuh_Yn
-			, Donor_Previously_Contacted_Ldsbc_Yn
-			, Donor_Given_Last_3_Months_To_Byu
-			, Donor_Given_Last_3_Months_To_Byui
-			, Donor_Given_Last_3_Months_To_Byuh
-			, Donor_Given_Last_3_Months_To_Ldsbc
-			, Donor_Given_Last_3_Months_To_Church
+			, Total_Giving_Current_Year_Byu AS Donor_Total_Giving_To_Byu_Current_Year_Amt
+			, Total_Giving_Current_Year_Minus_1_Byu AS Donor_Total_Giving_To_Byu_Current_Year_Minus_1_Amt
+			, Total_Giving_Current_Year_Minus_2_Byu AS Donor_Total_Giving_To_Byu_Current_Year_Minus_2_Amt
+			, Total_Giving_Current_Year_Minus_3_Byu AS Donor_Total_Giving_To_Byu_Current_Year_Minus_3_Amt
+			, Total_Giving_Current_Year_Byui AS Donor_Total_Giving_To_Byui_Current_Year_Amt
+			, Total_Giving_Current_Year_Minus_1_Byui AS Donor_Total_Giving_To_Byui_Current_Year_Minus_1_Amt
+			, Total_Giving_Current_Year_Minus_2_Byui AS Donor_Total_Giving_To_Byui_Current_Year_Minus_2_Amt
+			, Total_Giving_Current_Year_Minus_3_Byui AS Donor_Total_Giving_To_Byui_Current_Year_Minus_3_Amt
+			, Total_Giving_Current_Year_Byuh AS Donor_Total_Giving_To_Byuh_Current_Year_Amt
+			, Total_Giving_Current_Year_Minus_1_Byuh AS Donor_Total_Giving_To_Byuh_Current_Year_Minus_1_Amt
+			, Total_Giving_Current_Year_Minus_2_Byuh AS Donor_Total_Giving_To_Byuh_Current_Year_Minus_2_Amt
+			, Total_Giving_Current_Year_Minus_3_Byuh AS Donor_Total_Giving_To_Byuh_Current_Year_Minus_3_Amt
+			, Total_Giving_Current_Year_Ldsbc AS Donor_Total_Giving_To_Ldsbc_Current_Year_Amt
+			, Total_Giving_Current_Year_Minus_1_Ldsbc AS Donor_Total_Giving_To_Ldsbc_Current_Year_Minus_1_Amt
+			, Total_Giving_Current_Year_Minus_2_Ldsbc AS Donor_Total_Giving_To_Ldsbc_Current_Year_Minus_2_Amt
+			, Total_Giving_Current_Year_Minus_3_Ldsbc AS Donor_Total_Giving_To_Ldsbc_Current_Year_Minus_3_Amt
+			, Total_Giving_Current_Year_Minus_4_Byu AS Donor_Total_Giving_To_Byu_Current_Year_Minus_4_Amt
+			, Total_Giving_Current_Year_Minus_5_Byu AS Donor_Total_Giving_To_Byu_Current_Year_Minus_5_Amt
+			, Total_Giving_Current_Year_Minus_4_Byui AS Donor_Total_Giving_To_Byui_Current_Year_Minus_4_Amt
+			, Total_Giving_Current_Year_Minus_5_Byui AS Donor_Total_Giving_To_Byui_Current_Year_Minus_5_Amt
 			' -- Ext_Select_Statement_2
 		, '										 
 			' -- Ext_From_Statement_2
@@ -48385,7 +49095,37 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Tier_2_Stage_DateTime
 		, GETDATE()
 		, NULL
-		, ' , Donor_Liaison_Connections
+		, ' , Total_Giving_Current_Year_Minus_4_Byuh AS Donor_Total_Giving_To_Byuh_Current_Year_Minus_4_Amt
+			, Total_Giving_Current_Year_Minus_5_Byuh AS Donor_Total_Giving_To_Byuh_Current_Year_Minus_5_Amt
+			, Total_Giving_Current_Year_Minus_4_Ldsbc AS Donor_Total_Giving_To_Ldsbc_Current_Year_Minus_4_Amt
+			, Total_Giving_Current_Year_Minus_5_Ldsbc AS Donor_Total_Giving_To_Ldsbc_Current_Year_Minus_5_Amt
+			, Total_Giving_Current_Year_Minus_4 AS Donor_Total_Giving_Current_Year_Minus_4_Amt
+			, Total_Giving_Current_Year_Minus_5 AS Donor_Total_Giving_Current_Year_Minus_5_Amt			
+			, Donor_Total_Giving_Byu_High_Flag
+			, Donor_Total_Giving_Byui_High_Flag
+			, Donor_Total_Giving_Byuh_High_Flag
+			, Donor_Total_Giving_Ldsbc_High_Flag
+			, Current_Byu_Employment_Yn
+			, Current_Byui_Employment_Yn
+			, Current_Byuh_Employment_Yn
+			, Current_Ldsbc_Employment_Yn
+			, Informal_Mailing_Name
+			, Informal_Salutation
+			, Byu_Night_Society_Member
+			, Byui_Legacy_Society_Member
+			, Byuh_Cowley_Society_Member
+			, Ldsbc_Fox_Society_Member
+			, Donor_Spouse_Coordinating_Liaison
+			, Donor_Previously_Contacted_Byu_Yn
+			, Donor_Previously_Contacted_Byui_Yn
+			, Donor_Previously_Contacted_Byuh_Yn
+			, Donor_Previously_Contacted_Ldsbc_Yn
+			, Donor_Given_Last_3_Months_To_Byu
+			, Donor_Given_Last_3_Months_To_Byui
+			, Donor_Given_Last_3_Months_To_Byuh
+			, Donor_Given_Last_3_Months_To_Ldsbc
+			, Donor_Given_Last_3_Months_To_Church
+			, Donor_Liaison_Connections
 			, Donor_Total_Lifetime_Giving
 			, Donor_Total_Lifetime_Giving_Last_5_Years
 			, Donor_Total_Lifetime_Giving_Byu
@@ -48437,13 +49177,14 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Donor_Pledge_Reminder_Email_Content_Ldsbc
 			, Donor_Total_Name_Display
 			, Plus_CoordinatingLiaison_DomainName
-			, Plus_PendingLiaison_DomainName
+			' -- Ext_Select_Statement_3
+		, ' , Plus_PendingLiaison_DomainName
 			, Plus_ConnectedLiaison_DomainName
 			, Donor_Gift_Count_Previous_5_Years
 			, Donor_Average_Single_Gift_Previous_5_Years
 			, Donor_Is_Qualified
-			, Donor_Qualified_On 
-			, Donor_Qualified_By
+			, R.Donor_Qualified_On 
+			, R.Donor_Qualified_By
 			, Donor_First_Recurring_Rule_Date_Byu
 			, Donor_First_Recurring_Rule_Date_Byui
 			, Donor_First_Recurring_Rule_Date_Byuh
@@ -48459,15 +49200,14 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Donor_Recurring_Gift_Upgrade_Byu
 			, Donor_Recurring_Gift_Upgrade_Byui
 			, Donor_Recurring_Gift_Upgrade_Byuh
-			, Donor_Recurring_Gift_Upgrade_Ldsbc
-			, Donor_Total_Giving_To_Church_Current_Year_Amt
-			, Donor_Total_Giving_To_Church_Current_Year_Minus_1_Amt
-			, Donor_Total_Giving_To_Church_Current_Year_Minus_2_Amt
-			, Donor_Total_Giving_To_Church_Current_Year_Minus_3_Amt
-			, Donor_Total_Giving_To_Church_Current_Year_Minus_4_Amt
-			, Donor_Total_Giving_To_Church_Current_Year_Minus_5_Amt 
-			' -- Ext_Select_Statement_3
-		, ' , Donor_Retention_Type_Code_Byu_Minus_1
+			, Donor_Recurring_Gift_Upgrade_Ldsbc			
+			, Total_Giving_Current_Year_Church AS Donor_Total_Giving_To_Church_Current_Year_Amt
+			, Total_Giving_Current_Year_Minus_1_Church AS Donor_Total_Giving_To_Church_Current_Year_Minus_1_Amt
+			, Total_Giving_Current_Year_Minus_2_Church AS Donor_Total_Giving_To_Church_Current_Year_Minus_2_Amt
+			, Total_Giving_Current_Year_Minus_3_Church AS Donor_Total_Giving_To_Church_Current_Year_Minus_3_Amt
+			, Total_Giving_Current_Year_Minus_4_Church AS Donor_Total_Giving_To_Church_Current_Year_Minus_4_Amt
+			, Total_Giving_Current_Year_Minus_5_Church AS Donor_Total_Giving_To_Church_Current_Year_Minus_5_Amt			
+			, Donor_Retention_Type_Code_Byu_Minus_1
 			, Donor_Retention_Type_Code_Byu_Minus_2
 			, Donor_Retention_Type_Code_Byu_Minus_3
 			, Donor_Retention_Type_Code_Byu_Minus_4
@@ -48500,13 +49240,13 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Donor_First_Gift_Date_Church
 			, Donor_First_Gift_Date_Ldsp
 			, Donor_Spouse_Middle_Name
-			, Donor_Spouse_Birth_Name
-			, Donor_Total_Giving_Current_Year_With_Matching
-			, Donor_Total_Giving_Current_Year_Minus_1_With_Matching
-			, Donor_Total_Giving_Current_Year_Minus_2_With_Matching
-			, Donor_Total_Giving_Current_Year_Minus_3_With_Matching
-			, Donor_Total_Giving_Current_Year_Minus_4_With_Matching
-			, Donor_Total_Giving_Current_Year_Minus_5_With_Matching
+			, Donor_Spouse_Birth_Name			
+			, Total_Giving_With_Matching_Current_Year AS Donor_Total_Giving_Current_Year_With_Matching 
+			, Total_Giving_With_Matching_Current_Year_Minus_1 AS Donor_Total_Giving_Current_Year_Minus_1_With_Matching
+			, Total_Giving_With_Matching_Current_Year_Minus_2 AS Donor_Total_Giving_Current_Year_Minus_2_With_Matching
+			, Total_Giving_With_Matching_Current_Year_Minus_3 AS Donor_Total_Giving_Current_Year_Minus_3_With_Matching
+			, Total_Giving_With_Matching_Current_Year_Minus_4 AS Donor_Total_Giving_Current_Year_Minus_4_With_Matching
+			, Total_Giving_With_Matching_Current_Year_Minus_5 AS Donor_Total_Giving_Current_Year_Minus_5_With_Matching			
 			, Donor_Lds_TelefundNotes
 			' -- Ext_Select_Statement_4
 		, NULL -- Ext_Select_Statement_5
