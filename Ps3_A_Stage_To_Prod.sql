@@ -1001,6 +1001,13 @@ INSERT INTO dbo.Stage_To_Prod
 			, Donation_Receipt_Ytd_Two_Weeks_Ago NVARCHAR(1)
 			, Donation_Description NVARCHAR(4000)
 			, Lds_BatchType NVARCHAR(400)
+			, Plus_Donor_Type NVARCHAR(400)
+			, Lds_TelefundGift NVARCHAR(1)
+			, Plus_Cid NVARCHAR(200)
+			, Plus_Cde2 NVARCHAR(200)
+			, CreatedOn DATE
+			, ModifiedOn DATE
+			, StateCode NVARCHAR(400)
 			' -- Dest_Create_Fields
 		, 'Donation_Key 
 			, New_ConstituentDonor
@@ -1043,6 +1050,14 @@ INSERT INTO dbo.Stage_To_Prod
 			, Donation_Receipt_Ytd_Last_Week_Last_Year
 			, Donation_Receipt_Ytd_Two_Weeks_Ago
 			, Donation_Description
+			, Lds_BatchType
+			, Plus_Donor_Type
+			, Lds_TelefundGift
+			, Plus_Cid
+			, Plus_Cde2
+			, CreatedOn
+			, ModifiedOn
+			, StateCode
 			' -- Dest_Insert_Fields
 		, ' ' -- Dest_Where_Statement
 		, GETDATE()
@@ -2464,6 +2479,8 @@ INSERT INTO dbo.Stage_To_Prod
 			, StatusCode NVARCHAR(400)
 			, Hier_New_Inst NVARCHAR(100)
 			, New_AllowGifts NVARCHAR(1)
+			, Plus_OnlineApproved NVARCHAR(1)
+			, Plus_OnlinePublicName NVARCHAR(100)
 			' -- Dest_Create_Fields
 		, 'Fund_Key
 			, Fund_Name 
@@ -2511,6 +2528,8 @@ INSERT INTO dbo.Stage_To_Prod
 			, StatusCode
 			, Hier_New_Inst
 			, New_AllowGifts
+			, Plus_OnlineApproved
+			, Plus_OnlinePublicName
 			' -- Dest_Insert_Fields
 		, ' ' -- Dest_Where_Statement
 		, GETDATE()
@@ -3035,6 +3054,8 @@ INSERT INTO dbo.Stage_To_Prod
 			, Recurring_Gift_Payment_Start_Date DATE
 			, Recurring_Gift_Payment_Stop_Date DATE
 			, Recurring_Gift_Group NVARCHAR(100)
+			, Recurring_Gift_Rule_Name NVARCHAR(100)
+			, Donor_Type NVARCHAR(400)
 			' -- Dest_Create_Fields
 		, 'Recurring_Gift_Key
 			, Recurring_Gift_Status_Code
@@ -3045,6 +3066,8 @@ INSERT INTO dbo.Stage_To_Prod
 			, Recurring_Gift_Payment_Start_Date
 			, Recurring_Gift_Payment_Stop_Date
 			, Recurring_Gift_Group
+			, Recurring_Gift_Rule_Name
+			, Donor_Type
 			' -- Dest_Insert_Fields
 		, ' ' -- Dest_Where_Statement
 		, GETDATE()
@@ -5277,6 +5300,783 @@ INSERT INTO dbo.Stage_To_Prod
 			, Donor_Total_Lifetime_Giving_To_Byuh_Last_5_Years
 			, Donor_Total_Lifetime_Giving_To_Ldsbc_Last_5_Years
 			, Donor_Total_Lifetime_Giving_To_Church_Last_5_Years
+			' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _Donor_First_Gift_Dim
+-- --------------------------
+	( 1 -- Tier
+		, 'dbo._Donor_First_Gift_Dim' -- Source_Table
+		, 'dbo._Donor_First_Gift_Dim' -- Destination_Table
+		,'	Donor_Key NVARCHAR(100)  
+			, Donor_First_Gift_Post_Date_Byu DATE
+			, Donor_First_Gift_Post_Date_Byui DATE
+			, Donor_First_Gift_Post_Date_Byuh DATE
+			, Donor_First_Gift_Post_Date_Ldsbc DATE
+			, Donor_First_Gift_To_Byu_Amt MONEY
+			, Donor_First_Gift_To_Byui_Amt MONEY
+			, Donor_First_Gift_To_Byuh_Amt MONEY
+			, Donor_First_Gift_To_Ldsbc_Amt MONEY
+			, Donor_First_Gift_To_Church_Amt MONEY
+			, Donor_First_Gift_To_Ldsp_Amt MONEY
+			, Donor_First_Gift_Date_Byu DATE
+			, Donor_First_Gift_Date_Byui DATE
+			, Donor_First_Gift_Date_Byuh DATE
+			, Donor_First_Gift_Date_Ldsbc DATE
+			, Donor_First_Gift_Date_Church DATE
+			, Donor_First_Gift_Date_Ldsp DATE
+			' -- Dest_Create_Fields
+		, '	Donor_Key      
+			, Donor_First_Gift_Post_Date_Byu
+			, Donor_First_Gift_Post_Date_Byui
+			, Donor_First_Gift_Post_Date_Byuh
+			, Donor_First_Gift_Post_Date_Ldsbc
+			, Donor_First_Gift_To_Byu_Amt
+			, Donor_First_Gift_To_Byui_Amt
+			, Donor_First_Gift_To_Byuh_Amt
+			, Donor_First_Gift_To_Ldsbc_Amt
+			, Donor_First_Gift_To_Church_Amt
+			, Donor_First_Gift_To_Ldsp_Amt
+			, Donor_First_Gift_Date_Byu
+			, Donor_First_Gift_Date_Byui
+			, Donor_First_Gift_Date_Byuh
+			, Donor_First_Gift_Date_Ldsbc
+			, Donor_First_Gift_Date_Church
+			, Donor_First_Gift_Date_Ldsp
+			' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _Donor_Most_Recent_Gift_Dim
+-- --------------------------
+	( 1 -- Tier
+		, 'dbo._Donor_Most_Recent_Gift_Dim' -- Source_Table
+		, 'dbo._Donor_Most_Recent_Gift_Dim' -- Destination_Table
+		,'	Donor_Key NVARCHAR(100) 
+			, Donor_Most_Recent_Gift_Date_Ldsp DATE
+			, Donor_Most_Recent_Gift_Date_Byu DATE
+			, Donor_Most_Recent_Gift_Date_Byui DATE
+			, Donor_Most_Recent_Gift_Date_Byuh DATE
+			, Donor_Most_Recent_Gift_Date_Ldsbc DATE
+			, Donor_Most_Recent_Gift_Date_Church DATE
+			, Donor_Most_Recent_Gift_To_Ldsp_Amt MONEY
+			, Donor_Most_Recent_Gift_To_Byu_Amt MONEY
+			, Donor_Most_Recent_Gift_To_Byui_Amt MONEY
+			, Donor_Most_Recent_Gift_To_Byuh_Amt MONEY
+			, Donor_Most_Recent_Gift_To_Ldsbc_Amt MONEY
+			, Donor_Most_Recent_Gift_To_Church_Amt MONEY
+			' -- Dest_Create_Fields
+		, '	Donor_Key      
+			, Donor_Most_Recent_Gift_Date_Ldsp
+			, Donor_Most_Recent_Gift_Date_Byu
+			, Donor_Most_Recent_Gift_Date_Byui
+			, Donor_Most_Recent_Gift_Date_Byuh
+			, Donor_Most_Recent_Gift_Date_Ldsbc
+			, Donor_Most_Recent_Gift_Date_Church
+			, Donor_Most_Recent_Gift_To_Ldsp_Amt
+			, Donor_Most_Recent_Gift_To_Byu_Amt
+			, Donor_Most_Recent_Gift_To_Byui_Amt
+			, Donor_Most_Recent_Gift_To_Byuh_Amt
+			, Donor_Most_Recent_Gift_To_Ldsbc_Amt
+			, Donor_Most_Recent_Gift_To_Church_Amt
+			' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _Donor_Largest_Gift_Dim
+-- --------------------------
+	( 1 -- Tier
+		, 'dbo._Donor_Largest_Gift_Dim' -- Source_Table
+		, 'dbo._Donor_Largest_Gift_Dim' -- Destination_Table
+		,'	Donor_Key NVARCHAR(100) 
+			, Donor_Largest_Gift_Amt_Byu MONEY
+			, Donor_Largest_Gift_Amt_Byui MONEY
+			, Donor_Largest_Gift_Amt_Byuh MONEY
+			, Donor_Largest_Gift_Amt_Ldsbc MONEY
+			, Donor_Ldsp_Largest_Gift MONEY
+			, Donor_Largest_Gift_Amt_Church MONEY
+			, Donor_Largest_Gift_Date_Ldsp DATE
+			, Donor_Largest_Gift_Date_Byu DATE
+			, Donor_Largest_Gift_Date_Byui DATE
+			, Donor_Largest_Gift_Date_Byuh DATE
+			, Donor_Largest_Gift_Date_Ldsbc DATE
+			, Donor_Largest_Gift_Date_Church DATE
+			' -- Dest_Create_Fields
+		, '	Donor_Key      
+			, Donor_Largest_Gift_Amt_Byu
+			, Donor_Largest_Gift_Amt_Byui
+			, Donor_Largest_Gift_Amt_Byuh
+			, Donor_Largest_Gift_Amt_Ldsbc
+			, Donor_Ldsp_Largest_Gift
+			, Donor_Largest_Gift_Amt_Church
+			, Donor_Largest_Gift_Date_Ldsp
+			, Donor_Largest_Gift_Date_Byu
+			, Donor_Largest_Gift_Date_Byui
+			, Donor_Largest_Gift_Date_Byuh
+			, Donor_Largest_Gift_Date_Ldsbc
+			, Donor_Largest_Gift_Date_Church
+			' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _Donor_Employment_Dim
+-- --------------------------
+	( 1 -- Tier
+		, 'dbo._Donor_Employment_Dim' -- Source_Table
+		, 'dbo._Donor_Employment_Dim' -- Destination_Table
+		,'	Donor_Key NVARCHAR(100) 
+			, Byu_Employee_Giving_Campus_Address NVARCHAR(100) 
+			, Church_Payroll_Id NVARCHAR(100)   
+			, All_Employment NVARCHAR(4000) 
+			, Current_Employment NVARCHAR(4000)
+			, Former_Employment NVARCHAR(4000)
+			, Current_Employer_Name NVARCHAR(160)
+			, Current_Job_Title NVARCHAR(100)
+			, Current_Job_Code NVARCHAR(100)
+			, Current_Job_Date_Started DATE
+			, Current_Job_Work_Phone NVARCHAR(100)
+			, Current_Job_Work_Address NVARCHAR(300)
+			, Current_Byu_Employment_Yn  NVARCHAR(1)
+			, Current_Byui_Employment_Yn NVARCHAR(1)
+			, Current_Byuh_Employment_Yn NVARCHAR(1)
+			, Current_Ldsbc_Employment_Yn NVARCHAR(1)
+			' -- Dest_Create_Fields
+		, '	Donor_Key 
+			, Byu_Employee_Giving_Campus_Address
+			, Church_Payroll_Id
+			, All_Employment 
+			, Current_Employment
+			, Former_Employment
+			, Current_Employer_Name
+			, Current_Job_Title
+			, Current_Job_Code
+			, Current_Job_Date_Started
+			, Current_Job_Work_Phone
+			, Current_Job_Work_Address 
+			, Current_Byu_Employment_Yn
+			, Current_Byui_Employment_Yn
+			, Current_Byuh_Employment_Yn
+			, Current_Ldsbc_Employment_Yn
+			' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _Ldsp_Org_Recurring_Gift_Fact
+-- --------------------------
+	( 1 -- Tier
+		, 'dbo._Ldsp_Org_Recurring_Gift_Fact' -- Source_Table
+		, 'dbo._Ldsp_Org_Recurring_Gift_Fact' -- Destination_Table
+		,'	Recurring_Gift_Rule_Key NVARCHAR(100)
+			, Web_Subscription_Key NVARCHAR(100)
+			, Donor_Key NVARCHAR(100)
+			, Fund_Key NVARCHAR(100)
+			, Hier_Key NVARCHAR(100)
+			, Appeal_Key NVARCHAR(100)
+			, Payroll_Group_Key NVARCHAR(100)
+			, Recurring_Amount MONEY
+			' -- Dest_Create_Fields
+		, '	Recurring_Gift_Rule_Key
+			, Web_Subscription_Key
+			, Donor_Key 
+			, Fund_Key
+			, Hier_Key
+			, Appeal_Key
+			, Payroll_Group_Key
+			, Recurring_Amount
+			' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- View_Ldsp_Org_Gifts_Dataset
+-- --------------------------
+	( 1 -- Tier
+		, 'dbo.View_Ldsp_Org_Gifts_Dataset' -- Source_Table
+		, 'dbo.View_Ldsp_Org_Gifts_Dataset' -- Destination_Table
+		,'	New_GiftId NVARCHAR(100)
+			, Donor_Type NVARCHAR(400)
+			, Gift_Amount MONEY
+			, Post_Date DATE
+			, Receipt_Date DATE
+			, Kind NVARCHAR(400)
+			, TenderType NVARCHAR(400)
+			, Transmitted NVARCHAR(1)
+			, Gift_Source NVARCHAR(400)
+			, Gift_Match NVARCHAR(400)
+			, Gift_Text NVARCHAR(4000)
+			, Telefund_Gift NVARCHAR(1)
+			, CID NVARCHAR(200)
+			, CDE2 NVARCHAR(200)
+			, Gift_Created_On DATE
+			, Gift_Modified_On DATE
+			, Gift_Status NVARCHAR(400)
+			, Gift_Status_Reason NVARCHAR(400) 
+			, Appeal_Name NVARCHAR(100)
+			, Appeal_Code NVARCHAR(20)
+			, Appeal_Delivery_Type NVARCHAR(400) 
+			, Institution NVARCHAR(100)
+			, Level_1 NVARCHAR(100)
+			, Level_2 NVARCHAR(100)
+			, Level_3 NVARCHAR(100)
+			, Hierarchy_Name NVARCHAR(100)
+			, LDSP_Account_Number NVARCHAR(100)
+			, Fund_Account_Name NVARCHAR(100)	
+			, Fund_Account_Online_Approved NVARCHAR(1)
+			, Fund_Account_Online_Name NVARCHAR(100)
+			, Batch NVARCHAR(100)
+			, Batch_Type NVARCHAR(400)
+			, DonorID NVARCHAR(100)
+			, GenderCode NVARCHAR(400)
+			, Donor_Preferred_Name NVARCHAR(100)
+			, Donor_Name NVARCHAR(160)
+			, Donor_Linked_Lds_Account NVARCHAR(1)
+			, Donor_LDSPID NVARCHAR(100)
+			, Web_Subscription_OA_ID NVARCHAR(100)
+			, Web_Subscription_Transaction_ID NVARCHAR(100)
+			, Web_Subscription_Type_of_Donation NVARCHAR(400)
+			, Web_Transaction_ID NVARCHAR(100)
+			' -- Dest_Create_Fields
+		, '	New_GiftId
+			, Donor_Type
+			, Gift_Amount
+			, Post_Date
+			, Receipt_Date
+			, Kind
+			, TenderType
+			, Transmitted
+			, Gift_Source
+			, Gift_Match
+			, Gift_Text
+			, Telefund_Gift 
+			, CID
+			, CDE2
+			, Gift_Created_On 
+			, Gift_Modified_On
+			, Gift_Status
+			, Gift_Status_Reason 
+			, Appeal_Name
+			, Appeal_Code
+			, Appeal_Delivery_Type 
+			, Institution
+			, Level_1
+			, Level_2
+			, Level_3
+			, Hierarchy_Name
+			, LDSP_Account_Number
+			, Fund_Account_Name	
+			, Fund_Account_Online_Approved
+			, Fund_Account_Online_Name
+			, Batch
+			, Batch_Type
+			, DonorID
+			, GenderCode
+			, Donor_Preferred_Name
+			, Donor_Name
+			, Donor_Linked_Lds_Account
+			, Donor_LDSPID
+			, Web_Subscription_OA_ID
+			, Web_Subscription_Transaction_ID
+			, Web_Subscription_Type_of_Donation
+			, Web_Transaction_ID
+			' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- View_Ldsp_Org_Donor_Dataset
+-- --------------------------
+	( 1 -- Tier
+		, 'dbo.View_Ldsp_Org_Donor_Dataset' -- Source_Table
+		, 'dbo.View_Ldsp_Org_Donor_Dataset' -- Destination_Table
+		,'	Donor_Key NVARCHAR(100)
+			, Donor_Linked_Lds_Account NVARCHAR(1)
+			, Ldsp_Org_Donor NVARCHAR(1) 
+			, Ldsp_Org_Current_Recurring_Donor_Type NVARCHAR(50)
+			, Ldsp_Org_Recurring_Donor NVARCHAR(1)
+			, Ldsp_Org_Current_Recurring_Donor  NVARCHAR(1)
+			, Donor_Ldsp_Id NVARCHAR(100)
+			, Donor_Contact_Type NVARCHAR(100)
+			, Donor_Deceased_Yn NVARCHAR(1)
+			, Donor_Name NVARCHAR(160)
+			, Donor_First_Name NVARCHAR(50)
+			, Donor_Middle_Name NVARCHAR(50)
+			, Donor_Last_Name NVARCHAR(50)
+			, Donor_Marriage_Status NVARCHAR(400)
+			, Donor_Gender NVARCHAR(400)
+			, Plus_CoordinatingLiaison NVARCHAR(200)
+			, Donor_Age INT
+			, Spouse_Age INT
+			, Byu_Donor NVARCHAR(1)
+			, ByuI_Donor NVARCHAR(1)
+			, ByuH_Donor NVARCHAR(1)
+			, Ldsbc_Donor NVARCHAR(1)
+			, Address_Street_1 NVARCHAR(100)
+			, Address_Street_2 NVARCHAR(100)
+			, Address_Street_3 NVARCHAR(100)
+			, Address_City NVARCHAR(100)
+			, Address_State_Code NVARCHAR(100)
+			, Address_Post_Code_Full NVARCHAR(100)
+			, Address_Post_Code_Last_4 NVARCHAR(15)
+			, Address_Country NVARCHAR(100)
+			, Address_State_Province NVARCHAR(50)
+			, Address_County NVARCHAR(100)
+			, Address_County_Code NVARCHAR(10)
+			, Donor_Total_Lifetime_Giving MONEY
+			, Donor_Total_Lifetime_Giving_Byu MONEY
+			, Donor_Total_Lifetime_Giving_Byui MONEY
+			, Donor_Total_Lifetime_Giving_Byuh MONEY
+			, Donor_Total_Lifetime_Giving_Ldsbc MONEY
+			, Donor_Total_Lifetime_Giving_Church MONEY
+			, Donor_Total_Lifetime_Giving_Pcc MONEY
+			, Donor_Total_Lifetime_Giving_Ces MONEY
+			, Donor_Total_Lifetime_Giving_Last_5_Years MONEY
+			, Donor_Total_Lifetime_Giving_To_Byu_Last_5_Years MONEY
+			, Donor_Total_Lifetime_Giving_To_Byui_Last_5_Years MONEY
+			, Donor_Total_Lifetime_Giving_To_Byuh_Last_5_Years MONEY
+			, Donor_Total_Lifetime_Giving_To_Ldsbc_Last_5_Years MONEY
+			, Donor_Total_Lifetime_Giving_To_Church_Last_5_Years MONEY
+			' -- Dest_Create_Fields
+		, '	Donor_Key
+			, Donor_Linked_Lds_Account
+			, Ldsp_Org_Donor
+			, Ldsp_Org_Current_Recurring_Donor_Type
+			, Ldsp_Org_Recurring_Donor
+			, Ldsp_Org_Current_Recurring_Donor 
+			, Donor_Ldsp_Id
+			, Donor_Contact_Type
+			, Donor_Deceased_Yn
+			, Donor_Name
+			, Donor_First_Name
+			, Donor_Middle_Name
+			, Donor_Last_Name
+			, Donor_Marriage_Status
+			, Donor_Gender
+			, Plus_CoordinatingLiaison
+			, Donor_Age
+			, Spouse_Age
+			, Byu_Donor
+			, ByuI_Donor
+			, ByuH_Donor
+			, Ldsbc_Donor
+			, Address_Street_1
+			, Address_Street_2
+			, Address_Street_3
+			, Address_City
+			, Address_State_Code
+			, Address_Post_Code_Full
+			, Address_Post_Code_Last_4
+			, Address_Country
+			, Address_State_Province
+			, Address_County
+			, Address_County_Code
+			, Donor_Total_Lifetime_Giving
+			, Donor_Total_Lifetime_Giving_Byu
+			, Donor_Total_Lifetime_Giving_Byui
+			, Donor_Total_Lifetime_Giving_Byuh
+			, Donor_Total_Lifetime_Giving_Ldsbc
+			, Donor_Total_Lifetime_Giving_Church
+			, Donor_Total_Lifetime_Giving_Pcc
+			, Donor_Total_Lifetime_Giving_Ces
+			, Donor_Total_Lifetime_Giving_Last_5_Years
+			, Donor_Total_Lifetime_Giving_To_Byu_Last_5_Years
+			, Donor_Total_Lifetime_Giving_To_Byui_Last_5_Years
+			, Donor_Total_Lifetime_Giving_To_Byuh_Last_5_Years
+			, Donor_Total_Lifetime_Giving_To_Ldsbc_Last_5_Years
+			, Donor_Total_Lifetime_Giving_To_Church_Last_5_Years
+			' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- View_Ldsp_Org_Recurring_Gift_Rules_Dataset
+-- --------------------------
+	( 1 -- Tier
+		, 'dbo.View_Ldsp_Org_Recurring_Gift_Rules_Dataset' -- Source_Table
+		, 'dbo.View_Ldsp_Org_Recurring_Gift_Rules_Dataset' -- Destination_Table
+		,'	Plus_RecurringGiftRulesId NVARCHAR(100)
+			, Donor_Type NVARCHAR(400)
+			, Recurring_Gift_Type NVARCHAR(400)
+			, Recurring_Amount MONEY
+			, Frequency NVARCHAR(400)
+			, Payment_Start DATE
+			, Payment_Stop DATE
+			, Recurring_Gift_Rule_Name NVARCHAR(100)
+			, Recurring_Gift_Rule_Status NVARCHAR(400)
+			, Reucrring_Gift_Rule_Status_Reason NVARCHAR(400)
+			, Recurring_Group_Name NVARCHAR(100)
+			, New_FundAccountID NVARCHAR(100)
+			, LDSP_Account_Number NVARCHAR(100)
+			, Fund_Account_Online_Public_Name NVARCHAR(100)
+			, Fund_Account_Online_Approved NVARCHAR(1)
+			, Fund_Account_Gift_Purpose_Type NVARCHAR(400)
+			, Fund_Account_Gift_Purpose_Sub_Type NVARCHAR(400)
+			, Fund_Account_Unrestricted NVARCHAR(400)
+			, Fund_Account_Scholarship NVARCHAR(1)
+			, Fund_Account_Endowment NVARCHAR(1)
+			, Appeal_Code NVARCHAR(20)
+			, Appeal_Name NVARCHAR(100)
+			, Appeal_Delivery_Type NVARCHAR(400)
+			, Institution NVARCHAR(100)
+			, Level_1 NVARCHAR(100)
+			, Level_2 NVARCHAR(100)
+			, Level_3 NVARCHAR(100)
+			, Hierarchy_Name NVARCHAR(100)
+			, DonorID NVARCHAR(100)
+			, GenderCode NVARCHAR(400)
+			, Birthdate DATE
+			, Donor_Preferred_Name NVARCHAR(160)
+			, Donor_Name NVARCHAR(160)
+			, Donor_Marital_Status NVARCHAR(400)
+			, Donor_Linked_Lds_Account NVARCHAR(1)
+			, Donor_LDSPID NVARCHAR(100)
+			, Donor_Status NVARCHAR(400)
+			, Donor_Status_Reason NVARCHAR(400)
+			, Web_Subscription_OA_ID NVARCHAR(100)
+			, Transaction_ID NVARCHAR(100)
+			, Recurring_Donation_Start_Date DATE
+			, Recurring_Donation_Stop_Date DATE
+			, Next_Payment_Date DATE
+			, Payment_Type NVARCHAR(400)
+			, Tender_Name NVARCHAR(400)
+			' -- Dest_Create_Fields
+		, '	Plus_RecurringGiftRulesId
+			, Donor_Type
+			, Recurring_Gift_Type
+			, Recurring_Amount
+			, Frequency
+			, Payment_Start
+			, Payment_Stop
+			, Recurring_Gift_Rule_Name
+			, Recurring_Gift_Rule_Status
+			, Reucrring_Gift_Rule_Status_Reason 
+			, Recurring_Group_Name
+			, New_FundAccountID
+			, LDSP_Account_Number
+			, Fund_Account_Online_Public_Name
+			, Fund_Account_Online_Approved
+			, Fund_Account_Gift_Purpose_Type
+			, Fund_Account_Gift_Purpose_Sub_Type
+			, Fund_Account_Unrestricted
+			, Fund_Account_Scholarship
+			, Fund_Account_Endowment
+			, Appeal_Code
+			, Appeal_Name
+			, Appeal_Delivery_Type
+			, Institution
+			, Level_1
+			, Level_2
+			, Level_3
+			, Hierarchy_Name
+			, DonorID
+			, GenderCode
+			, Birthdate
+			, Donor_Preferred_Name
+			, Donor_Name
+			, Donor_Marital_Status
+			, Donor_Linked_Lds_Account
+			, Donor_LDSPID
+			, Donor_Status
+			, Donor_Status_Reason
+			, Web_Subscription_OA_ID
+			, Transaction_ID
+			, Recurring_Donation_Start_Date
+			, Recurring_Donation_Stop_Date
+			, Next_Payment_Date
+			, Payment_Type
+			, Tender_Name
+			' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _Donor_Recurring_Gift_Dim
+-- --------------------------
+	( 1 -- Tier
+		, 'dbo._Donor_Recurring_Gift_Dim' -- Source_Table
+		, 'dbo._Donor_Recurring_Gift_Dim' -- Destination_Table
+		,'	Donor_Key NVARCHAR(100)    
+			, Donor_Byu_Recurring_Donor NVARCHAR(1) 
+			, Donor_Byui_Recurring_Donor NVARCHAR(1)
+			, Donor_Byuh_Recurring_Donor NVARCHAR(1)
+			, Donor_Ldsbc_Recurring_Donor NVARCHAR(1)
+			, Donor_First_Recurring_Rule_Date_Byu DATE
+			, Donor_First_Recurring_Rule_Date_Byui DATE
+			, Donor_First_Recurring_Rule_Date_Byuh DATE
+			, Donor_First_Recurring_Rule_Date_Ldsbc DATE
+			, Donor_Recurring_Total_Last_Month_Byu MONEY
+			, Donor_Recurring_Total_Last_Month_Byui MONEY
+			, Donor_Recurring_Total_Last_Month_Byuh MONEY
+			, Donor_Recurring_Total_Last_Month_Ldsbc MONEY
+			, Donor_Recurring_Total_Month_Before_Last_Byu MONEY
+			, Donor_Recurring_Total_Month_Before_Last_Byui MONEY
+			, Donor_Recurring_Total_Month_Before_Last_Byuh MONEY
+			, Donor_Recurring_Total_Month_Before_Last_Ldsbc MONEY
+			, Donor_Recurring_Gift_Upgrade_Byu NVARCHAR(1)
+			, Donor_Recurring_Gift_Upgrade_Byui NVARCHAR(1)
+			, Donor_Recurring_Gift_Upgrade_Byuh NVARCHAR(1)
+			, Donor_Recurring_Gift_Upgrade_Ldsbc NVARCHAR(1)
+			' -- Dest_Create_Fields
+		, '	Donor_Key      
+			, Donor_Byu_Recurring_Donor
+			, Donor_Byui_Recurring_Donor
+			, Donor_Byuh_Recurring_Donor
+			, Donor_Ldsbc_Recurring_Donor
+			, Donor_First_Recurring_Rule_Date_Byu
+			, Donor_First_Recurring_Rule_Date_Byui
+			, Donor_First_Recurring_Rule_Date_Byuh
+			, Donor_First_Recurring_Rule_Date_Ldsbc
+			, Donor_Recurring_Total_Last_Month_Byu
+			, Donor_Recurring_Total_Last_Month_Byui
+			, Donor_Recurring_Total_Last_Month_Byuh
+			, Donor_Recurring_Total_Last_Month_Ldsbc
+			, Donor_Recurring_Total_Month_Before_Last_Byu
+			, Donor_Recurring_Total_Month_Before_Last_Byui
+			, Donor_Recurring_Total_Month_Before_Last_Byuh
+			, Donor_Recurring_Total_Month_Before_Last_Ldsbc
+			, Donor_Recurring_Gift_Upgrade_Byu
+			, Donor_Recurring_Gift_Upgrade_Byui
+			, Donor_Recurring_Gift_Upgrade_Byuh
+			, Donor_Recurring_Gift_Upgrade_Ldsbc
+			' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _Donor_Retention_Dim
+-- --------------------------
+	( 1 -- Tier
+		, 'dbo._Donor_Retention_Dim' -- Source_Table
+		, 'dbo._Donor_Retention_Dim' -- Destination_Table
+		,'	Donor_Key NVARCHAR(100)      
+			, Donor_Retention_Type_Code_Byu_Minus_1 NVARCHAR(2)
+			, Donor_Retention_Type_Code_Byu_Minus_2 NVARCHAR(2)
+			, Donor_Retention_Type_Code_Byu_Minus_3 NVARCHAR(2)
+			, Donor_Retention_Type_Code_Byu_Minus_4 NVARCHAR(2)
+			, Donor_Retention_Type_Code_Byu_Minus_5 NVARCHAR(2)
+			, Donor_Retention_Type_Code_Byui_Minus_1 NVARCHAR(2)
+			, Donor_Retention_Type_Code_Byui_Minus_2 NVARCHAR(2)
+			, Donor_Retention_Type_Code_Byui_Minus_3 NVARCHAR(2)
+			, Donor_Retention_Type_Code_Byui_Minus_4 NVARCHAR(2)
+			, Donor_Retention_Type_Code_Byui_Minus_5 NVARCHAR(2)
+			, Donor_Retention_Type_Code_Byuh_Minus_1 NVARCHAR(2)
+			, Donor_Retention_Type_Code_Byuh_Minus_2 NVARCHAR(2)
+			, Donor_Retention_Type_Code_Byuh_Minus_3 NVARCHAR(2)
+			, Donor_Retention_Type_Code_Byuh_Minus_4 NVARCHAR(2)
+			, Donor_Retention_Type_Code_Byuh_Minus_5 NVARCHAR(2)
+			, Donor_Retention_Type_Code_Ldsbc_Minus_1 NVARCHAR(2)
+			, Donor_Retention_Type_Code_Ldsbc_Minus_2 NVARCHAR(2)
+			, Donor_Retention_Type_Code_Ldsbc_Minus_3 NVARCHAR(2)
+			, Donor_Retention_Type_Code_Ldsbc_Minus_4 NVARCHAR(2)
+			, Donor_Retention_Type_Code_Ldsbc_Minus_5 NVARCHAR(2)
+			, Donor_Retention_Type_Code_Byu NVARCHAR(2)
+			, Donor_Retention_Type_Code_Byui NVARCHAR(2)
+			, Donor_Retention_Type_Code_Byuh NVARCHAR(2)
+			, Donor_Retention_Type_Code_Ldsbc NVARCHAR(2)
+			, Donor_Type_Code_Ldsp NVARCHAR(2)
+			' -- Dest_Create_Fields
+		, '	Donor_Key      
+			, Donor_Retention_Type_Code_Byu_Minus_1
+			, Donor_Retention_Type_Code_Byu_Minus_2
+			, Donor_Retention_Type_Code_Byu_Minus_3
+			, Donor_Retention_Type_Code_Byu_Minus_4
+			, Donor_Retention_Type_Code_Byu_Minus_5
+			, Donor_Retention_Type_Code_Byui_Minus_1
+			, Donor_Retention_Type_Code_Byui_Minus_2
+			, Donor_Retention_Type_Code_Byui_Minus_3
+			, Donor_Retention_Type_Code_Byui_Minus_4
+			, Donor_Retention_Type_Code_Byui_Minus_5
+			, Donor_Retention_Type_Code_Byuh_Minus_1
+			, Donor_Retention_Type_Code_Byuh_Minus_2
+			, Donor_Retention_Type_Code_Byuh_Minus_3
+			, Donor_Retention_Type_Code_Byuh_Minus_4
+			, Donor_Retention_Type_Code_Byuh_Minus_5
+			, Donor_Retention_Type_Code_Ldsbc_Minus_1
+			, Donor_Retention_Type_Code_Ldsbc_Minus_2
+			, Donor_Retention_Type_Code_Ldsbc_Minus_3
+			, Donor_Retention_Type_Code_Ldsbc_Minus_4
+			, Donor_Retention_Type_Code_Ldsbc_Minus_5
+			, Donor_Retention_Type_Code_Byu
+			, Donor_Retention_Type_Code_Byui
+			, Donor_Retention_Type_Code_Byuh
+			, Donor_Retention_Type_Code_Ldsbc
+			, Donor_Type_Code_Ldsp
+			' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _Donor_Telefund_Dim
+-- --------------------------
+	( 1 -- Tier
+		, 'dbo._Donor_Telefund_Dim' -- Source_Table
+		, 'dbo._Donor_Telefund_Dim' -- Destination_Table
+		,'	Donor_Key NVARCHAR(100)      
+			, Donor_Open_Byu_Telefund_Pledge NVARCHAR(1)
+			, Donor_Open_Byui_Telefund_Pledge NVARCHAR(1)
+			, Donor_Open_Byuh_Telefund_Pledge NVARCHAR(1)
+			, Donor_Open_Ldsbc_Telefund_Pledge NVARCHAR(1)
+			, Donor_Previously_Contacted_Byu_Yn NVARCHAR(1)
+			, Donor_Previously_Contacted_Byui_Yn NVARCHAR(1)
+			, Donor_Previously_Contacted_Byuh_Yn NVARCHAR(1)
+			, Donor_Previously_Contacted_Ldsbc_Yn NVARCHAR(1)
+			, Donor_Lds_TelefundNotes NVARCHAR(4000)
+			' -- Dest_Create_Fields
+		, '	Donor_Key      
+			, Donor_Open_Byu_Telefund_Pledge
+			, Donor_Open_Byui_Telefund_Pledge
+			, Donor_Open_Byuh_Telefund_Pledge
+			, Donor_Open_Ldsbc_Telefund_Pledge
+			, Donor_Previously_Contacted_Byu_Yn
+			, Donor_Previously_Contacted_Byui_Yn
+			, Donor_Previously_Contacted_Byuh_Yn
+			, Donor_Previously_Contacted_Ldsbc_Yn
+			, Donor_Lds_TelefundNotes
+			' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _Donor_Initiative_Dim
+-- --------------------------
+	( 1 -- Tier
+		, 'dbo._Donor_Initiative_Dim' -- Source_Table
+		, 'dbo._Donor_Initiative_Dim' -- Destination_Table
+		,'	Donor_Key NVARCHAR(100)      
+			, Donor_Furthest_Initiative_Stage NVARCHAR(400)
+			, Donor_Number_Of_Open_Initiatives INT
+			, Donor_Last_F2F_Visit_Date DATE
+			, Donor_Pledge_Reminder_Email_Content_Byu NVARCHAR(2000)
+			, Donor_Pledge_Reminder_Email_Content_Byui NVARCHAR(2000)
+			, Donor_Pledge_Reminder_Email_Content_Byuh NVARCHAR(2000)
+			, Donor_Pledge_Reminder_Email_Content_Ldsbc NVARCHAR(2000)
+			, Donor_Is_Qualified NVARCHAR(1)
+			, Donor_Qualified_On DATE
+			, Donor_Qualified_By NVARCHAR(200)
+			' -- Dest_Create_Fields
+		, '	Donor_Key      
+			, Donor_Furthest_Initiative_Stage
+			, Donor_Number_Of_Open_Initiatives
+			, Donor_Last_F2F_Visit_Date
+			, Donor_Pledge_Reminder_Email_Content_Byu
+			, Donor_Pledge_Reminder_Email_Content_Byui
+			, Donor_Pledge_Reminder_Email_Content_Byuh
+			, Donor_Pledge_Reminder_Email_Content_Ldsbc
+			, Donor_Is_Qualified
+			, Donor_Qualified_On 
+			, Donor_Qualified_By
+			' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _Web_Batch_Dim
+-- --------------------------
+	( 1 -- Tier
+		, 'dbo._Web_Batch_Dim' -- Source_Table
+		, 'dbo._Web_Batch_Dim' -- Destination_Table
+		,'	Web_Batch_Dim_Key NVARCHAR(100)
+			, Web_Batch_Key NVARCHAR(100)
+			, Web_Batch_Status NVARCHAR(400)
+			, Web_Batch_Status_Reason NVARCHAR(400)
+			, Web_Batch_Created_On DATE
+			, Web_Batch_Processed_Date DATETIME
+			, Web_Batch_Modified_On DATE
+			, Web_Batch_Modified_By NVARCHAR(200)
+			' -- Dest_Create_Fields
+		, '	Web_Batch_Dim_Key
+			, Web_Batch_Key
+			, Web_Batch_Status
+			, Web_Batch_Status_Reason
+			, Web_Batch_Created_On
+			, Web_Batch_Processed_Date
+			, Web_Batch_Modified_On
+			, Web_Batch_Modified_By
+			' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _Web_Batch_Fact
+-- --------------------------
+	( 1 -- Tier
+		, 'dbo._Web_Batch_Fact' -- Source_Table
+		, 'dbo._Web_Batch_Fact' -- Destination_Table
+		,'	Web_Batch_Key NVARCHAR(100)
+			, Web_Batch_Total_Amount MONEY
+			, Average_Match_Score NVARCHAR(100)
+			, Total_Record_Count INT
+			' -- Dest_Create_Fields
+		, '	Web_Batch_Key
+			, Web_Batch_Total_Amount
+			, Average_Match_Score
+			, Total_Record_Count
+			' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- View_Ldsp_Org_Web_Batches_Dataset
+-- --------------------------
+	( 1 -- Tier
+		, 'dbo.View_Ldsp_Org_Web_Batches_Dataset' -- Source_Table
+		, 'dbo.View_Ldsp_Org_Web_Batches_Dataset' -- Destination_Table
+		,'	Plus_WebBatchID NVARCHAR(100)
+			, Web_Batch_Total_Amount MONEY
+			, Average_Match_Score NVARCHAR(100)
+			, Total_Record_Count INT
+			, Web_Batch_Status NVARCHAR(400)
+			, Web_Batch_Status_Reason NVARCHAR(400)
+			, Web_Batch_Created_On DATE
+			, Web_Batch_Processed_Date DATETIME
+			, Web_Batch_Modified_On DATE
+			, Web_Batch_Modified_By NVARCHAR(200)
+			' -- Dest_Create_Fields
+		, '	Plus_WebBatchID
+			, Web_Batch_Total_Amount
+			, Average_Match_Score
+			, Total_Record_Count
+			, Web_Batch_Status
+			, Web_Batch_Status_Reason
+			, Web_Batch_Created_On
+			, Web_Batch_Processed_Date
+			, Web_Batch_Modified_On
+			, Web_Batch_Modified_By
 			' -- Dest_Insert_Fields
 		, ' ' -- Dest_Where_Statement
 		, GETDATE()
