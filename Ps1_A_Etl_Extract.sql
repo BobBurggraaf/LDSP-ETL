@@ -48504,7 +48504,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 -- --------------------------
 -- _Donor_Dim
 -- --------------------------
-	( 9 -- Tier
+	( 10 -- Tier
 		, ' ' -- Source_Table
 		, ' ' -- Destination_Table
 		, '_Donor_Dim' -- Ext_Table
