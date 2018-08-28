@@ -1236,23 +1236,6 @@ INSERT INTO dbo.Stage_To_Prod
 			, Donor_Org_Matching_Ratio  NVARCHAR(400) 
 			, Donor_Org_Pref_Cont_Meth  NVARCHAR(400) 
 			, Donor_Org_Description  NVARCHAR(4000) 
-			, Donor_Marriage_Status_Value  INT 
-			, Donor_Lds_Member_Value  INT 
-			, Donor_Personal_Suffix_Value  INT 
-			, Donor_Major_Gift_Propen_Value  INT 
-			, Donor_Annual_Gift_Value  INT 
-			, Donor_Planned_Gift_Value  INT 
-			, Donor_Gift_Capacity_Enp_Value  INT 
-			, Donor_Gift_Capacity_En_Value  INT 
-			, Donor_Philan_Cap_Rating_Value  INT 
-			, Donor_Est_Household_Income_Value  INT 
-			, Donor_Est_Home_Market_Val_Value  INT 
-			, Donor_Block_Clusters_Value  INT 
-			, Donor_Org_Class_Code_Value  INT 
-			, Donor_Org_Retiree_Ratio_Value  INT 
-			, Donor_Org_Split_Ratio_Value  INT 
-			, Donor_Org_Matching_Ratio_Value  INT 
-			, Donor_Org_Pref_Cont_Meth_Val  INT
 			, All_Personal_Connections NVARCHAR(4000)
 			' -- Dest_Create_Fields
 		, 'Donor_Key      
@@ -1330,23 +1313,6 @@ INSERT INTO dbo.Stage_To_Prod
 			, Donor_Org_Matching_Ratio
 			, Donor_Org_Pref_Cont_Meth
 			, Donor_Org_Description 
-			, Donor_Marriage_Status_Value
-			, Donor_Lds_Member_Value 
-			, Donor_Personal_Suffix_Value 
-			, Donor_Major_Gift_Propen_Value 
-			, Donor_Annual_Gift_Value
-			, Donor_Planned_Gift_Value
-			, Donor_Gift_Capacity_Enp_Value 
-			, Donor_Gift_Capacity_En_Value
-			, Donor_Philan_Cap_Rating_Value
-			, Donor_Est_Household_Income_Value
-			, Donor_Est_Home_Market_Val_Value
-			, Donor_Block_Clusters_Value 
-			, Donor_Org_Class_Code_Value
-			, Donor_Org_Retiree_Ratio_Value 
-			, Donor_Org_Split_Ratio_Value 
-			, Donor_Org_Matching_Ratio_Value
-			, Donor_Org_Pref_Cont_Meth_Val
 			, All_Personal_Connections
 			' -- Dest_Insert_Fields
 		, ' ' -- Dest_Where_Statement
