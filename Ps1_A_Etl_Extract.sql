@@ -35831,7 +35831,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 				, B.Plus_PreferredFullName
 				, CASE WHEN K.Wifes_ContactId IS NOT NULL THEN K.Couples_Name
 					WHEN J.Husbands_ContactId IS NOT NULL THEN J.Couples_Name
-					WHEN CONCAT(COALESCE(Plus_PreferredFirstName,FirstName),[Space],COALESCE(Plus_PreferredLastName,LastName)) = [Space] THEN COALESCE(Plus_PreferredFullName,FullName)
+					WHEN COALESCE(Plus_PreferredLastName,LastName)) IS NULL THEN COALESCE(Plus_PreferredFullName,FullName,L.Name)
 						ELSE CONCAT(COALESCE(Plus_PreferredFirstName,FirstName),[Space],COALESCE(Plus_PreferredLastName,LastName)) END AS Donor_Total_Name
 				, CASE WHEN COALESCE(B.Plus_PreferredFirstName,B.FirstName) IS NOT NULL
 							AND COALESCE(B.Plus_SpousePreferredFirstName,G.Spouse_First_Name) IS NOT NULL
@@ -35885,6 +35885,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 					) I ON A.Donor_Key = I.Donor_Key
 				LEFT JOIN Uf_Couples_Name1() J ON A.Donor_Key = CONVERT(NVARCHAR(100),J.Husbands_ContactId)
 				LEFT JOIN Uf_Couples_Name2() K ON A.Donor_Key = CONVERT(NVARCHAR(100),K.Wifes_ContactId)
+				LEFT JOIN Ext_Account L ON A.Donor_Key = CONVERT(NVARCHAR(100),L.AccountId)
 			' -- Ext_From_Statement
 		, 'AND A.Donor_Key IS NOT NULL 
 			' -- Ext_Where_Statement
@@ -45378,7 +45379,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Donor_Average_Single_Gift_Previous_5_Years
 			' -- Ext_Insert_Fields
 		, '  A.Donor_Key 
-			, Donor_Given_This_Year_To_Byu
+			, CASE WHEN Donor_Given_This_Year_To_Byu IS NULL THEN A.[N]
+				ELSE A.[Y] END AS Donor_Given_This_Year_To_Byu
 			, Donor_Given_This_Year_To_Byui
 			, Donor_Given_This_Year_To_Byuh
 			, Donor_Given_This_Year_To_Ldsbc
@@ -45390,7 +45392,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Donor_Institution_Giving_Areas
 			, Donor_Byu_Giving_Areas
 			, Donor_Church_Giving_Areas
-			, Donor_Total_Giving_Byu_High_Flag
+			, CASE WHEN Donor_Total_Giving_Byu_High_Flag IS NULL THEN A.[N]
+				ELSE A.[Y] END AS Donor_Total_Giving_Byu_High_Flag
 			, Donor_Total_Giving_Byui_High_Flag
 			, Donor_Total_Giving_Byuh_High_Flag
 			, Donor_Total_Giving_Ldsbc_High_Flag
