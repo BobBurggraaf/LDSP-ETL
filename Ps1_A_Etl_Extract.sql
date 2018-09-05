@@ -34085,7 +34085,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, ' CREATE NONCLUSTERED INDEX IX_Alumni_Bridge_Alumni_Group_Key
 			ON dbo._Alumni_Bridge (Alumni_Group_Key)
-				INCLUDE (Alumni_Key);
+			INCLUDE (Alumni_Key);
 			UPDATE STATISTICS dbo._Alumni_Bridge;
 			' -- Ext_Where_Statement
 		, NULL -- Tier_3_Stage
@@ -45378,7 +45378,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Donor_Gift_Count_Previous_5_Years
 			, Donor_Average_Single_Gift_Previous_5_Years
 			' -- Ext_Insert_Fields
-		, '  A.Donor_Key 
+		, ' A.Donor_Key 
 			, CASE WHEN Donor_Given_This_Year_To_Byu IS NULL THEN A.[N]
 				WHEN Donor_Given_This_Year_To_Byu = A.[N] THEN A.[N]
 				ELSE A.[Y] END AS Donor_Given_This_Year_To_Byu
