@@ -31041,31 +31041,31 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, ' ' -- Dest_Insert_Fields
 		, ' ' -- Dest_Where_Statement
 		, '	Donor_Key NVARCHAR(100)      
-			, Donor_Retention_Type_Code_Byu_Minus_1 NVARCHAR(2)
-			, Donor_Retention_Type_Code_Byu_Minus_2 NVARCHAR(2)
-			, Donor_Retention_Type_Code_Byu_Minus_3 NVARCHAR(2)
-			, Donor_Retention_Type_Code_Byu_Minus_4 NVARCHAR(2)
-			, Donor_Retention_Type_Code_Byu_Minus_5 NVARCHAR(2)
-			, Donor_Retention_Type_Code_Byui_Minus_1 NVARCHAR(2)
-			, Donor_Retention_Type_Code_Byui_Minus_2 NVARCHAR(2)
-			, Donor_Retention_Type_Code_Byui_Minus_3 NVARCHAR(2)
-			, Donor_Retention_Type_Code_Byui_Minus_4 NVARCHAR(2)
-			, Donor_Retention_Type_Code_Byui_Minus_5 NVARCHAR(2)
-			, Donor_Retention_Type_Code_Byuh_Minus_1 NVARCHAR(2)
-			, Donor_Retention_Type_Code_Byuh_Minus_2 NVARCHAR(2)
-			, Donor_Retention_Type_Code_Byuh_Minus_3 NVARCHAR(2)
-			, Donor_Retention_Type_Code_Byuh_Minus_4 NVARCHAR(2)
-			, Donor_Retention_Type_Code_Byuh_Minus_5 NVARCHAR(2)
-			, Donor_Retention_Type_Code_Ldsbc_Minus_1 NVARCHAR(2)
-			, Donor_Retention_Type_Code_Ldsbc_Minus_2 NVARCHAR(2)
-			, Donor_Retention_Type_Code_Ldsbc_Minus_3 NVARCHAR(2)
-			, Donor_Retention_Type_Code_Ldsbc_Minus_4 NVARCHAR(2)
-			, Donor_Retention_Type_Code_Ldsbc_Minus_5 NVARCHAR(2)
-			, Donor_Retention_Type_Code_Byu NVARCHAR(2)
-			, Donor_Retention_Type_Code_Byui NVARCHAR(2)
-			, Donor_Retention_Type_Code_Byuh NVARCHAR(2)
-			, Donor_Retention_Type_Code_Ldsbc NVARCHAR(2)
-			, Donor_Type_Code_Ldsp NVARCHAR(2)
+			, Donor_Retention_Type_Code_Byu_Minus_1 NVARCHAR(2) DEFAULT ''D1''
+			, Donor_Retention_Type_Code_Byu_Minus_2 NVARCHAR(2) DEFAULT ''D1''
+			, Donor_Retention_Type_Code_Byu_Minus_3 NVARCHAR(2) DEFAULT ''D1''
+			, Donor_Retention_Type_Code_Byu_Minus_4 NVARCHAR(2) DEFAULT ''D1''
+			, Donor_Retention_Type_Code_Byu_Minus_5 NVARCHAR(2) DEFAULT ''D1''
+			, Donor_Retention_Type_Code_Byui_Minus_1 NVARCHAR(2) DEFAULT ''D1''
+			, Donor_Retention_Type_Code_Byui_Minus_2 NVARCHAR(2) DEFAULT ''D1''
+			, Donor_Retention_Type_Code_Byui_Minus_3 NVARCHAR(2) DEFAULT ''D1''
+			, Donor_Retention_Type_Code_Byui_Minus_4 NVARCHAR(2) DEFAULT ''D1''
+			, Donor_Retention_Type_Code_Byui_Minus_5 NVARCHAR(2) DEFAULT ''D1''
+			, Donor_Retention_Type_Code_Byuh_Minus_1 NVARCHAR(2) DEFAULT ''D1''
+			, Donor_Retention_Type_Code_Byuh_Minus_2 NVARCHAR(2) DEFAULT ''D1''
+			, Donor_Retention_Type_Code_Byuh_Minus_3 NVARCHAR(2) DEFAULT ''D1''
+			, Donor_Retention_Type_Code_Byuh_Minus_4 NVARCHAR(2) DEFAULT ''D1''
+			, Donor_Retention_Type_Code_Byuh_Minus_5 NVARCHAR(2) DEFAULT ''D1''
+			, Donor_Retention_Type_Code_Ldsbc_Minus_1 NVARCHAR(2) DEFAULT ''D1''
+			, Donor_Retention_Type_Code_Ldsbc_Minus_2 NVARCHAR(2) DEFAULT ''D1''
+			, Donor_Retention_Type_Code_Ldsbc_Minus_3 NVARCHAR(2) DEFAULT ''D1''
+			, Donor_Retention_Type_Code_Ldsbc_Minus_4 NVARCHAR(2) DEFAULT ''D1''
+			, Donor_Retention_Type_Code_Ldsbc_Minus_5 NVARCHAR(2) DEFAULT ''D1''
+			, Donor_Retention_Type_Code_Byu NVARCHAR(2) DEFAULT ''D1''
+			, Donor_Retention_Type_Code_Byui NVARCHAR(2) DEFAULT ''D1''
+			, Donor_Retention_Type_Code_Byuh NVARCHAR(2) DEFAULT ''D1''
+			, Donor_Retention_Type_Code_Ldsbc NVARCHAR(2) DEFAULT ''D1''
+			, Donor_Type_Code_Ldsp NVARCHAR(2) DEFAULT ''D1''
 		' -- Ext_Create_Fields
 		, ' Donor_Key      
 			, Donor_Retention_Type_Code_Byu_Minus_1
