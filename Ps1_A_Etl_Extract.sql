@@ -48337,6 +48337,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Total_Giving_3_Years_Ago_With_Matching MONEY
 			, Total_Giving_4_Years_Ago_With_Matching MONEY
 			, Total_Giving_5_Years_Ago_With_Matching MONEY
+			, Ldsp_Number_Of_Years_Given INT
 			' -- Ext_Create_Fields
 		, '	Ldsp_Id
 			, Donor_Full_Name
@@ -48404,7 +48405,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Total_Giving_2_Years_Ago_With_Matching
 			, Total_Giving_3_Years_Ago_With_Matching
 			, Total_Giving_4_Years_Ago_With_Matching
-			, Total_Giving_5_Years_Ago_With_Matching 
+			, Total_Giving_5_Years_Ago_With_Matching
+			, Ldsp_Number_Of_Years_Given 
 			' -- Ext_Insert_Fields
 		, ' A.Donor_Ldsp_Id AS Ldsp_Id
 			, F.Donor_Name AS Donor_Full_Name
@@ -48473,6 +48475,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, E.Total_Giving_With_Matching_Current_Year_Minus_3 AS Total_Giving_3_Years_Ago_With_Matching
 			, E.Total_Giving_With_Matching_Current_Year_Minus_4 AS Total_Giving_4_Years_Ago_With_Matching
 			, E.Total_Giving_With_Matching_Current_Year_Minus_5 AS Total_Giving_5_Years_Ago_With_Matching
+			, J.Donor_Total_Lifetime_Giving_To_Ldsp_Years_Given_Cnt AS Ldsp_Number_Of_Years_Given
 			' -- Ext_Select_Statement
 		, ' _Donor_Key_Dim A
 				LEFT JOIN _Primary_Contact_Dim B ON A.Donor_Key = B.Donor_Key
