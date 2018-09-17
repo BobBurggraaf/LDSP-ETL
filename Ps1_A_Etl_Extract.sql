@@ -38512,6 +38512,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Email_Active_Yn NVARCHAR(1)
 			, Email_Confirmed_Yn NVARCHAR(1)
 			, Email_Confidential_Yn NVARCHAR(1)
+			, Ldsp_Region NVARCHAR(20)
 			' -- Ext_Create_Fields
 		, '	Donor_Key
 			, Address_Primary_Yn
@@ -38562,6 +38563,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Email_Active_Yn
 			, Email_Confirmed_Yn
 			, Email_Confidential_Yn
+			, Ldsp_Region
 			' -- Ext_Insert_Fields
 		, 'A.Donor_Key
 			, B.Address_Primary_Yn
@@ -38612,6 +38614,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, D.Email_Active_Yn
 			, D.Email_Confirmed_Yn
 			, D.Email_Confidential_Yn
+			, E.Ldsp_Region
 			' -- Ext_Select_Statement
 		, '	_Donor_Key_Dim A
 				LEFT JOIN 
@@ -38697,7 +38700,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 							) A
 						WHERE 1 = 1
 							AND Row_Num = 1
-					) D ON A.Donor_Key = D.ContactId																
+					) D ON A.Donor_Key = D.ContactId
+				LEFT JOIN Uf_Ldsp_Region() E ON A.Donor_Key = E.Donor_Key																
 			' -- Ext_From_Statement
 		, 'AND A.Donor_Key IS NOT NULL
 			' -- Ext_Where_Statement
@@ -48338,6 +48342,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Total_Giving_4_Years_Ago_With_Matching MONEY
 			, Total_Giving_5_Years_Ago_With_Matching MONEY
 			, Ldsp_Number_Of_Years_Given INT
+			, Region NVARCHAR(20)
 			' -- Ext_Create_Fields
 		, '	Ldsp_Id
 			, Donor_Full_Name
@@ -48406,7 +48411,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Total_Giving_3_Years_Ago_With_Matching
 			, Total_Giving_4_Years_Ago_With_Matching
 			, Total_Giving_5_Years_Ago_With_Matching
-			, Ldsp_Number_Of_Years_Given 
+			, Ldsp_Number_Of_Years_Given
+			, Region 
 			' -- Ext_Insert_Fields
 		, ' A.Donor_Ldsp_Id AS Ldsp_Id
 			, F.Donor_Name AS Donor_Full_Name
@@ -48469,13 +48475,6 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, O.Donor_First_Gift_Date_Ldsbc AS First_Gift_Date_Ldsbc
 			, O.Donor_First_Gift_Date_Church AS First_Gift_Date_Church
 			, O.Donor_First_Gift_Date_Ldsp AS First_Gift_Date_Ldsp
-			, E.Total_Giving_With_Matching_Current_Year AS Total_Giving_Current_Year_With_Matching
-			, E.Total_Giving_With_Matching_Current_Year_Minus_1 AS Total_Giving_1_Years_Ago_With_Matching
-			, E.Total_Giving_With_Matching_Current_Year_Minus_2 AS Total_Giving_2_Years_Ago_With_Matching
-			, E.Total_Giving_With_Matching_Current_Year_Minus_3 AS Total_Giving_3_Years_Ago_With_Matching
-			, E.Total_Giving_With_Matching_Current_Year_Minus_4 AS Total_Giving_4_Years_Ago_With_Matching
-			, E.Total_Giving_With_Matching_Current_Year_Minus_5 AS Total_Giving_5_Years_Ago_With_Matching
-			, J.Donor_Total_Lifetime_Giving_To_Ldsp_Years_Given_Cnt AS Ldsp_Number_Of_Years_Given
 			' -- Ext_Select_Statement
 		, ' _Donor_Key_Dim A
 				LEFT JOIN _Primary_Contact_Dim B ON A.Donor_Key = B.Donor_Key
@@ -48502,7 +48501,14 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 		, NULL -- Tier_3_Stage_DateTime
 		, NULL -- Tier_4_Stage
 		, NULL -- Tier_4_Stage_DateTime
-		, '
+		, ' , E.Total_Giving_With_Matching_Current_Year AS Total_Giving_Current_Year_With_Matching
+			, E.Total_Giving_With_Matching_Current_Year_Minus_1 AS Total_Giving_1_Years_Ago_With_Matching
+			, E.Total_Giving_With_Matching_Current_Year_Minus_2 AS Total_Giving_2_Years_Ago_With_Matching
+			, E.Total_Giving_With_Matching_Current_Year_Minus_3 AS Total_Giving_3_Years_Ago_With_Matching
+			, E.Total_Giving_With_Matching_Current_Year_Minus_4 AS Total_Giving_4_Years_Ago_With_Matching
+			, E.Total_Giving_With_Matching_Current_Year_Minus_5 AS Total_Giving_5_Years_Ago_With_Matching
+			, J.Donor_Total_Lifetime_Giving_To_Ldsp_Years_Given_Cnt AS Ldsp_Number_Of_Years_Given
+			, B.Ldsp_Region AS Region
 			' -- Ext_Select_Statement_2
 		, '										 
 			' -- Ext_From_Statement_2
