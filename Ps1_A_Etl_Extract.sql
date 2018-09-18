@@ -36024,6 +36024,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Plus_PendingLiaison_DomainName NVARCHAR(1024)
 			, Plus_ConnectedLiaison_DomainName NVARCHAR(1024)
 			, Legacy_Society_Memberships NVARCHAR(2000)
+			, Donor_All_Association_Memberships NVARCHAR(2000)
 			' -- Ext_Create_Fields
 		, '	Donor_Key      
 			, Plus_CoordinatingLiaison
@@ -36042,6 +36043,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Plus_PendingLiaison_DomainName
 			, Plus_ConnectedLiaison_DomainName
 			, Legacy_Society_Memberships
+			, Donor_All_Association_Memberships
 			' -- Ext_Insert_Fields
 		, 'A.Donor_Key
 			, C.Plus_CoordinatingLiaison
@@ -36060,6 +36062,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, C.Plus_PendingLiaison_DomainName
 			, C.Plus_ConnectedLiaison_DomainName
 			, M.Legacy_Society_Memberships
+			, N.All_Association_Memberships AS Donor_All_Association_Memberships
 			' -- Ext_Select_Statement
 		, ' _All_Donors_ A
 				LEFT JOIN Ext_Contact B ON A.Donor_Key = CONVERT(NVARCHAR(100),B.ContactId)
@@ -36303,7 +36306,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 						WHERE 1 = 1 
 							AND Association_Name = [LDSBC_Fox_Society]
 					) L ON A.Donor_Key = L.Donor_Key
-				LEFT JOIN Uf_Legacy_Society_Memberships() M ON A.Donor_Key = M.Donor_Key															
+				LEFT JOIN Uf_Legacy_Society_Memberships() M ON A.Donor_Key = M.Donor_Key
+				LEFT JOIN Uf_All_Associations() N ON A.Donor_Key = N.Donor_Key															
 			' -- Ext_From_Statement_3
 		, '
 			'-- Ext_From_Statement_4
