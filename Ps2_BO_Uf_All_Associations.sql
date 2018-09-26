@@ -24,15 +24,7 @@ SELECT DISTINCT ContactId AS Donor_Key
 						(SELECT ContactId
 							, COALESCE(Association_Name,' ') + ' | ' + COALESCE(StatusCode,' ') + ' | ' + RTRIM(COALESCE(New_StartDate,' ')) + ' | ' + RTRIM(COALESCE(New_EndDate,' ')) AS All_Association_Memberships
 							, Order_Number
-							FROM 
-								(SELECT ROW_NUMBER() OVER(PARTITION BY ContactId ORDER BY ContactId, StatusCode, Association_Name) AS Order_Number  
-									, ContactId
-									, Association_Name
-									, StatusCode
-									, CASE WHEN New_StartDate = '1900-01-01' THEN NULL ELSE CONVERT(NVARCHAR(10),New_StartDate,1) END AS New_StartDate
-									, CASE WHEN New_EndDate = '1900-01-01' THEN NULL ELSE CONVERT(NVARCHAR(10),New_EndDate,1) END AS New_EndDate
-									FROM _Association_Dim 
-								) A
+							FROM _All_Association_
 						) B
 					WHERE B.ContactId = A.ContactId
 					ORDER BY Order_Number 

@@ -25715,6 +25715,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, BYUI_Legacy_Society NVARCHAR(50) DEFAULT ''BYUI Legacy Society''
 			, BYUH_Cowley_Society NVARCHAR(50) DEFAULT ''BYUH Cowley Society''
 			, LDSBC_Fox_Society NVARCHAR(50) DEFAULT ''LDSBC Fox Society''
+			, Zero_Date NVARCHAR(10) DEFAULT ''1900-01-01''
 			' -- Ext_Create_Fields
 		, 'ContactId 
 			, Association_Key 
@@ -25763,7 +25764,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 					) F ON COALESCE(A.New_ConstituentId, A.New_RelatedOrganization) = F.ContactId
 			' -- Ext_From_Statement
 		, 'INSERT INTO _Association_Dim
-			VALUES(NULL,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+			VALUES(NULL,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 			' -- Ext_Where_Statement	
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
@@ -34542,6 +34543,101 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Student_Group_Key  
 			' -- Ext_Select_Statement
 		, '_Student_Dim				
+			' -- Ext_From_Statement
+		, ' ' -- Ext_Where_Statement
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, ' ' -- Ext_From_Statement_2
+		, ' ' -- Ext_Create_Fields_2
+		, ' ' -- Ext_Create_Fields_3
+		, ' ' -- Ext_Where_Statement_2
+		, ' ' -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+		, NULL -- Ext_Select_Statement_3
+		, NULL -- Ext_Select_Statement_4
+		, NULL -- Ext_Select_Statement_5
+		, NULL -- Ext_Select_Statement_6
+		, NULL -- Ext_Select_Statement_7
+		, NULL -- Ext_From_Statement_3
+		, NULL -- Ext_From_Statement_4
+		, NULL -- Ext_From_Statement_5
+		, NULL -- Ext_From_Statement_6
+		, NULL -- Ext_From_Statement_7
+		, NULL -- Ext_Where_Statement_4
+		, NULL -- Ext_Where_Statement_5
+		, NULL -- Ext_Where_Statement_6
+		, NULL -- Ext_Where_Statement_7
+		, NULL -- Tier_10_Stage
+		, NULL -- Tier_10_Stage_DateTime
+		, NULL -- Tier_11_Stage
+		, NULL -- Tier_11_Stage_DateTime
+		, NULL -- Tier_12_Stage
+		, NULL -- Tier_12_Stage_DateTime
+		, NULL -- Ext_Create_Fields_4
+		, NULL -- Ext_Create_Fields_5
+		, NULL -- Ext_Insert_Fields_2
+		, NULL -- Ext_Insert_Fields_3
+		, NULL -- Ext_Insert_Fields_4
+		, NULL -- Ext_Insert_Fields_5
+		, NULL -- Extra_7
+		, NULL -- Extra_8
+		, NULL -- Extra_9
+		, NULL -- Extra_10
+	)
+	,
+-- --------------------------
+-- _All_Association_
+-- --------------------------
+	( 5 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_All_Association_' -- Ext_Table
+		, '	' -- Dest_Create_Fields
+		, '	' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, '	Order_Number INT
+			, ContactId NVARCHAR(100)
+			, Association_Name NVARCHAR(100)
+			, StatusCode NVARCHAR(400)
+			, New_StartDate DATE
+			, New_EndDate DATE
+			' -- Ext_Create_Fields
+		, '	Order_Number
+			, ContactId
+			, Association_Name
+			, StatusCode
+			, New_StartDate
+			, New_EndDate
+			' -- Ext_Insert_Fields
+		, 'ROW_NUMBER() OVER(PARTITION BY ContactId ORDER BY ContactId, StatusCode, Association_Name) AS Order_Number  
+			, ContactId
+			, Association_Name
+			, StatusCode
+			, CASE WHEN New_StartDate = [Zero_Date] THEN NULL ELSE CONVERT(NVARCHAR(10),New_StartDate,1) END AS New_StartDate
+			, CASE WHEN New_EndDate = [Zero_Date] THEN NULL ELSE CONVERT(NVARCHAR(10),New_EndDate,1) END AS New_EndDate  
+			' -- Ext_Select_Statement
+		, '_Association_Dim				
 			' -- Ext_From_Statement
 		, ' ' -- Ext_Where_Statement
 		, NULL -- Tier_3_Stage

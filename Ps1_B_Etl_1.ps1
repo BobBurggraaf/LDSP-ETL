@@ -4848,7 +4848,143 @@ FUNCTION Insert-Alpha_Table_1
 			
 			} UNTIL ($Tables_To_Process_Tier_10 -eq 0 -OR $Total_Processing_Time -gt '03:14:00')
 			
+		###################################################################################################################################
+
+		#---------------------------------------------
+		# Insert final line on the alpha table
+		#---------------------------------------------
+
+
+
+		TRY 
+		{
+			####################################################################################################################
+									
 			
+			#---------------------------------------------
+			# Destination variables
+			#---------------------------------------------
+			[STRING] $Dest_Instance = 'W15904\S01'                           #<----------------------------------------------------------
+			[STRING] $Dest_Db = 'LDSPhilanthropiesDW'
+			[STRING] $Dest_Connect_String = "Data Source=$Dest_Instance;Initial Catalog=$Dest_Db;Integrated Security=TRUE;"
+			[INT] $Bulk_Copy_Batch_Size = 10000
+			[INT] $Bulk_Copy_Timeout = 600
+			
+			Write-Host
+			Write-Host "~ Dest_Instance: $Dest_Instance"
+			Write-Host "~ Dest_Db: $Dest_Db"
+			Write-Host "~ Dest_Connect_String: $Dest_Connect_String"
+			Write-Host "~ Bulk_Copy_Batch_Size: $Bulk_Copy_Batch_Size"
+			Write-Host "~ Bulk_Copy_Timeout: $Bulk_Copy_Timeout"
+			Write-Host
+			
+			
+			####################################################################################################################
+									
+									
+									
+			#---------------------------------------------
+			# Get Variables from Alpha Table
+			#---------------------------------------------
+			
+			$Alpha_Stage_Insert = "End of ETL"
+			$Alpha_Step_Number_Insert = "ZZZ"
+			$Alpha_Step_Name_Insert = "End"
+				
+			[STRING]$Alpha_Begin_Time_Qry = "SELECT MIN(Alpha_DateTime) AS Alpha_Begin_Time
+									FROM Oa_Extract.Alpha_Table_1
+									"                                                                                   
+				$Alpha_Begin_Time_Insert = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Alpha_Begin_Time_Qry).Alpha_Begin_Time
+					
+					
+			[STRING]$Alpha_End_Time_Qry = "SELECT MAX(Alpha_DateTime) AS Alpha_End_Time
+									FROM Oa_Extract.Alpha_Table_1
+									"                                                                                   
+				$Alpha_End_Time_Insert = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Alpha_End_Time_Qry).Alpha_End_Time
+			
+					
+			[STRING] $Etl_Duration_Qry = "SELECT DATEDIFF(MINUTE,Beg_Time,End_Time) AS Alpha_Duration_In_Seconds
+										FROM
+											(SELECT Min(Alpha_DateTime) AS Beg_Time 
+												FROM Oa_Extract.Alpha_Table_1
+											) A ,
+											(SELECT Max(Alpha_DateTime) AS End_Time 
+												FROM Oa_Extract.Alpha_Table_1
+											) B
+								"
+				$Alpha_Duration_In_Seconds = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Etl_Duration_Qry).Alpha_Duration_In_Seconds
+			
+					[Int]$Alpha_Duration_In_Seconds_Insert = [convert]::ToInt32($Alpha_Duration_In_Seconds)
+				
+			
+			[STRING]$Alpha_Count_Qry = "SELECT COUNT(DISTINCT Alpha_Stage) AS Alpha_Count
+									FROM Oa_Extract.Alpha_Table_1
+							"
+																												
+				$Alpha_Count = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Alpha_Count_Qry).Alpha_Count
+			
+					[Int]$Alpha_Count_Insert = [convert]::ToInt32($Alpha_Count)
+			
+			
+			[STRING]$Alpha_Result_Qry = "SELECT COUNT(Alpha_Result) AS Alpha_Result
+									FROM Oa_Extract.Alpha_Table_1
+									WHERE 1 = 1 
+										AND Alpha_Result = 0
+							"
+																												
+				$Alpha_Result = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Alpha_Result_Qry).Alpha_Result
+			
+					[Int]$Alpha_Result_Insert = [convert]::ToInt32($Alpha_Result)
+			
+			
+									
+			Write-Host
+			Write-Host "~ Alpha_Stage_Insert: $Alpha_Stage_Insert"
+			Write-Host "~ Alpha_Step_Number_Insert: $Alpha_Step_Number_Insert"
+			Write-Host "~ Alpha_Step_Name_Insert: $Alpha_Step_Name_Insert"
+			Write-Host "~ Alpha_Begin_Time_Insert: $Alpha_Begin_Time_Insert"
+			Write-Host "~ Alpha_End_Time_Insert: $Alpha_End_Time_Insert"
+			Write-Host "~ Alpha_Duration_In_Seconds_Insert: $Alpha_Duration_In_Seconds_Insert"
+			Write-Host "~ Alpha_Count_Insert: $Alpha_Count_Insert"
+			Write-Host "~ Alpha_Result_Insert: $Alpha_Result_Insert"
+			Write-Host
+			
+			
+			####################################################################################################################
+											
+			#---------------------------------------------
+			# Insert Into Alpha Table
+			#---------------------------------------------
+			
+			Insert-Alpha_Table_1 `
+				-p1 $Alpha_Stage_Insert `
+				-p2 $Alpha_Step_Number_Insert `
+				-p3 $Alpha_Step_Name_Insert `
+				-p4 $Alpha_Begin_Time_Insert `
+				-p5 $Alpha_End_Time_Insert `
+				-p6 $Alpha_Duration_In_Seconds_Insert `
+				-p7 $Alpha_Count_Insert `
+				-p9 $Alpha_Result_Insert
+							
+									
+			####################################################################################################################
+
+		}
+
+		CATCH
+		{
+			Write-Host
+			Write-Host "~ Error Message: The end step insert into the Alpha table failed."
+			Write-Host
+		}
+
+		FINALLY
+		{
+			write-host "The End (Final insert to the Alpha table)"
+		}
+
+		###################################################################################################################################	
+
 
 		#---------------------------------------------
 		#Email Stored Procedure												#<----------------------------------------------------------
