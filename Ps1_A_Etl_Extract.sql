@@ -34911,7 +34911,13 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			LEFT JOIN _New_Gift_Plus_DonorType_ N ON A.Plus_DonorType = N.Column_Value
 			LEFT JOIN _New_Gift_StateCode_ O ON A.StateCode = O.Column_Value
 			' -- Ext_From_Statement
-		, '
+		, 'CREATE NONCLUSTERED INDEX IX_Donation_Dim_StatusCode
+				ON _Donation_Dim (StatusCode)
+					INCLUDE (Donation_Key);
+			CREATE NONCLUSTERED INDEX IX_Donation_Dim_New_ReceiptDate
+				ON _Donation_Dim (StatusCode,New_ReceiptDate)
+					INCLUDE (Donation_Key);
+			UPDATE STATISTICS dbo._Donation_Dim;
 			' -- Ext_Where_Statement
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
@@ -40854,6 +40860,10 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 				LEFT JOIN _Drop_Logic_Dim_3 D ON A.Donor_Key = D.Donor_Key																					
 			' -- Ext_From_Statement
 		, 'AND A.Donor_Key IS NOT NULL
+			CREATE NONCLUSTERED INDEX IX_Drop_Logic_Drop_Byu_Mail
+				ON _Drop_Logic_Dim (Drop_Byu_Mail_All)
+					INCLUDE (Donor_Key);
+			UPDATE STATISTICS dbo._Drop_Logic_Dim;
 			' -- Ext_Where_Statement
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
