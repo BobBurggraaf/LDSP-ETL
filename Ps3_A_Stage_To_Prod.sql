@@ -2914,6 +2914,7 @@ INSERT INTO dbo.Stage_To_Prod
 			, Email_Active_Yn NVARCHAR(1)
 			, Email_Confirmed_Yn NVARCHAR(1)
 			, Email_Confidential_Yn NVARCHAR(1)
+			, Ldsp_Region NVARCHAR(20)
 			' -- Dest_Create_Fields
 		, 'Donor_Key
 			, Address_Primary_Yn
@@ -2964,6 +2965,7 @@ INSERT INTO dbo.Stage_To_Prod
 			, Email_Active_Yn
 			, Email_Confirmed_Yn
 			, Email_Confidential_Yn
+			, Ldsp_Region
 			' -- Dest_Insert_Fields
 		, ' ' -- Dest_Where_Statement
 		, GETDATE()
@@ -3520,6 +3522,8 @@ INSERT INTO dbo.Stage_To_Prod
 			, Total_Giving_3_Years_Ago_With_Matching MONEY
 			, Total_Giving_4_Years_Ago_With_Matching MONEY
 			, Total_Giving_5_Years_Ago_With_Matching MONEY
+			, Ldsp_Number_Of_Years_Given INT
+			, Region NVARCHAR(20)
 			' -- Dest_Create_Fields
 		, 'Ldsp_Id
 			, Donor_Full_Name
@@ -3588,6 +3592,8 @@ INSERT INTO dbo.Stage_To_Prod
 			, Total_Giving_3_Years_Ago_With_Matching
 			, Total_Giving_4_Years_Ago_With_Matching
 			, Total_Giving_5_Years_Ago_With_Matching
+			, Ldsp_Number_Of_Years_Given
+			, Region
 			' -- Dest_Insert_Fields
 		, ' ' -- Dest_Where_Statement
 		, GETDATE()
@@ -5250,6 +5256,7 @@ INSERT INTO dbo.Stage_To_Prod
 			, Donor_Total_Lifetime_Giving_To_Byuh_Last_5_Years MONEY
 			, Donor_Total_Lifetime_Giving_To_Ldsbc_Last_5_Years MONEY
 			, Donor_Total_Lifetime_Giving_To_Church_Last_5_Years MONEY
+			, Donor_Total_Lifetime_Giving_To_Ldsp_Years_Given_Cnt INT
 			' -- Dest_Create_Fields
 		, '	Donor_Key      
 			, Donor_Total_Lifetime_Giving
@@ -5266,6 +5273,7 @@ INSERT INTO dbo.Stage_To_Prod
 			, Donor_Total_Lifetime_Giving_To_Byuh_Last_5_Years
 			, Donor_Total_Lifetime_Giving_To_Ldsbc_Last_5_Years
 			, Donor_Total_Lifetime_Giving_To_Church_Last_5_Years
+			, Donor_Total_Lifetime_Giving_To_Ldsp_Years_Given_Cnt
 			' -- Dest_Insert_Fields
 		, ' ' -- Dest_Where_Statement
 		, GETDATE()
@@ -6043,6 +6051,55 @@ INSERT INTO dbo.Stage_To_Prod
 			, Web_Batch_Processed_Date
 			, Web_Batch_Modified_On
 			, Web_Batch_Modified_By
+			' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, GETDATE()
+		, NULL
+	)
+	,
+-- --------------------------
+-- _Donor_Association_Dim
+-- --------------------------
+	( 1 -- Tier
+		, 'dbo._Donor_Association_Dim' -- Source_Table
+		, 'dbo._Donor_Association_Dim' -- Destination_Table
+		,'	Donor_Key NVARCHAR(100)     
+			, Plus_CoordinatingLiaison NVARCHAR(200)
+			, Plus_ConnectedLiaison  NVARCHAR(200)
+			, Plus_PendingLiaison NVARCHAR(200)
+			, Donor_Byu_Plc NVARCHAR(1)
+			, Donor_Byuh_Plc NVARCHAR(1)
+			, Donor_Nac  NVARCHAR(1)
+			, Donor_Byu_Law_Grads NVARCHAR(1)
+			, Donor_Byu_Msm_Grads NVARCHAR(1)
+			, Byu_Night_Society_Member NVARCHAR(1)
+			, Byui_Legacy_Society_Member NVARCHAR(1)
+			, Byuh_Cowley_Society_Member NVARCHAR(1)
+			, Ldsbc_Fox_Society_Member NVARCHAR(1)
+			, Plus_CoordinatingLiaison_DomainName NVARCHAR(1024)
+			, Plus_PendingLiaison_DomainName NVARCHAR(1024)
+			, Plus_ConnectedLiaison_DomainName NVARCHAR(1024)
+			, Legacy_Society_Memberships NVARCHAR(2000)
+			, Donor_All_Association_Memberships NVARCHAR(2000)
+			' -- Dest_Create_Fields
+		, '	Donor_Key      
+			, Plus_CoordinatingLiaison
+			, Plus_ConnectedLiaison
+			, Plus_PendingLiaison
+			, Donor_Byu_Plc
+			, Donor_Byuh_Plc
+			, Donor_Nac
+			, Donor_Byu_Law_Grads
+			, Donor_Byu_Msm_Grads
+			, Byu_Night_Society_Member
+			, Byui_Legacy_Society_Member
+			, Byuh_Cowley_Society_Member
+			, Ldsbc_Fox_Society_Member
+			, Plus_CoordinatingLiaison_DomainName
+			, Plus_PendingLiaison_DomainName
+			, Plus_ConnectedLiaison_DomainName
+			, Legacy_Society_Memberships
+			, Donor_All_Association_Memberships
 			' -- Dest_Insert_Fields
 		, ' ' -- Dest_Where_Statement
 		, GETDATE()
