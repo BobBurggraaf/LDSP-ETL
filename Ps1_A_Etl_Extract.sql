@@ -23770,7 +23770,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, LDSBC NVARCHAR(5) DEFAULT ''LDSBC''
 			, Church NVARCHAR(10) DEFAULT ''Church''
 			, PCC NVARCHAR(5) DEFAULT ''PCC''
-			, CES NVARCHAR(5) DEFAULT ''CES''			
+			, CES NVARCHAR(5) DEFAULT ''CES''
+			, BYUPW NVARCHAR(5) DEFAULT ''BYUPW''		
 			' -- Ext_Create_Fields
 		, 'Hier_Key 
 			, Hier_Name
@@ -44341,6 +44342,166 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 	)
 	,
 -- --------------------------
+-- _Donor_Total_Giving_Byupw_High_Flag_
+-- --------------------------
+	( 8 -- Tier
+		, ' ' -- Source_Table
+		, ' ' -- Destination_Table
+		, '_Donor_Total_Giving_Byupw_High_Flag_' -- Ext_Table
+		, '	' -- Dest_Create_Fields
+		, '	' -- Dest_Insert_Fields
+		, ' ' -- Dest_Where_Statement
+		, '	Donor_Key NVARCHAR(100)
+			, Donor_Total_Giving_Byupw_High_Flag NVARCHAR(1)
+			' -- Ext_Create_Fields
+		, '	Donor_Key
+			, Donor_Total_Giving_Byupw_High_Flag
+			' -- Ext_Insert_Fields
+		, ' DISTINCT Donor_Key
+				, [Y] AS Donor_Total_Giving_Byupw_High_Flag
+			' -- Ext_Select_Statement
+		, '	(SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS Donor_Key
+				, A.[Y]
+				, SUM(A.New_CreditAmount) AS Donor_Total_Giving_Byupw_High_Flag
+				FROM dbo._Gift_Credit_ A
+					INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
+				WHERE 1 = 1
+					AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-2,0),112) -- Beginning of this year -1
+												AND CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-1,-1),112) -- End of this year -1
+					AND A.Plus_Type != 100000001 --Exclude Influence
+					AND A.Plus_SubType != 100000002 --Exclude Match
+					AND B.New_Inst = [BYUPW]
+				GROUP BY COALESCE(A.New_RelatedConstituent, A.New_OrganizationId)
+					, A.[Y]
+				HAVING SUM(A.New_CreditAmount) BETWEEN 500 AND 5000
+			UNION
+			SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS Donor_Key 
+				, A.[Y]
+				, SUM(A.New_CreditAmount) AS Donor_Total_Giving_Byupw_High_Flag
+				FROM dbo._Gift_Credit_ A
+					INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
+				WHERE 1 = 1
+					AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-3,0),112) -- Beginning of this year -2
+												AND CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-2,-1),112) -- End of this year -2
+					AND A.Plus_Type != 100000001 --Exclude Influence
+					AND A.Plus_SubType != 100000002 --Exclude Match
+					AND B.New_Inst = [BYUPW]
+				GROUP BY COALESCE(A.New_RelatedConstituent, A.New_OrganizationId)
+					, A.[Y]
+				HAVING SUM(A.New_CreditAmount) BETWEEN 500 AND 5000
+			UNION
+			SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS Donor_Key
+				, A.[Y]
+				, SUM(A.New_CreditAmount) AS Donor_Total_Giving_Byupw_High_Flag
+				FROM dbo._Gift_Credit_ A
+					INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
+				WHERE 1 = 1
+					AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-4,0),112) -- Beginning of this year -3
+												AND CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-3,-1),112) -- End of this year -3
+					AND A.Plus_Type != 100000001 --Exclude Influence
+					AND A.Plus_SubType != 100000002 --Exclude Match
+					AND B.New_Inst = [BYUPW]
+				GROUP BY COALESCE(A.New_RelatedConstituent, A.New_OrganizationId)
+					, A.[Y]
+				HAVING SUM(A.New_CreditAmount) BETWEEN 500 AND 5000
+			UNION
+			' -- Ext_From_Statement
+		, '
+			' -- Ext_Where_Statement
+		, NULL -- Tier_3_Stage
+		, NULL -- Tier_3_Stage_DateTime
+		, NULL -- Tier_4_Stage
+		, NULL -- Tier_4_Stage_DateTime
+		, ' ' -- Ext_Select_Statement_2
+		, '	SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS Donor_Key 
+				, A.[Y]
+				, SUM(A.New_CreditAmount) AS Donor_Total_Giving_Byupw_High_Flag
+				FROM dbo._Gift_Credit_ A
+					INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
+				WHERE 1 = 1
+					AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-5,0),112) -- Beginning of this year -4
+												AND CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-4,-1),112) -- End of this year -4
+					AND A.Plus_Type != 100000001 --Exclude Influence
+					AND A.Plus_SubType != 100000002 --Exclude Match
+					AND B.New_Inst = [BYUPW]
+				GROUP BY COALESCE(A.New_RelatedConstituent, A.New_OrganizationId)
+					, A.[Y]
+				HAVING SUM(A.New_CreditAmount) BETWEEN 500 AND 5000
+			UNION
+			SELECT COALESCE(A.New_RelatedConstituent, A.New_OrganizationId) AS Donor_Key 
+				, A.[Y]
+				, SUM(A.New_CreditAmount) AS Donor_Total_Giving_Byupw_High_Flag
+				FROM dbo._Gift_Credit_ A
+					INNER JOIN _Hier_Dim B ON A.Plus_InstitutionalHieararchy = B.Hier_Key
+				WHERE 1 = 1
+					AND CONVERT(DATE,A.New_ReceiptDate,112) BETWEEN CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-6,0),112) -- Beginning of this year -5
+												AND CONVERT(NVARCHAR(10),DATEADD(YEAR, DATEDIFF(YEAR, -2, GETDATE()-1)-5,-1),112) -- End of this year -5
+					AND A.Plus_Type != 100000001 --Exclude Influence
+					AND A.Plus_SubType != 100000002 --Exclude Match
+					AND B.New_Inst = [BYUPW]
+				GROUP BY COALESCE(A.New_RelatedConstituent, A.New_OrganizationId)
+				, A.[Y]
+				HAVING SUM(A.New_CreditAmount) BETWEEN 500 AND 5000		
+			) A													
+			' -- Ext_From_Statement_2
+		, ' ' -- Ext_Create_Fields_2
+		, ' ' -- Ext_Create_Fields_3
+		, ' ' -- Ext_Where_Statement_2
+		, ' ' -- Ext_Where_Statement_3
+		, NULL -- Tier_5_Stage
+		, NULL -- Tier_5_Stage_DateTime
+		, NULL -- Tier_6_Stage
+		, NULL -- Tier_6_Stage_DateTime
+		, NULL -- Tier_7_Stage
+		, NULL -- Tier_7_Stage_DateTime
+		, NULL -- Tier_8_Stage
+		, NULL -- Tier_8_Stage_DateTime
+		, NULL -- Tier_9_Stage
+		, NULL -- Tier_9_Stage_DateTime
+		, 1
+		, NULL -- Extract_Stage
+		, NULL -- Extract_Stage_DateTime
+		, NULL -- Coupler_Stage
+		, NULL -- Coupler_Stage_DateTime
+		, NULL -- Tier_2_Stage
+		, NULL -- Tier_2_Stage_DateTime
+		, GETDATE()
+		, NULL
+		, NULL -- Ext_Select_Statement_3
+		, NULL -- Ext_Select_Statement_4
+		, NULL -- Ext_Select_Statement_5
+		, NULL -- Ext_Select_Statement_6
+		, NULL -- Ext_Select_Statement_7
+		, '																												
+			' -- Ext_From_Statement_3
+		, '		
+			'-- Ext_From_Statement_4
+		, NULL -- Ext_From_Statement_5
+		, NULL -- Ext_From_Statement_6
+		, NULL -- Ext_From_Statement_7
+		, NULL -- Ext_Where_Statement_4
+		, NULL -- Ext_Where_Statement_5
+		, NULL -- Ext_Where_Statement_6
+		, NULL -- Ext_Where_Statement_7
+		, NULL -- Tier_10_Stage
+		, NULL -- Tier_10_Stage_DateTime
+		, NULL -- Tier_11_Stage
+		, NULL -- Tier_11_Stage_DateTime
+		, NULL -- Tier_12_Stage
+		, NULL -- Tier_12_Stage_DateTime
+		, NULL -- Ext_Create_Fields_4
+		, NULL -- Ext_Create_Fields_5
+		, NULL -- Ext_Insert_Fields_2
+		, NULL -- Ext_Insert_Fields_3
+		, NULL -- Ext_Insert_Fields_4
+		, NULL -- Ext_Insert_Fields_5
+		, NULL -- Extra_7
+		, NULL -- Extra_8
+		, NULL -- Extra_9
+		, NULL -- Extra_10
+	)
+	,
+-- --------------------------
 -- _Donor_Lifetime_Giving_Dim
 -- --------------------------
 	( 8 -- Tier
@@ -45694,6 +45855,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Donor_Total_Giving_Byui_High_Flag NVARCHAR(1)
 			, Donor_Total_Giving_Byuh_High_Flag NVARCHAR(1)
 			, Donor_Total_Giving_Ldsbc_High_Flag NVARCHAR(1)
+			, Donor_Total_Giving_Byupw_High_Flag NVARCHAR(1)
 			, Donor_Gift_Count_Previous_5_Years INT
 			, Donor_Average_Single_Gift_Previous_5_Years MONEY
 			' -- Ext_Create_Fields
@@ -45714,6 +45876,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Donor_Total_Giving_Byui_High_Flag
 			, Donor_Total_Giving_Byuh_High_Flag
 			, Donor_Total_Giving_Ldsbc_High_Flag
+			, Donor_Total_Giving_Byupw_High_Flag
 			, Donor_Gift_Count_Previous_5_Years
 			, Donor_Average_Single_Gift_Previous_5_Years
 			' -- Ext_Insert_Fields
@@ -45760,6 +45923,9 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, CASE WHEN Donor_Total_Giving_Ldsbc_High_Flag IS NULL THEN A.[N]
 				WHEN Donor_Total_Giving_Ldsbc_High_Flag = A.[N] THEN A.[N]
 				ELSE A.[Y] END AS Donor_Total_Giving_Ldsbc_High_Flag
+			, CASE WHEN Donor_Total_Giving_Byupw_High_Flag IS NULL THEN A.[N]
+				WHEN Donor_Total_Giving_Byupw_High_Flag = A.[N] THEN A.[N]
+				ELSE A.[Y] END AS Donor_Total_Giving_Byupw_High_Flag
 			, Donor_Gift_Count_Previous_5_Years
 			, Donor_Average_Single_Gift_Previous_5_Years
 			' -- Ext_Select_Statement
@@ -45804,7 +45970,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 														AND CONVERT(DATE,DATEADD(yy, DATEDIFF(yy, 0, GETDATE()) + 0, -1),101)
 							GROUP BY Donor_Key
 						) A
-				) S ON A.Donor_Key = S.Donor_Key													
+				) S ON A.Donor_Key = S.Donor_Key
+			LEFT JOIN _Donor_Total_Giving_Byupw_High_Flag_ T ON A.Donor_Key = T.Donor_Key													
 			' -- Ext_From_Statement
 		, '	
 			' -- Ext_Where_Statement
