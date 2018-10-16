@@ -46658,6 +46658,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 				, Initiative_Primary_Initiative
 				, Initiative_Parent_Initiative
 				, Initiative_Has_Expectancy
+				, CreatedOn
+				, CreatedBy
 				)
 				VALUES(0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 			' -- Ext_Where_Statement
