@@ -36687,12 +36687,12 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, CASE WHEN S.Donor_Key IS NULL THEN A.[N]
 					WHEN S.Donor_Key IS NOT NULL THEN A.[Y]
 					ELSE A.[N] END AS Donor_Byu_Alumni_Affiliated
-			, CASE WHEN T.Donor_Key IS NULL THEN A.[N]
-					WHEN T.Donor_Key IS NOT NULL THEN A.[Y]
-					ELSE A.[N] END AS Donor_Byui_Alumni_Affiliated
 			, CASE WHEN U.Donor_Key IS NULL THEN A.[N]
 					WHEN U.Donor_Key IS NOT NULL THEN A.[Y]
 					ELSE A.[N] END AS Donor_Byuh_Alumni_Affiliated
+			, CASE WHEN T.Donor_Key IS NULL THEN A.[N]
+					WHEN T.Donor_Key IS NOT NULL THEN A.[Y]
+					ELSE A.[N] END AS Donor_Byui_Alumni_Affiliated			
 			, CASE WHEN V.Donor_Key IS NULL THEN A.[N]
 					WHEN V.Donor_Key IS NOT NULL THEN A.[Y]
 					ELSE A.[N] END AS Donor_Ldsbc_Alumni_Affiliated
