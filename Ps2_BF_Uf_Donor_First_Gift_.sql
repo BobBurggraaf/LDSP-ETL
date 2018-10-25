@@ -293,7 +293,7 @@ CREATE OR ALTER FUNCTION [dbo].[_Donor_First_Gift_]()
 								, MAX(A.Donation_Credit_Amt) AS Donor_First_Gift_To_Byupw_Amt
 								FROM _Donation_Fact A
 									INNER JOIN _Donation_Dim B ON A.Donation_Key = B.Donation_Key
-									INNER JOIN Ldsp_First_Donation_Date_Byu() C ON A.Donor_Key = C.Donor_Key AND B.New_ReceiptDate = C.Min_Receipt_Date
+									INNER JOIN Ldsp_First_Donation_Date_Byupw() C ON A.Donor_Key = C.Donor_Key AND B.New_ReceiptDate = C.Min_Receipt_Date
 									INNER JOIN _Hier_Dim D ON A.Hier_Key = D.Hier_Key
 								WHERE 1 = 1
 									AND A.Plus_SharedCreditType != 'Matching' -- Not Matching
