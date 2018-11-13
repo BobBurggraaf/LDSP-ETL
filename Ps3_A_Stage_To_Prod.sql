@@ -847,6 +847,7 @@ INSERT INTO dbo.Stage_To_Prod
 			, New_StartDate DATE
 			, New_EndDate DATE
 			, StatusCode NVARCHAR(400)
+			, Plus_Notes NVARCHAR(4000)
 			' -- Dest_Create_Fields
 		, 'ContactId 
 			, Association_Key 
@@ -863,6 +864,7 @@ INSERT INTO dbo.Stage_To_Prod
 			, New_StartDate
 			, New_EndDate
 			, StatusCode
+			, Plus_Notes
 			' -- Dest_Insert_Fields
 		, ' ' -- Dest_Where_Statement
 		, GETDATE()
@@ -1955,6 +1957,8 @@ INSERT INTO dbo.Stage_To_Prod
 			, Campaign NVARCHAR(128)
 			, New_Inst NVARCHAR(100)
 			, Hier_Name NVARCHAR(100)
+			, ContactId NVARCHAR(100)
+			, Plus_i5TextDetails NVARCHAR(4000)
 			' -- Dest_Create_Fields
 		, 'Drop_Include_Key
 			, Drop_Include_Instit_Hierarchy 
@@ -1978,6 +1982,8 @@ INSERT INTO dbo.Stage_To_Prod
 			, Campaign
 			, New_Inst
 			, Hier_Name
+			, ContactId
+			, Plus_i5TextDetails
 			' -- Dest_Insert_Fields
 		, ' ' -- Dest_Where_Statement
 		, GETDATE()
@@ -2252,6 +2258,9 @@ INSERT INTO dbo.Stage_To_Prod
 			, Plus_EstimatedMaturityDate DATE
 			, Plus_PaymentStartDate DATE
 			, Lds_ExpectancyType NVARCHAR(400)
+			, CreatedOn DATE
+			, CreatedBy NVARCHAR(200)
+			, Plus_PlannedGiftExpectancyType NVARCHAR(400)
 			' -- Dest_Create_Fields
 		, 'Expectancy_Key
 			, Plus_Kind
@@ -2306,6 +2315,9 @@ INSERT INTO dbo.Stage_To_Prod
 			, Plus_EstimatedMaturityDate
 			, Plus_PaymentStartDate
 			, Lds_ExpectancyType
+			, CreatedOn
+			, CreatedBy
+			, Plus_PlannedGiftExpectancyType
 			' -- Dest_Insert_Fields
 		, ' ' -- Dest_Where_Statement
 		, GETDATE()
@@ -2601,6 +2613,8 @@ INSERT INTO dbo.Stage_To_Prod
 			, Initiative_Primary_Initiative NVARCHAR(1)
 			, Initiative_Parent_Initiative NVARCHAR(600)
 			, Initiative_Has_Expectancy NVARCHAR(1)
+			, CreatedOn DATE
+			, CreatedBy NVARCHAR(200)
 			' -- Dest_Create_Fields
 		, 'Initiative_Key
 			, Initiative_Name
@@ -2627,6 +2641,8 @@ INSERT INTO dbo.Stage_To_Prod
 			, Initiative_Primary_Initiative
 			, Initiative_Parent_Initiative
 			, Initiative_Has_Expectancy
+			, CreatedOn
+			, CreatedBy
 			' -- Dest_Insert_Fields
 		, ' ' -- Dest_Where_Statement
 		, GETDATE()
@@ -4138,6 +4154,12 @@ INSERT INTO dbo.Stage_To_Prod
 			, Total_Giving_Current_Year_Minus_3_Church MONEY
 			, Total_Giving_Current_Year_Minus_4_Church MONEY
 			, Total_Giving_Current_Year_Minus_5_Church MONEY
+			, Total_Giving_Current_Year_Byupw MONEY
+			, Total_Giving_Current_Year_Minus_1_Byupw MONEY
+			, Total_Giving_Current_Year_Minus_2_Byupw MONEY
+			, Total_Giving_Current_Year_Minus_3_Byupw MONEY
+			, Total_Giving_Current_Year_Minus_4_Byupw MONEY
+			, Total_Giving_Current_Year_Minus_5_Byupw MONEY
 			' -- Dest_Create_Fields
 		, 'Donor_Key
 			, Total_Giving_Current_Year
@@ -4176,6 +4198,12 @@ INSERT INTO dbo.Stage_To_Prod
 			, Total_Giving_Current_Year_Minus_3_Church
 			, Total_Giving_Current_Year_Minus_4_Church
 			, Total_Giving_Current_Year_Minus_5_Church
+			, Total_Giving_Current_Year_Byupw
+			, Total_Giving_Current_Year_Minus_1_Byupw
+			, Total_Giving_Current_Year_Minus_2_Byupw
+			, Total_Giving_Current_Year_Minus_3_Byupw
+			, Total_Giving_Current_Year_Minus_4_Byupw
+			, Total_Giving_Current_Year_Minus_5_Byupw
 			' -- Dest_Insert_Fields
 		, ' ' -- Dest_Where_Statement
 		, GETDATE()
@@ -5195,11 +5223,13 @@ INSERT INTO dbo.Stage_To_Prod
 			, Donor_Given_This_Year_To_ByuI NVARCHAR(1)
 			, Donor_Given_This_Year_To_ByuH NVARCHAR(1)
 			, Donor_Given_This_Year_To_LDSBC NVARCHAR(1)
+			, Donor_Given_This_Year_To_Byupw NVARCHAR(1)
 			, Donor_Given_Last_3_Months_To_Byu NVARCHAR(1)
 			, Donor_Given_Last_3_Months_To_Byui NVARCHAR(1)
 			, Donor_Given_Last_3_Months_To_Byuh NVARCHAR(1)
 			, Donor_Given_Last_3_Months_To_Ldsbc NVARCHAR(1)
 			, Donor_Given_Last_3_Months_To_Church NVARCHAR(1)
+			, Donor_Given_Last_3_Months_To_Byupw NVARCHAR(1)
 			, Donor_Institution_Giving_Areas NVARCHAR(1000)
 			, Donor_Byu_Giving_Areas NVARCHAR(2000)
 			, Donor_Church_Giving_Areas NVARCHAR(2000)
@@ -5207,6 +5237,7 @@ INSERT INTO dbo.Stage_To_Prod
 			, Donor_Total_Giving_Byui_High_Flag NVARCHAR(1)
 			, Donor_Total_Giving_Byuh_High_Flag NVARCHAR(1)
 			, Donor_Total_Giving_Ldsbc_High_Flag NVARCHAR(1)
+			, Donor_Total_Giving_Byupw_High_Flag NVARCHAR(1) 
 			, Donor_Gift_Count_Previous_5_Years INT
 			, Donor_Average_Single_Gift_Previous_5_Years MONEY
 			' -- Dest_Create_Fields
@@ -5215,11 +5246,13 @@ INSERT INTO dbo.Stage_To_Prod
 			, Donor_Given_This_Year_To_ByuI
 			, Donor_Given_This_Year_To_ByuH
 			, Donor_Given_This_Year_To_LDSBC
+			, Donor_Given_This_Year_To_Byupw
 			, Donor_Given_Last_3_Months_To_Byu
 			, Donor_Given_Last_3_Months_To_Byui
 			, Donor_Given_Last_3_Months_To_Byuh
 			, Donor_Given_Last_3_Months_To_Ldsbc
 			, Donor_Given_Last_3_Months_To_Church
+			, Donor_Given_Last_3_Months_To_Byupw
 			, Donor_Institution_Giving_Areas
 			, Donor_Byu_Giving_Areas
 			, Donor_Church_Giving_Areas
@@ -5227,6 +5260,7 @@ INSERT INTO dbo.Stage_To_Prod
 			, Donor_Total_Giving_Byui_High_Flag
 			, Donor_Total_Giving_Byuh_High_Flag
 			, Donor_Total_Giving_Ldsbc_High_Flag
+			, Donor_Total_Giving_Byupw_High_Flag
 			, Donor_Gift_Count_Previous_5_Years
 			, Donor_Average_Single_Gift_Previous_5_Years
 			' -- Dest_Insert_Fields
@@ -5257,6 +5291,8 @@ INSERT INTO dbo.Stage_To_Prod
 			, Donor_Total_Lifetime_Giving_To_Ldsbc_Last_5_Years MONEY
 			, Donor_Total_Lifetime_Giving_To_Church_Last_5_Years MONEY
 			, Donor_Total_Lifetime_Giving_To_Ldsp_Years_Given_Cnt INT
+			, Donor_Total_Lifetime_Giving_To_Byupw_Last_5_Years MONEY
+			, Donor_Total_Lifetime_Giving_Byupw MONEY
 			' -- Dest_Create_Fields
 		, '	Donor_Key      
 			, Donor_Total_Lifetime_Giving
@@ -5274,6 +5310,8 @@ INSERT INTO dbo.Stage_To_Prod
 			, Donor_Total_Lifetime_Giving_To_Ldsbc_Last_5_Years
 			, Donor_Total_Lifetime_Giving_To_Church_Last_5_Years
 			, Donor_Total_Lifetime_Giving_To_Ldsp_Years_Given_Cnt
+			, Donor_Total_Lifetime_Giving_To_Byupw_Last_5_Years
+			, Donor_Total_Lifetime_Giving_Byupw
 			' -- Dest_Insert_Fields
 		, ' ' -- Dest_Where_Statement
 		, GETDATE()
@@ -5303,6 +5341,8 @@ INSERT INTO dbo.Stage_To_Prod
 			, Donor_First_Gift_Date_Ldsbc DATE
 			, Donor_First_Gift_Date_Church DATE
 			, Donor_First_Gift_Date_Ldsp DATE
+			, Donor_First_Gift_Date_Byupw DATE
+			, Donor_First_Gift_To_Byupw_Amt MONEY
 			' -- Dest_Create_Fields
 		, '	Donor_Key      
 			, Donor_First_Gift_Post_Date_Byu
@@ -5321,6 +5361,8 @@ INSERT INTO dbo.Stage_To_Prod
 			, Donor_First_Gift_Date_Ldsbc
 			, Donor_First_Gift_Date_Church
 			, Donor_First_Gift_Date_Ldsp
+			, Donor_First_Gift_Date_Byupw
+			, Donor_First_Gift_To_Byupw_Amt
 			' -- Dest_Insert_Fields
 		, ' ' -- Dest_Where_Statement
 		, GETDATE()
@@ -5340,12 +5382,14 @@ INSERT INTO dbo.Stage_To_Prod
 			, Donor_Most_Recent_Gift_Date_Byuh DATE
 			, Donor_Most_Recent_Gift_Date_Ldsbc DATE
 			, Donor_Most_Recent_Gift_Date_Church DATE
+			, Donor_Most_Recent_Gift_Date_Byupw DATE
 			, Donor_Most_Recent_Gift_To_Ldsp_Amt MONEY
 			, Donor_Most_Recent_Gift_To_Byu_Amt MONEY
 			, Donor_Most_Recent_Gift_To_Byui_Amt MONEY
 			, Donor_Most_Recent_Gift_To_Byuh_Amt MONEY
 			, Donor_Most_Recent_Gift_To_Ldsbc_Amt MONEY
 			, Donor_Most_Recent_Gift_To_Church_Amt MONEY
+			, Donor_Most_Recent_Gift_To_Byupw_Amt MONEY
 			' -- Dest_Create_Fields
 		, '	Donor_Key      
 			, Donor_Most_Recent_Gift_Date_Ldsp
@@ -5354,12 +5398,14 @@ INSERT INTO dbo.Stage_To_Prod
 			, Donor_Most_Recent_Gift_Date_Byuh
 			, Donor_Most_Recent_Gift_Date_Ldsbc
 			, Donor_Most_Recent_Gift_Date_Church
+			, Donor_Most_Recent_Gift_Date_Byupw
 			, Donor_Most_Recent_Gift_To_Ldsp_Amt
 			, Donor_Most_Recent_Gift_To_Byu_Amt
 			, Donor_Most_Recent_Gift_To_Byui_Amt
 			, Donor_Most_Recent_Gift_To_Byuh_Amt
 			, Donor_Most_Recent_Gift_To_Ldsbc_Amt
 			, Donor_Most_Recent_Gift_To_Church_Amt
+			, Donor_Most_Recent_Gift_To_Byupw_Amt
 			' -- Dest_Insert_Fields
 		, ' ' -- Dest_Where_Statement
 		, GETDATE()
@@ -5385,6 +5431,8 @@ INSERT INTO dbo.Stage_To_Prod
 			, Donor_Largest_Gift_Date_Byuh DATE
 			, Donor_Largest_Gift_Date_Ldsbc DATE
 			, Donor_Largest_Gift_Date_Church DATE
+			, Donor_Largest_Gift_Date_Byupw DATE
+			, Donor_Largest_Gift_Amt_Byupw MONEY
 			' -- Dest_Create_Fields
 		, '	Donor_Key      
 			, Donor_Largest_Gift_Amt_Byu
@@ -5399,6 +5447,8 @@ INSERT INTO dbo.Stage_To_Prod
 			, Donor_Largest_Gift_Date_Byuh
 			, Donor_Largest_Gift_Date_Ldsbc
 			, Donor_Largest_Gift_Date_Church
+			, Donor_Largest_Gift_Date_Byupw
+			, Donor_Largest_Gift_Amt_Byupw
 			' -- Dest_Insert_Fields
 		, ' ' -- Dest_Where_Statement
 		, GETDATE()
@@ -6081,6 +6131,14 @@ INSERT INTO dbo.Stage_To_Prod
 			, Plus_ConnectedLiaison_DomainName NVARCHAR(1024)
 			, Legacy_Society_Memberships NVARCHAR(2000)
 			, Donor_All_Association_Memberships NVARCHAR(2000)
+			, Byu_Donor_Affiliated NVARCHAR(1)
+			, Byui_Donor_Affiliated NVARCHAR(1)
+			, Byuh_Donor_Affiliated NVARCHAR(1)
+			, Ldsbc_Donor_Affiliated NVARCHAR(1)
+			, Donor_Byu_Alumni_Affiliated NVARCHAR(1)
+			, Donor_Byuh_Alumni_Affiliated NVARCHAR(1)
+			, Donor_Byui_Alumni_Affiliated NVARCHAR(1)
+			, Donor_Ldsbc_Alumni_Affiliated NVARCHAR(1)
 			' -- Dest_Create_Fields
 		, '	Donor_Key      
 			, Plus_CoordinatingLiaison
@@ -6100,6 +6158,14 @@ INSERT INTO dbo.Stage_To_Prod
 			, Plus_ConnectedLiaison_DomainName
 			, Legacy_Society_Memberships
 			, Donor_All_Association_Memberships
+			, Byu_Donor_Affiliated
+			, Byui_Donor_Affiliated
+			, Byuh_Donor_Affiliated
+			, Ldsbc_Donor_Affiliated
+			, Donor_Byu_Alumni_Affiliated
+			, Donor_Byuh_Alumni_Affiliated
+			, Donor_Byui_Alumni_Affiliated
+			, Donor_Ldsbc_Alumni_Affiliated
 			' -- Dest_Insert_Fields
 		, ' ' -- Dest_Where_Statement
 		, GETDATE()
