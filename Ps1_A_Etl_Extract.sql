@@ -45833,6 +45833,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Donor_Largest_Gift_Date_Church DATE
 			, Donor_Largest_Gift_Date_Byupw DATE
 			, Donor_Largest_Gift_Amt_Byupw MONEY
+			, Donor_Largest_Gift_Date_5_Years_Ldsp DATE
 			' -- Ext_Create_Fields
 		, '	Donor_Key      
 			, Donor_Largest_Gift_Amt_Byu
@@ -45849,6 +45850,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Donor_Largest_Gift_Date_Church
 			, Donor_Largest_Gift_Date_Byupw
 			, Donor_Largest_Gift_Amt_Byupw
+			, Donor_Largest_Gift_Date_5_Years_Ldsp
 			' -- Ext_Insert_Fields
 		, ' A.Donor_Key
 			, Donor_Largest_Gift_Amt_Byu
@@ -45865,6 +45867,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Donor_Largest_Gift_Date_Church
 			, Donor_Largest_Gift_Date_Byupw
 			, Donor_Largest_Gift_Amt_Byupw
+			, Donor_Largest_Gift_Date_5_Years_Ldsp
 			' -- Ext_Select_Statement
 		, '	 _All_Donors_ A
 				LEFT JOIN
@@ -46082,7 +46085,23 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 							AND A.Donation_Credit_Amt IS NOT NULL
 							AND B.New_Inst = B.[BYUPW]
 						GROUP BY A.Donor_Key
-					) O ON A.Donor_Key = O.Donor_Key															
+					) O ON A.Donor_Key = O.Donor_Key
+				LEFT JOIN
+					(SELECT A.Donor_Key 
+						, CONVERT(VARCHAR(10),A.New_ReceiptDate,101) AS Donor_Largest_Gift_Date_5_Years_Ldsp
+						FROM
+							(SELECT A.Donor_Key
+								, C.New_ReceiptDate
+								, ROW_NUMBER() OVER(PARTITION BY A.Donor_Key ORDER BY A.Donation_Credit_Amt DESC, C.New_ReceiptDate DESC) AS RowNumber
+								FROM _Donation_Fact A
+									INNER JOIN _Hier_Dim B ON A.Hier_Key = B.Hier_Key
+									INNER JOIN _Donation_Dim C ON A.Donation_Key = C.Donation_Key
+								WHERE 1 = 1
+									AND C.New_ReceiptDate >= CONVERT(DATE,DATEADD(yy,-5,DATEADD(yy,DATEDIFF(yy,0,GETDATE()),0)),1)
+							) A
+						WHERE 1 = 1
+							AND A.RowNumber = 1
+					) P ON A.Donor_Key = P.Donor_Key															
 			' -- Ext_From_Statement_3
 		, '
 			'-- Ext_From_Statement_4
