@@ -45834,6 +45834,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Donor_Largest_Gift_Date_Byupw DATE
 			, Donor_Largest_Gift_Amt_Byupw MONEY
 			, Donor_Largest_Gift_Date_5_Years_Ldsp DATE
+			, Donor_Ldsp_Largest_Gift_5_Years MONEY
+			, Donor_Max_Annual_Total_5_Years_LDSP MONEY
 			' -- Ext_Create_Fields
 		, '	Donor_Key      
 			, Donor_Largest_Gift_Amt_Byu
@@ -45851,6 +45853,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Donor_Largest_Gift_Date_Byupw
 			, Donor_Largest_Gift_Amt_Byupw
 			, Donor_Largest_Gift_Date_5_Years_Ldsp
+			, Donor_Ldsp_Largest_Gift_5_Years
+			, Donor_Max_Annual_Total_5_Years_LDSP
 			' -- Ext_Insert_Fields
 		, ' A.Donor_Key
 			, Donor_Largest_Gift_Amt_Byu
@@ -45868,6 +45872,8 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Donor_Largest_Gift_Date_Byupw
 			, Donor_Largest_Gift_Amt_Byupw
 			, Donor_Largest_Gift_Date_5_Years_Ldsp
+			, Donor_Ldsp_Largest_Gift_5_Years
+			, Donor_Max_Annual_Total_5_Years_LDSP
 			' -- Ext_Select_Statement
 		, '	 _All_Donors_ A
 				LEFT JOIN
@@ -46101,7 +46107,36 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 							) A
 						WHERE 1 = 1
 							AND A.RowNumber = 1
-					) P ON A.Donor_Key = P.Donor_Key															
+					) P ON A.Donor_Key = P.Donor_Key	
+				LEFT JOIN
+					(SELECT Donor_Key
+						, MAX(Donation_Credit_Amt) AS Donor_Ldsp_Largest_Gift_5_Years
+						FROM _Donation_Fact A
+							INNER JOIN _Donation_Dim B ON A.Donation_Key = B.Donation_Key
+						WHERE 1 = 1 
+							AND A.Donation_Credit_Amt IS NOT NULL
+							AND B.New_ReceiptDate >= CONVERT(DATE,DATEADD(yy,-5,DATEADD(yy,DATEDIFF(yy,0,GETDATE()),0)),1)
+						GROUP BY Donor_Key
+					) Q ON A.Donor_Key = Q.Donor_Key	
+				LEFT JOIN
+					(SELECT Donor_Key
+						, Donor_Max_Annual_Total_5_Years_LDSP
+						FROM 
+							(SELECT ROW_NUMBER() OVER(PARTITION BY Donor_Key ORDER BY SUM(Donation_Credit_Amt) DESC) AS Row_Num
+								, Donor_Key
+								, YEAR(B.New_ReceiptDate) AS RecieptYear
+								, SUM(Donation_Credit_Amt) AS Donor_Max_Annual_Total_5_Years_LDSP
+								FROM _Donation_Fact A
+									INNER JOIN _Donation_Dim B ON A.Donation_Key = B.Donation_Key
+								WHERE 1 = 1 
+									AND A.Donation_Credit_Amt IS NOT NULL
+									AND B.New_ReceiptDate >= CONVERT(DATE,DATEADD(yy,-5,DATEADD(yy,DATEDIFF(yy,0,GETDATE()),0)),1)
+								GROUP BY Donor_Key
+									, YEAR(B.New_ReceiptDate)
+							) A
+						WHERE 1 = 1
+							AND Row_Num = 1
+					) R ON A.Donor_Key = R.Donor_Key													
 			' -- Ext_From_Statement_3
 		, '
 			'-- Ext_From_Statement_4
