@@ -30544,6 +30544,10 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Ldsbc_Education_Affiliated_Date DATE
 			, Ldsbc_Interest_Affiliated_Date DATE
 			, Ldsbc_Employee_Affiliated_Date DATE
+			, Byu_Employment_Affiliated_Yn NVARCHAR(1)
+			, Byui_Employment_Affiliated_Yn NVARCHAR(1)
+			, Byuh_Employment_Affiliated_Yn NVARCHAR(1)
+			, Ldsbc_Employment_Affiliated_Yn NVARCHAR(1)
 		' -- Ext_Create_Fields
 		, 'ContactId 
 			, Affiliated_Key
@@ -30567,6 +30571,10 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Ldsbc_Education_Affiliated_Date
 			, Ldsbc_Interest_Affiliated_Date
 			, Ldsbc_Employee_Affiliated_Date
+			, Byu_Employment_Affiliated_Yn
+			, Byui_Employment_Affiliated_Yn
+			, Byuh_Employment_Affiliated_Yn
+			, Ldsbc_Employment_Affiliated_Yn
 		' -- Ext_Insert_Fields
 		, 'ContactId
 			, ROW_NUMBER() OVER(ORDER BY ContactId) AS Affiliated_Key
@@ -30606,6 +30614,10 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 				, Byui_Employment_Min_Date
 				, Byuh_Employment_Min_Date
 				, Ldsbc_Employment_Min_Date
+				, Byu_Employment_Affiliated_Yn
+                , Byui_Employment_Affiliated_Yn
+                , Byuh_Employment_Affiliated_Yn
+                , Ldsbc_Employment_Affiliated_Yn
 				FROM 
 					(SELECT COALESCE(A.ContactId,C.ContactId) AS ContactId
 						, Byu_Donor_Min_Date
@@ -30658,16 +30670,10 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 												WHEN B.Byui_Student_Min_Date < A.Byui_Alumni_Min_Date THEN B.Byui_Student_Min_Date
 												WHEN A.Byui_Alumni_Min_Date = B.Byui_Student_Min_Date THEN A.Byui_Alumni_Min_Date
 												ELSE NULL END AS Byui_Education_Min_Date
-										, CASE WHEN B.Byuh_Student_Min_Date IS NULL THEN A.Byuh_Alumni_Min_Date
-												WHEN A.Byuh_Alumni_Min_Date IS NULL THEN B.Byuh_Student_Min_Date
-												WHEN A.Byuh_Alumni_Min_Date < B.Byuh_Student_Min_Date THEN A.Byuh_Alumni_Min_Date
-												WHEN B.Byuh_Student_Min_Date < A.Byuh_Alumni_Min_Date THEN B.Byuh_Student_Min_Date
-												WHEN A.Byuh_Alumni_Min_Date = B.Byuh_Student_Min_Date THEN A.Byuh_Alumni_Min_Date
-												ELSE NULL END AS Byuh_Education_Min_Date										 					
 			' -- Ext_From_Statement
 		, 'AND ContactId IS NOT NULL
 			INSERT INTO _Affiliated_Dim
-				VALUES(NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+				VALUES(NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 			' -- Ext_Where_Statement	
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
@@ -30691,8 +30697,18 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, CONVERT(VARCHAR(10),Ldsbc_Education_Min_Date,101) AS Ldsbc_Education_Affiliated_Date
 			, CONVERT(VARCHAR(10),Ldsbc_Interest_Min_Date,101) AS Ldsbc_Interest_Affiliated_Date
 			, CONVERT(VARCHAR(10),Ldsbc_Employment_Min_Date,101) AS Ldsbc_Employee_Affiliated_Date 
+			, Byu_Employment_Affiliated_Yn
+    		, Byui_Employment_Affiliated_Yn
+    		, Byuh_Employment_Affiliated_Yn
+    		, Ldsbc_Employment_Affiliated_Yn
 			' -- Ext_Select_Statement_2
-		, '								, CASE WHEN B.Ldsbc_Student_Min_Date IS NULL THEN A.Ldsbc_Alumni_Min_Date
+		, '								, CASE WHEN B.Byuh_Student_Min_Date IS NULL THEN A.Byuh_Alumni_Min_Date
+												WHEN A.Byuh_Alumni_Min_Date IS NULL THEN B.Byuh_Student_Min_Date
+												WHEN A.Byuh_Alumni_Min_Date < B.Byuh_Student_Min_Date THEN A.Byuh_Alumni_Min_Date
+												WHEN B.Byuh_Student_Min_Date < A.Byuh_Alumni_Min_Date THEN B.Byuh_Student_Min_Date
+												WHEN A.Byuh_Alumni_Min_Date = B.Byuh_Student_Min_Date THEN A.Byuh_Alumni_Min_Date
+												ELSE NULL END AS Byuh_Education_Min_Date										 													
+										, CASE WHEN B.Ldsbc_Student_Min_Date IS NULL THEN A.Ldsbc_Alumni_Min_Date
 												WHEN A.Ldsbc_Alumni_Min_Date IS NULL THEN B.Ldsbc_Student_Min_Date
 												WHEN A.Ldsbc_Alumni_Min_Date < B.Ldsbc_Student_Min_Date THEN A.Ldsbc_Alumni_Min_Date
 												WHEN B.Ldsbc_Student_Min_Date < A.Ldsbc_Alumni_Min_Date THEN B.Ldsbc_Student_Min_Date
@@ -30809,9 +30825,78 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 							INNER JOIN Ext_Institution B ON A.New_InstitutionalHierarchyId = B.New_InstitutionId
 						GROUP BY A.New_EmploymentsId
 					) D  ON A.ContactId = D.ContactId
-			) A
 			'-- Ext_From_Statement_3
-		, NULL -- Ext_From_Statement_4
+		, ' FULL OUTER JOIN 
+				(SELECT ContactId
+					, MAX(CASE WHEN Byu_Employment_Affiliated_Yn = A.[Y] THEN A.[Y] ELSE A.[N] END) AS Byu_Employment_Affiliated_Yn
+					, MAX(CASE WHEN Byui_Employment_Affiliated_Yn = A.[Y] THEN A.[Y] ELSE A.[N] END) AS Byui_Employment_Affiliated_Yn
+					, MAX(CASE WHEN Byuh_Employment_Affiliated_Yn = A.[Y] THEN A.[Y] ELSE A.[N] END) AS Byuh_Employment_Affiliated_Yn
+					, MAX(CASE WHEN Ldsbc_Employment_Affiliated_Yn = A.[Y] THEN A.[Y] ELSE A.[N] END) AS Ldsbc_Employment_Affiliated_Yn
+					FROM
+						(SELECT New_EmploymentsId AS ContactId
+							, A.[Y] AS Byu_Employment_Affiliated_Yn
+							, A.[N] AS Byui_Employment_Affiliated_Yn
+							, A.[N] AS Byuh_Employment_Affiliated_Yn
+							, A.[N] AS Ldsbc_Employment_Affiliated_Yn
+							, A.[Y] AS Y
+							, A.[N] AS N
+							FROM Ext_Employment A
+								INNER JOIN Ext_Institution B ON A.New_InstitutionalHierarchyId = B.New_InstitutionId
+							WHERE 1 = 1
+								AND StatusCode = 100000002  -- Current
+								AND New_ChurchAff = 1 -- Yes
+								AND Plus_ChurchEmploymentStatus IN (100000000,100000001) -- Full-time or Part-time
+								AND New_Inst = [BYU]
+						UNION
+						SELECT New_EmploymentsId AS ContactId
+							, A.[N] AS Byu_Employment_Affiliated_Yn
+							, A.[Y] AS Byui_Employment_Affiliated_Yn
+							, A.[N] AS Byuh_Employment_Affiliated_Yn
+							, A.[N] AS Ldsbc_Employment_Affiliated_Yn
+							, A.[Y] AS Y
+							, A.[N] AS N
+							FROM Ext_Employment A
+								INNER JOIN Ext_Institution B ON A.New_InstitutionalHierarchyId = B.New_InstitutionId
+							WHERE 1 = 1
+								AND StatusCode = 100000002  -- Current
+								AND New_ChurchAff = 1 -- Yes
+								AND Plus_ChurchEmploymentStatus IN (100000000,100000001) -- Full-time or Part-time
+								AND New_Inst = [BYUI]
+						UNION
+						SELECT New_EmploymentsId AS ContactId
+							, A.[N] AS Byu_Employment_Affiliated_Yn
+							, A.[N] AS Byui_Employment_Affiliated_Yn
+							, A.[Y] AS Byuh_Employment_Affiliated_Yn
+							, A.[N] AS Ldsbc_Employment_Affiliated_Yn
+							, A.[Y] AS Y
+							, A.[N] AS N
+							FROM Ext_Employment A
+								INNER JOIN Ext_Institution B ON A.New_InstitutionalHierarchyId = B.New_InstitutionId
+							WHERE 1 = 1
+								AND StatusCode = 100000002  -- Current
+								AND New_ChurchAff = 1 -- Yes
+								AND Plus_ChurchEmploymentStatus IN (100000000,100000001) -- Full-time or Part-time
+								AND New_Inst = [BYUH]
+						UNION
+						SELECT New_EmploymentsId AS ContactId
+							, A.[N] AS Byu_Employment_Affiliated_Yn
+							, A.[N] AS Byui_Employment_Affiliated_Yn
+							, A.[N] AS Byuh_Employment_Affiliated_Yn
+							, A.[Y] AS Ldsbc_Employment_Affiliated_Yn
+							, A.[Y] AS Y
+							, A.[N] AS N
+							FROM Ext_Employment A
+								INNER JOIN Ext_Institution B ON A.New_InstitutionalHierarchyId = B.New_InstitutionId
+							WHERE 1 = 1
+								AND StatusCode = 100000002  -- Current
+								AND New_ChurchAff = 1 -- Yes
+								AND Plus_ChurchEmploymentStatus IN (100000000,100000001) -- Full-time or Part-time
+								AND New_Inst = [LDSBC]
+						) A
+					GROUP BY ContactId
+				) E ON D.ContactId = E.ContactId
+			) A
+			' -- Ext_From_Statement_4
 		, NULL -- Ext_From_Statement_5
 		, NULL -- Ext_From_Statement_6
 		, NULL -- Ext_From_Statement_7
