@@ -49721,6 +49721,9 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Total_Giving_5_Years_Ago_With_Matching MONEY
 			, Ldsp_Number_Of_Years_Given INT
 			, Region NVARCHAR(20)
+			, Donor_Largest_Gift_Date_5_Years_Ldsp DATE
+			, Donor_Ldsp_Largest_Gift_5_Years MONEY
+			, Donor_Max_Annual_Total_5_Years_LDSP MONEY
 			' -- Ext_Create_Fields
 		, '	Ldsp_Id
 			, Donor_Full_Name
@@ -49790,7 +49793,10 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Total_Giving_4_Years_Ago_With_Matching
 			, Total_Giving_5_Years_Ago_With_Matching
 			, Ldsp_Number_Of_Years_Given
-			, Region 
+			, Region
+			, Donor_Largest_Gift_Date_5_Years_Ldsp
+			, Donor_Ldsp_Largest_Gift_5_Years
+			, Donor_Max_Annual_Total_5_Years_LDSP 
 			' -- Ext_Insert_Fields
 		, ' A.Donor_Ldsp_Id AS Ldsp_Id
 			, F.Donor_Name AS Donor_Full_Name
@@ -49887,6 +49893,9 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, E.Total_Giving_With_Matching_Current_Year_Minus_5 AS Total_Giving_5_Years_Ago_With_Matching
 			, J.Donor_Total_Lifetime_Giving_To_Ldsp_Years_Given_Cnt AS Ldsp_Number_Of_Years_Given
 			, B.Ldsp_Region AS Region
+			, M.Donor_Largest_Gift_Date_5_Years_Ldsp
+			, M.Donor_Ldsp_Largest_Gift_5_Years
+			, M.Donor_Max_Annual_Total_5_Years_LDSP
 			' -- Ext_Select_Statement_2
 		, '										 
 			' -- Ext_From_Statement_2

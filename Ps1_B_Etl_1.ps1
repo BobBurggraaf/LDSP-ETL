@@ -1275,49 +1275,49 @@ FUNCTION Insert-Alpha_Table_1
 						[STRING]$Ext_Create_Fields_4_Qry = "SELECT Ext_Create_Fields_4
 																FROM Oa_Extract.Extract_Tables
 																WHERE 1 = 1
-																	AND Extract_Tables_Key = $Processing_Key_Coupler
+																	AND Extract_Tables_Key = $Processing_Key_Tier_2
 														  "                                                                                    
 								$Ext_Create_Fields_4 = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Ext_Create_Fields_4_Qry).Ext_Create_Fields_4
 						
 						[STRING]$Ext_Create_Fields_5_Qry = "SELECT Ext_Create_Fields_5
 																FROM Oa_Extract.Extract_Tables
 																WHERE 1 = 1
-																	AND Extract_Tables_Key = $Processing_Key_Coupler
+																	AND Extract_Tables_Key = $Processing_Key_Tier_2
 														  "                                                                                    
 								$Ext_Create_Fields_5 = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Ext_Create_Fields_5_Qry).Ext_Create_Fields_5
 								
 						[STRING]$Ext_Insert_Fields_Qry = "SELECT Ext_Insert_Fields
 																FROM Oa_Extract.Extract_Tables
 																WHERE 1 = 1
-																	AND Extract_Tables_Key = $Processing_Key_Coupler
+																	AND Extract_Tables_Key = $Processing_Key_Tier_2
 														  "                                                                                    
 								$Ext_Insert_Fields = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Ext_Insert_Fields_Qry).Ext_Insert_Fields
 								
 						[STRING]$Ext_Insert_Fields_2_Qry = "SELECT Ext_Insert_Fields_2
 																FROM Oa_Extract.Extract_Tables
 																WHERE 1 = 1
-																	AND Extract_Tables_Key = $Processing_Key_Coupler
+																	AND Extract_Tables_Key = $Processing_Key_Tier_2
 														  "                                                                                    
 								$Ext_Insert_Fields_2 = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Ext_Insert_Fields_2_Qry).Ext_Insert_Fields_2
 						
 						[STRING]$Ext_Insert_Fields_3_Qry = "SELECT Ext_Insert_Fields_3
 																FROM Oa_Extract.Extract_Tables
 																WHERE 1 = 1
-																	AND Extract_Tables_Key = $Processing_Key_Coupler
+																	AND Extract_Tables_Key = $Processing_Key_Tier_2
 														  "                                                                                    
 								$Ext_Insert_Fields_3 = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Ext_Insert_Fields_3_Qry).Ext_Insert_Fields_3
 								
 						[STRING]$Ext_Insert_Fields_4_Qry = "SELECT Ext_Insert_Fields_4
 																FROM Oa_Extract.Extract_Tables
 																WHERE 1 = 1
-																	AND Extract_Tables_Key = $Processing_Key_Coupler
+																	AND Extract_Tables_Key = $Processing_Key_Tier_2
 														  "                                                                                    
 								$Ext_Insert_Fields_4 = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Ext_Insert_Fields_4_Qry).Ext_Insert_Fields_4
 								
 						[STRING]$Ext_Insert_Fields_5_Qry = "SELECT Ext_Insert_Fields_5
 																FROM Oa_Extract.Extract_Tables
 																WHERE 1 = 1
-																	AND Extract_Tables_Key = $Processing_Key_Coupler
+																	AND Extract_Tables_Key = $Processing_Key_Tier_2
 														  "                                                                                    
 								$Ext_Insert_Fields_5 = (Invoke-Sqlcmd -ServerInstance $Dest_Instance -Database $Dest_Db -Query $Ext_Insert_Fields_5_Qry).Ext_Insert_Fields_5
 
