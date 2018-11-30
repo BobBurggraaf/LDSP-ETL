@@ -3284,6 +3284,19 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, New_Degree NVARCHAR(100)
 			, New_DegreeCode NVARCHAR(100)
 			, Plus_DegreeLevel INT
+			, Code_A NVARCHAR(5) DEFAULT ''A''
+			, Code_AA NVARCHAR(5) DEFAULT ''AA''
+			, Code_AAS NVARCHAR(5) DEFAULT ''AAS''
+			, Code_AS NVARCHAR(5) DEFAULT ''AS''
+			, Code_ASA NVARCHAR(5) DEFAULT ''ASA''
+			, Code_CERT NVARCHAR(5) DEFAULT ''CERT''
+			, Code_C NVARCHAR(5) DEFAULT ''C''
+			, Code_ICER NVARCHAR(5) DEFAULT ''ICER''
+			, Code_1YC NVARCHAR(5) DEFAULT ''1YC''
+			, Code_SA NVARCHAR(5) DEFAULT ''SA''
+			, Code_TCT NVARCHAR(5) DEFAULT ''TCT''
+			, Code_3YC NVARCHAR(5) DEFAULT ''3YC''
+			, Code_2YC NVARCHAR(5) DEFAULT ''2YC''
 			' -- Ext_Create_Fields
 		, 'New_DegreeId
 			, New_Degree
@@ -30548,6 +30561,10 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Byui_Employment_Affiliated_Yn NVARCHAR(1)
 			, Byuh_Employment_Affiliated_Yn NVARCHAR(1)
 			, Ldsbc_Employment_Affiliated_Yn NVARCHAR(1)
+			, Byu_Current_Student_Affiliated_Yn NVARCHAR(1)
+			, Byui_Current_Student_Affiliated_Yn NVARCHAR(1)
+			, Byuh_Current_Student_Affiliated_Yn NVARCHAR(1)			
+			, Ldsbc_Current_Student_Affiliated_Yn NVARCHAR(1)
 		' -- Ext_Create_Fields
 		, 'ContactId 
 			, Affiliated_Key
@@ -30575,6 +30592,10 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Byui_Employment_Affiliated_Yn
 			, Byuh_Employment_Affiliated_Yn
 			, Ldsbc_Employment_Affiliated_Yn
+			, Byu_Current_Student_Affiliated_Yn
+			, Byui_Current_Student_Affiliated_Yn
+			, Byuh_Current_Student_Affiliated_Yn
+			, Ldsbc_Current_Student_Affiliated_Yn
 		' -- Ext_Insert_Fields
 		, 'ContactId
 			, ROW_NUMBER() OVER(ORDER BY ContactId) AS Affiliated_Key
@@ -30618,6 +30639,10 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
                 , Byui_Employment_Affiliated_Yn
                 , Byuh_Employment_Affiliated_Yn
                 , Ldsbc_Employment_Affiliated_Yn
+				, Byu_Current_Student_Affiliated_Yn
+				, Byui_Current_Student_Affiliated_Yn
+				, Byuh_Current_Student_Affiliated_Yn
+				, Ldsbc_Current_Student_Affiliated_Yn
 				FROM 
 					(SELECT COALESCE(A.ContactId,C.ContactId) AS ContactId
 						, Byu_Donor_Min_Date
@@ -30673,7 +30698,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			' -- Ext_From_Statement
 		, 'AND ContactId IS NOT NULL
 			INSERT INTO _Affiliated_Dim
-				VALUES(NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+				VALUES(NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 			' -- Ext_Where_Statement	
 		, NULL -- Tier_3_Stage
 		, NULL -- Tier_3_Stage_DateTime
@@ -30701,6 +30726,10 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
     		, Byui_Employment_Affiliated_Yn
     		, Byuh_Employment_Affiliated_Yn
     		, Ldsbc_Employment_Affiliated_Yn
+			, Byu_Current_Student_Affiliated_Yn
+			, Byui_Current_Student_Affiliated_Yn
+			, Byuh_Current_Student_Affiliated_Yn
+			, Ldsbc_Current_Student_Affiliated_Yn
 			' -- Ext_Select_Statement_2
 		, '								, CASE WHEN B.Byuh_Student_Min_Date IS NULL THEN A.Byuh_Alumni_Min_Date
 												WHEN A.Byuh_Alumni_Min_Date IS NULL THEN B.Byuh_Student_Min_Date
@@ -30895,10 +30924,135 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 						) A
 					GROUP BY ContactId
 				) E ON D.ContactId = E.ContactId
-			) A
 			' -- Ext_From_Statement_4
-		, NULL -- Ext_From_Statement_5
-		, NULL -- Ext_From_Statement_6
+		, ' FULL OUTER JOIN 
+				(SELECT ContactId
+					, MAX(CASE WHEN Byu_Current_Student_Affiliated_Yn = A.[Y] THEN A.[Y] ELSE A.[N] END) AS Byu_Current_Student_Affiliated_Yn
+					, MAX(CASE WHEN Byui_Current_Student_Affiliated_Yn = A.[Y] THEN A.[Y] ELSE A.[N] END) AS Byui_Current_Student_Affiliated_Yn
+					, MAX(CASE WHEN Byuh_Current_Student_Affiliated_Yn = A.[Y] THEN A.[Y] ELSE A.[N] END) AS Byuh_Current_Student_Affiliated_Yn
+					, MAX(CASE WHEN Ldsbc_Current_Student_Affiliated_Yn = A.[Y] THEN A.[Y] ELSE A.[N] END) AS Ldsbc_Current_Student_Affiliated_Yn
+					FROM
+						(SELECT A.New_StudentsAttendanceId AS ContactId
+							, A.[Y] AS Byu_Current_Student_Affiliated_Yn
+							, A.[N] AS Byui_Current_Student_Affiliated_Yn
+							, A.[N] AS Byuh_Current_Student_Affiliated_Yn
+							, A.[N] AS Ldsbc_Current_Student_Affiliated_Yn
+							, A.[Y] AS Y
+							, A.[N] AS N
+							FROM Ext_Student A
+								INNER JOIN Ext_University B ON A.New_University = B.New_UniversityId
+							WHERE 1 = 1
+								AND B.New_University = A.[BYU]
+								AND (A.Plus_Year = YEAR(GETDATE())-1 AND New_Term = A.[Fall]
+										OR A.Plus_Year = YEAR(GETDATE())
+									)
+								AND A.New_StudentsAttendanceId NOT IN
+									(SELECT DISTINCT Plus_Constituent AS New_StudentsAttendanceId
+										FROM Ext_Alumni A
+											LEFT JOIN Ext_University B ON A.Plus_University = B.New_UniversityId
+											LEFT JOIN Ext_Degree C ON A.Plus_Degree = C.New_DegreeId
+										WHERE 1 = 1
+											AND A.Plus_AlumniStatus = 100000000 -- Graduated
+											AND C.New_DegreeCode NOT IN (C.[Code_A],C.[Code_AA],C.[Code_AAS],C.[Code_AS],C.[Code_ASA],C.[Code_CERT],C.[Code_C],C.[Code_ICER],C.[Code_1YC],C.[Code_SA],C.[Code_TCT],C.[Code_3YC],C.[Code_2YC])
+											AND (MONTH(A.Plus_ActualGraduationDate) >= 9 AND YEAR(A.Plus_ActualGraduationDate) >= (YEAR(GETDATE())-1)
+													OR YEAR(A.Plus_ActualGraduationDate) = (YEAR(GETDATE()))
+												)
+											AND B.New_University = A.[BYU]
+											AND A.Plus_Constituent IS NOT NULL
+									)
+						UNION
+						SELECT A.New_StudentsAttendanceId AS ContactId
+							, A.[N] AS Byu_Current_Student_Affiliated_Yn
+							, A.[Y] AS Byui_Current_Student_Affiliated_Yn
+							, A.[N] AS Byuh_Current_Student_Affiliated_Yn
+							, A.[N] AS Ldsbc_Current_Student_Affiliated_Yn
+							, A.[Y] AS Y
+							, A.[N] AS N
+							FROM Ext_Student A
+								INNER JOIN Ext_University B ON A.New_University = B.New_UniversityId
+							WHERE 1 = 1
+								AND B.New_University = A.[BYUI]
+								AND (A.Plus_Year = YEAR(GETDATE())-1 AND New_Term = A.[Fall]
+										OR A.Plus_Year = YEAR(GETDATE())
+									)
+								AND A.New_StudentsAttendanceId NOT IN
+									(SELECT DISTINCT Plus_Constituent AS New_StudentsAttendanceId
+										FROM Ext_Alumni A
+											LEFT JOIN Ext_University B ON A.Plus_University = B.New_UniversityId
+											LEFT JOIN Ext_Degree C ON A.Plus_Degree = C.New_DegreeId
+										WHERE 1 = 1
+											AND A.Plus_AlumniStatus = 100000000 -- Graduated
+											AND C.New_DegreeCode NOT IN (C.[Code_A],C.[Code_AA],C.[Code_AAS],C.[Code_AS],C.[Code_ASA],C.[Code_CERT],C.[Code_C],C.[Code_ICER],C.[Code_1YC],C.[Code_SA],C.[Code_TCT],C.[Code_3YC],C.[Code_2YC])
+											AND (MONTH(A.Plus_ActualGraduationDate) >= 9 AND YEAR(A.Plus_ActualGraduationDate) >= (YEAR(GETDATE())-1)
+													OR YEAR(A.Plus_ActualGraduationDate) = (YEAR(GETDATE()))
+												)
+											AND B.New_University = A.[BYUI]
+											AND A.Plus_Constituent IS NOT NULL
+									)
+			' -- Ext_From_Statement_5
+		, '				UNION
+						SELECT A.New_StudentsAttendanceId AS ContactId
+							, A.[N] AS Byu_Current_Student_Affiliated_Yn
+							, A.[N] AS Byui_Current_Student_Affiliated_Yn
+							, A.[Y] AS Byuh_Current_Student_Affiliated_Yn
+							, A.[N] AS Ldsbc_Current_Student_Affiliated_Yn
+							, A.[Y] AS Y
+							, A.[N] AS N
+							FROM Ext_Student A
+								INNER JOIN Ext_University B ON A.New_University = B.New_UniversityId
+							WHERE 1 = 1
+								AND B.New_University = A.[BYUH]
+								AND (A.Plus_Year = YEAR(GETDATE())-1 AND New_Term = A.[Fall]
+										OR A.Plus_Year = YEAR(GETDATE())
+									)
+								AND A.New_StudentsAttendanceId NOT IN
+									(SELECT DISTINCT Plus_Constituent AS New_StudentsAttendanceId
+										FROM Ext_Alumni A
+											LEFT JOIN Ext_University B ON A.Plus_University = B.New_UniversityId
+											LEFT JOIN Ext_Degree C ON A.Plus_Degree = C.New_DegreeId
+										WHERE 1 = 1
+											AND A.Plus_AlumniStatus = 100000000 -- Graduated
+											AND C.New_DegreeCode NOT IN (C.[Code_A],C.[Code_AA],C.[Code_AAS],C.[Code_AS],C.[Code_ASA],C.[Code_CERT],C.[Code_C],C.[Code_ICER],C.[Code_1YC],C.[Code_SA],C.[Code_TCT],C.[Code_3YC],C.[Code_2YC])
+											AND (MONTH(A.Plus_ActualGraduationDate) >= 9 AND YEAR(A.Plus_ActualGraduationDate) >= (YEAR(GETDATE())-1)
+													OR YEAR(A.Plus_ActualGraduationDate) = (YEAR(GETDATE()))
+												)
+											AND B.New_University = A.[BYUH]
+											AND A.Plus_Constituent IS NOT NULL
+									)
+						UNION
+						SELECT A.New_StudentsAttendanceId AS ContactId
+							, A.[N] AS Byu_Current_Student_Affiliated_Yn
+							, A.[N] AS Byui_Current_Student_Affiliated_Yn
+							, A.[N] AS Byuh_Current_Student_Affiliated_Yn
+							, A.[Y] AS Ldsbc_Current_Student_Affiliated_Yn
+							, A.[Y] AS Y
+							, A.[N] AS N
+							FROM Ext_Student A
+								INNER JOIN Ext_University B ON A.New_University = B.New_UniversityId
+							WHERE 1 = 1
+								AND B.New_University = A.[LDSBC]
+								AND (A.Plus_Year = YEAR(GETDATE())-1 AND New_Term = A.[Fall]
+										OR A.Plus_Year = YEAR(GETDATE())
+									)
+								AND A.New_StudentsAttendanceId NOT IN
+									(SELECT DISTINCT Plus_Constituent AS New_StudentsAttendanceId
+										FROM Ext_Alumni A
+											LEFT JOIN Ext_University B ON A.Plus_University = B.New_UniversityId
+											LEFT JOIN Ext_Degree C ON A.Plus_Degree = C.New_DegreeId
+										WHERE 1 = 1
+											AND A.Plus_AlumniStatus = 100000000 -- Graduated
+											AND C.New_DegreeCode NOT IN (C.[Code_A],C.[Code_AA],C.[Code_AAS],C.[Code_AS],C.[Code_ASA],C.[Code_CERT],C.[Code_C],C.[Code_ICER],C.[Code_1YC],C.[Code_SA],C.[Code_TCT],C.[Code_3YC],C.[Code_2YC])
+											AND (MONTH(A.Plus_ActualGraduationDate) >= 9 AND YEAR(A.Plus_ActualGraduationDate) >= (YEAR(GETDATE())-1)
+													OR YEAR(A.Plus_ActualGraduationDate) = (YEAR(GETDATE()))
+												)
+											AND B.New_University = A.[LDSBC]
+											AND A.Plus_Constituent IS NOT NULL
+									)
+						) A
+					GROUP BY ContactId
+				) F ON D.ContactId = F.ContactId
+			) A
+			' -- Ext_From_Statement_6
 		, NULL -- Ext_From_Statement_7
 		, NULL -- Ext_Where_Statement_4
 		, NULL -- Ext_Where_Statement_5
@@ -45634,7 +45788,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Donor_Most_Recent_Gift_Date_Church
 			, Donor_Most_Recent_Gift_Date_Byupw
 			, Donor_Most_Recent_Gift_To_Ldsp_Amt
-			, Donor_Most_Recent_Gift_To_Byupw_Amt
+			, Donor_Most_Recent_Gift_To_Byu_Amt
 			, Donor_Most_Recent_Gift_To_Byui_Amt
 			, Donor_Most_Recent_Gift_To_Byuh_Amt
 			, Donor_Most_Recent_Gift_To_Ldsbc_Amt
