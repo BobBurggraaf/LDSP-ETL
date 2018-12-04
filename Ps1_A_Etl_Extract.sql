@@ -29105,6 +29105,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 				LEFT JOIN Ext_Institution D ON C.New_InstitutionalHierarchyId = D.New_InstitutionId
 			' -- Ext_From_Statement
 		, 'AND A.Donor_Key IS NOT NULL
+			AND C.StatusCode = 100000002 --Posted
 			GROUP BY A.Donor_Key 
 			' -- Ext_Where_Statement	
 		, NULL -- Tier_3_Stage
@@ -29492,6 +29493,7 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 				LEFT JOIN Ext_Institution D ON C.New_InstitutionalHierarchyId = D.New_InstitutionId
 			' -- Ext_From_Statement
 		, 'AND A.Donor_Key IS NOT NULL 
+			AND C.StatusCode = 100000002 --Posted
 			GROUP BY A.Donor_Key 
 			CREATE NONCLUSTERED INDEX IX_Total_Giving_Dim_Total_Giving_Years
 			ON dbo._Total_Giving_Dim 
@@ -30732,33 +30734,6 @@ INSERT INTO LDSPhilanthropiesDW.Oa_Extract.Extract_Tables
 			, Ldsbc_Current_Student_Affiliated_Yn
 			' -- Ext_Select_Statement_2
 		, '								, MIN(CASE WHEN UPPER(B.New_Name) LIKE [Percent_Byui_Percent]
-												THEN A.New_ReceiptDate ELSE NULL END) AS Byui_Donor_Min_Date
-										, MIN(CASE WHEN UPPER(B.New_Name) LIKE [Percent_Byuh_Percent]
-												THEN A.New_ReceiptDate ELSE NULL END) AS Byuh_Donor_Min_Date
-										, MIN(CASE WHEN UPPER(B.New_Name) = [Ldsbc_Dash_General]
-												THEN A.New_ReceiptDate ELSE NULL END) AS Ldsbc_Donor_Min_Date
-										FROM _Gift_ A
-											INNER JOIN Ext_Institution B ON A.New_InstitutionalHierarchyId = B.New_InstitutionId
-										GROUP BY A.New_ConstituentDonor
-									) A
-									FULL OUTER JOIN
-									(SELECT COALESCE(A.ContactId,B.ContactId) AS ContactId
-										, CASE WHEN B.Byu_Student_Min_Date IS NULL THEN A.Byu_Alumni_Min_Date
-												WHEN A.Byu_Alumni_Min_Date IS NULL THEN B.Byu_Student_Min_Date
-												WHEN A.Byu_Alumni_Min_Date < B.Byu_Student_Min_Date THEN A.Byu_Alumni_Min_Date
-												WHEN B.Byu_Student_Min_Date < A.Byu_Alumni_Min_Date THEN B.Byu_Student_Min_Date
-												WHEN A.Byu_Alumni_Min_Date = B.Byu_Student_Min_Date THEN A.Byu_Alumni_Min_Date
-												ELSE NULL END AS Byu_Education_Min_Date
-										, CASE WHEN B.Byui_Student_Min_Date IS NULL THEN A.Byui_Alumni_Min_Date
-												WHEN A.Byui_Alumni_Min_Date IS NULL THEN B.Byui_Student_Min_Date
-												WHEN A.Byui_Alumni_Min_Date < B.Byui_Student_Min_Date THEN A.Byui_Alumni_Min_Date
-												WHEN B.Byui_Student_Min_Date < A.Byui_Alumni_Min_Date THEN B.Byui_Student_Min_Date
-												WHEN A.Byui_Alumni_Min_Date = B.Byui_Student_Min_Date THEN A.Byui_Alumni_Min_Date
-												ELSE NULL END AS Byui_Education_Min_Date
-									(SELECT A.New_ConstituentDonor AS ContactId
-										, MIN(CASE WHEN UPPER(B.New_Name) LIKE [Percent_Byu_Percent] AND UPPER(B.New_Name) NOT LIKE [Percent_Byui_Percent] AND UPPER(B.New_Name) NOT LIKE [Percent_Byuh_Percent]
-												THEN A.New_ReceiptDate ELSE NULL END) AS Byu_Donor_Min_Date
-										, MIN(CASE WHEN UPPER(B.New_Name) LIKE [Percent_Byui_Percent]
 												THEN A.New_ReceiptDate ELSE NULL END) AS Byui_Donor_Min_Date
 										, MIN(CASE WHEN UPPER(B.New_Name) LIKE [Percent_Byuh_Percent]
 												THEN A.New_ReceiptDate ELSE NULL END) AS Byuh_Donor_Min_Date
